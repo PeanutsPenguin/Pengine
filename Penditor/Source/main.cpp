@@ -1,13 +1,11 @@
-#include "Angle/Radian.h"
-#include "PenditorHeader.h"
-#include "PengineHeader.h"
-
-#include <stdio.h>
-
+#include "PenCore/PenCore.h"
 
 int main () 
 {
-	PengineFunction();
-	printf("Helo World !\n");
+	Pengine::PenCore* core = Pengine::PenCore::getInstance();
+
+	core->init("Pengine Window", { 800.0f, 600.0f });
+	core->startPengine();
+
 	return 0;
 }
