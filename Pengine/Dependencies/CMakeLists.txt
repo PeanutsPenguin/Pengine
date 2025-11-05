@@ -16,16 +16,6 @@ endif()
 
 message("[${TARGET_NAME}] Starting source file fetching in [${CMAKE_CURRENT_SOURCE_DIR}]")
 
-include(FetchContent)
-
-#PenMath
-FetchContent_Declare(
-	PenMath
-	GIT_REPOSITORY  https://github.com/PeanutsPenguin/PenMath
-	GIT_TAG "origin/main"
-)
-FetchContent_MakeAvailable(PenMath)
-
 ### ------- Header files
 
 file(GLOB_RECURSE TARGET_HEADER_FILES 
@@ -61,15 +51,10 @@ source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${TARGET_FILES})
 # ------- Static Library
 # ------- In this part of the code will link everything together ------- #
 
-
-# add_library(${TARGET_NAME} STATIC)
-
 ADD_LIBRARY(
   ${TARGET_NAME}
   SHARED IMPORT
 )
-
-target_sources(${TARGET_NAME} PRIVATE ${TARGET_FILES})
 
 SET_TARGET_PROPERTIES(
   ${TARGET_NAME}
@@ -86,14 +71,13 @@ INSTALL(
 
 ### ------- Appending the previous source files into the static library
 
-
+target_sources(${TARGET_NAME} PRIVATE ${TARGET_FILES})
 
 ### ------- Specifies the include directories so Visual Studio knows 
 
 target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/Header)
 
 target_link_libraries(${TARGET_NAME} PRIVATE ${TARGET_LIB_FILES})
-
 
 ### ------- Exposing a variable so the next compilation knows about me
 

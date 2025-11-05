@@ -5,3 +5,11 @@
 #include "PengineDependenciesHeader.h"
 
 #include "PengineHeader.h"
+
+#include <iostream>
+
+void PengineFunction()
+{
+	PengineDependencyFunction();
+	std::cout << "Pengine Function Called" << std::endl;
+}

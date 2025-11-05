@@ -7,9 +7,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 message("[${TARGET_NAME}] Starting source file fetching in [${CMAKE_CURRENT_SOURCE_DIR}]")
 
-set(headerRoot "${CMAKE_CURRENT_SOURCE_DIR}/Header")
-set(sourceRoot "${CMAKE_CURRENT_SOURCE_DIR}/Source")
-
 include(FetchContent)
 
 #PenMath
@@ -71,8 +68,6 @@ add_library(
   STATIC
 )
 
-target_sources(${TARGET_NAME} PRIVATE ${TARGET_FILES})
-
 # ------- Create Penditor/Assets directory if it doesn't exist
 add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E make_directory "${PROJECT_SOURCE_DIR}/Penditor/Assets"
@@ -89,12 +84,21 @@ foreach(_dll ${TARGET_DLL_FILES})
 endforeach()
 
 
+target_sources(${TARGET_NAME} PRIVATE ${TARGET_FILES})
 
 target_link_libraries(${TARGET_NAME} PRIVATE ${TARGET_LIB_FILES})
 target_link_libraries(${TARGET_NAME} PUBLIC PenMath)
 
 target_include_directories(${TARGET_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Header)
-#target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/Header)
+target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/Header)
+
+foreach(DIRECTORY ${TARGET_DIRECTORIES})
+    if(IS_DIRECTORY ${DIRECTORY})
+	target_include_directories(${TARGET_NAME} PRIVATE ${DIRECTORY})
+    else() 
+	continue() 
+    endif()
+endforeach()
 
 ### ------- Tells MSVC to parallel build for faster compilation and allow the compiler to create object files with more than 65,536 sections
 
@@ -103,10 +107,11 @@ if (MSVC)
     target_compile_options(${TARGET_NAME} PRIVATE /bigobj)
 endif()
 
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${TARGET_FILES})
 
 ### ------- Append all target files in one group
 
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${TARGET_FILES})
+
 set(MODERN_LIBRARY ${TARGET_NAME} PARENT_SCOPE)
 
 message("[${TARGET_NAME}] Done.")
