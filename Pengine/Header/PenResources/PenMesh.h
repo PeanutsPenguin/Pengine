@@ -1,16 +1,17 @@
 #pragma once 
 
-#include "PenRessources/PenResourcesBase.h"
+#include "PenResources/PenResourcesBase.h"
 
 #include "PenBuffer/PenElementBuffer.h"
 #include "PenBuffer/PenVertexAttributeBuffer.h"
 #include "PenBuffer/PenVertexBuffer.h"
 
 #include <filesystem>
+#include <memory>
 
 namespace Pengine::Resources
 {
-	class PenMesh : public IPenResourcesBase
+	class PenMesh : public PenResourcesBase
 	{
 	public:
 		PenMesh() = default;
