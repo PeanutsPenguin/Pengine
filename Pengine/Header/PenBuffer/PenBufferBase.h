@@ -1,6 +1,6 @@
 #pragma once 
 
-namespace Pengine
+namespace Pengine::Buffer
 {
 	class PenBufferBase
 	{

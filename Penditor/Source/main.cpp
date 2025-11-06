@@ -1,8 +1,9 @@
 #include "PenCore/PenCore.h"
 #include "PenWindow/PenWindow.h"
 #include "PenScene/PenScene.h"
-#include "PenComponents/PenComponentsManager.h"
 #include "PenObject/PenObjectManager.h"
+
+#include "PenComponents/PenComponentsManager.h"
 #include "PenComponents/PenTransform/PenTransform.h"
 
 int main () 
