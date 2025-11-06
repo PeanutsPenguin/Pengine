@@ -27,6 +27,8 @@ namespace Pengine
 		
 		void clearBackground();
 
+		_NODISCARD bool addObjectById(const PenObjectId id);
+
 		PenObjectId createObject();
 #pragma endregion
 

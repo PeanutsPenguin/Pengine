@@ -1,4 +1,7 @@
 #include "PenObject/PenObjectManager.h"
+#include "PenScene/PenScene.h"
+#include "PenWindow/PenWindow.h"
+#include "PenCore/PenCore.h"
 
 #include <iostream>
 
@@ -12,6 +15,11 @@ PenObject& PenObjectManager::createPenObject()
 	s_ObjectIds++;
 
 	this->m_idMap.insert({ s_ObjectIds, PenObject(s_ObjectIds)});
+
+	std::unique_ptr<PenScene>& scene = PenCore::getInstance()->getWindow()->getScene();
+
+	if(scene)
+		scene->addObjectById(s_ObjectIds);
 
 	return this->m_idMap[s_ObjectIds];
 }
@@ -29,5 +37,9 @@ PenObject& PenObjectManager::getObjectById(PenObjectId id)
 		else
 			return createPenObject();
 	}
+}
+bool Pengine::PenObjectManager::isObjectExisting(const PenObjectId id)
+{
+	return this->m_idMap.contains(id);
 }
 #pragma endregion

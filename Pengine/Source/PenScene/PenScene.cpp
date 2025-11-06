@@ -29,6 +29,17 @@ void PenScene::clearBackground()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
+bool PenScene::addObjectById(const PenObjectId id)
+{
+	if(PenCore::getInstance()->getObjectManager()->isObjectExisting(id))
+	{
+		this->m_objects.push_back(id);
+		return true;
+	}
+
+	return false;
+}
+
 PenObjectId PenScene::createObject()
 {
 	PenObject& obj = PenCore::getInstance()->getObjectManager()->createPenObject();

@@ -27,6 +27,9 @@ namespace Pengine
 		PenObject& createPenObject();
 
 		PenObject& getObjectById(PenObjectId id);
+
+		_NODISCARD bool isObjectExisting(const PenObjectId id);
+
 #pragma endregion
 	private:
 
