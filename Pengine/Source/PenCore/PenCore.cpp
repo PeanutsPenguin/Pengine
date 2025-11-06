@@ -17,6 +17,8 @@ Pengine::PenCore::~PenCore()
         delete s_PenCoreInstance;
         s_PenCoreInstance = nullptr;
 	}
+
+    this->m_window.release();
 }
 #pragma endregion
 

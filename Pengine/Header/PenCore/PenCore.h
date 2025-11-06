@@ -39,6 +39,9 @@ namespace Pengine
 
 		void stopPengine();
 
+		/// <summary>
+		/// Return the pointer to the main "PenWindow"
+		/// </summary>
 		std::unique_ptr<PenWindow>& getWindow();
 #pragma endregion
 

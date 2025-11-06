@@ -1,7 +1,6 @@
 #include "PenWindow/PenWindow.h"
 #include "PenCore/PenCore.h"
-
-
+#include "PenScene/PenScene.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -10,7 +9,20 @@
 
 using namespace Pengine;
 
+#pragma region Constructors and Destructor
+PenWindow::PenWindow()
+{
+    this->m_windowScene = std::make_unique<PenScene>();
+}
+
+PenWindow::~PenWindow()
+{
+    this->m_windowScene.release();
+}
+#pragma endregion
+
 #pragma region Functions
+
 bool PenWindow::Init(const char* name, const PenMath::Vector2f& windowSize)
 {
 	this->m_windowSize = windowSize;
@@ -32,6 +44,7 @@ void PenWindow::setWindowSize(const PenMath::Vector2f& size, bool resizeWindow)
 
 void PenWindow::render()
 {
+    this->m_windowScene->render();
 
 	this->GLBufferUpdate();
 }
