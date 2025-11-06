@@ -47,6 +47,8 @@ namespace Pengine
 		/// <param name="resizeWindow">True if you want to rescale the window</param>
 		void setWindowSize(const PenMath::Vector2f& size, bool resizeWindow = true);
 
+		std::unique_ptr<PenScene>& getScene();
+
 		void render();
 #pragma endregion
 
@@ -75,6 +77,5 @@ namespace Pengine
 		//In the futur i'd like to just have a pointer here to keep scene loaded when i want (will make an issue about it)
 		std::unique_ptr<PenScene> m_windowScene;
 #pragma endregion
-
 	};
 }

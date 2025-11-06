@@ -1,7 +1,5 @@
 #pragma once
 
-#define OPENGL_RENDER
-
 #include <memory>
 
 #include "Vector/Vector2/Vector2.h"
@@ -10,6 +8,8 @@
 namespace Pengine
 {
 	class PenWindow;
+	class PenObjectManager;
+	class PenComponentsManager;
 }	
 #pragma endregion
 
@@ -43,6 +43,16 @@ namespace Pengine
 		/// Return the pointer to the main "PenWindow"
 		/// </summary>
 		std::unique_ptr<PenWindow>& getWindow();
+
+		/// <summary>
+		/// Return the pointer to the main "PenWindow"
+		/// </summary>
+		std::unique_ptr<PenObjectManager>& getObjectManager();
+
+		/// <summary>
+		/// Return the pointer to the main "PenWindow"
+		/// </summary>
+		std::unique_ptr<PenComponentsManager>& getComponentsManager();
 #pragma endregion
 
 	private:
@@ -56,6 +66,8 @@ namespace Pengine
 
 #pragma region Private members
 		std::unique_ptr<PenWindow> m_window;
+		std::unique_ptr<PenObjectManager> m_objectManager;
+		std::unique_ptr<PenComponentsManager> m_componentsManager;
 		float m_deltaTime;
 		float m_lastFrame;
 		bool m_shouldStop;

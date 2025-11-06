@@ -1,5 +1,7 @@
 #include "PenCore/PenCore.h"
 #include "PenWindow/PenWindow.h"
+#include "PenComponents/PenComponentsManager.h"
+#include "PenObject/PenObjectManager.h"
 
 #include "Vector/Vector2/Vector2.h"
 
@@ -19,6 +21,8 @@ Pengine::PenCore::~PenCore()
 	}
 
     this->m_window.release();
+	this->m_componentsManager.release();
+	this->m_componentsManager.release();
 }
 #pragma endregion
 
@@ -36,6 +40,8 @@ PenCore* PenCore::getInstance()
 bool Pengine::PenCore::init(const char* name, const PenMath::Vector2f& windowSize)
 {
 	this->m_window = std::make_unique<PenWindow>();
+    this->m_objectManager = std::make_unique<PenObjectManager>();
+    this->m_componentsManager = std::make_unique<PenComponentsManager>();
 
     if(!m_window->Init(name, windowSize))
         return false;
@@ -54,9 +60,19 @@ void PenCore::stopPengine()
 	this->m_shouldStop = true;
 }
 
-std::unique_ptr<PenWindow>& Pengine::PenCore::getWindow()
+std::unique_ptr<PenWindow>& PenCore::getWindow()
 {
 	return m_window;
+}
+
+std::unique_ptr<PenObjectManager>& PenCore::getObjectManager()
+{
+	return m_objectManager;
+}
+
+std::unique_ptr<PenComponentsManager>& PenCore::getComponentsManager()
+{
+	return m_componentsManager;
 }
 
 #pragma endregion

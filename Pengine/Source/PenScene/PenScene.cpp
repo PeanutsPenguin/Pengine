@@ -1,6 +1,9 @@
 #include "PenScene/PenScene.h"
 #include "PenColor/PenColor.h"
 
+#include "PenObject/PenObjectManager.h"
+#include "PenCore/PenCore.h"
+
 #include <glad/glad.h>
 
 using namespace Pengine;
@@ -24,6 +27,15 @@ void PenScene::clearBackground()
 {
 	glClearColor(m_backgroundColor->r, m_backgroundColor->g, m_backgroundColor->b, m_backgroundColor->a);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+PenObjectId PenScene::createObject()
+{
+	PenObject& obj = PenCore::getInstance()->getObjectManager()->createPenObject();
+
+	this->m_objects.push_back(obj.getId());
+
+	return obj.getId();
 }
 
 #pragma endregion	

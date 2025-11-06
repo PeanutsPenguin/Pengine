@@ -42,6 +42,11 @@ void PenWindow::setWindowSize(const PenMath::Vector2f& size, bool resizeWindow)
         glViewport(0, 0, size.x, size.y);
 }
 
+std::unique_ptr<PenScene>& PenWindow::getScene()
+{
+    return m_windowScene;
+}
+
 void PenWindow::render()
 {
     this->m_windowScene->render();

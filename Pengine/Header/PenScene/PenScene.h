@@ -1,9 +1,13 @@
 #pragma once 
+#include <vector>
+
+#include "PengineDefine.h"
 
 #pragma region Forward declarations
 namespace Pengine
 {
 	class PenColor;
+	class PenObject;
 }
 #pragma endregion
 
@@ -22,12 +26,15 @@ namespace Pengine
 		void render();
 		
 		void clearBackground();
+
+		PenObjectId createObject();
 #pragma endregion
 
 	private :
 
 #pragma region Private members
 		PenColor* m_backgroundColor;
+		std::vector<PenObjectId> m_objects;
 #pragma endregion
 	};
 }
