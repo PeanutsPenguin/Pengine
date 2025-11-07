@@ -8,12 +8,17 @@
 
 #include "PenResources/PenResourcesManager.h"
 
+#include "PenResources/Private_PenGLShader.h"
+
 #include <iostream>
 int main () 
 {
 	Pengine::PenCore* core = Pengine::PenCore::getInstance();
 
 	core->init("Pengine Window", { 800.0f, 600.0f });
+
+	std::unique_ptr<Pengine::Resources::PenResourcesManager>& resourceManager = core->getResourcesManager();
+
 
 #pragma region Create a test object and add components
 	PenObjectId newObj = core->getWindow()->getScene()->createObject();
@@ -23,12 +28,43 @@ int main ()
 	PenComponentsId newComp = objRef.addComponent<Pengine::PenTransform, Pengine::PenComponentsBase>()->getId();
 #pragma endregion
 
-#pragma region Load a texture resource
-	PenResourcesId texId = core->getResourcesManager()->loadResourceFromFile<Pengine::Resources::PenTexture>("Assets/Textures/awesomeface.png");
+#pragma region Load a texture and erase resource
+	{
+		std::shared_ptr<Pengine::Resources::PenTexture> ptr = resourceManager->loadResourceFromFile<Pengine::Resources::PenTexture>("Images/penguin.jpg");
 
-	std::cout << core->getResourcesManager()->getResourcePathById(texId) << std::endl;
+		std::cout << resourceManager->getResourcePathById(ptr->getId()) << std::endl;
 
+		std::shared_ptr<Pengine::Resources::PenTexture> ptr2 = resourceManager->getResourceById<Pengine::Resources::PenTexture>(ptr->getId());
+
+		ptr.reset();
+
+		std::cout << "Texture still loaded\n";
+
+		ptr2.reset();
+	}
 #pragma endregion
+
+#pragma region Create Shaders and test
+	{
+		std::shared_ptr<Pengine::Resources::PenGLShader> ptr = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLShader>("Shaders/basicVertexShader.vert", Pengine::PenShaderType::VERTEX_SHADER);
+
+		if(ptr)
+			std::cout << resourceManager->getResourcePathById(ptr->getId()) << std::endl;
+
+		std::shared_ptr<Pengine::Resources::PenTexture> ptr2 = resourceManager->getResourceById<Pengine::Resources::PenTexture>(ptr->getId());
+
+		if(ptr)
+			ptr.reset();
+
+		std::cout << "Shader still loaded\n";
+
+		if (ptr2)
+			ptr2.reset();
+
+		std::cout << "Shader has been destroyed\n";
+	}
+#pragma endregion
+
 	core->startPengine();
 
 	return 0;

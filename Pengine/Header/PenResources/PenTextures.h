@@ -20,11 +20,11 @@ namespace Pengine::Resources
 #pragma region Constructors and Destructor
 		PenTexture() = default;
 		PenTexture(const PenResourcesId& id) : PenResourcesBase(id) {}
-		~PenTexture() = default;
+		~PenTexture();
 #pragma endregion
 
 #pragma region Functions
-		void loadResource(const std::filesystem::path& path) override;
+		bool loadResource(const char* path) override;
 
 		_NODISCARD const std::string_view getTexturePath() const;
 
@@ -35,6 +35,6 @@ namespace Pengine::Resources
 
 #pragma endregion
 	private :
-		Pengine::Buffer::PenTextureBuffer* m_texBuffer = nullptr;
+		Pengine::Buffer::PenTextureBuffer* m_texBuffer = nullptr;	///WOOOOOW need to change this because it's related to openGL im crazy
 	};
 }

@@ -14,10 +14,10 @@ namespace Pengine::Resources
 
 		_NODISCARD PenResourcesId getId() const noexcept { return m_id; }
 		
-		virtual void loadResource(const std::filesystem::path& path) = 0;
+		virtual bool loadResource(const char* path) = 0;
 
 		virtual ~PenResourcesBase() = default;
 	private:
-		PenResourcesId m_id;
+		PenResourcesId m_id = 0;
 	};
 }	

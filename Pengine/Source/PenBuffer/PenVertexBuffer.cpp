@@ -41,4 +41,8 @@ void PenVertexBuffer::unbind() const
 {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
+bool PenVertexBuffer::isValid() const noexcept
+{
+	return m_id;
+}
 #pragma endregion

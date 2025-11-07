@@ -15,7 +15,9 @@ PenTextureBuffer::~PenTextureBuffer()
 #pragma region Functions
 void PenTextureBuffer::destroy()
 {
-	glDeleteTextures(1, &m_id);
+	if(m_id)
+		glDeleteTextures(1, &m_id);
+
 	m_id = 0;
 }
 

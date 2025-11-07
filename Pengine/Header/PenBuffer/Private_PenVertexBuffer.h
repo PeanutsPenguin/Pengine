@@ -22,6 +22,8 @@ namespace Pengine::Buffer
 
         void bind() const final;
         void unbind() const final;
+
+        [[nodiscard]] bool isValid() const noexcept;
 #pragma endregion
     };
 }

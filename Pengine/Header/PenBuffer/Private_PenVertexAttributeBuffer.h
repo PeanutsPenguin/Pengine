@@ -22,6 +22,8 @@ namespace Pengine::Buffer
 
         void bind() const final;
         void unbind() const final;
+
+        bool defineAttribute(size_t index, unsigned int vertSize);
 #pragma endregion
     };
 }

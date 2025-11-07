@@ -11,4 +11,5 @@ namespace Pengine
 		PenMath::Vector3f normal;
 		PenMath::Vector2f uv;
 	};
+
 }
