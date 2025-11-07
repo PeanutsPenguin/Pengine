@@ -41,13 +41,13 @@ bool PenVertexAttributeBuffer::defineAttribute(size_t index, unsigned int vertSi
 	switch (index)
 	{
 	case 0:
-		glVertexAttribPointer(index, vertSize, GL_FLOAT, GL_FALSE, sizeof(Pengine::PenVertex), (void*)0);
+		glVertexAttribPointer(index, vertSize, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)0);
 		return true;
 	case 1:
-		glVertexAttribPointer(index, vertSize, GL_FLOAT, GL_FALSE, sizeof(Pengine::PenVertex), (void*)offsetof(Pengine::PenVertex, Pengine::PenVertex::normal));
+		glVertexAttribPointer(index, vertSize, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)offsetof(Pengine::PenVertex, Pengine::PenVertex::normal));
 		return true;
 	case 2:
-		glVertexAttribPointer(index, vertSize, GL_FLOAT, GL_FALSE, sizeof(Pengine::PenVertex), (void*)offsetof(Pengine::PenVertex, Pengine::PenVertex::uv));
+		glVertexAttribPointer(index, vertSize, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)offsetof(Pengine::PenVertex, Pengine::PenVertex::uv));
 		return true;
 	default:
 		std::cerr << __FUNCTION__ "Index value :" << index << " is out of range. Pointer not loaded" << std::endl;

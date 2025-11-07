@@ -83,6 +83,7 @@ bool PenGLMesh::initMesh(const aiMesh& assimpMesh)
 	m_vertexBuffer.create(vertices.data(), vertices.size() * sizeof(Pengine::PenVertex));
 	m_elementBuffer.create(indices);
 
+	m_vertexAttributeBuffer.bind();
 	m_vertexAttributeBuffer.defineAttribute(0, 3);	//define position
 	m_vertexAttributeBuffer.defineAttribute(1, 3);	//define normal
 	m_vertexAttributeBuffer.defineAttribute(2, 2);	//define uv
@@ -99,5 +100,6 @@ void PenGLMesh::render()
 	m_vertexBuffer.bind();
 	m_elementBuffer.bind();
 
-	glDrawElements(GL_LINE, m_elementBuffer.count(), GL_UNSIGNED_INT, nullptr);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glDrawElements(GL_TRIANGLES, m_elementBuffer.count(), GL_UNSIGNED_INT, nullptr);
 }

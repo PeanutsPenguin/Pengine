@@ -112,8 +112,6 @@ int main ()
 	newComp->setModel(modelPtr);
 	newComp->setShaderProgram(progPtr);
 
-	printf("ok");
-
 #pragma endregion
 
 	core->startPengine();

@@ -102,6 +102,8 @@ void PenCore::update()
 
 		//Then the render ones
         this->m_window->render();
+
+        this->m_resourcesManager->clearUnused();
     }
 
 }
