@@ -10,9 +10,11 @@ namespace Pengine::Resources
 	public:
 		PenResourcesBase() = default;
 
-		PenResourcesBase(const PenResourcesId id) : m_id(id) {}
+		PenResourcesBase(const PenResourcesId& id) : m_id(id) {}
+
+		_NODISCARD PenResourcesId getId() const noexcept { return m_id; }
 		
-		virtual PenResourcesId loadResource(const std::filesystem::path& path) = 0;
+		virtual void loadResource(const std::filesystem::path& path) = 0;
 
 		virtual ~PenResourcesBase() = default;
 	private:

@@ -6,7 +6,7 @@
 
 namespace Pengine::Buffer
 {
-	class PenElementBuffer : public PenBufferBase
+	class PenElementBuffer final : public PenBufferBase
 	{
 	public:
 #pragma region Constructors and Destructor

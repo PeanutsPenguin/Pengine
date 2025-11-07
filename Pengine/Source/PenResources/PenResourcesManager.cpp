@@ -1,5 +1,7 @@
 #include "PenResources/PenResourcesManager.h"
 
+#include <iostream>
+
 using namespace Pengine::Resources;
 
 void PenResourcesManager::clearUnused()
@@ -11,4 +13,14 @@ void PenResourcesManager::clearUnused()
         else
             ++it;
     }
+}
+
+std::string_view PenResourcesManager::getResourcePathById(const PenResourcesId id) const
+{
+    auto it = m_idToPathfile.find(id);
+    if (it != m_idToPathfile.end())
+        return it->second;
+
+	std::cerr << "__FUNCTION__ : Resource ID " << id << " not found." << std::endl;
+    return std::string_view("Resource doesn't exist");
 }

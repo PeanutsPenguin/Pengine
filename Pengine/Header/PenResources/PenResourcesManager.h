@@ -20,13 +20,15 @@ namespace Pengine::Resources
 #pragma region Functions
 		template<typename _ResourceType>
 			requires std::derived_from<_ResourceType, PenResourcesBase>
-		PenResourcesId loadResourceFromFile(const std::filesystem::path& path);
+		PenResourcesId loadResourceFromFile(const char* path);
 
 		template<typename _ResourceType>
 			requires std::derived_from<_ResourceType, PenResourcesBase>
 		std::shared_ptr<_ResourceType> getResourceById(const PenResourcesId id);
 
 		void clearUnused();
+
+		std::string_view getResourcePathById(const PenResourcesId id) const;
 #pragma endregion
 
 	private:

@@ -4,7 +4,7 @@
 
 namespace Pengine::Buffer
 {
-    class PenVertexAttributeBuffer : PenBufferBase
+    class PenVertexAttributeBuffer final : PenBufferBase
     {
     public:
 #pragma region Constructors and Destructor
