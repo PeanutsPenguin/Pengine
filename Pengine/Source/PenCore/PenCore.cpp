@@ -42,7 +42,7 @@ bool Pengine::PenCore::init(const char* name, const PenMath::Vector2f& windowSiz
 {
 	this->m_window = std::make_unique<PenWindow>();
     this->m_objectManager = std::make_unique<PenObjectManager>();
-    this->m_componentsManager = std::make_unique<PenComponentsManager>();
+    this->m_componentsManager = std::make_unique<Components::PenComponentsManager>();
     this->m_resourcesManager = std::make_unique<Resources::PenResourcesManager>();
 
     if(!m_window->Init(name, windowSize))
@@ -72,7 +72,7 @@ std::unique_ptr<PenObjectManager>& PenCore::getObjectManager()
 	return m_objectManager;
 }
 
-std::unique_ptr<PenComponentsManager>& PenCore::getComponentsManager()
+std::unique_ptr<Components::PenComponentsManager>& PenCore::getComponentsManager()
 {
 	return m_componentsManager;
 }

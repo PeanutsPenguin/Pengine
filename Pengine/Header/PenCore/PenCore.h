@@ -9,11 +9,16 @@ namespace Pengine
 {
 	class PenWindow;
 	class PenObjectManager;
-	class PenComponentsManager;
+	
 
 	namespace Resources
 	{
 		class PenResourcesManager;
+	}
+
+	namespace Components
+	{
+		class PenComponentsManager;
 	}
 }	
 #pragma endregion
@@ -57,7 +62,7 @@ namespace Pengine
 		/// <summary>
 		/// Return the pointer to the Components manager
 		/// </summary>
-		std::unique_ptr<PenComponentsManager>& getComponentsManager();
+		std::unique_ptr<Components::PenComponentsManager>& getComponentsManager();
 
 		/// <summary>
 		/// Return the pointer to the Resources manager
@@ -77,7 +82,7 @@ namespace Pengine
 #pragma region Private members
 		std::unique_ptr<PenWindow> m_window;
 		std::unique_ptr<PenObjectManager> m_objectManager;
-		std::unique_ptr<PenComponentsManager> m_componentsManager;
+		std::unique_ptr<Components::PenComponentsManager> m_componentsManager;
 		std::unique_ptr<Resources::PenResourcesManager> m_resourcesManager;
 
 		float m_deltaTime;

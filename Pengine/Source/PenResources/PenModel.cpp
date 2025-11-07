@@ -14,6 +14,11 @@
 
 using namespace Pengine::Resources;
 
+PenModel::~PenModel()
+{
+	std::cout << __FUNCTION__ ": Destryoing with id : " << getId() << std::endl;
+}
+
 bool PenModel::loadResource(const char* path)
 {
 	std::cout << __FUNCTION__ ": Loading model from file " << path << std::endl;
@@ -58,29 +63,27 @@ bool PenModel::loadResource(const char* path)
 	return true;
 }
 
-void PenModel::render(std::shared_ptr<PenShaderBase> shaderProg)
-{
-}
-
 bool PenModel::loadPenGLMesh(const aiMesh& mesh)
 {
-	PenGLMesh* ptr = new PenGLMesh();
+	std::shared_ptr<PenGLMesh> ptr = std::make_shared<PenGLMesh>();
 
 	//Supposed to give the material too
 	if (!ptr->initMesh(mesh))
 		return false;
 
+	this->m_meshes.push_back(ptr);
+
 	return true;
 }
 
-void PenModel::render(std::shared_ptr<PenShaderBase> shaderProg)
+void PenModel::render(std::shared_ptr<Pengine::Resources::PenShaderProgramBase> shaderProg)
 {
 #if defined (OPENGL_RENDER)
 	this->GLRender(shaderProg);
 #endif
 }
 
-void PenModel::GLRender(std::shared_ptr<PenShaderBase> shaderProg)
+void PenModel::GLRender(std::shared_ptr<Pengine::Resources::PenShaderProgramBase> shaderProg)
 {
 	std::shared_ptr<PenGLShaderProgram> ptr = std::dynamic_pointer_cast<PenGLShaderProgram>(shaderProg);
 
@@ -96,8 +99,8 @@ void PenModel::GLRender(std::shared_ptr<PenShaderBase> shaderProg)
 		
 		if (objPtr)
 			objPtr->render();
-		else 
-			std::cerr << __FUNCTION__ "\t Dynamic pointer cast failed\n"
+		else
+			std::cerr << __FUNCTION__ "\t Dynamic pointer cast failed\n";
 	}
 
 

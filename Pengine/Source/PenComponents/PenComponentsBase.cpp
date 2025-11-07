@@ -1,6 +1,6 @@
 #include "PenComponents/PenComponentsBase.h"
 
-using namespace Pengine;
+using namespace Pengine::Components;
 
 PenComponentsId PenComponentsBase::getId() const
 {

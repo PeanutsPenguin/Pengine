@@ -57,11 +57,13 @@ bool PenGLShader::setType(Pengine::PenShaderType type)
 {
 	switch (type)
 	{
-	case 1:
+	case Pengine::PenShaderType::VERTEX_SHADER:
 		m_shaderId = glCreateShader(GL_VERTEX_SHADER);
+		this->m_type = type;
 		break;
-	case 2:
+	case Pengine::PenShaderType::FRAGMENT_SHADER:
 		m_shaderId = glCreateShader(GL_FRAGMENT_SHADER);
+		this->m_type = type;
 		break;
 	default:
 		std::cerr << __FUNCTION__ "\tGiven type is not valid\n";

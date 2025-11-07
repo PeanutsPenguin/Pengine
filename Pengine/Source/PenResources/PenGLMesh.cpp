@@ -99,5 +99,5 @@ void PenGLMesh::render()
 	m_vertexBuffer.bind();
 	m_elementBuffer.bind();
 
-	glDrawElements(GL_TRIANGLES, m_elementBuffer.count(), GL_UNSIGNED_INT, nullptr);
+	glDrawElements(GL_LINE, m_elementBuffer.count(), GL_UNSIGNED_INT, nullptr);
 }

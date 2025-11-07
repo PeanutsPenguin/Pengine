@@ -14,6 +14,12 @@ namespace Pengine::Resources
 
 		virtual ~PenShaderProgramBase() = default;
 
+		virtual bool use() const = 0;
+
+		virtual void unuse() const = 0;
+
+		virtual void destroy() = 0;
+
 		/*bool loadResource(const char* path) override; */		//in the futur 
 
 		virtual bool initShaderProgram() = 0;

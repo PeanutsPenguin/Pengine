@@ -7,6 +7,7 @@ using namespace Pengine::Resources;
 
 PenGLShaderProgram::~PenGLShaderProgram()
 {
+	std::cout << __FUNCTION__ ": Destryoing with id : (not yet it's a shaderProgram) " << std::endl;
 	destroy();
 }
 
@@ -53,7 +54,12 @@ bool PenGLShaderProgram::use() const
 	return true;
 }
 
-bool PenGLShaderProgram::unuse() const
+void PenGLShaderProgram::unuse() const
 {
 	glUseProgram(0);
+}
+
+bool PenGLShaderProgram::initShaderProgram() 
+{
+	return true;
 }

@@ -21,6 +21,9 @@ PenScene::PenScene()
 void PenScene::render()
 {
 	clearBackground();
+
+	for (int i = 0; i < m_objects.size(); ++i)
+		PenCore::getInstance()->getObjectManager()->getObjectById(m_objects[i]).render();
 }
 
 void PenScene::clearBackground()
