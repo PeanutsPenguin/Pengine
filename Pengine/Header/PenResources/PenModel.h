@@ -3,7 +3,9 @@
 
 #include <vector>
 
+class aiNode;
 class aiMesh;
+struct  aiScene;
 
 namespace Pengine::Resources
 {
@@ -27,6 +29,8 @@ namespace Pengine::Resources
 		bool loadPenGLMesh(const aiMesh& mesh);
 
 		void GLRender(std::shared_ptr<Pengine::Resources::PenShaderProgramBase> shaderProg);
+
+		bool processNode(aiNode* node, const aiScene* scene);
 
 		std::vector<std::shared_ptr<PenMeshBase>> m_meshes;
 	};

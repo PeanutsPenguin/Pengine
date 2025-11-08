@@ -78,15 +78,24 @@ bool PenGLMesh::initMesh(const aiMesh& assimpMesh)
 		indices.emplace_back(face.mIndices[2]);
 	}
 
-	m_vertexAttributeBuffer.create();
 
+	m_vertexAttributeBuffer.create();
 	m_vertexBuffer.create(vertices.data(), vertices.size() * sizeof(Pengine::PenVertex));
 	m_elementBuffer.create(indices);
+	
+	m_vertexAttributeBuffer.bind();   
+	m_vertexBuffer.bind();           
+	m_elementBuffer.bind();
+
 
 	m_vertexAttributeBuffer.bind();
 	m_vertexAttributeBuffer.defineAttribute(0, 3);	//define position
 	m_vertexAttributeBuffer.defineAttribute(1, 3);	//define normal
 	m_vertexAttributeBuffer.defineAttribute(2, 2);	//define uv
+
+	 m_vertexAttributeBuffer.unbind();
+	m_vertexBuffer.unbind();
+	m_elementBuffer.unbind();
 
 	return true;
 }

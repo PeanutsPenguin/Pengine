@@ -9,8 +9,8 @@
 #include <iostream>
 
 #include <assimp/Importer.hpp>
-#include <assimp/postprocess.h>
 #include <assimp/scene.h>
+#include <assimp/postprocess.h>
 
 using namespace Pengine::Resources;
 
@@ -26,8 +26,7 @@ bool PenModel::loadResource(const char* path)
 	Assimp::Importer importer;
 
 	//Open the model file
-	const aiScene* scene = importer.ReadFile(path,
-		aiProcess_Triangulate | aiProcess_GenNormals | aiProcess_OptimizeMeshes);
+	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_GenNormals);
 
 	//if error during loading 
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
@@ -46,18 +45,18 @@ bool PenModel::loadResource(const char* path)
 	//Suppose to have material here 
 
 	m_meshes.reserve(scene->mNumMeshes);
+	processNode(scene->mRootNode, scene);
 
-	for (size_t i = 0; i < scene->mNumMeshes; i++)
+	for (unsigned int i = 0; i < scene->mRootNode->mNumMeshes; i++)
 	{
-		const aiMesh& assimpMesh  = *scene->mMeshes[i];
+		aiMesh* mesh = scene->mMeshes[scene->mRootNode->mMeshes[i]];
 
-#if defined(OPENGL_RENDER)
-		if(!loadPenGLMesh(assimpMesh))
-		{
-			std::cerr << __FUNCTION__ ": Failed to load mesh : " << i << " in the model resource." << std::endl;
-			return false;
-		}
-#endif
+	}
+
+	for (unsigned int i = 0; i < scene->mRootNode->mNumChildren; i++)
+	{
+		if (!processNode(scene->mRootNode->mChildren[i], scene))
+			std::cerr << __FUNCTION__ ": Failed to load child mesh : " << i << " in the model resource." << std::endl;
 	}
 
 	return true;
@@ -106,3 +105,22 @@ void PenModel::GLRender(std::shared_ptr<Pengine::Resources::PenShaderProgramBase
 
 }
 
+bool PenModel::processNode(aiNode* node, const aiScene* scene)
+{
+	for (unsigned int i = 0; i < node->mNumMeshes; i++)
+	{
+		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+#if defined(OPENGL_RENDER)
+		if (!loadPenGLMesh(*mesh))
+			std::cerr << __FUNCTION__ ": Failed to load mesh : " << i << " in the model resource." << std::endl;
+#endif
+	}
+	
+	for (unsigned int i = 0; i < node->mNumChildren; i++)
+	{
+		if(!processNode(node->mChildren[i], scene))
+			std::cerr << __FUNCTION__ ": Failed to load child mesh : " << i << " in the model resource." << std::endl;
+	}
+
+	return true;
+}

@@ -36,21 +36,32 @@ void PenVertexAttributeBuffer::unbind() const
 }
 bool PenVertexAttributeBuffer::defineAttribute(size_t index, unsigned int vertSize)
 {
-	glEnableVertexAttribArray(index);
+	const GLsizei stride = static_cast<GLsizei>(sizeof(Pengine::PenVertex));
 
-	switch (index)
+	unsigned int components = vertSize;
+
+	switch (static_cast<GLuint>(index))
 	{
 	case 0:
-		glVertexAttribPointer(index, vertSize, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)0);
+		components = 3;
+		glEnableVertexAttribArray(static_cast<GLuint>(index));
+		glVertexAttribPointer(static_cast<GLuint>(index), components, GL_FLOAT, GL_FALSE, stride,
+			(void*)offsetof(Pengine::PenVertex, position));
 		return true;
 	case 1:
-		glVertexAttribPointer(index, vertSize, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)offsetof(Pengine::PenVertex, Pengine::PenVertex::normal));
+		components = 3;
+		glEnableVertexAttribArray(static_cast<GLuint>(index));
+		glVertexAttribPointer(static_cast<GLuint>(index), components, GL_FLOAT, GL_FALSE, stride,
+			(void*)offsetof(Pengine::PenVertex, normal));
 		return true;
 	case 2:
-		glVertexAttribPointer(index, vertSize, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)offsetof(Pengine::PenVertex, Pengine::PenVertex::uv));
+		components = 2;
+		glEnableVertexAttribArray(static_cast<GLuint>(index));
+		glVertexAttribPointer(static_cast<GLuint>(index), components, GL_FLOAT, GL_FALSE, stride,
+			(void*)offsetof(Pengine::PenVertex, uv));
 		return true;
 	default:
-		std::cerr << __FUNCTION__ "Index value :" << index << " is out of range. Pointer not loaded" << std::endl;
+		std::cerr << __FUNCTION__ " Index value :" << index << " is out of range. Pointer not loaded" << std::endl;
 		return false;
 	}
 }
