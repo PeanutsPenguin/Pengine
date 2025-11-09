@@ -10,6 +10,8 @@ using namespace Pengine;
 PenObjectId PenObjectManager::s_ObjectIds = 0;
 
 #pragma region Fucntions
+
+//Sould return a ptr with the new shared_ptr system so the warning will be handle
 PenObject& PenObjectManager::createPenObject()
 {
 	s_ObjectIds++;

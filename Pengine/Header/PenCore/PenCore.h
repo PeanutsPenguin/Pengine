@@ -35,7 +35,7 @@ namespace Pengine
 #pragma region Constructors and Destructor
 		PenCore() = default;
 
-		~PenCore();
+		~PenCore() = default;
 
 		PenCore(PenCore&) = delete;
 #pragma endregion
@@ -68,6 +68,8 @@ namespace Pengine
 		/// Return the pointer to the Resources manager
 		/// </summary>
 		std::unique_ptr<Resources::PenResourcesManager>& getResourcesManager();
+		
+		void destroy();
 #pragma endregion
 
 	private:
@@ -77,6 +79,7 @@ namespace Pengine
 		void updateDeltaTime();
 
 		void update();
+
 #pragma endregion
 
 #pragma region Private members

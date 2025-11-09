@@ -13,13 +13,13 @@
 
 
 #include <iostream>
-int main () 
+int mainImpl()
 {
 	Pengine::PenCore* core = Pengine::PenCore::getInstance();
 
-	core->init("Pengine Window", { 800.0f, 600.0f });
+	//core->init("Pengine Window", { 800.0f, 600.0f });
 
-	std::unique_ptr<Pengine::Resources::PenResourcesManager>& resourceManager = core->getResourcesManager();
+	//std::unique_ptr<Pengine::Resources::PenResourcesManager>& resourceManager = core->getResourcesManager();
 
 #pragma region Load an object and test it
 	{
@@ -41,19 +41,19 @@ int main ()
 
 #pragma region Load a texture and erase resource
 	{
-		std::shared_ptr<Pengine::Resources::PenTexture> ptr = resourceManager->loadResourceFromFile<Pengine::Resources::PenTexture>("Images/penguin.jpg");
+		//std::shared_ptr<Pengine::Resources::PenTexture> ptr = resourceManager->loadResourceFromFile<Pengine::Resources::PenTexture>("Images/penguin.jpg");
 
-		std::cout << "Resource Path : " << resourceManager->getResourcePathById(ptr->getId()) << "\t Resource Id : " << ptr->getId() << std::endl;
+		//std::cout << "Resource Path : " << resourceManager->getResourcePathById(ptr->getId()) << "\t Resource Id : " << ptr->getId() << std::endl;
 
-		std::shared_ptr<Pengine::Resources::PenTexture> ptr2 = resourceManager->getResourceById<Pengine::Resources::PenTexture>(ptr->getId());
+		//std::shared_ptr<Pengine::Resources::PenTexture> ptr2 = resourceManager->getResourceById<Pengine::Resources::PenTexture>(ptr->getId());
 
-		ptr.reset();
+		//ptr.reset();
 
-		std::cout << "Texture still loaded\n";
+		//std::cout << "Texture still loaded\n";
 
-		ptr2.reset();
+		//ptr2.reset();
 
-		std::cout << "\n\n\n";
+		//std::cout << "\n\n\n";
 	}
 #pragma endregion
 
@@ -91,30 +91,69 @@ int main ()
 
 #pragma region Create a test object and add components
 
-	std::shared_ptr<Pengine::Resources::PenModel> modelPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenModel>("Models/BackPack/Survival_BackPack_2.fbx");
+	//std::shared_ptr<Pengine::Resources::PenModel> modelPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenModel>("Models/BackPack/Survival_BackPack_2.fbx");
 
-	std::shared_ptr<Pengine::Resources::PenGLShader> ptr = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLShader>("Shaders/basicVertexShader.vert", Pengine::PenShaderType::VERTEX_SHADER);
-	std::shared_ptr<Pengine::Resources::PenGLShader> ptr2 = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLShader>("Shaders/basicFragmentShader.frag", Pengine::PenShaderType::FRAGMENT_SHADER);
+	//std::shared_ptr<Pengine::Resources::PenGLShader> ptr = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLShader>("Shaders/basicVertexShader.vert", Pengine::PenShaderType::VERTEX_SHADER);
+	//std::shared_ptr<Pengine::Resources::PenGLShader> ptr2 = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLShader>("Shaders/basicFragmentShader.frag", Pengine::PenShaderType::FRAGMENT_SHADER);
 
-	std::shared_ptr<Pengine::Resources::PenGLShaderProgram> progPtr = std::make_shared<Pengine::Resources::PenGLShaderProgram>();
-
-
-	progPtr->createShaderProgram(ptr, ptr2);
+	//std::shared_ptr<Pengine::Resources::PenGLShaderProgram> progPtr = std::make_shared<Pengine::Resources::PenGLShaderProgram>();
 
 
+	//progPtr->createShaderProgram(ptr, ptr2);
 
-	PenObjectId newObj = core->getWindow()->getScene()->createObject();
 
-	Pengine::PenObject& objRef = core->getObjectManager()->getObjectById(newObj);
 
-	Pengine::Components::PenRenderer* newComp = objRef.addComponent<Pengine::Components::PenRenderer>();
+	//PenObjectId newObj = core->getWindow()->getScene()->createObject();
 
-	newComp->setModel(modelPtr);
-	newComp->setShaderProgram(progPtr);
+	//Pengine::PenObject& objRef = core->getObjectManager()->getObjectById(newObj);
+
+	//Pengine::Components::PenRenderer* newComp = objRef.addComponent<Pengine::Components::PenRenderer>();
+
+	//newComp->setModel(modelPtr);
+	//newComp->setShaderProgram(progPtr);
 
 #pragma endregion
 
-	core->startPengine();
+	//core->startPengine();
+
+	core->destroy();
 
 	return 0;
+}
+
+
+
+#define WIN32_LEAN_AND_MEAN /* No need for every windows header */
+#include <Windows.h>
+#define _CRTDBG_MAP_ALLOC
+#include <crtdbg.h>
+#include <iostream>
+
+int main(int argc, char** argv) {
+#ifndef NDEBUG
+	_CrtMemState start;
+	_CrtMemCheckpoint(&start);
+
+	int returnValue = mainImpl();
+
+	_CrtMemState end;
+	_CrtMemCheckpoint(&end);
+
+	_CrtMemState difference;
+	if (_CrtMemDifference(&difference, &start, &end)) {
+		OutputDebugString(TEXT("---------- _CrtMemDumpStatistics ----------\n\n"));
+		_CrtMemDumpStatistics(&difference);
+		OutputDebugString(TEXT("\n---------- _CrtMemDumpAllObjectsSince ----------\n\n"));
+		_CrtMemDumpAllObjectsSince(&end);
+		OutputDebugString(TEXT("\n---------- _CrtMemDumpMemoryLeaks ----------\n\n"));
+		_CrtDumpMemoryLeaks();
+
+		if (!returnValue)
+			return -1;
+	}
+
+	return returnValue;
+#else
+	return mainImpl(argc, argv);
+#endif
 }
