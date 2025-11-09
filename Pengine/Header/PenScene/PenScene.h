@@ -19,7 +19,7 @@ namespace Pengine
 #pragma region Constructors and Destructor
 		PenScene();
 
-		~PenScene() = default;
+		~PenScene();
 #pragma endregion
 
 #pragma region Functions

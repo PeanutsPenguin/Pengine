@@ -98,14 +98,34 @@ void PenCore::update()
 
 void PenCore::destroy()
 {
+    if(!this->m_window)
+    {
+        this->m_window.reset();
+        this->m_window = nullptr;
+    }
+
+    if(!this->m_componentsManager)
+    {
+        this->m_componentsManager.reset();
+        this->m_componentsManager = nullptr;
+    }
+
+    if(!this->m_objectManager)
+    {
+        this->m_objectManager.reset();
+        this->m_objectManager = nullptr;
+    }
+
+    if(!this->m_resourcesManager)
+    {
+        this->m_resourcesManager.reset();
+        this->m_resourcesManager = nullptr;
+    }
+
     if (s_PenCoreInstance != nullptr)
     {
         delete s_PenCoreInstance;
         s_PenCoreInstance = nullptr;
     }
-
-    this->m_window.release();
-    this->m_componentsManager.release();
-    this->m_componentsManager.release();
 }
 #pragma endregion
