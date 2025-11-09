@@ -5,7 +5,7 @@
 
 #include <unordered_map>
 
-namespace Pengine
+namespace Pengine::Components
 {
 	/// <summary>
 	/// Contains every components (will include "PenComponentsBase.h")
@@ -20,9 +20,11 @@ namespace Pengine
 #pragma endregion
 
 #pragma region Fucntions
-		template<typename _ComponentType, typename PenComponentsBase>
+		template<typename _ComponentType>
 			requires std::derived_from<_ComponentType, PenComponentsBase>
 		_ComponentType* createComponent();
+		
+		PenComponentsBase* getComponentById(const PenComponentsId& id) const noexcept;
 #pragma endregion
 	private:
 #pragma region Private members

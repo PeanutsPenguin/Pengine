@@ -2,7 +2,7 @@
 
 #include "PenComponents/PenComponentsBase.h"
 
-namespace Pengine
+namespace Pengine::Components
 {
 	class PenTransform : public PenComponentsBase
 	{
@@ -12,5 +12,7 @@ namespace Pengine
 		PenTransform(PenComponentsId id) : PenComponentsBase(id) {}
 
 		~PenTransform() = default;
+
+		void render() override;
 	};
 }

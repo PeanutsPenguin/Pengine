@@ -2,6 +2,7 @@
 #include "PenWindow/PenWindow.h"
 #include "PenComponents/PenComponentsManager.h"
 #include "PenObject/PenObjectManager.h"
+#include "PenResources/PenResourcesManager.h"
 
 #include "Vector/Vector2/Vector2.h"
 
@@ -41,7 +42,8 @@ bool Pengine::PenCore::init(const char* name, const PenMath::Vector2f& windowSiz
 {
 	this->m_window = std::make_unique<PenWindow>();
     this->m_objectManager = std::make_unique<PenObjectManager>();
-    this->m_componentsManager = std::make_unique<PenComponentsManager>();
+    this->m_componentsManager = std::make_unique<Components::PenComponentsManager>();
+    this->m_resourcesManager = std::make_unique<Resources::PenResourcesManager>();
 
     if(!m_window->Init(name, windowSize))
         return false;
@@ -70,9 +72,14 @@ std::unique_ptr<PenObjectManager>& PenCore::getObjectManager()
 	return m_objectManager;
 }
 
-std::unique_ptr<PenComponentsManager>& PenCore::getComponentsManager()
+std::unique_ptr<Components::PenComponentsManager>& PenCore::getComponentsManager()
 {
 	return m_componentsManager;
+}
+
+std::unique_ptr<Resources::PenResourcesManager>& PenCore::getResourcesManager()
+{
+    return m_resourcesManager;
 }
 
 #pragma endregion
@@ -95,6 +102,8 @@ void PenCore::update()
 
 		//Then the render ones
         this->m_window->render();
+
+        this->m_resourcesManager->clearUnused();
     }
 
 }

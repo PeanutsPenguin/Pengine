@@ -1,8 +1,9 @@
 #pragma once
 
 #include "PengineDefine.h"
-#include "PenComponents/PenComponentsManager.h"
 #include "PenCore/PenCore.h"
+#include "PenComponents/PenComponentsManager.h"
+
 
 #include <vector>
 
@@ -27,8 +28,10 @@ namespace Pengine
 
 		const std::vector<PenComponentsId>& getComponents() const;
 
-		template<typename _ComponentType, typename PenComponentsBase>
-			requires std::derived_from<_ComponentType, PenComponentsBase>
+		void render();
+
+		template<typename _ComponentType>
+			requires std::derived_from<_ComponentType, Components::PenComponentsBase>
 		_ComponentType* addComponent();
 #pragma endregion
 	private:

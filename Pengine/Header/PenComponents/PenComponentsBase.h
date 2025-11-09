@@ -2,14 +2,16 @@
 
 #include "PengineDefine.h"
 
-namespace Pengine
+namespace Pengine::Components
 {
 	class PenComponentsBase
 	{
 	public:
 		PenComponentsBase() = delete;
 
-		PenComponentsBase(PenComponentsId id) : m_id(id) {}	
+		PenComponentsBase(PenComponentsId id) : m_id(id) {}
+
+		virtual void render() = 0;
 
 		virtual ~PenComponentsBase() = default;
 

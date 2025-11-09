@@ -4,11 +4,11 @@
 
 namespace Pengine
 {
-	template<typename _ComponentType, typename PenComponentsBase>
-		requires std::derived_from<_ComponentType, PenComponentsBase>
+	template<typename _ComponentType>
+		requires std::derived_from<_ComponentType, Components::PenComponentsBase>
 	_ComponentType* PenObject::addComponent()
 	{
-		_ComponentType* ptr = PenCore::getInstance()->getComponentsManager()->createComponent<_ComponentType, PenComponentsBase>();
+		_ComponentType* ptr = PenCore::getInstance()->getComponentsManager()->createComponent<_ComponentType>();
 
 		if(!ptr)
 			return nullptr;

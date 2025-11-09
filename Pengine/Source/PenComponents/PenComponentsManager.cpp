@@ -1,8 +1,18 @@
 #include "PenComponents/PenComponentsManager.h"
 
 /// No using namespace Pengin to avoid conflicts
-namespace Pengine
+namespace Pengine::Components
 {
 	PenComponentsId PenComponentsManager::s_ComponentsId = 0;
+
+	PenComponentsBase* PenComponentsManager::getComponentById(const PenComponentsId& id) const noexcept
+	{
+		//Check if it doesn't already exist
+		auto it = m_idMap.find(id);
+		if (it != m_idMap.end())
+			return it->second;
+
+		return nullptr;
+	}
 }
 
