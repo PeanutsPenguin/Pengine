@@ -1,6 +1,6 @@
 #include "PenObject/PenObjectManager.h"
 #include "PenScene/PenScene.h"
-#include "PenWindow/PenWindow.h"
+#include "PenWindow/PenWindowBase.h"
 #include "PenCore/PenCore.h"
 
 #include <iostream>

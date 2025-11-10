@@ -1,4 +1,4 @@
-#include "PenBuffer/Private_PenVertexBuffer.h"
+#include "PenBuffer/OpenGl/Private_PenVertexBuffer.h"
 
 #include <glad/glad.h>
 #include <iostream>

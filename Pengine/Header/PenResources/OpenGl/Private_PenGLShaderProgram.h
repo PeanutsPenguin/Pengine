@@ -2,7 +2,7 @@
 
 #include "PenResources/PenShaderProgramBase.h"
 
-#include "PenResources/Private_PenGLShader.h"
+#include "PenResources/OpenGl/Private_PenGLShader.h"
 
 namespace Pengine::Resources
 {

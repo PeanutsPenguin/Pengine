@@ -1,5 +1,5 @@
 #include "PenCore/PenCore.h"
-#include "PenWindow/PenWindow.h"
+#include "PenWindow/GLFW/Private_GLFWPenWindow.h"
 #include "PenComponents/PenComponentsManager.h"
 #include "PenObject/PenObjectManager.h"
 #include "PenResources/PenResourcesManager.h"
@@ -24,12 +24,12 @@ PenCore* PenCore::getInstance()
 
 bool PenCore::init(const char* name, const PenMath::Vector2f& windowSize)
 {
-	this->m_window = std::make_unique<PenWindow>();
+	this->m_window = std::make_unique<GLFWPenWindow>();
     this->m_objectManager = std::make_unique<PenObjectManager>();
     this->m_componentsManager = std::make_unique<Components::PenComponentsManager>();
     this->m_resourcesManager = std::make_unique<Resources::PenResourcesManager>();
 
-    if(!m_window->Init(name, windowSize))
+    if(!m_window->init(name, windowSize))
         return false;
 
     return true;
@@ -46,7 +46,7 @@ void PenCore::stopPengine()
 	this->m_shouldStop = true;
 }
 
-std::unique_ptr<PenWindow>& PenCore::getWindow()
+std::unique_ptr<PenWindowBase>& PenCore::getWindow()
 {
 	return m_window;
 }

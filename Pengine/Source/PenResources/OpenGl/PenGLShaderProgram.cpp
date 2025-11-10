@@ -1,4 +1,4 @@
-#include "PenResources/Private_PenGLShaderProgram.h"
+#include "PenResources/OpenGl/Private_PenGLShaderProgram.h"
 
 #include <glad/glad.h>
 #include <iostream>

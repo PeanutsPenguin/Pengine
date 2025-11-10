@@ -1,4 +1,4 @@
-#include "PenBuffer/Private_PenTextureBuffer.h"
+#include "PenBuffer/OpenGl/Private_PenTextureBuffer.h"
 
 #include <glad/glad.h>
 

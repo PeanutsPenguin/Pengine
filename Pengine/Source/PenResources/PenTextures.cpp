@@ -2,7 +2,7 @@
 
 #include "PenCore/PenCore.h"
 #include "PenResources/PenResourcesManager.h"
-#include "PenBuffer/Private_PenTextureBuffer.h"
+#include "PenBuffer/OpenGl/Private_PenTextureBuffer.h"
 
 #include <Vector/Vector3/Vector3.h>
 

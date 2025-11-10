@@ -7,7 +7,7 @@
 #pragma region Forward declarations
 namespace Pengine
 {
-	class PenWindow;
+	class PenWindowBase;
 	class PenObjectManager;
 	
 
@@ -49,7 +49,7 @@ namespace Pengine
 		/// <summary>
 		/// Return the pointer to the main "PenWindow"
 		/// </summary>
-		std::unique_ptr<PenWindow>& getWindow();
+		std::unique_ptr<PenWindowBase>& getWindow();
 
 		/// <summary>
 		/// Return the pointer to the object manager
@@ -80,7 +80,7 @@ namespace Pengine
 		/// </summary>
 		void update();
 
-		std::unique_ptr<PenWindow> m_window;
+		std::unique_ptr<PenWindowBase> m_window;
 		std::unique_ptr<PenObjectManager> m_objectManager;
 		std::unique_ptr<Components::PenComponentsManager> m_componentsManager;
 		std::unique_ptr<Resources::PenResourcesManager> m_resourcesManager;
