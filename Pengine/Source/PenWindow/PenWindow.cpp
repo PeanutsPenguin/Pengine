@@ -17,7 +17,17 @@ PenWindow::PenWindow()
 
 PenWindow::~PenWindow()
 {
-    this->m_windowScene.release();
+    if(!this->m_windowScene)
+    {
+        this->m_windowScene.reset();
+        this->m_windowScene = nullptr;
+    }
+
+
+    if(this->m_windowPtr)
+        glfwDestroyWindow(this->m_windowPtr);
+
+    glfwTerminate();
 }
 #pragma endregion
 

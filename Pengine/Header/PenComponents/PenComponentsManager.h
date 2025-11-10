@@ -16,7 +16,7 @@ namespace Pengine::Components
 #pragma region Constructors and Destructor
 		PenComponentsManager() = default;
 
-		~PenComponentsManager() = default;
+		~PenComponentsManager();
 #pragma endregion
 
 #pragma region Fucntions

@@ -12,19 +12,6 @@ using namespace Pengine;
 
 #pragma region Constructors and Destructor
 PenCore* PenCore::s_PenCoreInstance = nullptr;
-
-Pengine::PenCore::~PenCore()
-{
-    if(s_PenCoreInstance != nullptr)
-    {
-        delete s_PenCoreInstance;
-        s_PenCoreInstance = nullptr;
-	}
-
-    this->m_window.release();
-	this->m_componentsManager.release();
-	this->m_componentsManager.release();
-}
 #pragma endregion
 
 #pragma region Functions
@@ -106,6 +93,39 @@ void PenCore::update()
         this->m_resourcesManager->clearUnused();
     }
 
+    this->destroy();
 }
 
+void PenCore::destroy()
+{
+    if(!this->m_window)
+    {
+        this->m_window.reset();
+        this->m_window = nullptr;
+    }
+
+    if(!this->m_componentsManager)
+    {
+        this->m_componentsManager.reset();
+        this->m_componentsManager = nullptr;
+    }
+
+    if(!this->m_objectManager)
+    {
+        this->m_objectManager.reset();
+        this->m_objectManager = nullptr;
+    }
+
+    if(!this->m_resourcesManager)
+    {
+        this->m_resourcesManager.reset();
+        this->m_resourcesManager = nullptr;
+    }
+
+    if (s_PenCoreInstance != nullptr)
+    {
+        delete s_PenCoreInstance;
+        s_PenCoreInstance = nullptr;
+    }
+}
 #pragma endregion

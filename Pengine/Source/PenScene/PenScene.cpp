@@ -14,6 +14,14 @@ PenScene::PenScene()
 	this->m_backgroundColor = new PenColor();
 	*this->m_backgroundColor = PenColor::Blue;
 }
+Pengine::PenScene::~PenScene()
+{
+	if(this->m_backgroundColor)
+	{
+		delete this->m_backgroundColor;
+		this->m_backgroundColor = nullptr;
+	}
+}
 #pragma endregion
 
 #pragma region Functions
