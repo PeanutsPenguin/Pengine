@@ -14,16 +14,17 @@ namespace Pengine::Buffer
 
 namespace Pengine::Resources
 {
+	/// <summary>
+	/// Resource to handle Texture on model, contains a custom PenTextureBuffer class
+	/// </summary>
 	class PenTexture final : public PenResourcesBase
 	{
+#pragma region Public
 	public:
-#pragma region Constructors and Destructor
 		PenTexture() = default;
 		PenTexture(const PenResourcesId& id) : PenResourcesBase(id) {}
 		~PenTexture();
-#pragma endregion
 
-#pragma region Functions
 		bool loadResource(const char* path) override;
 
 		_NODISCARD const std::string_view getTexturePath() const;
@@ -32,9 +33,11 @@ namespace Pengine::Resources
 		/// Return a const pointer to the Texture buffer so the value can't be changed
 		/// </summary>
 		_NODISCARD const Pengine::Buffer::PenTextureBuffer* dataPtr() const noexcept;
-
 #pragma endregion
+
+#pragma region PRIVATE
 	private :
 		Pengine::Buffer::PenTextureBuffer* m_texBuffer = nullptr;	///WOOOOOW need to change this because it's related to openGL im crazy
+#pragma endregion
 	};
 }

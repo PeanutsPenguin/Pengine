@@ -1,7 +1,6 @@
 #pragma once
 #include "PenResources/PenResourcesManager.h"
 
-///
 namespace Pengine::Resources
 {
 	/// I'll have to handle all the uniform one day 

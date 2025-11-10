@@ -15,26 +15,25 @@ namespace Pengine
 {
 	class PenScene
 	{
+#pragma region Public
 	public:
-#pragma region Constructors and Destructor
 		PenScene();
 
 		~PenScene();
-#pragma endregion
 
-#pragma region Functions
 		void render();
 		
 		void clearBackground();
 
+		//This will change in the new resource manager
 		_NODISCARD bool addObjectById(const PenObjectId id);
 
 		PenObjectId createObject();
 #pragma endregion
 
+#pragma region Private
 	private :
 
-#pragma region Private members
 		PenColor* m_backgroundColor;
 		std::vector<PenObjectId> m_objects;
 #pragma endregion

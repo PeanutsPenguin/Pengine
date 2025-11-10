@@ -5,8 +5,12 @@
 
 namespace Pengine::Resources
 {
+	/// <summary>
+	/// Resource to handle shader file, contains custom PenGine::PenShaderType enum member
+	/// </summary>
 	class PenShaderBase : public PenResourcesBase
 	{
+#pragma region Public
 	public:
 		PenShaderBase() = default;
 
@@ -15,7 +19,11 @@ namespace Pengine::Resources
 		~PenShaderBase() override = default;
 
 		bool loadResource(const char* path) override = 0;
+#pragma endregion
+
+#pragma region Protected
 	protected:
 		Pengine::PenShaderType m_type = Pengine::PenShaderType::INVALID_SHADER;
+#pragma endregion
 	};
 }

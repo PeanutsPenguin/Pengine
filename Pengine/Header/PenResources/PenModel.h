@@ -5,15 +5,19 @@
 
 class aiNode;
 class aiMesh;
-struct  aiScene;
+struct aiScene;
 
 namespace Pengine::Resources
 {
 	class PenMeshBase;
 	class PenShaderProgramBase;
 
+	/// <summary>
+	/// Resource to handle rendering of model and meshes 
+	/// </summary>
 	class PenModel : public PenResourcesBase
 	{
+#pragma region Public
 	public:
 		PenModel() = default;
 
@@ -24,7 +28,9 @@ namespace Pengine::Resources
 		bool loadResource(const char* path) override;
 
 		void render(std::shared_ptr<Pengine::Resources::PenShaderProgramBase> shaderProg);
+#pragma endregion
 
+#pragma region Private
 	private:
 		bool loadPenGLMesh(const aiMesh& mesh);
 
@@ -33,5 +39,6 @@ namespace Pengine::Resources
 		bool processNode(aiNode* node, const aiScene* scene);
 
 		std::vector<std::shared_ptr<PenMeshBase>> m_meshes;
+#pragma endregion
 	};
 }

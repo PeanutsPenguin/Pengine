@@ -7,14 +7,11 @@
 
 using namespace Pengine::Buffer;
 
-#pragma region Constructors and Destructor
 PenVertexAttributeBuffer::~PenVertexAttributeBuffer()
 {
 	PenBufferBase::destroy();
 }
-#pragma endregion
 
-#pragma region Functions
 void PenVertexAttributeBuffer::create()
 {
 	glGenVertexArrays(1, &m_id);
@@ -34,6 +31,7 @@ void PenVertexAttributeBuffer::unbind() const
 {
 	glBindVertexArray(0);
 }
+
 bool PenVertexAttributeBuffer::defineAttribute(size_t index, unsigned int vertSize)
 {
 	const GLsizei stride = static_cast<GLsizei>(sizeof(Pengine::PenVertex));
@@ -65,4 +63,3 @@ bool PenVertexAttributeBuffer::defineAttribute(size_t index, unsigned int vertSi
 		return false;
 	}
 }
-#pragma endregion

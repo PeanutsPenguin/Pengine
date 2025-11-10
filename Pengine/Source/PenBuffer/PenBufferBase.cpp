@@ -4,8 +4,6 @@
 
 using namespace Pengine::Buffer;
 
-#pragma region Functions
-
 void PenBufferBase::destroy()
 {
 	if (!m_id)
@@ -30,4 +28,3 @@ bool PenBufferBase::valid() const noexcept
 {
 	return this->m_id;
 }
-#pragma endregion

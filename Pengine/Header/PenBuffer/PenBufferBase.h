@@ -2,10 +2,13 @@
 
 namespace Pengine::Buffer
 {
+	/// <summary>
+	/// Base class for buffers (Contains a private unigned int member plus bind, unbind, destroy and generate function.
+	/// </summary>
 	class PenBufferBase
 	{
+#pragma region Public
 	public:
-#pragma region Constructors and Destructor
 		PenBufferBase() = default;
 
 		PenBufferBase(const PenBufferBase&) = delete;
@@ -13,9 +16,8 @@ namespace Pengine::Buffer
 		PenBufferBase(PenBufferBase&&) noexcept = default;
 
 		virtual ~PenBufferBase() = default;
-#pragma endregion
 
-#pragma region Functions
+
 		virtual void destroy();
 
 		virtual void bind() const = 0;
@@ -24,9 +26,12 @@ namespace Pengine::Buffer
 		[[nodiscard]] const unsigned int& id() const noexcept;
 		[[nodiscard]] bool valid() const noexcept;
 #pragma endregion
+
+#pragma region Protected
 	protected:
 		unsigned int m_id = 0;
 
 		void generateBuffer();
+#pragma endregion
 	};
 }

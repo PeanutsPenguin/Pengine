@@ -30,17 +30,14 @@ namespace Pengine
 	/// </summary>
 	class PenCore
 	{
+#pragma region Public
 	public:
-
-#pragma region Constructors and Destructor
 		PenCore() = default;
 
 		~PenCore() = default;
 
 		PenCore(PenCore&) = delete;
-#pragma endregion
 
-#pragma region Functions	
 		static PenCore* getInstance();
 
 		bool init(const char* name, const PenMath::Vector2f& windowSize);
@@ -72,17 +69,17 @@ namespace Pengine
 		void destroy();
 #pragma endregion
 
+#pragma region Private
 	private:
 		static PenCore* s_PenCoreInstance;
 
-#pragma region Private functions
 		void updateDeltaTime();
 
+		/// <summary>
+		/// Main loop of the engine
+		/// </summary>
 		void update();
 
-#pragma endregion
-
-#pragma region Private members
 		std::unique_ptr<PenWindow> m_window;
 		std::unique_ptr<PenObjectManager> m_objectManager;
 		std::unique_ptr<Components::PenComponentsManager> m_componentsManager;

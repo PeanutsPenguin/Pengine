@@ -5,14 +5,11 @@
 
 using namespace Pengine::Buffer;
 
-#pragma region Constructors and Destructor
 PenVertexBuffer::~PenVertexBuffer()
 {
 	PenBufferBase::destroy();
 }
-#pragma endregion
 
-#pragma region Functions
 void PenVertexBuffer::create(const void* data, size_t size)
 {
 	PenBufferBase::generateBuffer();
@@ -41,8 +38,3 @@ void PenVertexBuffer::unbind() const
 {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
-bool PenVertexBuffer::isValid() const noexcept
-{
-	return m_id;
-}
-#pragma endregion
