@@ -5,6 +5,7 @@
 #include "PengineDefine.h"
 #include "PenObject.h"
 
+//TODO: Stock shared_ptr<PenObject>
 namespace Pengine
 {
 	/// <summary>
@@ -12,14 +13,12 @@ namespace Pengine
 	/// </summary>
 	class PenObjectManager
 	{
+#pragma region Public
 	public:
-#pragma region Constructors and Destructor
 		PenObjectManager() = default;
 
 		~PenObjectManager() = default;
-#pragma endregion
 
-#pragma region Fucntions
 		/// <summary>
 		/// Create an object and add it to the main scene
 		/// </summary>
@@ -29,11 +28,11 @@ namespace Pengine
 		PenObject& getObjectById(PenObjectId id);
 
 		_NODISCARD bool isObjectExisting(const PenObjectId id);
-
 #pragma endregion
+
+#pragma region Private
 	private:
 
-#pragma region Private members
 		std::unordered_map<PenObjectId, PenObject> m_idMap;
 		static PenObjectId s_ObjectIds;
 #pragma endregion

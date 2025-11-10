@@ -12,8 +12,12 @@ class aiMesh;
 
 namespace Pengine::Resources
 {
+	/// <summary>
+	/// Resource to handle rendering a mesh with OpenGl
+	/// </summary>
 	class PenGLMesh : public PenMeshBase
 	{
+#pragma region Public
 	public:
 		PenGLMesh() = default;
 
@@ -28,13 +32,16 @@ namespace Pengine::Resources
 		Pengine::Buffer::PenElementBuffer& elementBuffer() noexcept;
 		const Pengine::Buffer::PenElementBuffer& elementBuffer() const noexcept;
 
-		bool initMesh(const aiMesh& assimpMesh/*Will need a material here ig*/);
+		bool initMesh(const aiMesh& assimpMesh/*Will need a material here*/);
 
 		void render();
+#pragma endregion
 
+#pragma region Private
 	private:
 		Pengine::Buffer::PenVertexBuffer m_vertexBuffer;
 		Pengine::Buffer::PenVertexAttributeBuffer m_vertexAttributeBuffer;
 		Pengine::Buffer::PenElementBuffer m_elementBuffer;
+#pragma endregion
 	};
 }

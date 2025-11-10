@@ -4,15 +4,12 @@
 
 using namespace Pengine::Buffer;
 
-#pragma region Contructors and Destructor
 PenTextureBuffer::~PenTextureBuffer()
 {
 	if(m_id)
 		destroy();
 }
-#pragma endregion
 
-#pragma region Functions
 void PenTextureBuffer::destroy()
 {
 	if(m_id)
@@ -69,5 +66,3 @@ void PenTextureBuffer::resize(const PenMath::Vector3& size, const void* data)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glGenerateMipmap(GL_TEXTURE_2D);
 }
-
-#pragma endregion

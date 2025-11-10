@@ -9,31 +9,33 @@
 
 namespace Pengine::Resources
 {
+	/// <summary>
+	/// Resources manager handles resources by stocking weak ptr and unload unused resources
+	/// </summary>
 	class PenResourcesManager
 	{
+#pragma region Public
 	public:
-#pragma region Contructors and Destructors
 		PenResourcesManager() = default;
 		~PenResourcesManager() = default;
-#pragma endregion
 
-#pragma region Functions
 		template<typename _ResourceType, typename... Args>
 			requires std::derived_from<_ResourceType, PenResourcesBase>
-		std::shared_ptr<_ResourceType> loadResourceFromFile(const char* path, Args... data);
+		_NODISCARD std::shared_ptr<_ResourceType> loadResourceFromFile(const char* path, Args... data);
 
 		template<typename _ResourceType>
 			requires std::derived_from<_ResourceType, PenResourcesBase>
 		_NODISCARD std::shared_ptr<_ResourceType> getResourceById(const PenResourcesId id);
 
-		void clearUnused();
-
 		_NODISCARD std::string_view getResourcePathById(const PenResourcesId id) const;
-#pragma endregion
 
+		/// <summary>
+		/// Call this at the end of every frame to clear unused resoruces
+		/// </summary>
+		void clearUnused();
+#pragma endregion
 	private:
 
-#pragma region PrivateMembers
 		std::unordered_map<PenResourcesId, std::string_view> m_idToPathfile;
 		std::unordered_map<std::string_view, PenResourcesId> m_pathfileToId;
 

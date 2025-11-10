@@ -6,8 +6,12 @@
 
 namespace Pengine::Resources
 {
+	/// <summary>
+	/// Resoruces to handle OpenGl Shader programs 
+	/// </summary>
 	class PenGLShaderProgram : public PenShaderProgramBase
 	{
+#pragma region Public
 	public:
 		PenGLShaderProgram() = default;
 
@@ -24,8 +28,11 @@ namespace Pengine::Resources
 		void destroy() override;
 
 		bool initShaderProgram() override;
+#pragma endregion
 
+#pragma region Private
 	private:
 		unsigned int m_shaderProgramId;
+#pragma endregion
 	};
 }

@@ -6,13 +6,13 @@
 namespace Pengine
 {
 	/// <summary>
-	/// This class is a simple wrapper of a Vector4(x = r, y = g, z = b, w = a) with color going from 0 to 255
+	/// This class is a simple wrapper of a Vector4(x = r, y = g, z = b, w = a) with color going from 0 to 1
 	/// Will include Vector4, Vector3 and Vector2
 	/// </summary>
 	class PenColor : PenMath::Vector4f
 	{
+#pragma region Public
 	public:
-#pragma region Constructors and Destructor
 		PenColor();
 
 		PenColor(float r, float g, float b, float a);
@@ -20,18 +20,13 @@ namespace Pengine
 		PenColor(float r, float g, float b);
 
 		~PenColor() = default;
-#pragma endregion
 
-#pragma region Operators
 		PenColor operator=(const PenMath::Vector4f& vec);
-#pragma endregion
 
-#pragma region Functions
 		/// <summary>
-		/// Return the color with numbers going from 0 to 1
+		/// Return the color with numbers going from 0 to 255
 		/// </summary>
-		PenColor getRGBA_1();
-#pragma endregion
+		PenColor getRGBA_255();
 
 		union { float x, r; };
 		union { float y, g; };
@@ -40,5 +35,6 @@ namespace Pengine
 		
 		static const PenColor
 			White, Black, Red, Green, Blue, Yellow, Transparent;
+#pragma endregion
 	};
 }

@@ -5,6 +5,9 @@
 
 namespace Pengine 
 {
+	/// <summary>
+	/// Struct to handle a vertex in rendering
+	/// </summary>
 	struct PenVertex
 	{
 		PenMath::Vector3f position;

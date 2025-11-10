@@ -10,11 +10,8 @@
 
 using namespace Pengine;
 
-#pragma region Constructors and Destructor
 PenCore* PenCore::s_PenCoreInstance = nullptr;
-#pragma endregion
 
-#pragma region Functions
 PenCore* PenCore::getInstance()
 {
     if (s_PenCoreInstance == nullptr) 
@@ -25,7 +22,7 @@ PenCore* PenCore::getInstance()
     return s_PenCoreInstance;
 }
 
-bool Pengine::PenCore::init(const char* name, const PenMath::Vector2f& windowSize)
+bool PenCore::init(const char* name, const PenMath::Vector2f& windowSize)
 {
 	this->m_window = std::make_unique<PenWindow>();
     this->m_objectManager = std::make_unique<PenObjectManager>();
@@ -69,9 +66,6 @@ std::unique_ptr<Resources::PenResourcesManager>& PenCore::getResourcesManager()
     return m_resourcesManager;
 }
 
-#pragma endregion
-
-#pragma region Private functions
 void PenCore::updateDeltaTime()
 {
     const double currentFrame = glfwGetTime();

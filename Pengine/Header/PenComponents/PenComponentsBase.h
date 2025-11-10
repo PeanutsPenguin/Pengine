@@ -4,6 +4,9 @@
 
 namespace Pengine::Components
 {
+	/// <summary>
+	/// Base Class for all components, containes a defined ID
+	/// </summary>
 	class PenComponentsBase
 	{
 	public:
@@ -11,9 +14,11 @@ namespace Pengine::Components
 
 		PenComponentsBase(PenComponentsId id) : m_id(id) {}
 
+		virtual ~PenComponentsBase() = default;
+
 		virtual void render() = 0;
 
-		virtual ~PenComponentsBase() = default;
+		//TODO : const char* getTypename();
 
 		PenComponentsId getId() const;
 	private :

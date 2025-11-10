@@ -8,19 +8,20 @@
 
 namespace Pengine::Buffer
 {
+	/// <summary>
+	/// Texture Buffer class for OpenGl draw
+	/// </summary>
 	class PenTextureBuffer final : public PenBufferBase
 	{
+#pragma region Public
 	public:
-#pragma region Contructors and Destructor
 		PenTextureBuffer() = default;
 		PenTextureBuffer(const PenTextureBuffer&) = delete;
 		PenTextureBuffer(PenTextureBuffer&&) noexcept = default;
 		PenTextureBuffer& operator=(PenTextureBuffer&&) = default;
 
 		~PenTextureBuffer() override;
-#pragma endregion
 
-#pragma region Functions
 		void destroy() final;
 
 		void bind() const override;
@@ -43,7 +44,9 @@ namespace Pengine::Buffer
 		void resize(const PenMath::Vector3& size, const void* data);
 #pragma endregion
 
+#pragma region Private
 	private:
 		unsigned int m_type;
+#pragma endregion
 	};
 }

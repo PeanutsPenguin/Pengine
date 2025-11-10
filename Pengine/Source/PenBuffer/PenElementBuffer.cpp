@@ -4,14 +4,10 @@
 
 using namespace Pengine::Buffer;
 
-#pragma region Constructors and Destructor
 PenElementBuffer::~PenElementBuffer()
 {
 	destroy();
 }
-#pragma endregion
-
-#pragma region Functions
 
 void PenElementBuffer::create(const std::span<const unsigned int>& indices)
 {
@@ -37,4 +33,3 @@ const int& PenElementBuffer::count() const noexcept
 {
 	return m_count;
 }
-#pragma endregion

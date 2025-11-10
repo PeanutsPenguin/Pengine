@@ -3,22 +3,20 @@
 using namespace Pengine;
 
 const PenColor
-	PenColor::White = { 255, 255, 255, 255 },
-	PenColor::Black = { 0, 0, 0, 255 },
-	PenColor::Red = { 255, 0, 0, 255 },
-	PenColor::Green = { 0, 255, 0, 255 },
-	PenColor::Blue = { 0, 0, 255, 255 },
-	PenColor::Yellow = { 255, 255, 0, 255 },
+	PenColor::White = { 1, 1, 1, 1 },
+	PenColor::Black = { 0, 0, 0, 1 },
+	PenColor::Red = { 1, 0, 0, 1 },
+	PenColor::Green = { 0, 1, 0, 1 },
+	PenColor::Blue = { 0, 0, 1, 1 },
+	PenColor::Yellow = { 1, 1, 0, 1 },
 	PenColor::Transparent = { 0, 0, 0, 0 };
 
-
-#pragma region Constructors and Destructor
 PenColor::PenColor()
 {
-	this->x = 255;
-	this->y = 255;
-	this->z = 255;
-	this->w = 255;
+	this->x = 1;
+	this->y = 1;
+	this->z = 1;
+	this->w = 1;
 }
 
 PenColor::PenColor(float r, float g, float b, float a)
@@ -34,26 +32,18 @@ PenColor::PenColor(float r, float g, float b)
 	this->x = r;
 	this->y = g;
 	this->z = b;
-	this->w = 255;
+	this->w = 1;
 }
 
-#pragma endregion
-#pragma region Operators
-	PenColor PenColor::operator=(const PenMath::Vector4f& vec)
-	{
-		return { vec.x, vec.y, vec.z, vec.w };
-	}
+PenColor PenColor::operator=(const PenMath::Vector4f& vec)
+{
+	return { vec.x, vec.y, vec.z, vec.w };
+}
 
-#pragma endregion
-
-#pragma region Functions
-
-PenColor Pengine::PenColor::getRGBA_1()
+PenColor Pengine::PenColor::getRGBA_255()
 {
 	PenColor result;
 
-	result = *this * 0.003921568627451; //Divide by 255
-
+	result = *this * 255;
 	return result;
 }
-#pragma endregion
