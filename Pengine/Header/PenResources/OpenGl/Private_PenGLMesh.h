@@ -1,12 +1,12 @@
 #pragma once 
 
-#include "PenResources/Private_PenMeshBase.h"
+#include "PenResources/OpenGl/Private_PenMeshBase.h"
 
-#include "PenBuffer/Private_PenElementBuffer.h"
-#include "PenBuffer/Private_PenVertexAttributeBuffer.h"
-#include "PenBuffer/Private_PenVertexBuffer.h"
+#include "PenBuffer/OpenGl/Private_PenElementBuffer.h"
+#include "PenBuffer/OpenGl/Private_PenVertexBuffer.h"
+#include "PenBuffer/OpenGl/Private_PenVertexAttributeBuffer.h"
 
-#include "PenResources/Private_PenGLShaderProgram.h"
+#include "PenResources/OpenGl/Private_PenGLShaderProgram.h"
 
 class aiMesh;
 

@@ -1,4 +1,4 @@
-#include "PenBuffer/Private_PenVertexAttributeBuffer.h"
+#include "PenBuffer/OpenGl/Private_PenVertexAttributeBuffer.h"
 
 #include "PenStructsAndEnum/PenVertex.h"
 

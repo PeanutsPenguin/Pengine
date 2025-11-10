@@ -1,8 +1,8 @@
 #include "PenResources/PenModel.h"
 #include "PenResources/PenTextures.h"
 #include "PenResources/PenResourcesManager.h"
-#include "PenResources/Private_PenGLMesh.h"
-#include "PenResources/Private_PenGLShaderProgram.h"
+#include "PenResources/OpenGl/Private_PenGLMesh.h"
+#include "PenResources/OpenGl/Private_PenGLShaderProgram.h"
 #include "PenCore/PenCore.h"
 #include "PengineDefine.h"
 

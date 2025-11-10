@@ -4,8 +4,10 @@
 #include "PenObject/PenObjectManager.h"
 
 #include "PenResources/PenResourcesManager.h"
-#include "PenResources/Private_PenGLShader.h"
-#include "PenResources/Private_PenGLShaderProgram.h"
+
+//Not supposed to be here but ShaderProgram is not a resource yet
+#include "PenResources/OpenGl/Private_PenGLShader.h"
+#include "PenResources/OpenGl/Private_PenGLShaderProgram.h"
 
 #include "PenComponents/PenRenderer/PenRenderer.h"
 #include "PenResources/PenModel.h"
@@ -15,8 +17,6 @@
 #if defined (CHECK_MEMORY_LEAKS)
 	#include "Memory/MemoryLeakChecker.h"
 #endif
-
-
 
 #include <iostream>
 int main()

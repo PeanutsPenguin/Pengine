@@ -1,4 +1,4 @@
-#include "PenResources/Private_PenGLMesh.h"
+#include "PenResources/OpenGl/Private_PenGLMesh.h"
 
 #include "PenStructsAndEnum/PenVertex.h"
 
