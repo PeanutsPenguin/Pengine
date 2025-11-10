@@ -7,7 +7,7 @@ namespace Pengine::Buffer
     /// <summary>
     /// VAO class for OpenGl draw
     /// </summary>
-    class PenVertexAttributeBuffer final : PenBufferBase
+    class PenVertexAttributeBuffer final : public PenBufferBase
     {
 #pragma region Public
     public:

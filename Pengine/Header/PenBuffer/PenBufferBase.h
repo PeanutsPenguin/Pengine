@@ -17,7 +17,6 @@ namespace Pengine::Buffer
 
 		virtual ~PenBufferBase() = default;
 
-
 		virtual void destroy();
 
 		virtual void bind() const = 0;

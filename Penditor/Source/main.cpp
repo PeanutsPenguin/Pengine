@@ -1,5 +1,5 @@
 #include "PenCore/PenCore.h"
-#include "PenWindow/PenWindow.h"
+#include "PenWindow/PenWindowBase.h"
 #include "PenScene/PenScene.h"
 #include "PenObject/PenObjectManager.h"
 

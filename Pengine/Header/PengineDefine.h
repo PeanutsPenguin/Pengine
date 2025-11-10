@@ -1,6 +1,6 @@
 #pragma once 
 
-#define OPENGL_RENDER
+#define OPENGL_RENDER 1
 
 typedef unsigned __int32 PenObjectId;
 
