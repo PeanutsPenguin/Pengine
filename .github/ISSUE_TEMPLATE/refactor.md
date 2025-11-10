@@ -2,7 +2,7 @@
 name: Refactor
 about: Help me and describe the thing you'd like to be refactored
 title: "[REFACTOR] : "
-labels: ''
+labels: Refactor
 assignees: PeanutsPenguin
 
 ---
