@@ -25,6 +25,8 @@ namespace Pengine
 		
 		void clearBackground();
 
+		void changeBackgroundColor(const PenColor& col);
+
 		//This will change in the new resource manager
 		_NODISCARD bool addObjectById(const PenObjectId id);
 

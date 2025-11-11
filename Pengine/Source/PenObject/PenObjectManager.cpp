@@ -16,7 +16,7 @@ PenObject& PenObjectManager::createPenObject()
 
 	this->m_idMap.insert({ s_ObjectIds, PenObject(s_ObjectIds)});
 
-	std::unique_ptr<PenScene>& scene = PenCore::getInstance()->getWindow()->getScene();
+	std::unique_ptr<PenScene>& scene = PenCore::PenWindow()->getScene();
 
 	if(scene)
 		scene->addObjectById(s_ObjectIds);

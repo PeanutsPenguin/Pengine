@@ -95,13 +95,13 @@ void GLFWPenWindow::GLBufferUpdate()
 
 void GLFWPenWindow::framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
-    PenCore::getInstance()->getWindow()->setWindowSize({ (float)width, (float)height }, false);
+    PenCore::PenWindow()->setWindowSize({(float)width, (float)height}, false);
 }
 
 void GLFWPenWindow::window_close_callBack(GLFWwindow* window)
 {
     std::cout << "Closing Main Window\n";
-    PenCore::getInstance()->stopPengine();
+    PenCore::stopPengine();
 }
 #pragma endregion
 

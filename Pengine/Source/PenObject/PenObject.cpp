@@ -14,7 +14,7 @@ void PenObject::render()
 {
 	for(int i = 0; i < m_components.size(); ++i)
 	{
-		Components::PenComponentsBase* ptr = PenCore::getInstance()->getComponentsManager()->getComponentById(m_components[i]);
+		Components::PenComponentsBase* ptr = PenCore::ComponentsManager()->getComponentById(m_components[i]);
 		if(ptr)
 			ptr->render();
 	}

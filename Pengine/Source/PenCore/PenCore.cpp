@@ -1,34 +1,34 @@
 #include "PenCore/PenCore.h"
-#include "PenWindow/GLFW/Private_GLFWPenWindow.h"
 #include "PenComponents/PenComponentsManager.h"
 #include "PenObject/PenObjectManager.h"
 #include "PenResources/PenResourcesManager.h"
 
 #include "Vector/Vector2/Vector2.h"
 
+#include "PengineDefine.h"
+
 #include <GLFW/glfw3.h>
 
 using namespace Pengine;
 
-PenCore* PenCore::s_PenCoreInstance = nullptr;
+#pragma region Static definiton
 
-PenCore* PenCore::getInstance()
-{
-    if (s_PenCoreInstance == nullptr) 
-    {
-        if (s_PenCoreInstance == nullptr) 
-            s_PenCoreInstance = new PenCore();
-    }
-    return s_PenCoreInstance;
-}
+#if (GLFW)
+    #include "PenWindow/GLFW/Private_GLFWPenWindow.h"
+    std::unique_ptr<PenWindowBase> PenCore::m_window = std::make_unique<GLFWPenWindow>();
+#endif
+
+std::unique_ptr<PenObjectManager> PenCore::m_objectManager = std::make_unique<PenObjectManager>();
+std::unique_ptr<Components::PenComponentsManager> PenCore::m_componentsManager = std::make_unique<Components::PenComponentsManager>();
+std::unique_ptr<Resources::PenResourcesManager> PenCore::m_resourcesManager = std::make_unique<Resources::PenResourcesManager>();
+
+float PenCore::m_deltaTime = 0;
+float PenCore::m_lastFrame = glfwGetTime();
+bool PenCore::m_shouldStop = 0;
+#pragma endregion
 
 bool PenCore::init(const char* name, const PenMath::Vector2f& windowSize)
 {
-	this->m_window = std::make_unique<GLFWPenWindow>();
-    this->m_objectManager = std::make_unique<PenObjectManager>();
-    this->m_componentsManager = std::make_unique<Components::PenComponentsManager>();
-    this->m_resourcesManager = std::make_unique<Resources::PenResourcesManager>();
-
     if(!m_window->init(name, windowSize))
         return false;
 
@@ -37,31 +37,31 @@ bool PenCore::init(const char* name, const PenMath::Vector2f& windowSize)
 
 void PenCore::startPengine()
 {
-	this->m_shouldStop = false;
+	m_shouldStop = false;
     update();
 }
 
 void PenCore::stopPengine()
 {
-	this->m_shouldStop = true;
+	m_shouldStop = true;
 }
 
-std::unique_ptr<PenWindowBase>& PenCore::getWindow()
+std::unique_ptr<PenWindowBase>& PenCore::PenWindow()
 {
 	return m_window;
 }
 
-std::unique_ptr<PenObjectManager>& PenCore::getObjectManager()
+std::unique_ptr<PenObjectManager>& PenCore::ObjectManager()
 {
 	return m_objectManager;
 }
 
-std::unique_ptr<Components::PenComponentsManager>& PenCore::getComponentsManager()
+std::unique_ptr<Components::PenComponentsManager>& PenCore::ComponentsManager()
 {
 	return m_componentsManager;
 }
 
-std::unique_ptr<Resources::PenResourcesManager>& PenCore::getResourcesManager()
+std::unique_ptr<Resources::PenResourcesManager>& PenCore::ResourcesManager()
 {
     return m_resourcesManager;
 }
@@ -69,57 +69,51 @@ std::unique_ptr<Resources::PenResourcesManager>& PenCore::getResourcesManager()
 void PenCore::updateDeltaTime()
 {
     const double currentFrame = glfwGetTime();
-    this->m_deltaTime = currentFrame - this->m_lastFrame;
-    this->m_deltaTime = currentFrame;
+    m_deltaTime = currentFrame - m_lastFrame;
+    m_deltaTime = currentFrame;
 }
 
 void PenCore::update()
 {
 	updateDeltaTime();
 
-    while (!this->m_shouldStop)
+    while (!m_shouldStop)
     {
         //Should call all update function first 
 
 		//Then the render ones
-        this->m_window->render();
+        m_window->render();
 
-        this->m_resourcesManager->clearUnused();
+        m_resourcesManager->clearUnused();
     }
 
-    this->destroy();
+    destroy();
 }
 
 void PenCore::destroy()
 {
-    if(!this->m_window)
+    if(m_window)
     {
-        this->m_window.reset();
-        this->m_window = nullptr;
+        m_window.reset();
+        m_window = nullptr;
     }
 
-    if(!this->m_componentsManager)
+    if(m_componentsManager)
     {
-        this->m_componentsManager.reset();
-        this->m_componentsManager = nullptr;
+        m_componentsManager.reset();
+        m_componentsManager = nullptr;
     }
 
-    if(!this->m_objectManager)
+    if(m_objectManager)
     {
-        this->m_objectManager.reset();
-        this->m_objectManager = nullptr;
+        m_objectManager.reset();
+        m_objectManager = nullptr;
     }
 
-    if(!this->m_resourcesManager)
+    if(m_resourcesManager)
     {
-        this->m_resourcesManager.reset();
-        this->m_resourcesManager = nullptr;
-    }
-
-    if (s_PenCoreInstance != nullptr)
-    {
-        delete s_PenCoreInstance;
-        s_PenCoreInstance = nullptr;
+        m_resourcesManager.reset();
+        m_resourcesManager = nullptr;
     }
 }
 #pragma endregion
