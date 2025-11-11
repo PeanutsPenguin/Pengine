@@ -52,7 +52,7 @@ bool PenTexture::loadResource(const char* path)
 
 const std::string_view PenTexture::getTexturePath() const
 {
-	return PenCore::getInstance()->getResourcesManager()->getResourcePathById(getId());
+	return PenCore::ResourcesManager()->getResourcePathById(getId());
 }
 
 const Pengine::Buffer::PenTextureBuffer* PenTexture::dataPtr() const noexcept

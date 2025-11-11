@@ -31,7 +31,7 @@ void PenScene::render()
 	clearBackground();
 
 	for (int i = 0; i < m_objects.size(); ++i)
-		PenCore::getInstance()->getObjectManager()->getObjectById(m_objects[i]).render();
+		PenCore::ObjectManager()->getObjectById(m_objects[i]).render();
 }
 
 void PenScene::clearBackground()
@@ -40,9 +40,14 @@ void PenScene::clearBackground()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
+void PenScene::changeBackgroundColor(const PenColor& col)
+{
+	*this->m_backgroundColor = col;
+}
+
 bool PenScene::addObjectById(const PenObjectId id)
 {
-	if(PenCore::getInstance()->getObjectManager()->isObjectExisting(id))
+	if(PenCore::ObjectManager()->isObjectExisting(id))
 	{
 		this->m_objects.push_back(id);
 		return true;
@@ -53,7 +58,7 @@ bool PenScene::addObjectById(const PenObjectId id)
 
 PenObjectId PenScene::createObject()
 {
-	PenObject& obj = PenCore::getInstance()->getObjectManager()->createPenObject();
+	PenObject& obj = PenCore::ObjectManager()->createPenObject();
 
 	this->m_objects.push_back(obj.getId());
 

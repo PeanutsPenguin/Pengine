@@ -2,7 +2,7 @@
 #include "PenWindow/PenWindowBase.h"
 #include "PenScene/PenScene.h"
 #include "PenObject/PenObjectManager.h"
-
+#include "PenColor/PenColor.h"
 #include "PenResources/PenResourcesManager.h"
 
 //Not supposed to be here but ShaderProgram is not a resource yet
@@ -25,11 +25,9 @@ int main()
 	_CrtMemState& start = beforeMain();
 	{
 #endif
-		Pengine::PenCore* core = Pengine::PenCore::getInstance();
+		Pengine::PenCore::init("Pengine Window", { 800.0f, 600.0f });
 
-		core->init("Pengine Window", { 800.0f, 600.0f });
-
-		std::unique_ptr<Pengine::Resources::PenResourcesManager>& resourceManager = core->getResourcesManager();
+		std::unique_ptr<Pengine::Resources::PenResourcesManager>& resourceManager = Pengine::PenCore::ResourcesManager();
 
 #pragma region Load an object and test it
 		//{
@@ -110,9 +108,9 @@ int main()
 
 		progPtr->createShaderProgram(ptr, ptr2);
 
-		PenObjectId newObj = core->getWindow()->getScene()->createObject();
+		PenObjectId newObj = Pengine::PenCore::PenWindow()->getScene()->createObject();
 
-		Pengine::PenObject& objRef = core->getObjectManager()->getObjectById(newObj);
+		Pengine::PenObject& objRef = Pengine::PenCore::ObjectManager()->getObjectById(newObj);
 
 		Pengine::Components::PenRenderer* newComp = objRef.addComponent<Pengine::Components::PenRenderer>();
 
@@ -120,10 +118,11 @@ int main()
 		newComp->setShaderProgram(progPtr);
 
 #pragma endregion
+		Pengine::PenCore::PenWindow()->getScene()->changeBackgroundColor(Pengine::PenColor::Blue);
 
-		core->startPengine();
+		Pengine::PenCore::startPengine();
 
-		core->destroy();
+		Pengine::PenCore::destroy();
 
 #if CHECK_MEMORY_LEAKS
 	}

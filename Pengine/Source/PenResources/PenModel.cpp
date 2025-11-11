@@ -39,7 +39,7 @@ bool PenModel::loadResource(const char* path)
 	for (size_t i = 0; i < scene->mNumTextures; ++i)
 	{
 		aiTexture& tex = *scene->mTextures[i];
-		const std::shared_ptr<PenTexture> res = PenCore::getInstance()->getResourcesManager()->loadResourceFromFile<PenTexture>(tex.mFilename.C_Str());
+		const std::shared_ptr<PenTexture> res = PenCore::ResourcesManager()->loadResourceFromFile<PenTexture>(tex.mFilename.C_Str());
 	}
 
 	//Suppose to have material here 

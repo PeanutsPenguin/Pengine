@@ -32,62 +32,56 @@ namespace Pengine
 	{
 #pragma region Public
 	public:
-		PenCore() = default;
+		PenCore() = delete;
 
-		~PenCore() = default;
+		~PenCore() = delete;
 
-		PenCore(PenCore&) = delete;
+		static bool init(const char* name, const PenMath::Vector2f& windowSize);
 
-		static PenCore* getInstance();
+		static void startPengine();
 
-		bool init(const char* name, const PenMath::Vector2f& windowSize);
-
-		void startPengine();
-
-		void stopPengine();
+		static void stopPengine();
 
 		/// <summary>
 		/// Return the pointer to the main "PenWindow"
 		/// </summary>
-		std::unique_ptr<PenWindowBase>& getWindow();
+		static std::unique_ptr<PenWindowBase>& PenWindow();
 
 		/// <summary>
 		/// Return the pointer to the object manager
 		/// </summary>
-		std::unique_ptr<PenObjectManager>& getObjectManager();
+		static std::unique_ptr<PenObjectManager>& ObjectManager();
 
 		/// <summary>
 		/// Return the pointer to the Components manager
 		/// </summary>
-		std::unique_ptr<Components::PenComponentsManager>& getComponentsManager();
+		static std::unique_ptr<Components::PenComponentsManager>& ComponentsManager();
 
 		/// <summary>
 		/// Return the pointer to the Resources manager
 		/// </summary>
-		std::unique_ptr<Resources::PenResourcesManager>& getResourcesManager();
+		static std::unique_ptr<Resources::PenResourcesManager>& ResourcesManager();
 		
-		void destroy();
+		static void destroy();
 #pragma endregion
 
 #pragma region Private
 	private:
-		static PenCore* s_PenCoreInstance;
-
-		void updateDeltaTime();
+		static void updateDeltaTime();
 
 		/// <summary>
 		/// Main loop of the engine
 		/// </summary>
-		void update();
+		static void update();
 
-		std::unique_ptr<PenWindowBase> m_window;
-		std::unique_ptr<PenObjectManager> m_objectManager;
-		std::unique_ptr<Components::PenComponentsManager> m_componentsManager;
-		std::unique_ptr<Resources::PenResourcesManager> m_resourcesManager;
+		static std::unique_ptr<PenWindowBase> m_window;
+		static std::unique_ptr<PenObjectManager> m_objectManager;
+		static std::unique_ptr<Components::PenComponentsManager> m_componentsManager;
+		static std::unique_ptr<Resources::PenResourcesManager> m_resourcesManager;
 
-		float m_deltaTime;
-		float m_lastFrame;
-		bool m_shouldStop;
+		static float m_deltaTime;
+		static float m_lastFrame;
+		static bool m_shouldStop;
 #pragma endregion
 
 	};

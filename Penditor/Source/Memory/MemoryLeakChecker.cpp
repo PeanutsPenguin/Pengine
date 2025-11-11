@@ -15,7 +15,7 @@ void afterMain(_CrtMemState& start)
 
 	_CrtMemState difference;
 	if (_CrtMemDifference(&difference, &start, &end)) {
-		std::cout << "\n\n MEMORY LEAK HAS BEEN DETECTED CHECK OUTPUT \n\n" << std::endl;
+		std::cout << "\n\n MEMORY LEAK CHECK OUTPUT \n\n" << std::endl;
 
 		OutputDebugString(TEXT("---------- _CrtMemDumpStatistics ----------\n\n"));
 		_CrtMemDumpStatistics(&difference);
