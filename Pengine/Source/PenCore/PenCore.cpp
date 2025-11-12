@@ -13,7 +13,7 @@ using namespace Pengine;
 
 #pragma region Static definiton
 
-#if (GLFW)
+#if defined (GLFW_WINDOW)
     #include "PenWindow/GLFW/Private_GLFWPenWindow.h"
     std::unique_ptr<PenWindowBase> PenCore::m_window = std::make_unique<GLFWPenWindow>();
 #endif

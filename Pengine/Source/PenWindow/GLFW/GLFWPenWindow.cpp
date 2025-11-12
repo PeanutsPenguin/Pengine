@@ -22,7 +22,7 @@ bool GLFWPenWindow::init(const char* name, const PenMath::Vector2f& windowSize)
 {
     this->m_windowSize = windowSize;
 
-    #if (OPENGL_RENDER)
+    #if defined(OPENGL_RENDER)
         return GLInit(name, windowSize);
     #endif
 
