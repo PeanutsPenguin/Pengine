@@ -4,6 +4,12 @@
 
 #include "PenResources/OpenGl/Private_PenGLShader.h"
 
+#include "Matrix/Mat3.h"
+#include "Matrix/Mat4.h"
+
+#define VECTOR2_CAST
+#include "Vector/Vector2/Vector2.h"
+
 namespace Pengine::Resources
 {
 	/// <summary>
@@ -33,6 +39,22 @@ namespace Pengine::Resources
 #pragma region Private
 	private:
 		unsigned int m_shaderProgramId;
+
+		void setUniform(const char* name, bool value);
+
+		void setUniform(const char* name, int value);
+
+		void setUniform(const char* name, float value);
+
+		void setUniform(const char* name, const PenMath::Vector2f& value);
+
+		void setUniform(const char* name, const PenMath::Vector3f& value);
+
+		void setUniform(const char* name, const PenMath::Vector4f& value);
+
+		void setUniform(const char* name, const PenMath::Mat3& value);
+
+		void setUniform(const char* name, const PenMath::Mat4& value);
 #pragma endregion
 	};
 }

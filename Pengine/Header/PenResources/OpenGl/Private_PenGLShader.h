@@ -1,7 +1,6 @@
 #pragma once 
 
 #include "PenResources/PenShaderBase.h"
-#include "PenStructsAndEnum/PenShaderType.h"
 
 namespace Pengine::Resources
 {
