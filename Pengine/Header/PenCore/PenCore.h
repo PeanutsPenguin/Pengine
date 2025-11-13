@@ -9,6 +9,7 @@ namespace Pengine
 {
 	class PenWindowBase;
 	class PenObjectManager;
+	class PenInputManager;
 	
 
 	namespace Resources
@@ -53,6 +54,11 @@ namespace Pengine
 		static std::unique_ptr<PenObjectManager>& ObjectManager();
 
 		/// <summary>
+		/// Return the pointer to the object manager
+		/// </summary>
+		static std::unique_ptr<PenInputManager>& InputManager();
+
+		/// <summary>
 		/// Return the pointer to the Components manager
 		/// </summary>
 		static std::unique_ptr<Components::PenComponentsManager>& ComponentsManager();
@@ -69,6 +75,8 @@ namespace Pengine
 	private:
 		static void updateDeltaTime();
 
+		static void updateInputs();
+
 		/// <summary>
 		/// Main loop of the engine
 		/// </summary>
@@ -76,6 +84,7 @@ namespace Pengine
 
 		static std::unique_ptr<PenWindowBase> m_window;
 		static std::unique_ptr<PenObjectManager> m_objectManager;
+		static std::unique_ptr<PenInputManager> m_inputManager;
 		static std::unique_ptr<Components::PenComponentsManager> m_componentsManager;
 		static std::unique_ptr<Resources::PenResourcesManager> m_resourcesManager;
 

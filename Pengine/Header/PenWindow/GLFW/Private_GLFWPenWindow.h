@@ -25,6 +25,8 @@ namespace Pengine
 		void setWindowSize(const PenMath::Vector2f& size, bool resizeWindow = true) override;
 
 		void render() override;
+
+		GLFWwindow* getWindowPtr() const noexcept;
 #pragma endregion
 
 #pragma region Private

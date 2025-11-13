@@ -2,6 +2,7 @@
 
 #include "PenCore/PenCore.h"
 #include "PenScene/PenScene.h"
+#include "PenInput/PenInput.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -22,7 +23,7 @@ bool GLFWPenWindow::init(const char* name, const PenMath::Vector2f& windowSize)
 {
     this->m_windowSize = windowSize;
 
-    #if (OPENGL_RENDER)
+    #if defined(OPENGL_RENDER)
         return GLInit(name, windowSize);
     #endif
 
@@ -42,6 +43,11 @@ void GLFWPenWindow::render()
     this->m_windowScene->render();
 
     this->GLBufferUpdate();
+}
+
+GLFWwindow* GLFWPenWindow::getWindowPtr() const noexcept
+{
+    return this->m_windowPtr;
 }
 
 bool GLFWPenWindow::GLInit(const char* name, const PenMath::Vector2f& windowSize)
