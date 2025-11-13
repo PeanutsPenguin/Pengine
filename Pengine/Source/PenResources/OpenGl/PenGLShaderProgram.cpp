@@ -63,3 +63,43 @@ bool PenGLShaderProgram::initShaderProgram()
 {
 	return true;
 }
+
+void PenGLShaderProgram::setUniform(const char* name, bool value)
+{
+	glUniform1i(glGetUniformLocation(this->m_shaderProgramId, name), (int)value);
+}
+
+void PenGLShaderProgram::setUniform(const char* name, int value)
+{
+	glUniform1i(glGetUniformLocation(this->m_shaderProgramId, name), value);
+}
+
+void PenGLShaderProgram::setUniform(const char* name, float value)
+{
+	glUniform1f(glGetUniformLocation(this->m_shaderProgramId, name), value);
+}
+
+void PenGLShaderProgram::setUniform(const char* name, const PenMath::Vector2f& value)
+{
+	glUniform2fv(glGetUniformLocation(this->m_shaderProgramId, name), 1, &value[0]);
+}
+
+void PenGLShaderProgram::setUniform(const char* name, const PenMath::Vector3f& value)
+{
+	glUniform3fv(glGetUniformLocation(this->m_shaderProgramId, name), 1, &value[0]);
+}
+
+void PenGLShaderProgram::setUniform(const char* name, const PenMath::Vector4f& value)
+{
+	glUniform4fv(glGetUniformLocation(this->m_shaderProgramId, name), 1, &value[0]);
+}
+
+void PenGLShaderProgram::setUniform(const char* name, const PenMath::Mat3& value)
+{
+	glUniformMatrix3fv(glGetUniformLocation(this->m_shaderProgramId, name), 1, GL_FALSE, &value[0][0]);
+}
+
+void PenGLShaderProgram::setUniform(const char* name, const PenMath::Mat4& value)
+{
+	glUniformMatrix4fv(glGetUniformLocation(this->m_shaderProgramId, name), 1, GL_FALSE, &value[0][0]);
+}
