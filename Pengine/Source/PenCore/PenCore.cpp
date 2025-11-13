@@ -2,6 +2,7 @@
 #include "PenComponents/PenComponentsManager.h"
 #include "PenObject/PenObjectManager.h"
 #include "PenResources/PenResourcesManager.h"
+#include "PenInput/PenInput.h"
 
 #include "Vector/Vector2/Vector2.h"
 
@@ -19,6 +20,7 @@ using namespace Pengine;
 #endif
 
 std::unique_ptr<PenObjectManager> PenCore::m_objectManager = std::make_unique<PenObjectManager>();
+std::unique_ptr<PenInputManager> PenCore::m_inputManager = std::make_unique<PenInputManager>();
 std::unique_ptr<Components::PenComponentsManager> PenCore::m_componentsManager = std::make_unique<Components::PenComponentsManager>();
 std::unique_ptr<Resources::PenResourcesManager> PenCore::m_resourcesManager = std::make_unique<Resources::PenResourcesManager>();
 
@@ -56,6 +58,11 @@ std::unique_ptr<PenObjectManager>& PenCore::ObjectManager()
 	return m_objectManager;
 }
 
+std::unique_ptr<PenInputManager>& PenCore::InputManager()
+{
+    return m_inputManager;
+}
+
 std::unique_ptr<Components::PenComponentsManager>& PenCore::ComponentsManager()
 {
 	return m_componentsManager;
@@ -73,13 +80,17 @@ void PenCore::updateDeltaTime()
     m_deltaTime = currentFrame;
 }
 
+void PenCore::updateInputs()
+{
+    m_inputManager->update();
+}
+
 void PenCore::update()
 {
-	updateDeltaTime();
-
     while (!m_shouldStop)
     {
-        //Should call all update function first 
+        updateDeltaTime();
+        updateInputs();
 
 		//Then the render ones
         m_window->render();
@@ -114,6 +125,12 @@ void PenCore::destroy()
     {
         m_resourcesManager.reset();
         m_resourcesManager = nullptr;
+    }
+
+    if (m_inputManager)
+    {
+        m_inputManager.reset();
+        m_inputManager = nullptr;
     }
 }
 #pragma endregion

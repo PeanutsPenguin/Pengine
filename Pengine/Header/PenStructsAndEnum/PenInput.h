@@ -2,7 +2,7 @@
 
 namespace Pengine
 {
-	typedef enum PenInputType
+	enum PenInputType
 	{
 		E_NONE, 
 		E_RELEASED, 
@@ -10,10 +10,11 @@ namespace Pengine
 		E_DOWN
 	};
 
-	typedef enum PenInput : int 
+	enum PenInput : int 
 	{
-		A_key = 0, B_key, C_key, D_key, E_key, F_key, G_key, H_key, I_key, J_key,
-		K_key, L_key, M_key, N_key, O_key, O_key, Q_key, R_key, S_key, T_key,
-		U_key, V_key, W_key, X_key, Y_key, Z_key, ENTER_key, SPACE_key
+		key_0 = 0, key_1, key_2, key_3, key_4, key_5, key_6, key_7, key_8, key_9, 
+		key_A, key_B, key_C, key_D, key_E, key_F, key_G, key_H, key_I, key_J,
+		key_K, key_L, key_M, key_N, key_O, key_P, key_Q, key_R, key_S, key_T,
+		key_U, key_V, key_W, key_X, key_Y, key_Z, key_ENTER, key_SPACE, key_ESCAPE
 	};
 }
