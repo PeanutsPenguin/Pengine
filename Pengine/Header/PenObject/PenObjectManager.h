@@ -1,11 +1,11 @@
 #pragma once 
 
-#include <unordered_map>
+#include <queue>
+#include <array>
 
 #include "PengineDefine.h"
 #include "PenObject.h"
 
-//TODO: Stock shared_ptr<PenObject>
 namespace Pengine
 {
 	/// <summary>
@@ -15,26 +15,25 @@ namespace Pengine
 	{
 #pragma region Public
 	public:
-		PenObjectManager() = default;
+		PenObjectManager();
 
 		~PenObjectManager() = default;
 
-		/// <summary>
-		/// Create an object and add it to the main scene
-		/// </summary>
-		/// <returns>A reference to the created object</returns>
-		PenObject& createPenObject();
+		PenObjectId createPenObject();
 
-		PenObject& getObjectById(PenObjectId id);
+		void destroyPenObject(PenObjectId id);
 
-		_NODISCARD bool isObjectExisting(const PenObjectId id);
+		void setSignature(PenObjectId id, PenComponentSignature sig);
+
+		PenComponentSignature getSignature(PenObjectId id);
+
 #pragma endregion
 
 #pragma region Private
 	private:
-
-		std::unordered_map<PenObjectId, PenObject> m_idMap;
-		static PenObjectId s_ObjectIds;
+		std::queue<PenObjectId> m_validIds;								//Queue of valid ids
+		std::array<PenComponentSignature, g_maxEntity> m_compSig;		// Array of signatures where the index corresponds to the entity ID
+		uint32_t m_livingPenObject;										// Total living entities - used to keep limits on how many exist
 #pragma endregion
 	};
 }

@@ -7,38 +7,59 @@
 
 using namespace Pengine;
 
-PenObjectId PenObjectManager::s_ObjectIds = 0;
-
-//Sould return a ptr with the new shared_ptr system so the warning will be handle
-PenObject& PenObjectManager::createPenObject()
+PenObjectManager::PenObjectManager()
 {
-	s_ObjectIds++;
-
-	this->m_idMap.insert({ s_ObjectIds, PenObject(s_ObjectIds)});
-
-	std::unique_ptr<PenScene>& scene = PenCore::PenWindow()->getScene();
-
-	if(scene)
-		scene->addObjectById(s_ObjectIds);
-
-	return this->m_idMap[s_ObjectIds];
+	for (PenObjectId entity = 0; entity < g_maxEntity; ++entity)
+		m_validIds.push(entity);
 }
 
-PenObject& PenObjectManager::getObjectById(PenObjectId id)
+PenObjectId PenObjectManager::createPenObject()
 {
-	if (this->m_idMap.contains(id))
-		return this->m_idMap[id];
-	else
+	if(m_livingPenObject >= g_maxEntity)
 	{
-		std::cerr << "__FUNCTION__ : PenObject with id " << id << " was not found. Returning first PenObject.";
-
-		if (this->m_idMap.size() > 0)
-			return this->m_idMap.begin()->second;
-		else
-			return createPenObject();
+		std::cout << __FUNCTION__ "Too many entities in existence.\n";
+		return -1;
 	}
+
+	// Take an ID from the front of the queue
+	PenObjectId id = m_validIds.front();
+	m_validIds.pop();
+	++m_livingPenObject;
+
+	return id;
 }
-bool Pengine::PenObjectManager::isObjectExisting(const PenObjectId id)
+
+void PenObjectManager::destroyPenObject(PenObjectId id)
 {
-	return this->m_idMap.contains(id);
+	if (m_livingPenObject >= g_maxEntity)
+	{
+		std::cout << __FUNCTION__ "Invalid entity number.\n";
+		return;
+	}
+
+	m_compSig[id].reset();
+	m_validIds.push(id);
+	--m_livingPenObject;
+}
+
+void PenObjectManager::setSignature(PenObjectId id, PenComponentSignature sig)
+{
+	if (m_livingPenObject >= g_maxEntity)
+	{
+		std::cout << __FUNCTION__ "Invalid entity id.\n";
+		return;
+	}
+
+	m_compSig[id] = sig;
+}
+
+PenComponentSignature PenObjectManager::getSignature(PenObjectId id)
+{
+	if (m_livingPenObject >= g_maxEntity)
+	{
+		std::cout << __FUNCTION__ "Invalid entity id.\n";
+		return;
+	}
+
+	return m_compSig[id];
 }
