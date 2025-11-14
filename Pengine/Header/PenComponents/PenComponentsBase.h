@@ -16,6 +16,7 @@ namespace Pengine::Components
 	template<typename T>
 	class ComponentArray : public IPenComponentArray
 	{
+	public:
 		void insertData(PenObjectId entity, T component);
 
 		void removeData(PenObjectId entity);
