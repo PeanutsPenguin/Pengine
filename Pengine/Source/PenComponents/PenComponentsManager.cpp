@@ -3,7 +3,7 @@
 /// No using namespace Pengin to avoid conflicts
 namespace Pengine::Components
 {
-	void PenComponentsManager::EntityDestroyed(PenObjectId entity)
+	void PenComponentsManager::entityDestroyed(PenObjectId entity)
 	{
 		//Notify every component we destroyed an entity
 		for (auto const& pair : m_PenComponentsArrays)

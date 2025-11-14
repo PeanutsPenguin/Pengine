@@ -17,9 +17,9 @@ namespace Pengine::System
 		template<typename T>
 		void setSignature(PenComponentSignature signature);
 
-		void entityDestroyed(PenComponentsId entity);
+		void PenObjectDestroyed(PenComponentsId entity);
 
-		void EntitySignatureChanged(PenObjectId entity, PenComponentSignature entitySignature);
+		void PenObjectSignatureChanged(PenObjectId entity, PenComponentSignature entitySignature);
 
 	private:
 		std::unordered_map<const char*, PenComponentSignature> m_PenComponentSignature;		//Map to handle const char* to Signature

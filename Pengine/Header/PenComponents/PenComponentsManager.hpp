@@ -52,7 +52,7 @@ namespace Pengine::Components
 	}
 
 	template<typename T>
-	inline T& PenComponentsManager::GetComponent(PenObjectId entity)
+	inline T& PenComponentsManager::getComponent(PenObjectId entity)
 	{
 		return getComponentArray<T>()->getData(entity);
 	}

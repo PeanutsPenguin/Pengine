@@ -23,9 +23,9 @@ namespace Pengine::Components
 		void removeComponent(PenObjectId entity);
 
 		template<typename T>
-		T& GetComponent(PenObjectId entity);
+		T& getComponent(PenObjectId entity);
 
-		void EntityDestroyed(PenObjectId entity);
+		void entityDestroyed(PenObjectId entity);
 
 #pragma region Private
 	private:
