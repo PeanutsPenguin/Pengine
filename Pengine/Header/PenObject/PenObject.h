@@ -29,9 +29,6 @@ namespace Pengine
 
 		void render();
 
-		template<typename _ComponentType>
-			requires std::derived_from<_ComponentType, Components::PenComponentsBase>
-		_ComponentType* addComponent();
 #pragma endregion
 
 #pragma region Private

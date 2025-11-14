@@ -1,8 +1,17 @@
 #include "PenCore/PenCore.h"
+#include "PenditorDefine.h"
+
+
+
+
 #include "PenWindow/PenWindowBase.h"
+
 #include "PenScene/PenScene.h"
+
 #include "PenObject/PenObjectManager.h"
+
 #include "PenColor/PenColor.h"
+
 #include "PenResources/PenResourcesManager.h"
 
 //Not supposed to be here but ShaderProgram is not a resource yet
@@ -12,7 +21,6 @@
 #include "PenComponents/PenRenderer/PenRenderer.h"
 #include "PenResources/PenModel.h"
 
-#include "PenditorDefine.h"
 
 #if defined (CHECK_MEMORY_LEAKS)
 	#include "Memory/MemoryLeakChecker.h"
@@ -108,14 +116,14 @@ int main()
 
 		progPtr->createShaderProgram(ptr, ptr2);
 
-		PenObjectId newObj = Pengine::PenCore::PenWindow()->getScene()->createObject();
+		//PenObjectId newObj = Pengine::PenCore::PenWindow()->getScene()->createObject();
 
-		Pengine::PenObject& objRef = Pengine::PenCore::ObjectManager()->getObjectById(newObj);
+		//Pengine::PenObject& objRef = Pengine::PenCore::ObjectManager()->getObjectById(newObj);
 
-		Pengine::Components::PenRenderer* newComp = objRef.addComponent<Pengine::Components::PenRenderer>();
+		//Pengine::Components::PenRenderer* newComp = objRef.addComponent<Pengine::Components::PenRenderer>();
 
-		newComp->setModel(modelPtr);
-		newComp->setShaderProgram(progPtr);
+		//newComp->setModel(modelPtr);
+		//newComp->setShaderProgram(progPtr);
 
 #pragma endregion
 		Pengine::PenCore::PenWindow()->getScene()->changeBackgroundColor(Pengine::PenColor::Blue);

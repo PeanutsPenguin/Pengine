@@ -6,22 +6,22 @@
 
 namespace Pengine::Components
 {
-	class PenRenderer : public PenComponentsBase
+	class PenRenderer
 	{
 	public:
-#pragma region Public
-		PenRenderer() = default;
-
-		PenRenderer(const PenComponentsId& id) : PenComponentsBase(id) {};
-		
-		~PenRenderer() override;
-
-		void setShaderProgram(std::shared_ptr<Pengine::Resources::PenShaderProgramBase> prog);
-
-		void setModel(std::shared_ptr<Pengine::Resources::PenModel> model);
-
-		void render() override;
-#pragma endregion
+//#pragma region Public
+//		PenRenderer() = default;
+//
+//		PenRenderer(const PenComponentsId& id) : PenComponentsBase(id) {};
+//		
+//		~PenRenderer() override;
+//
+//		void setShaderProgram(std::shared_ptr<Pengine::Resources::PenShaderProgramBase> prog);
+//
+//		void setModel(std::shared_ptr<Pengine::Resources::PenModel> model);
+//
+//		void render() override;
+//#pragma endregion
 
 #pragma region Private
 	private:

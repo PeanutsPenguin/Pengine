@@ -2,8 +2,3 @@
 
 using namespace Pengine::Components;
 
-void PenTransform::render()
-{
-
-}
-

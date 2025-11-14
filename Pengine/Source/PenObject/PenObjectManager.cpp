@@ -57,8 +57,8 @@ PenComponentSignature PenObjectManager::getSignature(PenObjectId id)
 {
 	if (m_livingPenObject >= g_maxEntity)
 	{
-		std::cout << __FUNCTION__ "Invalid entity id.\n";
-		return;
+		std::cout << __FUNCTION__ "Invalid entity id. (returning empty)\n";
+		return PenComponentSignature();
 	}
 
 	return m_compSig[id];

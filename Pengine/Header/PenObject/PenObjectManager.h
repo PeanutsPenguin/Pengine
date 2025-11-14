@@ -25,7 +25,7 @@ namespace Pengine
 
 		void setSignature(PenObjectId id, PenComponentSignature sig);
 
-		PenComponentSignature getSignature(PenObjectId id);
+		_Ret_maybenull_ PenComponentSignature getSignature(PenObjectId id);
 
 #pragma endregion
 

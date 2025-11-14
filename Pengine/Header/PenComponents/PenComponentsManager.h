@@ -1,11 +1,6 @@
 #pragma once 
 
-#include "PengineDefine.h"
 #include "PenComponents/PenComponentsBase.h"
-
-#include <unordered_map>
-
-//This class will change so i don't comment it rn (might deleted
 
 namespace Pengine::Components
 {
@@ -15,24 +10,32 @@ namespace Pengine::Components
 	class PenComponentsManager
 	{
 	public:
-#pragma region Constructors and Destructor
-		PenComponentsManager() = default;
+		template<typename T>
+		void registerComponent();
 
-		~PenComponentsManager();
-#pragma endregion
+		template<typename T>
+		PenComponentType getComponentType();
 
-#pragma region Fucntions
-		template<typename _ComponentType>
-			requires std::derived_from<_ComponentType, PenComponentsBase>
-		_ComponentType* createComponent();
-		
-		PenComponentsBase* getComponentById(const PenComponentsId& id) const noexcept;
-#pragma endregion
+		template<typename T>
+		void addComponent(PenObjectId entity, T component);
+
+		template<typename T>
+		void removeComponent(PenObjectId entity);
+
+		template<typename T>
+		T& GetComponent(PenObjectId entity);
+
+		void EntityDestroyed(PenObjectId entity);
+
+#pragma region Private
 	private:
-#pragma region Private members
-		std::unordered_map<PenComponentsId, PenComponentsBase*> m_idMap;
+		std::unordered_map<const char*, PenComponentType> m_PenComponentsType;						//Map to handle const char* to specific component type 
+		std::unordered_map<const char*, std::shared_ptr<IPenComponentArray>> m_PenComponentsArrays;	//Map from const char* to a component array
+		PenComponentType m_nextPenComponentType;													//Keep track of wich components need to be registered or not - starting at 0
 
-		static PenComponentsId s_ComponentsId;
+		template<typename T>
+		std::shared_ptr<ComponentArray<T>> getComponentArray();
+
 #pragma endregion
 	};
 }

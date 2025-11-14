@@ -4,19 +4,19 @@
 
 namespace Pengine::Components
 {
-	class PenTransform : public PenComponentsBase
+	class PenTransform
 	{
-#pragma region Public
-	public:
-		PenTransform() = delete;
-
-		PenTransform(PenComponentsId id) : PenComponentsBase(id) {}
-
-		~PenTransform() = default;
-
-		void render() override;
-#pragma endregion
-
-		//TO DO : Add a vec3f
+//#pragma region Public
+//	public:
+//		PenTransform() = delete;
+//
+//		//PenTransform(PenComponentsId id) : PenComponentsBase(id) {}
+//
+//		~PenTransform() = default;
+//
+//		void render() override;
+//#pragma endregion
+//
+//		//TO DO : Add a vec3f
 	};
 }

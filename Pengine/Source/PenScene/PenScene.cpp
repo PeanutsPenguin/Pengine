@@ -30,8 +30,6 @@ void PenScene::render()
 {
 	clearBackground();
 
-	for (int i = 0; i < m_objects.size(); ++i)
-		PenCore::ObjectManager()->getObjectById(m_objects[i]).render();
 }
 
 void PenScene::clearBackground()
@@ -45,24 +43,5 @@ void PenScene::changeBackgroundColor(const PenColor& col)
 	*this->m_backgroundColor = col;
 }
 
-bool PenScene::addObjectById(const PenObjectId id)
-{
-	if(PenCore::ObjectManager()->isObjectExisting(id))
-	{
-		this->m_objects.push_back(id);
-		return true;
-	}
-
-	return false;
-}
-
-PenObjectId PenScene::createObject()
-{
-	PenObject& obj = PenCore::ObjectManager()->createPenObject();
-
-	this->m_objects.push_back(obj.getId());
-
-	return obj.getId();
-}
 
 #pragma endregion	
