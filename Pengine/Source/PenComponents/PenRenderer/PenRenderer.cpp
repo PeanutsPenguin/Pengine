@@ -2,6 +2,11 @@
 
 using namespace Pengine::Components;
 
+PenRenderer::PenRenderer()
+{
+	this->SetState(PenComponentState::ENABLE, true);
+}
+
 PenRenderer::~PenRenderer()
 {
 	if (!this->m_model)

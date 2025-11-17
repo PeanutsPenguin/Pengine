@@ -1,12 +1,15 @@
 #include "PenWindow/GLFW/Private_GLFWPenWindow.h"
 
-#include "PenCore/PenCore.h"
-#include "PenScene/PenScene.h"
-#include "PenInput/PenInput.h"
+#include "PenCore/PenCore.h"        //Core
+#include "PenScene/PenScene.h"      //PenScene
+#include "PenInput/PenInput.h"      //PenInput
+#include "PenColor/PenColor.h"      //PenColor
 
+//Lib
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+//Std
 #include <iostream>
 
 using namespace Pengine;
@@ -38,10 +41,20 @@ void GLFWPenWindow::setWindowSize(const PenMath::Vector2f& size, bool resizeWind
         glViewport(0, 0, size.x, size.y);
 }
 
+void GLFWPenWindow::preRender(const PenScene& mainScene)
+{
+    const PenColor& col = mainScene.getBackgroundColor();
+    glClearColor(col.r, col.g, col.b, col.a);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
 void GLFWPenWindow::render()
 {
-    this->m_windowScene->render();
+    PenWindowBase::render();
+}
 
+void GLFWPenWindow::postRender()
+{
     this->GLBufferUpdate();
 }
 
@@ -98,7 +111,6 @@ void GLFWPenWindow::GLBufferUpdate()
     glfwSwapBuffers(m_windowPtr);
 }
 
-
 void GLFWPenWindow::framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     PenCore::PenWindow()->setWindowSize({(float)width, (float)height}, false);
@@ -109,5 +121,3 @@ void GLFWPenWindow::window_close_callBack(GLFWwindow* window)
     std::cout << "Closing Main Window\n";
     PenCore::stopPengine();
 }
-#pragma endregion
-

@@ -9,7 +9,7 @@ namespace Pengine
 	/// This class is a simple wrapper of a Vector4(x = r, y = g, z = b, w = a) with color going from 0 to 1
 	/// Will include Vector4, Vector3 and Vector2
 	/// </summary>
-	class PenColor : PenMath::Vector4f
+	class PenColor : public PenMath::Vector4f
 	{
 #pragma region Public
 	public:
