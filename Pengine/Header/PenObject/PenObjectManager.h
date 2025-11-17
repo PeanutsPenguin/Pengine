@@ -32,7 +32,7 @@ namespace Pengine
 	private:
 		std::queue<PenObjectId> m_validIds;								//Queue of valid ids
 		std::array<PenComponentSignature, g_maxEntity> m_compSig;		// Array of signatures where the index corresponds to the entity ID
-		uint32_t m_livingPenObject;										// Total living entities - used to keep limits on how many exist
+		uint32_t m_livingPenObject = 0;										// Total living entities - used to keep limits on how many exist
 #pragma endregion
 	};
 }

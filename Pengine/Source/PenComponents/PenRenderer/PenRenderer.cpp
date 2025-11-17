@@ -2,6 +2,11 @@
 
 using namespace Pengine::Components;
 
+PenRenderer::PenRenderer()
+{
+	this->SetState(PenComponentState::ENABLE, true);
+}
+
 PenRenderer::~PenRenderer()
 {
 	if (!this->m_model)
@@ -17,18 +22,17 @@ PenRenderer::~PenRenderer()
 	}
 }
 
-//
-//void PenRenderer::setShaderProgram(std::shared_ptr<Pengine::Resources::PenShaderProgramBase> prog)
-//{
-//	this->m_shader = prog;
-//}
-//
-//void PenRenderer::setModel(std::shared_ptr<Pengine::Resources::PenModel> model)
-//{
-//	this->m_model = model;
-//}
-//
-//void PenRenderer::render()
-//{
-//	m_model->render(m_shader);
-//}
+void PenRenderer::setShaderProgram(std::shared_ptr<Pengine::Resources::PenShaderProgramBase> prog)
+{
+	this->m_shader = prog;
+}
+
+void PenRenderer::setModel(std::shared_ptr<Pengine::Resources::PenModel> model)
+{
+	this->m_model = model;
+}
+
+void PenRenderer::render()
+{
+	m_model->render(m_shader);
+}

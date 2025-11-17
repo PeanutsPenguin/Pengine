@@ -8,9 +8,18 @@ namespace Pengine::Components
 {
 	class PenRenderer : public PenComponentBase
 	{
+#pragma region Public
 	public:
+		PenRenderer(); 
 
 		~PenRenderer() override;
+
+		void setShaderProgram(std::shared_ptr<Pengine::Resources::PenShaderProgramBase> prog);
+
+		void setModel(std::shared_ptr<Pengine::Resources::PenModel> model);
+
+		void render();
+#pragma endregion
 #pragma region Private
 	private:
 		std::shared_ptr<Pengine::Resources::PenModel> m_model;

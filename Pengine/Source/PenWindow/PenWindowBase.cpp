@@ -1,24 +1,26 @@
 #include "PenWindow/PenWindowBase.h"
 
-#include "PenScene/PenScene.h"
+//System
+#include "PenSystem/PenRenderSystem/PenRenderSystem.h"
 
 using namespace Pengine;
 
-PenWindowBase::PenWindowBase()
-{
-    this->m_windowScene = std::make_unique<PenScene>();
-}
-
 PenWindowBase::~PenWindowBase()
 {
-    if (!this->m_windowScene)
+    if (this->m_renderSystem)
     {
-        this->m_windowScene.reset();
-        this->m_windowScene = nullptr;
+        this->m_renderSystem.reset();
+        this->m_renderSystem = nullptr;
     }
 }
 
-std::unique_ptr<PenScene>& PenWindowBase::getScene()
+void PenWindowBase::render()
 {
-    return this->m_windowScene;
+    if(this->m_renderSystem)
+        this->m_renderSystem->render();
+}
+
+void PenWindowBase::setRenderSystem(std::shared_ptr<System::PenRendererSystem> system)
+{
+    this->m_renderSystem = system;
 }

@@ -4,6 +4,7 @@ using namespace Pengine;
 
 void PenOctopus::init()
 {
+	this->m_mainScene = std::make_unique<PenScene>();
 	this->m_PenComponentManager = std::make_unique<Components::PenComponentsManager>();
 	this->m_PenObjectManager = std::make_unique<PenObjectManager>();
 	this->m_PenSystemManager = std::make_unique<System::PenSystemManager>();
@@ -11,7 +12,11 @@ void PenOctopus::init()
 
 PenObjectId PenOctopus::createPenObject()
 {
-	return this->m_PenObjectManager->createPenObject();
+	PenObjectId obj = this->m_PenObjectManager->createPenObject();
+
+	this->m_mainScene->addObject(obj);
+
+	return obj;
 }
 
 void PenOctopus::destroyPenObject(PenObjectId obj)
@@ -21,4 +26,23 @@ void PenOctopus::destroyPenObject(PenObjectId obj)
 	this->m_PenObjectManager->destroyPenObject(obj);
 
 	this->m_PenSystemManager->PenObjectDestroyed(obj);
+
+	this->m_mainScene->removeObject(obj);
+}
+
+void PenOctopus::addToScene(const PenObjectId obj)
+{
+	this->m_mainScene->addObject(obj);
+	m_PenSystemManager->PenObjectSignatureChanged(obj, m_PenObjectManager->getSignature(obj));
+}
+
+void PenOctopus::removeFromScene(const PenObjectId obj)
+{
+	this->m_mainScene->removeObject(obj);
+	this->m_PenSystemManager->PenObjectDestroyed(obj);
+}
+
+std::unique_ptr<PenScene>& PenOctopus::getMainScene()
+{
+	return this->m_mainScene;
 }

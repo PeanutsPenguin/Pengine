@@ -17,10 +17,11 @@ namespace Pengine
 		this->m_PenComponentManager->addComponent<T>(obj, component);
 
 		PenComponentSignature signature = m_PenObjectManager->getSignature(obj);
-		signature.set(m_PenComponentManager->getComponent<T>(), true);
+		signature.set(m_PenComponentManager->getComponentType<T>(), true);
 		m_PenObjectManager->setSignature(obj, signature);
 
-		m_PenSystemManager->PenObjectSignatureChanged(obj, signature);
+		if(this->m_mainScene->isObjectInScene(obj))
+			m_PenSystemManager->PenObjectSignatureChanged(obj, signature);
 	}
 
 	template<typename T>
@@ -32,9 +33,11 @@ namespace Pengine
 		signature.set(m_PenComponentManager->getComponentType<T>(), false);
 		m_PenObjectManager->setSignature(obj, signature);
 
-		m_PenSystemManager->PenObjectSignatureChanged(obj, signature);
+		if (this->m_mainScene->isObjectInScene(obj))
+			m_PenSystemManager->PenObjectSignatureChanged(obj, signature);
 	}
 
+#pragma region Getter
 	template<typename T>
 	inline T& PenOctopus::getComponent(PenObjectId obj)
 	{
@@ -48,6 +51,13 @@ namespace Pengine
 	}
 
 	template<typename T>
+	inline std::shared_ptr<T> PenOctopus::getSystem()
+	{
+		return this->m_PenSystemManager->getSystem<T>();
+	}
+#pragma endregion
+
+	template<typename T>
 	inline std::shared_ptr<T> PenOctopus::registerSystem()
 	{
 		return m_PenSystemManager->registerSystem<T>();
@@ -58,6 +68,4 @@ namespace Pengine
 	{
 		this->m_PenSystemManager->setSignature<T>(signature);
 	}
-
-
 }

@@ -10,6 +10,10 @@ namespace Pengine::Components
 	class PenComponentsManager
 	{
 	public:
+		PenComponentsManager() = default;
+
+		~PenComponentsManager() = default;
+
 		template<typename T>
 		void registerComponent();
 
@@ -29,9 +33,9 @@ namespace Pengine::Components
 
 #pragma region Private
 	private:
-		std::unordered_map<const char*, PenComponentType> m_PenComponentsType;						//Map to handle const char* to specific component type 
-		std::unordered_map<const char*, std::shared_ptr<IPenComponentArray>> m_PenComponentsArrays;	//Map from const char* to a component array
-		PenComponentType m_nextPenComponentType;													//Keep track of wich components need to be registered or not - starting at 0
+		std::unordered_map<const char*, PenComponentType> m_PenComponentsType{};						//Map to handle const char* to specific component type 
+		std::unordered_map<const char*, std::shared_ptr<IPenComponentArray>> m_PenComponentsArrays{};	//Map from const char* to a component array
+		PenComponentType m_nextPenComponentType{};														//Keep track of wich components need to be registered or not - starting at 0
 
 		template<typename T>
 		std::shared_ptr<ComponentArray<T>> getComponentArray();

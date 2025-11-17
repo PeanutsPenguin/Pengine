@@ -14,12 +14,26 @@ namespace Pengine::System
 		if(m_PenSystems.find(typeName) != m_PenSystems.end())
 		{
 			std::cout << __FUNCTION__ "System already registered\n";
-			return m_PenSystems[typeName];
+			return std::dynamic_pointer_cast<T>(m_PenSystems[typeName]);
 		}
 
 		std::shared_ptr<T> system = std::make_shared<T>();
 		m_PenSystems.insert({ typeName, system });
 		return system;
+	}
+
+	template<typename T>
+	inline _Ret_maybenull_ std::shared_ptr<T> PenSystemManager::getSystem()
+	{
+		const char* typeName = typeid(T).name();
+
+		if (m_PenSystems.find(typeName) != m_PenSystems.end())
+		{
+			std::cout << __FUNCTION__ "System not registered\n";
+			return nullptr;	
+		}
+
+		return std::dynamic_pointer_cast<T>(m_PenSystems[typeName]);
 	}
 
 	template<typename T>

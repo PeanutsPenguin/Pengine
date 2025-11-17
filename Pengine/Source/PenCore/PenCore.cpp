@@ -8,7 +8,7 @@
 //Components
 #include "PenComponents/PenRenderer/PenRenderer.h"
 
-
+//Lib
 #include <GLFW/glfw3.h>
 
 using namespace Pengine;
@@ -34,7 +34,9 @@ bool PenCore::init(const char* name, const PenMath::Vector2f& windowSize)
     if(!m_window->init(name, windowSize))
         return false;
 
+    m_PenOctopus->init();
 
+    registerDefaultType();
 
     return true;
 }
@@ -50,6 +52,7 @@ void PenCore::stopPengine()
 	m_shouldStop = true;
 }
 
+#pragma region Getter
 std::unique_ptr<PenWindowBase>& PenCore::PenWindow()
 {
 	return m_window;
@@ -69,7 +72,9 @@ std::unique_ptr<Resources::PenResourcesManager>& PenCore::ResourcesManager()
 {
     return m_resourcesManager;
 }
+#pragma endregion
 
+#pragma region Updates
 void PenCore::updateDeltaTime()
 {
     const double currentFrame = glfwGetTime();
@@ -89,19 +94,40 @@ void PenCore::update()
         updateDeltaTime();
         updateInputs();
 
+        m_window->preRender(*m_PenOctopus->getMainScene());
+
 		//Then the render ones
         m_window->render();
+
+        m_window->postRender();
 
         m_resourcesManager->clearUnused();
     }
 
     destroy();
 }
+#pragma endregion
 
+#pragma region Register
 void PenCore::registerDefaultType()
+{
+    registerComponents();
+    registerSystems();
+}
+
+void PenCore::registerComponents()
 {
     m_PenOctopus->registerComponent<Components::PenRenderer>();
 }
+
+void Pengine::PenCore::registerSystems()
+{
+    PenComponentSignature renderSig;
+    renderSig.set(m_PenOctopus->getComponentType<Components::PenRenderer>());
+    m_window->setRenderSystem(m_PenOctopus->registerSystem<System::PenRendererSystem>());
+    m_PenOctopus->setSystemSignature<System::PenRendererSystem>(renderSig);
+}
+#pragma endregion
 
 void PenCore::destroy()
 {

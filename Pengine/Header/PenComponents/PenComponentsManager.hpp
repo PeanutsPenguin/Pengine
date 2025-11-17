@@ -32,8 +32,8 @@ namespace Pengine::Components
 
 		if(m_PenComponentsType.find(typeName) == m_PenComponentsType.end())
 		{
-			std::cout << __FUNCTION__ "Component Type is not registered. \n";
-			return m_PenComponentsType[m_nextPenComponentType - 1];
+			std::cout << __FUNCTION__ "Component Type is not registered. (Returning 0) \n";
+			return 0;
 		}
 
 		return m_PenComponentsType[typeName];
@@ -64,8 +64,8 @@ namespace Pengine::Components
 
 		if (m_PenComponentsType.find(typeName) == m_PenComponentsType.end())
 		{
-			std::cout << __FUNCTION__ "Component Type is not registered. \n";
-			return m_PenComponentsType[m_nextPenComponentType - 1];
+			std::cout << __FUNCTION__ "Component Type is not registered. (Returning 0)\n";
+			return 0;
 		}
 
 		return std::static_pointer_cast<ComponentArray<T>>(m_PenComponentsArrays[typeName]);

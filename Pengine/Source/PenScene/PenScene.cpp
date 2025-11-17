@@ -25,23 +25,31 @@ Pengine::PenScene::~PenScene()
 #pragma endregion
 
 #pragma region Functions
-
-void PenScene::render()
-{
-	clearBackground();
-
-}
-
-void PenScene::clearBackground()
-{
-	glClearColor(m_backgroundColor->r, m_backgroundColor->g, m_backgroundColor->b, m_backgroundColor->a);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
-
 void PenScene::changeBackgroundColor(const PenColor& col)
 {
 	*this->m_backgroundColor = col;
 }
+
+const PenColor& Pengine::PenScene::getBackgroundColor() const
+{
+	return *this->m_backgroundColor;
+}
+
+void PenScene::removeObject(const PenObjectId obj)
+{
+	this->m_objects.erase(obj);
+}
+
+void PenScene::addObject(const PenObjectId obj)
+{
+	this->m_objects.insert(obj);
+}
+
+bool PenScene::isObjectInScene(const PenObjectId obj)
+{
+	return this->m_objects.count(obj);
+}
+
 
 
 #pragma endregion	
