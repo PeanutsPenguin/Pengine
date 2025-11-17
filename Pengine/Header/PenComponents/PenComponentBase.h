@@ -24,7 +24,6 @@ namespace Pengine::Components
 		void SetState(PenComponentState state, bool enable = true);
 
 	private:
-		PenObjectId m_entity;
 		std::bitset<8>	 m_flags = std::bitset<8>((size_t)PenComponentState::ENABLE);	//Bit operation to check component's specific state
 	};
 }	
