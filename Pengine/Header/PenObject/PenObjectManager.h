@@ -4,7 +4,6 @@
 #include <array>
 
 #include "PengineDefine.h"
-#include "PenObject.h"
 
 namespace Pengine
 {
@@ -25,7 +24,7 @@ namespace Pengine
 
 		void setSignature(PenObjectId id, PenComponentSignature sig);
 
-		_Ret_maybenull_ PenComponentSignature getSignature(PenObjectId id);
+		PenComponentSignature getSignature(PenObjectId id);
 
 #pragma endregion
 

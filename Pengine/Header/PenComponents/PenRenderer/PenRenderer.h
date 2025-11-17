@@ -1,28 +1,16 @@
 #pragma once 
 
-#include "PenComponents/PenComponentsBase.h"
+#include "PenComponents/PenComponentBase.h"
 #include "PenResources/PenModel.h"
 #include "PenResources/PenShaderProgramBase.h"
 
 namespace Pengine::Components
 {
-	class PenRenderer
+	class PenRenderer : public PenComponentBase
 	{
 	public:
-//#pragma region Public
-//		PenRenderer() = default;
-//
-//		PenRenderer(const PenComponentsId& id) : PenComponentsBase(id) {};
-//		
-//		~PenRenderer() override;
-//
-//		void setShaderProgram(std::shared_ptr<Pengine::Resources::PenShaderProgramBase> prog);
-//
-//		void setModel(std::shared_ptr<Pengine::Resources::PenModel> model);
-//
-//		void render() override;
-//#pragma endregion
 
+		~PenRenderer() override;
 #pragma region Private
 	private:
 		std::shared_ptr<Pengine::Resources::PenModel> m_model;

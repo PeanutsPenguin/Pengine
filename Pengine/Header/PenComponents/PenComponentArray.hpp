@@ -1,6 +1,6 @@
 #pragma once 
 
-#include "PenComponents/PenComponentsBase.h"
+#include "PenComponents/PenComponentArray.h"
 
 #include <iostream>
 

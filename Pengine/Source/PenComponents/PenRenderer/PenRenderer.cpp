@@ -2,20 +2,21 @@
 
 using namespace Pengine::Components;
 
-//PenRenderer::~PenRenderer()
-//{
-//	if (!this->m_model)
-//	{
-//		this->m_model.reset();
-//		this->m_model = nullptr;
-//	}
-//
-//	if(!this->m_shader)
-//	{
-//		this->m_shader.reset();
-//		this->m_shader = nullptr;
-//	}
-//}
+PenRenderer::~PenRenderer()
+{
+	if (!this->m_model)
+	{
+		this->m_model.reset();
+		this->m_model = nullptr;
+	}
+
+	if(!this->m_shader)
+	{
+		this->m_shader.reset();
+		this->m_shader = nullptr;
+	}
+}
+
 //
 //void PenRenderer::setShaderProgram(std::shared_ptr<Pengine::Resources::PenShaderProgramBase> prog)
 //{

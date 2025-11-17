@@ -34,4 +34,4 @@ namespace Pengine::Components
 
 }
 
-#include "PenComponents/PenComponentsBase.hpp"
+#include "PenComponents/PenComponentArray.hpp"
