@@ -7,6 +7,7 @@
 
 //Components
 #include "PenComponents/PenRenderer/PenRenderer.h"
+#include "PenComponents/PenTransform/PenTransform.h"
 
 //Lib
 #include <GLFW/glfw3.h>
@@ -118,14 +119,28 @@ void PenCore::registerDefaultType()
 void PenCore::registerComponents()
 {
     m_PenOctopus->registerComponent<Components::PenRenderer>();
+    m_PenOctopus->registerComponent<Components::PenTransform>();
 }
 
 void Pengine::PenCore::registerSystems()
+{
+    registerRendererSystem();
+    registerTransformSystem();
+}
+
+void Pengine::PenCore::registerRendererSystem()
 {
     PenComponentSignature renderSig;
     renderSig.set(m_PenOctopus->getComponentType<Components::PenRenderer>());
     m_window->setRenderSystem(m_PenOctopus->registerSystem<System::PenRendererSystem>());
     m_PenOctopus->setSystemSignature<System::PenRendererSystem>(renderSig);
+}
+
+void Pengine::PenCore::registerTransformSystem()
+{
+    PenComponentSignature transSig;
+    transSig.set(m_PenOctopus->getComponentType<Components::PenTransform>());
+    m_PenOctopus->setSystemSignature<System::PenTransformSystem>(transSig);
 }
 #pragma endregion
 

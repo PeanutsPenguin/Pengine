@@ -5,6 +5,7 @@
 
 //System
 #include "PenSystem/PenRenderSystem/PenRenderSystem.h"
+#include "PenSystem/PenTransformSystem/PenTransformSystem.h"
 
 //std
 #include <memory>
@@ -27,6 +28,10 @@ namespace Pengine::System
 		void PenObjectDestroyed(PenComponentsId entity);
 
 		void PenObjectSignatureChanged(PenObjectId entity, PenComponentSignature entitySignature);
+
+		void onEntityInserted(const PenObjectId newObj);
+
+		void onEntityDestroyed(const PenObjectId newObj);
 
 	private:
 		std::unordered_map<const char*, PenComponentSignature> m_PenComponentSignature;			//Map to handle const char* to Signature

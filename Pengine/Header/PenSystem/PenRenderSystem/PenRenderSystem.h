@@ -12,5 +12,9 @@ namespace Pengine::System
 		~PenRendererSystem() override;
 
 		void render();
+
+		void onEntityInserted(const PenObjectId newObj) override {};
+
+		void onEntityDestroyed(const PenObjectId obj) override {};
 	};
 }

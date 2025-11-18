@@ -9,7 +9,7 @@ using namespace Pengine;
 
 PenObjectManager::PenObjectManager()
 {
-	for (PenObjectId entity = 0; entity < g_maxEntity; ++entity)
+	for (PenObjectId entity = 1; entity < g_maxEntity; ++entity)
 		m_validIds.push(entity);
 }
 

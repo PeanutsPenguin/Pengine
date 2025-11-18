@@ -22,6 +22,8 @@ namespace Pengine
 
 	const PenObjectId g_maxEntity = 2048;
 
+	const PenObjectId PenObjectInvalidId = 0;
+
 	typedef unsigned __int32 PenComponentsId;
 
 	using PenComponentType = std::uint8_t;
