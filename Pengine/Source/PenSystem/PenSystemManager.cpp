@@ -30,3 +30,16 @@ void PenSystemManager::PenObjectSignatureChanged(PenObjectId entity, PenComponen
 		}
 	}
 }
+
+void PenSystemManager::onEntityInserted(const PenObjectId newObj)
+{
+	for(auto system : this->m_PenSystems)
+		system.second->onEntityInserted(newObj);
+}
+
+void PenSystemManager::onEntityDestroyed(const PenObjectId newObj)
+{
+	for (auto system : this->m_PenSystems)
+		system.second->onEntityDestroyed(newObj);
+}
+

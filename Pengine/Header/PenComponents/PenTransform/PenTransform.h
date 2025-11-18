@@ -17,17 +17,22 @@ namespace Pengine::Components
 		PenTransform& operator=(const PenTransform& rhs) = default;
 		PenTransform& operator=(PenTransform&& rhs) = default;
 
-		const PenMath::Transform& getGlobalTransform() const;
-		PenMath::Transform& getGlobalTransform();
+		const PenMath::Transform&	getGlobalTransform() const;
+		PenMath::Transform&			getGlobalTransform();
 
-		const PenMath::Transform& getLocalTransform() const;
-		PenMath::Transform& getLocalTransform();
+		const PenMath::Transform&	getLocalTransform() const;
+		PenMath::Transform&			getLocalTransform();
 
-		void					SetLocalTransform(const PenMath::Transform& transform);
-		void					SetGlobalTransform(const PenMath::Transform& transform);
+		const PenObjectId			getParent();
+
+		void						SetLocalTransform(const PenMath::Transform& transform);
+		void						SetGlobalTransform(const PenMath::Transform& transform);
+
+		void						SetParent(const PenObjectId entity, bool keepPosition = true);
 
 	private:
 		PenMath::Transform m_globalTransform;
 		PenMath::Transform m_localTransform;
+		PenObjectId m_parent;
 	};
 }

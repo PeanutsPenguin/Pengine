@@ -12,15 +12,17 @@ namespace Pengine
 	}
 
 	template<typename T>
+	//requires std::derived_from<T, Components::PenComponentBase>
 	inline void PenOctopus::addComponent(PenObjectId obj, T component)
 	{
 		this->m_PenComponentManager->addComponent<T>(obj, component);
 
+		component.setPenObjectId(obj);
 		PenComponentSignature signature = m_PenObjectManager->getSignature(obj);
 		signature.set(m_PenComponentManager->getComponentType<T>(), true);
 		m_PenObjectManager->setSignature(obj, signature);
 
-		if(this->m_mainScene->isObjectInScene(obj))
+		if (this->m_mainScene->isObjectInScene(obj))
 			m_PenSystemManager->PenObjectSignatureChanged(obj, signature);
 	}
 

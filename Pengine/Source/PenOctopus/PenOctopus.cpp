@@ -34,11 +34,13 @@ void PenOctopus::addToScene(const PenObjectId obj)
 {
 	this->m_mainScene->addObject(obj);
 	m_PenSystemManager->PenObjectSignatureChanged(obj, m_PenObjectManager->getSignature(obj));
+	this->m_PenSystemManager->onEntityInserted(obj);
 }
 
 void PenOctopus::removeFromScene(const PenObjectId obj)
 {
 	this->m_mainScene->removeObject(obj);
+	this->m_PenSystemManager->onEntityInserted(obj);
 	this->m_PenSystemManager->PenObjectDestroyed(obj);
 }
 

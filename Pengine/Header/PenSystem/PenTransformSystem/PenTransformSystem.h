@@ -23,7 +23,9 @@ namespace Pengine::System
 
 		void reparentChild(const PenObjectId obj, const PenObjectId oldParent, const PenObjectId newParent, bool keepPosition = true);
 
-		void onEntityDestroyed() override;
+		void onEntityInserted(const PenObjectId newObj) override;
+
+		void onEntityDestroyed(const PenObjectId obj) override;
 
 	private:
 		std::unordered_map<PenObjectId, std::set<PenObjectId>> m_children;

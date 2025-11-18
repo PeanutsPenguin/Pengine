@@ -8,8 +8,7 @@
 #include "PenSystem/PenSystemManager.h"
 #include "PenScene/PenScene.h"
 
-
-
+#include "PenComponents/PenComponentBase.h"
 
 namespace Pengine
 {
@@ -30,6 +29,7 @@ namespace Pengine
 		void registerComponent();
 
 		template<typename T>
+			//requires std::derived_from<T, Components::PenComponentBase>
 		void addComponent(PenObjectId obj, T component);
 
 		template<typename T>
