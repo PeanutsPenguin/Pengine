@@ -6,6 +6,7 @@
 //System
 #include "PenSystem/PenRenderSystem/PenRenderSystem.h"
 #include "PenSystem/PenTransformSystem/PenTransformSystem.h"
+#include "PenSystem/PenCameraSystem/PenCameraSystem.h"
 
 //std
 #include <memory>

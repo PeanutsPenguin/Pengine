@@ -11,6 +11,7 @@
 //Components
 #include "PenComponents/PenRenderer/PenRenderer.h"
 #include "PenComponents/PenTransform/PenTransform.h"
+#include "PenComponents/PenCamera/PenCamera.h"
 
 //Lib
 #include <GLFW/glfw3.h>
@@ -149,12 +150,14 @@ void PenCore::registerComponents()
 {
     m_PenOctopus->registerComponent<Components::PenRenderer>();
     m_PenOctopus->registerComponent<Components::PenTransform>();
+    m_PenOctopus->registerComponent<Components::PenCamera>();
 }
 
 void PenCore::registerSystems()
 {
     registerRendererSystem();
     registerTransformSystem();
+    registerCameraSystem();
 }
 
 void PenCore::registerRendererSystem()
@@ -163,6 +166,14 @@ void PenCore::registerRendererSystem()
     renderSig.set(m_PenOctopus->getComponentType<Components::PenRenderer>());
     m_window->setRenderSystem(m_PenOctopus->registerSystem<System::PenRendererSystem>());
     m_PenOctopus->setSystemSignature<System::PenRendererSystem>(renderSig);
+}
+
+void Pengine::PenCore::registerCameraSystem()
+{
+    PenComponentSignature camSig;
+    camSig.set(m_PenOctopus->getComponentType<Components::PenCamera>());
+    camSig.set(m_PenOctopus->getComponentType<Components::PenTransform>());
+    m_PenOctopus->setSystemSignature<System::PenRendererSystem>(camSig);
 }
 
 void PenCore::registerTransformSystem()
