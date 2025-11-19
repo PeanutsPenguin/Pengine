@@ -3,10 +3,9 @@
 #include "PenComponents/PenComponentBase.h"
 #include "PenCamera/PenCameraTypesAndValues.h"
 
-
-
 #include <Vector/Vector3/Vector3.h>
 #include <Matrix/Mat4.h>
+#include <Transform.h>
 
 namespace Pengine::Components
 {
@@ -14,7 +13,7 @@ namespace Pengine::Components
 	{
 #pragma region Public
 	public:
-		PenCamera() = default;
+		PenCamera();
 		PenCamera(const PenCamera& other) = default;
 		PenCamera(PenCamera&& other) = default;
 		~PenCamera() = default;
@@ -27,15 +26,23 @@ namespace Pengine::Components
 		PenMath::Mat4		getViewMatrix()			const;
 		PerspectiveCamera	getPerpectiveValue()	const;
 		PenMath::Mat4		getViewProjMatrix()		const;
+		PenMath::Vector3f	getFront()				const;
+		PenMath::Vector3f	getRight()				const;
+		float				getYaw()				const;
+		float				getPitch()				const;
 #pragma endregion
 
 #pragma region Setter
 		void				setProjectionMatrix(const PenMath::Mat4& mat);
 		void				setViewMatrix(const PenMath::Mat4& mat);
 		void				setPerpectiveValue(const PerspectiveCamera& values);
+		void				setFront(const PenMath::Vector3f& front);
+		void				setRight(const PenMath::Vector3f& right);
+		void				setUp(const PenMath::Vector3f& up);
 #pragma endregion
 
 		void updateProjectionMatrix();
+		void updateViewMatrix(const PenMath::Transform& trans);
 #pragma endregion
 
 #pragma region Private

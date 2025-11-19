@@ -37,7 +37,7 @@ const Pengine::PenObjectId PenTransform::getParent()
 	return m_parent;
 }
 
-void PenTransform::SetLocalTransform(const PenMath::Transform& transform)
+void PenTransform::setLocalTransform(const PenMath::Transform& transform)
 {
 	if (transform == this->m_localTransform)
 		return;
@@ -45,7 +45,7 @@ void PenTransform::SetLocalTransform(const PenMath::Transform& transform)
 	this->m_localTransform = transform;
 	this->SetState(PenComponentState::DIRTY);
 }
-void PenTransform::SetGlobalTransform(const PenMath::Transform& transform)
+void PenTransform::setGlobalTransform(const PenMath::Transform& transform)
 {
 	if (transform == this->m_globalTransform)
 		return;
@@ -54,7 +54,7 @@ void PenTransform::SetGlobalTransform(const PenMath::Transform& transform)
 	this->SetState(PenComponentState::DIRTY);
 }
 
-void PenTransform::SetParent(const PenObjectId entity, bool keepPosition)
+void PenTransform::setParent(const PenObjectId entity, bool keepPosition)
 {
 	std::shared_ptr<System::PenTransformSystem> transform_system = PenCore::PenOctopus()->getSystem<System::PenTransformSystem>();
 

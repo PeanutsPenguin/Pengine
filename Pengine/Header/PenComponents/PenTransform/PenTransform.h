@@ -25,10 +25,10 @@ namespace Pengine::Components
 
 		const PenObjectId			getParent();
 
-		void						SetLocalTransform(const PenMath::Transform& transform);
-		void						SetGlobalTransform(const PenMath::Transform& transform);
+		void						setLocalTransform(const PenMath::Transform& transform);
+		void						setGlobalTransform(const PenMath::Transform& transform);
 
-		void						SetParent(const PenObjectId entity, bool keepPosition = true);
+		void						setParent(const PenObjectId entity, bool keepPosition = true);
 
 	private:
 		PenMath::Transform m_globalTransform;
