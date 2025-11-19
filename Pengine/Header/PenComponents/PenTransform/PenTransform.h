@@ -9,10 +9,10 @@ namespace Pengine::Components
 	{
 	public:
 		///* CONSTRUCTOR/DESTRUCTOR */
-		PenTransform(void);
+		PenTransform();
 		PenTransform(const PenTransform& other) = default;
 		PenTransform(PenTransform&& other) = default;
-		~PenTransform(void) = default;
+		~PenTransform() = default;
 
 		PenTransform& operator=(const PenTransform& rhs) = default;
 		PenTransform& operator=(PenTransform&& rhs) = default;
