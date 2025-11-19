@@ -5,6 +5,9 @@
 #include "PenInput/PenInput.h"                      //PenInput
 #include "PenOctopus/PenOctopus.h"                  //PenOctopus
 
+//Window
+#include "PenWindow/GLFW/Private_GLFWPenWindow.h"
+
 //Components
 #include "PenComponents/PenRenderer/PenRenderer.h"
 #include "PenComponents/PenTransform/PenTransform.h"
@@ -16,14 +19,12 @@ using namespace Pengine;
 
 #pragma region Static definiton
 
-#if defined (GLFW_WINDOW)
-    #include "PenWindow/GLFW/Private_GLFWPenWindow.h"
-    std::unique_ptr<PenWindowBase> PenCore::m_window = std::make_unique<GLFWPenWindow>();
-#endif
-
+std::unique_ptr<PenWindowBase> PenCore::m_window = nullptr;
 std::unique_ptr<PenOctopus> PenCore::m_PenOctopus = std::make_unique<Pengine::PenOctopus>();
 std::unique_ptr<PenInputManager> PenCore::m_inputManager = std::make_unique<PenInputManager>();
 std::unique_ptr<Resources::PenResourcesManager> PenCore::m_resourcesManager = std::make_unique<Resources::PenResourcesManager>();
+
+PenLibDefine PenCore::m_libs = PenLibDefine();
 
 float PenCore::m_deltaTime = 0;
 float PenCore::m_lastFrame = glfwGetTime();
@@ -32,6 +33,13 @@ bool PenCore::m_shouldStop = 0;
 
 bool PenCore::init(const char* name, const PenMath::Vector2f& windowSize)
 {
+    m_libs.input = InputLib::E_GLFW_INPUT;
+    m_libs.window = WindowLib::E_GLFW_WINDOW;
+    m_libs.render = RenderLib::E_OPENGL_RENDER;
+
+    if (m_libs.window == WindowLib::E_GLFW_WINDOW)
+        m_window = std::make_unique<GLFWPenWindow>();
+
     if(!m_window->init(name, windowSize))
         return false;
 
@@ -64,7 +72,7 @@ std::unique_ptr<PenInputManager>& PenCore::InputManager()
     return m_inputManager;
 }
 
-std::unique_ptr<Pengine::PenOctopus>& PenCore::PenOctopus()
+std::unique_ptr<PenOctopus>& PenCore::PenOctopus()
 {
     return m_PenOctopus;
 }
@@ -73,6 +81,27 @@ std::unique_ptr<Resources::PenResourcesManager>& PenCore::ResourcesManager()
 {
     return m_resourcesManager;
 }
+
+PenLibDefine& PenCore::libDefine()
+{
+    return m_libs;
+}
+
+InputLib PenCore::inputLib()
+{
+    return m_libs.input;
+}
+
+WindowLib PenCore::windowLib()
+{
+    return m_libs.window;
+}
+
+RenderLib PenCore::renderLib()
+{
+    return m_libs.render;
+}
+
 #pragma endregion
 
 #pragma region Updates
@@ -122,13 +151,13 @@ void PenCore::registerComponents()
     m_PenOctopus->registerComponent<Components::PenTransform>();
 }
 
-void Pengine::PenCore::registerSystems()
+void PenCore::registerSystems()
 {
     registerRendererSystem();
     registerTransformSystem();
 }
 
-void Pengine::PenCore::registerRendererSystem()
+void PenCore::registerRendererSystem()
 {
     PenComponentSignature renderSig;
     renderSig.set(m_PenOctopus->getComponentType<Components::PenRenderer>());
@@ -136,7 +165,7 @@ void Pengine::PenCore::registerRendererSystem()
     m_PenOctopus->setSystemSignature<System::PenRendererSystem>(renderSig);
 }
 
-void Pengine::PenCore::registerTransformSystem()
+void PenCore::registerTransformSystem()
 {
     PenComponentSignature transSig;
     transSig.set(m_PenOctopus->getComponentType<Components::PenTransform>());

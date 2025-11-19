@@ -1,9 +1,9 @@
 #include "PenWindow/GLFW/Private_GLFWPenWindow.h"
 
-#include "PenCore/PenCore.h"        //Core
-#include "PenScene/PenScene.h"      //PenScene
-#include "PenInput/PenInput.h"      //PenInput
-#include "PenColor/PenColor.h"      //PenColor
+#include "PenCore/PenCore.h"                     //Core
+#include "PenScene/PenScene.h"                  //PenScene
+#include "PenInput/PenInput.h"                  //PenInput
+#include "PenColor/PenColor.h"                  //PenColor
 
 //Lib
 #include <glad/glad.h>
@@ -26,9 +26,8 @@ bool GLFWPenWindow::init(const char* name, const PenMath::Vector2f& windowSize)
 {
     this->m_windowSize = windowSize;
 
-    #if defined(OPENGL_RENDER)
+    if (PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
         return GLInit(name, windowSize);
-    #endif
 
     return false;
 }

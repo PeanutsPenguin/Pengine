@@ -77,9 +77,8 @@ bool PenModel::loadPenGLMesh(const aiMesh& mesh)
 
 void PenModel::render(std::shared_ptr<Pengine::Resources::PenShaderProgramBase> shaderProg)
 {
-#if defined (OPENGL_RENDER)
-	this->GLRender(shaderProg);
-#endif
+	if(PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
+		this->GLRender(shaderProg);
 }
 
 void PenModel::GLRender(std::shared_ptr<Pengine::Resources::PenShaderProgramBase> shaderProg)
@@ -110,10 +109,13 @@ bool PenModel::processNode(aiNode* node, const aiScene* scene)
 	for (unsigned int i = 0; i < node->mNumMeshes; i++)
 	{
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-#if defined(OPENGL_RENDER)
-		if (!loadPenGLMesh(*mesh))
-			std::cerr << __FUNCTION__ ": Failed to load mesh : " << i << " in the model resource." << std::endl;
-#endif
+
+		if (PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
+		{
+			if (!loadPenGLMesh(*mesh))
+				std::cerr << __FUNCTION__ ": Failed to load mesh : " << i << " in the model resource.\n";
+		}
+		
 	}
 	
 	for (unsigned int i = 0; i < node->mNumChildren; i++)

@@ -24,7 +24,7 @@
 int main()
 {
 #if CHECK_MEMORY_LEAKS
-	_CrtMemState& start = beforeMain();
+	_CrtMemState* start = beforeMain();
 	{
 #endif
 		Pengine::PenCore::init("Pengine Window", { 800.0f, 600.0f });
