@@ -25,44 +25,31 @@ Pengine::PenScene::~PenScene()
 #pragma endregion
 
 #pragma region Functions
-
-void PenScene::render()
-{
-	clearBackground();
-
-	for (int i = 0; i < m_objects.size(); ++i)
-		PenCore::ObjectManager()->getObjectById(m_objects[i]).render();
-}
-
-void PenScene::clearBackground()
-{
-	glClearColor(m_backgroundColor->r, m_backgroundColor->g, m_backgroundColor->b, m_backgroundColor->a);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
-
 void PenScene::changeBackgroundColor(const PenColor& col)
 {
 	*this->m_backgroundColor = col;
 }
 
-bool PenScene::addObjectById(const PenObjectId id)
+const PenColor& Pengine::PenScene::getBackgroundColor() const
 {
-	if(PenCore::ObjectManager()->isObjectExisting(id))
-	{
-		this->m_objects.push_back(id);
-		return true;
-	}
-
-	return false;
+	return *this->m_backgroundColor;
 }
 
-PenObjectId PenScene::createObject()
+void PenScene::removeObject(const PenObjectId obj)
 {
-	PenObject& obj = PenCore::ObjectManager()->createPenObject();
-
-	this->m_objects.push_back(obj.getId());
-
-	return obj.getId();
+	this->m_objects.erase(obj);
 }
+
+void PenScene::addObject(const PenObjectId obj)
+{
+	this->m_objects.insert(obj);
+}
+
+bool PenScene::isObjectInScene(const PenObjectId obj)
+{
+	return this->m_objects.count(obj);
+}
+
+
 
 #pragma endregion	

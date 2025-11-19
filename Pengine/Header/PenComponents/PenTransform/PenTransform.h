@@ -1,22 +1,38 @@
 #pragma once 
 
-#include "PenComponents/PenComponentsBase.h"
+#include "PenComponents/PenComponentBase.h"
+#include "Transform.h"
 
 namespace Pengine::Components
 {
-	class PenTransform : public PenComponentsBase
+	class PenTransform : public PenComponentBase
 	{
-#pragma region Public
 	public:
-		PenTransform() = delete;
+		///* CONSTRUCTOR/DESTRUCTOR */
+		PenTransform(void);
+		PenTransform(const PenTransform& other) = default;
+		PenTransform(PenTransform&& other) = default;
+		~PenTransform(void) = default;
 
-		PenTransform(PenComponentsId id) : PenComponentsBase(id) {}
+		PenTransform& operator=(const PenTransform& rhs) = default;
+		PenTransform& operator=(PenTransform&& rhs) = default;
 
-		~PenTransform() = default;
+		const PenMath::Transform&	getGlobalTransform() const;
+		PenMath::Transform&			getGlobalTransform();
 
-		void render() override;
-#pragma endregion
+		const PenMath::Transform&	getLocalTransform() const;
+		PenMath::Transform&			getLocalTransform();
 
-		//TO DO : Add a vec3f
+		const PenObjectId			getParent();
+
+		void						SetLocalTransform(const PenMath::Transform& transform);
+		void						SetGlobalTransform(const PenMath::Transform& transform);
+
+		void						SetParent(const PenObjectId entity, bool keepPosition = true);
+
+	private:
+		PenMath::Transform m_globalTransform;
+		PenMath::Transform m_localTransform;
+		PenObjectId m_parent;
 	};
 }

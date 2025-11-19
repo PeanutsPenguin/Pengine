@@ -7,6 +7,11 @@ constexpr int OPENGL_MINOR_VERSION = 3;
 
 #pragma region Forward declarations
 struct GLFWwindow;
+
+namespace Pengine
+{
+	class PenScene;
+}
 #pragma endregion
 
 
@@ -24,7 +29,11 @@ namespace Pengine
 
 		void setWindowSize(const PenMath::Vector2f& size, bool resizeWindow = true) override;
 
+		void preRender(const PenScene& mainScene) override;
+
 		void render() override;
+
+		void postRender() override;
 
 		GLFWwindow* getWindowPtr() const noexcept;
 #pragma endregion

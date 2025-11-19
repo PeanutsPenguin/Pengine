@@ -1,5 +1,5 @@
 #pragma once 
-#include <vector>
+#include <set>
 
 #include "PengineDefine.h"
 
@@ -20,24 +20,22 @@ namespace Pengine
 		PenScene();
 
 		~PenScene();
-
-		void render();
 		
-		void clearBackground();
-
 		void changeBackgroundColor(const PenColor& col);
 
-		//This will change in the new resource manager
-		_NODISCARD bool addObjectById(const PenObjectId id);
+		const PenColor& getBackgroundColor() const;
 
-		PenObjectId createObject();
+		void removeObject(const PenObjectId obj);
+
+		void addObject(const PenObjectId obj);
+
+		_NODISCARD bool isObjectInScene(const PenObjectId obj);
 #pragma endregion
 
 #pragma region Private
 	private :
-
 		PenColor* m_backgroundColor;
-		std::vector<PenObjectId> m_objects;
+		std::set<PenObjectId> m_objects;
 #pragma endregion
 	};
 }

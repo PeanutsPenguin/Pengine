@@ -1,18 +1,20 @@
-#include "PenCore/PenCore.h"
-#include "PenWindow/PenWindowBase.h"
-#include "PenScene/PenScene.h"
-#include "PenObject/PenObjectManager.h"
-#include "PenColor/PenColor.h"
-#include "PenResources/PenResourcesManager.h"
+#include "PenCore/PenCore.h"			//Core
+#include "PenScene/PenScene.h"			//Scene
+#include "PenWindow/PenWindowBase.h"	//Window
+#include "PenColor/PenColor.h"			//Color
+#include "PenOctopus/PenOctopus.h"		//Octopus
 
-//Not supposed to be here but ShaderProgram is not a resource yet
+//Define
+#include "PenditorDefine.h"
+
+//Resources
+#include "PenResources/PenModel.h"
+#include "PenResources/PenResourcesManager.h"
 #include "PenResources/OpenGl/Private_PenGLShader.h"
 #include "PenResources/OpenGl/Private_PenGLShaderProgram.h"
 
+//Components
 #include "PenComponents/PenRenderer/PenRenderer.h"
-#include "PenResources/PenModel.h"
-
-#include "PenditorDefine.h"
 
 #if defined (CHECK_MEMORY_LEAKS)
 	#include "Memory/MemoryLeakChecker.h"
@@ -27,98 +29,33 @@ int main()
 #endif
 		Pengine::PenCore::init("Pengine Window", { 800.0f, 600.0f });
 
+		//Pengine::PenCore::PenWindow()->getScene()->changeBackgroundColor(Pengine::PenColor::Blue);
+
+		//Create Obj
+		Pengine::PenObjectId newObj = Pengine::PenCore::PenOctopus()->createPenObject();
+
+		//PenResorucesManager
 		std::unique_ptr<Pengine::Resources::PenResourcesManager>& resourceManager = Pengine::PenCore::ResourcesManager();
 
-#pragma region Load an object and test it
-		//{
-		//	std::shared_ptr<Pengine::Resources::PenModel> ptr = resourceManager->loadResourceFromFile<Pengine::Resources::PenModel>("Models/star.obj");
-
-		//	std::cout << "Resource Path : " << resourceManager->getResourcePathById(ptr->getId()) <<  "\t Resource Id : " << ptr->getId() << std::endl;
-
-		//	std::shared_ptr<Pengine::Resources::PenModel> ptr2 = resourceManager->getResourceById<Pengine::Resources::PenModel>(ptr->getId());
-
-		//	ptr.reset();
-
-		//	std::cout << "Model still loaded\n";
-
-		//	ptr2.reset();
-
-		//	std::cout << "\n\n\n";
-		//}
-#pragma endregion
-
-#pragma region Load a texture and erase resource
-		{
-			//std::shared_ptr<Pengine::Resources::PenTexture> ptr = resourceManager->loadResourceFromFile<Pengine::Resources::PenTexture>("Images/penguin.jpg");
-
-			//std::cout << "Resource Path : " << resourceManager->getResourcePathById(ptr->getId()) << "\t Resource Id : " << ptr->getId() << std::endl;
-
-			//std::shared_ptr<Pengine::Resources::PenTexture> ptr2 = resourceManager->getResourceById<Pengine::Resources::PenTexture>(ptr->getId());
-
-			//ptr.reset();
-
-			//std::cout << "Texture still loaded\n";
-
-			//ptr2.reset();
-
-			//std::cout << "\n\n\n";
-		}
-#pragma endregion
-
-#pragma region Create Shaders and test
-		{
-			//std::shared_ptr<Pengine::Resources::PenGLShader> ptr = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLShader>("Shaders/basicVertexShader.vert", Pengine::PenShaderType::VERTEX_SHADER);
-
-			//if(ptr)
-			//	std::cout << "Resource Path : " << resourceManager->getResourcePathById(ptr->getId()) << "\t Resource Id : " << ptr->getId() << std::endl;
-
-			//std::shared_ptr<Pengine::Resources::PenTexture> ptr2 = resourceManager->getResourceById<Pengine::Resources::PenTexture>(ptr->getId());
-
-			//if(ptr)
-			//	ptr.reset();
-
-			//std::cout << "Shader still loaded\n";
-
-			//if (ptr2)
-			//	ptr2.reset();
-
-			//std::cout << "\n\n\n";
-		}
-#pragma endregion
-
-#pragma region Create Shader Program and test
-		{
-			//std::shared_ptr<Pengine::Resources::PenGLShader> ptr = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLShader>("Shaders/basicVertexShader.vert", Pengine::PenShaderType::VERTEX_SHADER);
-			//std::shared_ptr<Pengine::Resources::PenGLShader> ptr2 = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLShader>("Shaders/basicFragmentShader.frag", Pengine::PenShaderType::FRAGMENT_SHADER);
-
-			//std::shared_ptr<Pengine::Resources::PenGLShaderProgram> progPtr = std::make_shared<Pengine::Resources::PenGLShaderProgram>();
-
-			//progPtr->createShaderProgram(ptr, ptr2);
-		}
-#pragma endregion
-
-#pragma region Create a test object and add components
-
+		//Load mnodel
 		std::shared_ptr<Pengine::Resources::PenModel> modelPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenModel>("Models/BackPack/Survival_BackPack_2.fbx");
 
+		//Create shaders
 		std::shared_ptr<Pengine::Resources::PenGLShader> ptr = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLShader>("Shaders/basicVertexShader.vert", Pengine::PenShaderType::VERTEX_SHADER);
 		std::shared_ptr<Pengine::Resources::PenGLShader> ptr2 = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLShader>("Shaders/basicFragmentShader.frag", Pengine::PenShaderType::FRAGMENT_SHADER);
-
 		std::shared_ptr<Pengine::Resources::PenGLShaderProgram> progPtr = std::make_shared<Pengine::Resources::PenGLShaderProgram>();
-
 		progPtr->createShaderProgram(ptr, ptr2);
 
-		PenObjectId newObj = Pengine::PenCore::PenWindow()->getScene()->createObject();
+		//Create Component
+		Pengine::Components::PenRenderer renderComp;
+		renderComp.setModel(modelPtr);
+		renderComp.setShaderProgram(progPtr);
 
-		Pengine::PenObject& objRef = Pengine::PenCore::ObjectManager()->getObjectById(newObj);
+		//Add the component
+		Pengine::PenCore::PenOctopus()->addComponent(newObj, renderComp);
 
-		Pengine::Components::PenRenderer* newComp = objRef.addComponent<Pengine::Components::PenRenderer>();
+		Pengine::PenCore::PenOctopus()->addToScene(newObj);
 
-		newComp->setModel(modelPtr);
-		newComp->setShaderProgram(progPtr);
-
-#pragma endregion
-		Pengine::PenCore::PenWindow()->getScene()->changeBackgroundColor(Pengine::PenColor::Blue);
 
 		Pengine::PenCore::startPengine();
 

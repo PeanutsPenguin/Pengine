@@ -8,6 +8,11 @@
 namespace Pengine
 {
 	class PenScene;
+
+	namespace System
+	{
+		class PenRendererSystem;
+	}
 }
 #pragma endregion
 
@@ -17,7 +22,7 @@ namespace Pengine
 	{
 #pragma region Public
 	public:
-		PenWindowBase();
+		PenWindowBase() = default;
 
 		virtual ~PenWindowBase();
 
@@ -30,17 +35,19 @@ namespace Pengine
 		/// <param name="resizeWindow">True if you want to rescale the window</param>
 		virtual void setWindowSize(const PenMath::Vector2f& size, bool resizeWindow = true) = 0;
 
-		std::unique_ptr<PenScene>& getScene();
+		virtual void preRender(const PenScene& mainScene) = 0;
 
-		virtual void render() = 0;
+		virtual void render();
+
+		void setRenderSystem(std::shared_ptr<System::PenRendererSystem> system);
+
+		virtual void postRender() = 0;
 #pragma endregion
 
 #pragma region Protected
 	protected:
 		PenMath::Vector2f m_windowSize;
-
-		//In the futur i'd like to just have a pointer here to keep scene loaded when i want (will make an issue about it)
-		std::unique_ptr<PenScene> m_windowScene;
+		std::shared_ptr<System::PenRendererSystem> m_renderSystem;
 #pragma endregion
 	};
 }

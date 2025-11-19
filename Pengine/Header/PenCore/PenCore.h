@@ -8,18 +8,12 @@
 namespace Pengine
 {
 	class PenWindowBase;
-	class PenObjectManager;
+	class PenOctopus;
 	class PenInputManager;
 	
-
 	namespace Resources
 	{
 		class PenResourcesManager;
-	}
-
-	namespace Components
-	{
-		class PenComponentsManager;
 	}
 }	
 #pragma endregion
@@ -51,17 +45,12 @@ namespace Pengine
 		/// <summary>
 		/// Return the pointer to the object manager
 		/// </summary>
-		static std::unique_ptr<PenObjectManager>& ObjectManager();
+		static std::unique_ptr<PenInputManager>& InputManager();
 
 		/// <summary>
 		/// Return the pointer to the object manager
 		/// </summary>
-		static std::unique_ptr<PenInputManager>& InputManager();
-
-		/// <summary>
-		/// Return the pointer to the Components manager
-		/// </summary>
-		static std::unique_ptr<Components::PenComponentsManager>& ComponentsManager();
+		static std::unique_ptr<Pengine::PenOctopus>& PenOctopus();
 
 		/// <summary>
 		/// Return the pointer to the Resources manager
@@ -82,10 +71,19 @@ namespace Pengine
 		/// </summary>
 		static void update();
 
+		static void registerDefaultType();
+
+		static void registerComponents();
+
+		static void registerSystems();
+
+		static void registerTransformSystem();
+
+		static void registerRendererSystem();
+
 		static std::unique_ptr<PenWindowBase> m_window;
-		static std::unique_ptr<PenObjectManager> m_objectManager;
+		static std::unique_ptr<Pengine::PenOctopus> m_PenOctopus;
 		static std::unique_ptr<PenInputManager> m_inputManager;
-		static std::unique_ptr<Components::PenComponentsManager> m_componentsManager;
 		static std::unique_ptr<Resources::PenResourcesManager> m_resourcesManager;
 
 		static float m_deltaTime;

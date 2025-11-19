@@ -1,13 +1,15 @@
-#include "PenCore/PenCore.h"
-#include "PenComponents/PenComponentsManager.h"
-#include "PenObject/PenObjectManager.h"
-#include "PenResources/PenResourcesManager.h"
-#include "PenInput/PenInput.h"
+#include "PenCore/PenCore.h"                        //Core
+#include "PenComponents/PenComponentsManager.h"     //Component Manager
+#include "PenObject/PenObjectManager.h"             //PenObject Manager
+#include "PenResources/PenResourcesManager.h"       //PenResource Manager
+#include "PenInput/PenInput.h"                      //PenInput
+#include "PenOctopus/PenOctopus.h"                  //PenOctopus
 
-#include "Vector/Vector2/Vector2.h"
+//Components
+#include "PenComponents/PenRenderer/PenRenderer.h"
+#include "PenComponents/PenTransform/PenTransform.h"
 
-#include "PengineDefine.h"
-
+//Lib
 #include <GLFW/glfw3.h>
 
 using namespace Pengine;
@@ -19,9 +21,8 @@ using namespace Pengine;
     std::unique_ptr<PenWindowBase> PenCore::m_window = std::make_unique<GLFWPenWindow>();
 #endif
 
-std::unique_ptr<PenObjectManager> PenCore::m_objectManager = std::make_unique<PenObjectManager>();
+std::unique_ptr<PenOctopus> PenCore::m_PenOctopus = std::make_unique<Pengine::PenOctopus>();
 std::unique_ptr<PenInputManager> PenCore::m_inputManager = std::make_unique<PenInputManager>();
-std::unique_ptr<Components::PenComponentsManager> PenCore::m_componentsManager = std::make_unique<Components::PenComponentsManager>();
 std::unique_ptr<Resources::PenResourcesManager> PenCore::m_resourcesManager = std::make_unique<Resources::PenResourcesManager>();
 
 float PenCore::m_deltaTime = 0;
@@ -33,6 +34,10 @@ bool PenCore::init(const char* name, const PenMath::Vector2f& windowSize)
 {
     if(!m_window->init(name, windowSize))
         return false;
+
+    m_PenOctopus->init();
+
+    registerDefaultType();
 
     return true;
 }
@@ -48,14 +53,10 @@ void PenCore::stopPengine()
 	m_shouldStop = true;
 }
 
+#pragma region Getter
 std::unique_ptr<PenWindowBase>& PenCore::PenWindow()
 {
 	return m_window;
-}
-
-std::unique_ptr<PenObjectManager>& PenCore::ObjectManager()
-{
-	return m_objectManager;
 }
 
 std::unique_ptr<PenInputManager>& PenCore::InputManager()
@@ -63,16 +64,18 @@ std::unique_ptr<PenInputManager>& PenCore::InputManager()
     return m_inputManager;
 }
 
-std::unique_ptr<Components::PenComponentsManager>& PenCore::ComponentsManager()
+std::unique_ptr<Pengine::PenOctopus>& PenCore::PenOctopus()
 {
-	return m_componentsManager;
+    return m_PenOctopus;
 }
 
 std::unique_ptr<Resources::PenResourcesManager>& PenCore::ResourcesManager()
 {
     return m_resourcesManager;
 }
+#pragma endregion
 
+#pragma region Updates
 void PenCore::updateDeltaTime()
 {
     const double currentFrame = glfwGetTime();
@@ -92,14 +95,54 @@ void PenCore::update()
         updateDeltaTime();
         updateInputs();
 
+        m_window->preRender(*m_PenOctopus->getMainScene());
+
 		//Then the render ones
         m_window->render();
+
+        m_window->postRender();
 
         m_resourcesManager->clearUnused();
     }
 
     destroy();
 }
+#pragma endregion
+
+#pragma region Register
+void PenCore::registerDefaultType()
+{
+    registerComponents();
+    registerSystems();
+}
+
+void PenCore::registerComponents()
+{
+    m_PenOctopus->registerComponent<Components::PenRenderer>();
+    m_PenOctopus->registerComponent<Components::PenTransform>();
+}
+
+void Pengine::PenCore::registerSystems()
+{
+    registerRendererSystem();
+    registerTransformSystem();
+}
+
+void Pengine::PenCore::registerRendererSystem()
+{
+    PenComponentSignature renderSig;
+    renderSig.set(m_PenOctopus->getComponentType<Components::PenRenderer>());
+    m_window->setRenderSystem(m_PenOctopus->registerSystem<System::PenRendererSystem>());
+    m_PenOctopus->setSystemSignature<System::PenRendererSystem>(renderSig);
+}
+
+void Pengine::PenCore::registerTransformSystem()
+{
+    PenComponentSignature transSig;
+    transSig.set(m_PenOctopus->getComponentType<Components::PenTransform>());
+    m_PenOctopus->setSystemSignature<System::PenTransformSystem>(transSig);
+}
+#pragma endregion
 
 void PenCore::destroy()
 {
@@ -109,16 +152,10 @@ void PenCore::destroy()
         m_window = nullptr;
     }
 
-    if(m_componentsManager)
+    if(m_PenOctopus)
     {
-        m_componentsManager.reset();
-        m_componentsManager = nullptr;
-    }
-
-    if(m_objectManager)
-    {
-        m_objectManager.reset();
-        m_objectManager = nullptr;
+        m_PenOctopus.reset();
+        m_PenOctopus = nullptr;
     }
 
     if(m_resourcesManager)
