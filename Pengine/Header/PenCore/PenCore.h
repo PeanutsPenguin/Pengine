@@ -1,8 +1,10 @@
 #pragma once
 
-#include <memory>
+#include "PenStructsAndEnum/PenLibDefine.h"         //PenLibDefine
 
-#include "Vector/Vector2/Vector2.h"
+#include "Vector/Vector2/Vector2.h"					//Vector 2
+
+#include <memory>
 
 #pragma region Forward declarations
 namespace Pengine
@@ -56,6 +58,14 @@ namespace Pengine
 		/// Return the pointer to the Resources manager
 		/// </summary>
 		static std::unique_ptr<Resources::PenResourcesManager>& ResourcesManager();
+
+		static PenLibDefine& libDefine();
+
+		static InputLib inputLib();
+
+		static WindowLib windowLib();
+
+		static RenderLib renderLib();
 		
 		static void destroy();
 #pragma endregion
@@ -85,6 +95,8 @@ namespace Pengine
 		static std::unique_ptr<Pengine::PenOctopus> m_PenOctopus;
 		static std::unique_ptr<PenInputManager> m_inputManager;
 		static std::unique_ptr<Resources::PenResourcesManager> m_resourcesManager;
+
+		static PenLibDefine m_libs;
 
 		static float m_deltaTime;
 		static float m_lastFrame;
