@@ -3,14 +3,6 @@
 #include <cstdint>
 #include <bitset>
 
-#pragma region Windowing
-#define GLFW_WINDOW 1
-#pragma endregion
-
-#pragma region Inputs
-#define GLFW_INPUTS
-#pragma endregion
-
 #pragma region Ids
 namespace Pengine
 {
@@ -18,7 +10,7 @@ namespace Pengine
 
 	const PenObjectId g_maxEntity = 2048;
 
-	const PenObjectId PenObjectInvalidId = 0;
+	const PenObjectId g_PenObjectInvalidId = 0;
 
 	typedef unsigned __int32 PenComponentsId;
 

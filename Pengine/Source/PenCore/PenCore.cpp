@@ -5,6 +5,8 @@
 #include "PenInput/PenInput.h"                      //PenInput
 #include "PenOctopus/PenOctopus.h"                  //PenOctopus
 
+//Window
+#include "PenWindow/GLFW/Private_GLFWPenWindow.h"
 
 //Components
 #include "PenComponents/PenRenderer/PenRenderer.h"
@@ -17,11 +19,7 @@ using namespace Pengine;
 
 #pragma region Static definiton
 
-#if defined (GLFW_WINDOW)
-    #include "PenWindow/GLFW/Private_GLFWPenWindow.h"
-    std::unique_ptr<PenWindowBase> PenCore::m_window = std::make_unique<GLFWPenWindow>();
-#endif
-
+std::unique_ptr<PenWindowBase> PenCore::m_window = nullptr;
 std::unique_ptr<PenOctopus> PenCore::m_PenOctopus = std::make_unique<Pengine::PenOctopus>();
 std::unique_ptr<PenInputManager> PenCore::m_inputManager = std::make_unique<PenInputManager>();
 std::unique_ptr<Resources::PenResourcesManager> PenCore::m_resourcesManager = std::make_unique<Resources::PenResourcesManager>();
@@ -38,6 +36,9 @@ bool PenCore::init(const char* name, const PenMath::Vector2f& windowSize)
     m_libs.input = InputLib::E_GLFW_INPUT;
     m_libs.window = WindowLib::E_GLFW_WINDOW;
     m_libs.render = RenderLib::E_OPENGL_RENDER;
+
+    if (m_libs.window == WindowLib::E_GLFW_WINDOW)
+        m_window = std::make_unique<GLFWPenWindow>();
 
     if(!m_window->init(name, windowSize))
         return false;

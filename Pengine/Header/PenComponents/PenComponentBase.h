@@ -28,7 +28,7 @@ namespace Pengine::Components
 		const PenObjectId getPenObjectId() const;
 
 	private:
-		PenObjectId m_objId = PenObjectInvalidId;
+		PenObjectId m_objId = g_PenObjectInvalidId;
 		std::bitset<8>	 m_flags = std::bitset<8>((size_t)PenComponentState::ENABLE);	//Bit operation to check component's specific state
 	};
 }	

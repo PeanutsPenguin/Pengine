@@ -22,9 +22,8 @@ bool PenInputManager::isKeyPressed(const PenInput& input)
 		return false;
 	}
 
-#if defined(GLFW_INPUTS)
-	return GLFWisKeyPressed(input);
-#endif
+	if(PenCore::inputLib() == InputLib::E_GLFW_INPUT)
+		return GLFWisKeyPressed(input);
 
 	return false;
 }
@@ -36,9 +35,8 @@ PenInputType PenInputManager::getKeyState(const PenInput& input)
 	if (it != this->m_inputs.end())
 		return it->second;
 
-	#if defined(GLFW_INPUTS)
+	if (PenCore::inputLib() == InputLib::E_GLFW_INPUT)
 		return GLFWgetKeyState(input);
-	#endif
 
 	return PenInputType::E_NONE;
 }
@@ -146,9 +144,8 @@ PenInputType PenInputManager::updateInput(const PenInput& input, PenInputType pr
 {
 	PenInputType state = PenInputType::E_NONE;
 
-#if defined (GLFW_INPUTS)
-	state = this->GLFWfindKeyState(input);
-#endif
+	if (PenCore::inputLib() == InputLib::E_GLFW_INPUT)
+		state = this->GLFWfindKeyState(input);
 
 	if (prevState == PenInputType::E_PRESSED || prevState == PenInputType::E_DOWN)
 	{

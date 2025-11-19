@@ -63,7 +63,7 @@ void PenTransform::SetParent(const PenObjectId entity, bool keepPosition)
 
 	this->m_parent = entity;
 
-	if (keepPosition && entity != PenObjectInvalidId)
+	if (keepPosition && entity != g_PenObjectInvalidId)
 	{
 		PenMath::Transform parent_inverse = PenCore::PenOctopus()->getComponent<PenTransform>(entity).getGlobalTransform().inverse();
 		this->m_localTransform = parent_inverse.combine(m_globalTransform);

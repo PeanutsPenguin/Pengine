@@ -50,7 +50,7 @@ void PenTransformSystem::reparentChild(const PenObjectId obj, const PenObjectId 
 	}
 
 	//If old parent doesn't exist
-	if (this->m_children[oldParent].find(obj) == this->m_children[oldParent].end() || oldParent == PenObjectInvalidId)
+	if (this->m_children[oldParent].find(obj) == this->m_children[oldParent].end() || oldParent == g_PenObjectInvalidId)
 	{
 		this->removeRoot(obj);
 		std::cout << __FUNCTION__ "Invalid old parent, deleting objects\n";
@@ -60,7 +60,7 @@ void PenTransformSystem::reparentChild(const PenObjectId obj, const PenObjectId 
 		m_children[oldParent].erase(obj);
 
 	//If new parent exist
-	if (newParent != PenObjectInvalidId)
+	if (newParent != g_PenObjectInvalidId)
 	{
 		//If new Parent is in the root array
 		if(this->m_PenObject.count(newParent))
@@ -83,7 +83,7 @@ void PenTransformSystem::onEntityInserted(const PenObjectId newObj)
 	PenObjectId	parent = transform.getParent();
 
 	//If Parent is invalid attach to root
-	if (parent == PenObjectInvalidId) 
+	if (parent == g_PenObjectInvalidId) 
 		this->m_PenObject.insert(newObj);
 	else 
 	{
@@ -107,7 +107,7 @@ void PenTransformSystem::onEntityDestroyed(const PenObjectId obj)
 	Components::PenTransform& transform = PenCore::PenOctopus()->getComponent<Components::PenTransform>(obj);
 	PenObjectId	parent = transform.getParent();
 
-	if (parent == PenObjectInvalidId)
+	if (parent == g_PenObjectInvalidId)
 		this->removeRoot(obj);
 	else
 		this->m_children[parent].erase(obj);
