@@ -8,6 +8,6 @@
 #include <crtdbg.h>
 #include <iostream>
 
-_CrtMemState& beforeMain();
+_CrtMemState* beforeMain();
 
-void afterMain(_CrtMemState& start);
+void afterMain(_CrtMemState* start);
