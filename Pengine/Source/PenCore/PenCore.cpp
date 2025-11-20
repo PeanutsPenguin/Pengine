@@ -27,8 +27,8 @@ std::unique_ptr<Resources::PenResourcesManager> PenCore::m_resourcesManager = st
 
 PenLibDefine PenCore::m_libs = PenLibDefine();
 
-float PenCore::m_deltaTime = 0;
-float PenCore::m_lastFrame = glfwGetTime();
+double PenCore::m_deltaTime = 0;
+double PenCore::m_lastFrame = glfwGetTime();
 bool PenCore::m_shouldStop = 0;
 #pragma endregion
 
@@ -125,6 +125,8 @@ void PenCore::update()
         updateDeltaTime();
         updateInputs();
 
+        m_PenOctopus->updateAllSystem(m_deltaTime);
+
         m_window->preRender(*m_PenOctopus->getMainScene());
 
 		//Then the render ones
@@ -164,6 +166,7 @@ void PenCore::registerRendererSystem()
 {
     PenComponentSignature renderSig;
     renderSig.set(m_PenOctopus->getComponentType<Components::PenRenderer>());
+    renderSig.set(m_PenOctopus->getComponentType<Components::PenTransform>());
     m_window->setRenderSystem(m_PenOctopus->registerSystem<System::PenRendererSystem>());
     m_PenOctopus->setSystemSignature<System::PenRendererSystem>(renderSig);
 }
@@ -173,13 +176,15 @@ void Pengine::PenCore::registerCameraSystem()
     PenComponentSignature camSig;
     camSig.set(m_PenOctopus->getComponentType<Components::PenCamera>());
     camSig.set(m_PenOctopus->getComponentType<Components::PenTransform>());
-    m_PenOctopus->setSystemSignature<System::PenRendererSystem>(camSig);
+    m_PenOctopus->registerSystem<System::PenCameraSystem>();
+    m_PenOctopus->setSystemSignature<System::PenCameraSystem>(camSig);
 }
 
 void PenCore::registerTransformSystem()
 {
     PenComponentSignature transSig;
     transSig.set(m_PenOctopus->getComponentType<Components::PenTransform>());
+    m_PenOctopus->registerSystem<System::PenTransformSystem>();
     m_PenOctopus->setSystemSignature<System::PenTransformSystem>(transSig);
 }
 #pragma endregion

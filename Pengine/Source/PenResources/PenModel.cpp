@@ -1,10 +1,15 @@
 #include "PenResources/PenModel.h"
+
+//Resources
 #include "PenResources/PenTextures.h"
 #include "PenResources/PenResourcesManager.h"
 #include "PenResources/OpenGl/Private_PenGLMesh.h"
 #include "PenResources/OpenGl/Private_PenGLShaderProgram.h"
-#include "PenCore/PenCore.h"
-#include "PengineDefine.h"
+
+#include "PenCore/PenCore.h"					//Core
+#include "PenOctopus/PenOctopus.h"				//Octopus
+#include "PenComponents/PenCamera/PenCamera.h"	//PenCameraComponents
+
 
 #include <iostream>
 
@@ -83,14 +88,6 @@ void PenModel::render(std::shared_ptr<Pengine::Resources::PenShaderProgramBase> 
 
 void PenModel::GLRender(std::shared_ptr<Pengine::Resources::PenShaderProgramBase> shaderProg)
 {
-	std::shared_ptr<PenGLShaderProgram> ptr = std::dynamic_pointer_cast<PenGLShaderProgram>(shaderProg);
-
-	if (!ptr)
-		return;
-
-	if (!ptr->use())
-		return;
-
 	for (const std::shared_ptr<PenMeshBase> obj : m_meshes)
 	{
 		std::shared_ptr<PenGLMesh> objPtr = std::dynamic_pointer_cast<PenGLMesh>(obj);
@@ -100,8 +97,6 @@ void PenModel::GLRender(std::shared_ptr<Pengine::Resources::PenShaderProgramBase
 		else
 			std::cerr << __FUNCTION__ "\t Dynamic pointer cast failed\n";
 	}
-
-
 }
 
 bool PenModel::processNode(aiNode* node, const aiScene* scene)

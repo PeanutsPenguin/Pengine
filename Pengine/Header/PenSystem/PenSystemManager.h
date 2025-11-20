@@ -30,6 +30,8 @@ namespace Pengine::System
 
 		void PenObjectSignatureChanged(PenObjectId entity, PenComponentSignature entitySignature);
 
+		void updateAllSystem(double dt);
+
 		void onEntityInserted(const PenObjectId newObj);
 
 		void onEntityDestroyed(const PenObjectId newObj);

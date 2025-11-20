@@ -1,7 +1,7 @@
 #pragma once 
 
 #include "PenComponents/PenComponentBase.h"
-#include "PenCamera/PenCameraTypesAndValues.h"
+#include "PenComponents/PenCamera/PenCameraTypesAndValues.h"
 
 #include <Vector/Vector3/Vector3.h>
 #include <Matrix/Mat4.h>
@@ -55,7 +55,7 @@ namespace Pengine::Components
 		PenMath::Vector3f m_right;
 
 		float m_yaw = 0;
-		float m_pitch = 0;
+		float m_pitch = 45;
 		
 		PerspectiveCamera m_values;
 #pragma endregion

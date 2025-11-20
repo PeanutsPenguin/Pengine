@@ -16,5 +16,7 @@ namespace Pengine::System
 		void onEntityInserted(const PenObjectId newObj) override {};
 
 		void onEntityDestroyed(const PenObjectId obj) override {};
+
+		void update(double dt) override {};
 	};
 }

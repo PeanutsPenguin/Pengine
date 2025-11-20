@@ -5,6 +5,7 @@ using namespace Pengine::Components;
 PenCamera::PenCamera()
 {
 	this->SetState(PenComponentState::ENABLE);
+	this->SetState(PenComponentState::DIRTY);
 }
 
 #pragma region Getter
@@ -104,7 +105,7 @@ void PenCamera::updateProjectionMatrix()
 
 void PenCamera::updateViewMatrix(const PenMath::Transform& trans)
 {
-	this->m_viewMatrix = trans.inverse().toMatrix();
+	this->m_viewMatrix = PenMath::Mat4::LookAt(trans.position, trans.position + this->m_front, this->m_up);
 
 	this->SetState(PenComponentState::DIRTY, true);
 }

@@ -16,12 +16,16 @@ namespace Pengine::System
 
 		void onEntityDestroyed(const PenObjectId obj) override {};
 
-		void update(double dt);
+		void update(double dt) override;
+
+		PenObjectId getMainCamera() const;
+
+		void setMainCamera(const PenObjectId cam);
 #pragma endregion
 
 #pragma region Private
 	private:
-		PenObjectId mainCamera;
+		PenObjectId m_mainCamera;
 #pragma endregion
 	};
 }

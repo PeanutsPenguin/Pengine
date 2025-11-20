@@ -9,7 +9,7 @@ using namespace Pengine::Components;
 PenTransform::PenTransform()
 {
 	this->SetState(PenComponentState::ENABLE, true);
-	this->m_parent = 0;
+	this->m_parent = g_PenObjectInvalidId;
 }
 
 #pragma region Getter

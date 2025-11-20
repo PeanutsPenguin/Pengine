@@ -100,8 +100,8 @@ namespace Pengine
 
 		static PenLibDefine m_libs;
 
-		static float m_deltaTime;
-		static float m_lastFrame;
+		static double m_deltaTime;
+		static double m_lastFrame;
 		static bool m_shouldStop;
 #pragma endregion
 

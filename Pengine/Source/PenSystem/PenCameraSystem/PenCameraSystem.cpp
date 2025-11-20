@@ -20,22 +20,42 @@ void PenCameraSystem::update(double dt)
 
 		if(cam.IsState(Components::PenComponentState::DIRTY) && cam.IsState(Components::PenComponentState::ENABLE))
 		{
-			PenMath::Quaternion Xrot = transform.getGlobalTransform().rotation.fromAxis(PenMath::Vector3f::Up(), cam.getYaw());
-			PenMath::Quaternion Yrot = transform.getGlobalTransform().rotation.fromAxis(PenMath::Vector3f::Right(), cam.getPitch());
+			//PenMath::Quaternion Xrot = transform.getGlobalTransform().rotation.fromAxis(PenMath::Vector3f::Up(), cam.getYaw());
+			//PenMath::Quaternion Yrot = transform.getGlobalTransform().rotation.fromAxis(PenMath::Vector3f::Right(), cam.getPitch());
 
-			transform.getGlobalTransform().rotation = Xrot * Yrot;
+			//transform.getGlobalTransform().rotation = Xrot * Yrot;
 
-			cam.setFront(transform.getGlobalTransform().rotation.rotate(PenMath::Vector3f::Back()));
-			cam.setRight(PenMath::Vector3f::normal(cam.getFront().cross(PenMath::Vector3f::Up())));
-			PenMath::Vector3f right = cam.getRight().cross(cam.getFront());
-			right.normalize();
-			cam.setUp(right);
+			//cam.setFront(transform.getGlobalTransform().rotation.rotate(PenMath::Vector3f::Back()));
+			//cam.setRight(PenMath::Vector3f::normal(cam.getFront().cross(PenMath::Vector3f::Up())));
+			//PenMath::Vector3f right = cam.getRight().cross(cam.getFront());
+			//right.normalize();
+			//cam.setUp(right);
 
-			cam.updateProjectionMatrix();
-			cam.updateViewMatrix(transform.getGlobalTransform());
+			//cam.updateProjectionMatrix();
+			//cam.updateViewMatrix(transform.getGlobalTransform());
+
+			//cam.setFront({0, 0, -1.f});
+			//cam.setUp({0, 1, 0});
+
+			//cam.updateProjectionMatrix();
+			//cam.updateViewMatrix(transform.getGlobalTransform());
 
 
 			cam.SetState(Components::PenComponentState::DIRTY, false);
 		}
 	}
+}
+
+Pengine::PenObjectId PenCameraSystem::getMainCamera() const
+{
+	return this->m_mainCamera;
+}
+
+void PenCameraSystem::setMainCamera(const PenObjectId cam)
+{
+	if (this->m_PenObject.contains(cam))
+		this->m_mainCamera = cam;
+	else
+		std::cout << __FUNCTION__ "Object to not have camera component\n";
+
 }

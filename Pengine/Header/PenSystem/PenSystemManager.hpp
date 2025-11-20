@@ -27,7 +27,7 @@ namespace Pengine::System
 	{
 		const char* typeName = typeid(T).name();
 
-		if (m_PenSystems.find(typeName) != m_PenSystems.end())
+		if (m_PenSystems.find(typeName) == m_PenSystems.end())
 		{
 			std::cout << __FUNCTION__ "System not registered\n";
 			return nullptr;	

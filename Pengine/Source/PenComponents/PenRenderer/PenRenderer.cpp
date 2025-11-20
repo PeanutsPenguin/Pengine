@@ -36,3 +36,8 @@ void PenRenderer::render()
 {
 	m_model->render(m_shader);
 }
+
+std::shared_ptr<Pengine::Resources::PenShaderProgramBase> Pengine::Components::PenRenderer::getShaderProgram()
+{
+	return this->m_shader;
+}

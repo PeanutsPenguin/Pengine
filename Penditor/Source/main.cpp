@@ -6,6 +6,7 @@
 
 //Define
 #include "PenditorDefine.h"
+#include "PenWindow/defaultWindowValues.h"
 
 //Resources
 #include "PenResources/PenModel.h"
@@ -15,6 +16,8 @@
 
 //Components
 #include "PenComponents/PenRenderer/PenRenderer.h"
+#include "PenComponents/PenCamera/PenCamera.h"
+#include "PenComponents/PenTransform/PenTransform.h"
 
 #if defined (CHECK_MEMORY_LEAKS)
 	#include "Memory/MemoryLeakChecker.h"
@@ -27,7 +30,7 @@ int main()
 	_CrtMemState* start = beforeMain();
 	{
 #endif
-		Pengine::PenCore::init("Pengine Window", { 800.0f, 600.0f });
+		Pengine::PenCore::init("Pengine Window", { Pengine::defaultWindowsValue::DEFAULT_WIDTH, Pengine::defaultWindowsValue::DEFAULT_HEIGHT });
 
 		//Pengine::PenCore::PenWindow()->getScene()->changeBackgroundColor(Pengine::PenColor::Blue);
 
@@ -41,7 +44,7 @@ int main()
 		std::shared_ptr<Pengine::Resources::PenModel> modelPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenModel>("Models/BackPack/Survival_BackPack_2.fbx");
 
 		//Create shaders
-		std::shared_ptr<Pengine::Resources::PenGLShader> ptr = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLShader>("Shaders/basicVertexShader.vert", Pengine::PenShaderType::VERTEX_SHADER);
+		std::shared_ptr<Pengine::Resources::PenGLShader> ptr = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLShader>("Shaders/cameraVertexShader.vert", Pengine::PenShaderType::VERTEX_SHADER);
 		std::shared_ptr<Pengine::Resources::PenGLShader> ptr2 = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLShader>("Shaders/basicFragmentShader.frag", Pengine::PenShaderType::FRAGMENT_SHADER);
 		std::shared_ptr<Pengine::Resources::PenGLShaderProgram> progPtr = std::make_shared<Pengine::Resources::PenGLShaderProgram>();
 		progPtr->createShaderProgram(ptr, ptr2);
@@ -53,9 +56,19 @@ int main()
 
 		//Add the component
 		Pengine::PenCore::PenOctopus()->addComponent(newObj, renderComp);
+		Pengine::PenCore::PenOctopus()->addComponent(newObj, Pengine::Components::PenTransform());
 
 		Pengine::PenCore::PenOctopus()->addToScene(newObj);
 
+		//Create Obj
+		Pengine::PenObjectId camObj = Pengine::PenCore::PenOctopus()->createPenObject();
+		Pengine::PenCore::PenOctopus()->addComponent(camObj, Pengine::Components::PenTransform());
+		Pengine::PenCore::PenOctopus()->addComponent(camObj, Pengine::Components::PenCamera());
+
+		std::shared_ptr<Pengine::System::PenCameraSystem> camSystemPtr = Pengine::PenCore::PenOctopus()->getSystem<Pengine::System::PenCameraSystem>();
+
+		camSystemPtr->setMainCamera(camObj);
+		Pengine::PenCore::PenOctopus()->addToScene(camObj);
 
 		Pengine::PenCore::startPengine();
 
