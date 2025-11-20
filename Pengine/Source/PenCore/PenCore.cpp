@@ -110,7 +110,7 @@ void PenCore::updateDeltaTime()
 {
     const double currentFrame = glfwGetTime();
     m_deltaTime = currentFrame - m_lastFrame;
-    m_deltaTime = currentFrame;
+    m_lastFrame = currentFrame;
 }
 
 void PenCore::updateInputs()

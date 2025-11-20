@@ -2,10 +2,12 @@
 
 #include "PenCore/PenCore.h"			//PenCore
 #include "PenOctopus/PenOctopus.h"		//PenOctopus
+#include "PenInput/PenInput.h"
 
 //Components
 #include "PenComponents/PenCamera/PenCamera.h"
 #include "PenComponents/PenTransform/PenTransform.h"
+
 
 #include <Quaternion.h>
 
@@ -16,33 +18,34 @@ void PenCameraSystem::update(double dt)
 	for (PenObjectId obj : this->m_PenObject)
 	{
 		Components::PenCamera& cam = PenCore::PenOctopus()->getComponent<Components::PenCamera>(obj);
-		Components::PenTransform transform = PenCore::PenOctopus()->getComponent<Components::PenTransform>(obj);
+		Components::PenTransform& transform = PenCore::PenOctopus()->getComponent<Components::PenTransform>(obj);
 
 		if(cam.IsState(Components::PenComponentState::DIRTY) && cam.IsState(Components::PenComponentState::ENABLE))
 		{
-			//PenMath::Quaternion Xrot = transform.getGlobalTransform().rotation.fromAxis(PenMath::Vector3f::Up(), cam.getYaw());
-			//PenMath::Quaternion Yrot = transform.getGlobalTransform().rotation.fromAxis(PenMath::Vector3f::Right(), cam.getPitch());
-
-			//transform.getGlobalTransform().rotation = Xrot * Yrot;
-
-			//cam.setFront(transform.getGlobalTransform().rotation.rotate(PenMath::Vector3f::Back()));
-			//cam.setRight(PenMath::Vector3f::normal(cam.getFront().cross(PenMath::Vector3f::Up())));
-			//PenMath::Vector3f right = cam.getRight().cross(cam.getFront());
-			//right.normalize();
-			//cam.setUp(right);
-
-			//cam.updateProjectionMatrix();
-			//cam.updateViewMatrix(transform.getGlobalTransform());
-
-			//cam.setFront({0, 0, -1.f});
-			//cam.setUp({0, 1, 0});
-
-			//cam.updateProjectionMatrix();
-			//cam.updateViewMatrix(transform.getGlobalTransform());
-
+			cam.updateProjectionMatrix();
+			cam.updateViewMatrix(transform.getGlobalTransform());
 
 			cam.SetState(Components::PenComponentState::DIRTY, false);
 		}
+
+		const float cameraSpeed = 1.f * dt; // adjust accordingly
+
+		PenMath::Transform newTrans = transform.getGlobalTransform();
+
+		if (Pengine::PenCore::InputManager()->isKeyDown(Pengine::key_W))
+			newTrans.position += PenMath::Vector3f{0, 0, -1} * cameraSpeed;
+		if (Pengine::PenCore::InputManager()->isKeyDown(Pengine::key_S))
+			newTrans.position -= PenMath::Vector3f{ 0, 0, -1 } * cameraSpeed;
+		if (Pengine::PenCore::InputManager()->isKeyDown(Pengine::key_A))
+			newTrans.position -= PenMath::Vector3f{ 1, 0, 0 } * cameraSpeed;
+		if (Pengine::PenCore::InputManager()->isKeyDown(Pengine::key_D))
+			newTrans.position += PenMath::Vector3f{ 1, 0, 0 } * cameraSpeed;
+
+		//std::cout << newTrans.position.x << '\t' << newTrans.position.y << '\t' << newTrans.position.z << '\n';
+		std::cout << cameraSpeed << '\n';
+
+		transform.setGlobalTransform(newTrans);
+		cam.SetState(Components::PenComponentState::DIRTY);
 	}
 }
 

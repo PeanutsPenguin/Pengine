@@ -28,6 +28,7 @@ namespace Pengine::Components
 		PenMath::Mat4		getViewProjMatrix()		const;
 		PenMath::Vector3f	getFront()				const;
 		PenMath::Vector3f	getRight()				const;
+		PenMath::Vector3f	getUp()					const;
 		float				getYaw()				const;
 		float				getPitch()				const;
 #pragma endregion
@@ -55,7 +56,7 @@ namespace Pengine::Components
 		PenMath::Vector3f m_right;
 
 		float m_yaw = 0;
-		float m_pitch = 45;
+		float m_pitch = 0;
 		
 		PerspectiveCamera m_values;
 #pragma endregion

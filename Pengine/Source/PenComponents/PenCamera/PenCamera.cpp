@@ -40,6 +40,11 @@ PenMath::Vector3f PenCamera::getRight() const
 	return this->m_right;
 }
 
+PenMath::Vector3f PenCamera::getUp() const
+{
+	return this->m_up;
+}
+
 float Pengine::Components::PenCamera::getYaw() const
 {
 	return this->m_yaw;
@@ -105,7 +110,7 @@ void PenCamera::updateProjectionMatrix()
 
 void PenCamera::updateViewMatrix(const PenMath::Transform& trans)
 {
-	this->m_viewMatrix = PenMath::Mat4::LookAt(trans.position, trans.position + this->m_front, this->m_up);
+	this->m_viewMatrix = trans.inverse().toMatrix();
 
 	this->SetState(PenComponentState::DIRTY, true);
 }
