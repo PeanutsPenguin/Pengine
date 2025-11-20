@@ -28,6 +28,24 @@ bool PenInputManager::isKeyPressed(const PenInput& input)
 	return false;
 }
 
+bool PenInputManager::isKeyDown(const PenInput& input)
+{
+	auto it = this->m_inputs.find(input);
+
+	if (it != this->m_inputs.end())
+	{
+		if (it->second == PenInputType::E_DOWN)
+			return true;
+
+		return false;
+	}
+
+	if (PenCore::inputLib() == InputLib::E_GLFW_INPUT)
+		return GLFWisKeyPressed(input);
+
+	return false;
+}
+
 PenInputType PenInputManager::getKeyState(const PenInput& input)
 {
 	auto it = this->m_inputs.find(input);

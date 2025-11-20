@@ -7,6 +7,9 @@
 #include "PenOctopus/PenOctopus.h"
 #include "PenCore/PenCore.h"
 
+#include <Angle/Radian.h>
+#include <Angle/Degree.h>
+
 using namespace Pengine::System;
 
 PenRendererSystem::~PenRendererSystem()
@@ -35,10 +38,24 @@ void PenRendererSystem::render()
 			{
 				Components::PenCamera& camComp = PenCore::PenOctopus()->getComponent<Components::PenCamera>(cam);
 
+				
+				transComp.getGlobalTransform().position = { 0, 4, 0 };
 				PenMath::Mat4 model = transComp.getGlobalTransform().toMatrix();
+
+				// pass projection matrix to shader (note that in this case it could change every frame)
+				PenMath::Mat4 projection = PenMath::Mat4::Perspective(PenMath::Degree(45.f).radian(),
+											Pengine::defaultWindowsValue::DEFAULT_WIDTH/ Pengine::defaultWindowsValue::DEFAULT_HEIGHT,
+											0.1f, 100.0f);
+
+				ptr->setUniform("projection", projection);
+
+				PenMath::Mat4 view = PenMath::Mat4::LookAt({0, 0, 0}, {0, 0, -1.f}, {0, 1, 0});
+				ptr->setUniform("view", view);
+
+
+
+
 				ptr->setUniform("model", model);
-				ptr->setUniform("view", camComp.getViewMatrix());
-				ptr->setUniform("projection", camComp.getProjectionMatrix());
 			}
 
 			renderComp.render();

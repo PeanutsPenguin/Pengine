@@ -18,6 +18,8 @@ namespace Pengine
 
 		bool isKeyPressed(const PenInput& input);
 
+		bool isKeyDown(const PenInput& input);
+
 		PenInputType getKeyState(const PenInput& input);
 
 		/// <summary>
