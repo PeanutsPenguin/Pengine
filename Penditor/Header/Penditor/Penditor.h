@@ -15,12 +15,16 @@ namespace Penditor
 
 		static void runEditor();
 
+		static void stopEditor();
+
 		static void destroy();
 
 		static std::unique_ptr<PenFreeCam>& getEditorCam();
 
 	private:
 		static void update(double dt);
+
+		static void handleInputs();
 
 		static std::unique_ptr<PenFreeCam> m_editorCam;
 		

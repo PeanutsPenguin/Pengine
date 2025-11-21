@@ -1,8 +1,10 @@
 #pragma once 
 
+#include "PenStructsAndEnum/PenCursorState.h"
+
 #include <memory>
 
-#include "Vector/Vector2/Vector2.h"
+#include <Vector/Vector2/Vector2.h>
 
 #pragma region Forward declarations
 namespace Pengine
@@ -39,6 +41,10 @@ namespace Pengine
 
 		virtual void render();
 
+		virtual void setCursorState(CursorState state) = 0;
+
+		CursorState getCursorState() const;
+
 		void setRenderSystem(std::shared_ptr<System::PenRendererSystem> system);
 
 		virtual void postRender() = 0;
@@ -46,8 +52,9 @@ namespace Pengine
 
 #pragma region Protected
 	protected:
-		PenMath::Vector2f m_windowSize;
 		std::shared_ptr<System::PenRendererSystem> m_renderSystem;
+		PenMath::Vector2f m_windowSize;
+		CursorState m_state = CursorState::E_NORMAL;
 #pragma endregion
 	};
 }

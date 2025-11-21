@@ -57,6 +57,29 @@ void GLFWPenWindow::postRender()
     this->GLBufferUpdate();
 }
 
+void Pengine::GLFWPenWindow::setCursorState(CursorState state)
+{
+    switch (state)
+    {
+    case Pengine::E_NORMAL:
+        glfwSetInputMode(this->m_windowPtr, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        break;
+    case Pengine::E_HIDDEN:
+        glfwSetInputMode(this->m_windowPtr, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+        break;
+    case Pengine::E_DISABLED:
+        glfwSetInputMode(this->m_windowPtr, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        break;
+    default:
+        break;
+    }        
+}
+
+CursorState Pengine::PenWindowBase::getCursorState() const
+{
+    return this->m_state;
+}
+
 GLFWwindow* GLFWPenWindow::getWindowPtr() const noexcept
 {
     return this->m_windowPtr;

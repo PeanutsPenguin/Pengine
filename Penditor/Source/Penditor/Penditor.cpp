@@ -1,7 +1,9 @@
 #include "Penditor/Penditor.h"
 
-#include "PenCore/PenCore.h"		//Pengine::PenCore
-#include "PenFreeCam/PenFreeCam.h"	//PenFreeCam
+#include "PenCore/PenCore.h"			//Pengine::PenCore
+#include "PenFreeCam/PenFreeCam.h"		//PenFreeCam
+#include "PenWindow/PenWindowBase.h"	//PenWindow
+#include "PenInput/PenInput.h"			//PenInput
 
 using namespace Penditor;
 
@@ -11,6 +13,8 @@ std::unique_ptr<PenFreeCam> PenCore::m_editorCam = std::make_unique<PenFreeCam>(
 void PenCore::runEditor()
 {
 	m_shouldStop = false;
+
+	Pengine::PenCore::PenWindow()->setCursorState(false);
 
 	while (!m_shouldStop && !Pengine::PenCore::shouldStop())
 	{
@@ -27,6 +31,11 @@ void PenCore::runEditor()
 	destroy();
 }
 
+void PenCore::stopEditor()
+{
+	m_shouldStop = true;
+}
+
 std::unique_ptr<PenFreeCam>& Penditor::PenCore::getEditorCam()
 {
 	return m_editorCam;
@@ -35,6 +44,17 @@ std::unique_ptr<PenFreeCam>& Penditor::PenCore::getEditorCam()
 void PenCore::update(double dt)
 {
 	m_editorCam->update(dt);
+}
+
+void PenCore::handleInputs()
+{
+	std::unique_ptr<Pengine::PenInputManager>& ptr = Pengine::PenCore::InputManager();
+
+	if (!ptr)
+		return;
+
+	if (ptr->isKeyPressed(Pengine::key_ESCAPE))
+		stopEditor();
 }
 
 void PenCore::destroy()
