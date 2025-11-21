@@ -6,6 +6,7 @@
 //System
 #include "PenSystem/PenRenderSystem/PenRenderSystem.h"
 #include "PenSystem/PenTransformSystem/PenTransformSystem.h"
+#include "PenSystem/PenCameraSystem/PenCameraSystem.h"
 
 //std
 #include <memory>
@@ -28,6 +29,8 @@ namespace Pengine::System
 		void PenObjectDestroyed(PenComponentsId entity);
 
 		void PenObjectSignatureChanged(PenObjectId entity, PenComponentSignature entitySignature);
+
+		void updateAllSystem(double dt);
 
 		void onEntityInserted(const PenObjectId newObj);
 

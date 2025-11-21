@@ -1,8 +1,10 @@
 #pragma once 
 
+#include "PenStructsAndEnum/PenCursorState.h"
+
 #include <memory>
 
-#include "Vector/Vector2/Vector2.h"
+#include <Vector/Vector2/Vector2.h>
 
 #pragma region Forward declarations
 namespace Pengine
@@ -32,12 +34,16 @@ namespace Pengine
 		/// Edit the private value "size" of this object and the window
 		/// </summary>
 		/// <param name="size">The new Size</param>
-		/// <param name="resizeWindow">True if you want to rescale the window</param>
+		/// <param name="resizeWindow">True if you want to resize the viewPort</param>
 		virtual void setWindowSize(const PenMath::Vector2f& size, bool resizeWindow = true) = 0;
 
 		virtual void preRender(const PenScene& mainScene) = 0;
 
 		virtual void render();
+
+		virtual void setCursorState(CursorState state) = 0;
+
+		CursorState getCursorState() const;
 
 		void setRenderSystem(std::shared_ptr<System::PenRendererSystem> system);
 
@@ -46,8 +52,9 @@ namespace Pengine
 
 #pragma region Protected
 	protected:
-		PenMath::Vector2f m_windowSize;
 		std::shared_ptr<System::PenRendererSystem> m_renderSystem;
+		PenMath::Vector2f m_windowSize;
+		CursorState m_state = CursorState::E_NORMAL;
 #pragma endregion
 	};
 }

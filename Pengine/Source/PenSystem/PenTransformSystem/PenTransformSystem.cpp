@@ -1,19 +1,63 @@
 #include "PenSystem/PenTransformSystem/PenTransformSystem.h"
 
 #include "PenComponents/PenTransform/PenTransform.h"	//Transform Components
+#include "PenComponents/PenCamera/PenCamera.h"			//Camera Components
 #include "PenCore/PenCore.h"							//Core
 #include "PenOctopus/PenOctopus.h"						//Octopus
 
 //Std
 #include <iostream>
 
-
-
 using namespace Pengine::System;
 
 void PenTransformSystem::update(double dt)
 {
+	std::queue<PenObjectId> process;
+	for (const auto& root : this->m_PenObject) {
+		process.push(root);
+	}
 
+	while (!process.empty()) {
+		PenObjectId current = process.front();
+		process.pop();
+
+		Components::PenTransform& transform = PenCore::PenOctopus()->getComponent<Components::PenTransform>(current);
+		PenObjectId	parent = transform.getParent();
+
+
+		if (parent == g_PenObjectInvalidId)
+			transform.setLocalTransform(transform.getGlobalTransform());	  // roots global and local should be equal
+
+		// check if component is dirty with some flags
+		if (transform.IsState(Components::PenComponentState::DIRTY))
+		{
+			if (PenCore::PenOctopus()->containsComponent<Components::PenCamera>(current))
+				PenCore::PenOctopus()->getComponent<Components::PenCamera>(current).SetState(Components::PenComponentState::DIRTY);
+
+			PenMath::Transform result = transform.getLocalTransform();
+
+			if (parent != g_PenObjectInvalidId) 
+			{
+				Components::PenTransform& ptransform = PenCore::PenOctopus()->getComponent<Components::PenTransform>(parent);
+				result = ptransform.getGlobalTransform().combine(transform.getLocalTransform());
+			}
+
+			transform.setGlobalTransform(result);
+		}
+
+		if (this->m_children.contains(current)) 
+		{
+			for (auto child : this->m_children[current]) 
+			{
+				if (transform.IsState(Components::PenComponentState::DIRTY)) 
+					PenCore::PenOctopus()->getComponent<Components::PenTransform>(child).SetState(Components::PenComponentState::DIRTY);
+
+				process.push(child);
+			}
+		}
+
+		transform.SetState(Components::PenComponentState::DIRTY, false);
+	}
 }
 
 void PenTransformSystem::addRoot(const PenObjectId obj)

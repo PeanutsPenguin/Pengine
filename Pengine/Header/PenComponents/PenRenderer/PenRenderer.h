@@ -19,6 +19,8 @@ namespace Pengine::Components
 		void setModel(std::shared_ptr<Pengine::Resources::PenModel> model);
 
 		void render();
+
+		std::shared_ptr<Pengine::Resources::PenShaderProgramBase> getShaderProgram();
 #pragma endregion
 #pragma region Private
 	private:

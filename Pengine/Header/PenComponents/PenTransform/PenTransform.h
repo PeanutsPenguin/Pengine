@@ -9,26 +9,20 @@ namespace Pengine::Components
 	{
 	public:
 		///* CONSTRUCTOR/DESTRUCTOR */
-		PenTransform(void);
+		PenTransform();
 		PenTransform(const PenTransform& other) = default;
 		PenTransform(PenTransform&& other) = default;
-		~PenTransform(void) = default;
+		~PenTransform() = default;
 
 		PenTransform& operator=(const PenTransform& rhs) = default;
 		PenTransform& operator=(PenTransform&& rhs) = default;
 
-		const PenMath::Transform&	getGlobalTransform() const;
-		PenMath::Transform&			getGlobalTransform();
-
-		const PenMath::Transform&	getLocalTransform() const;
-		PenMath::Transform&			getLocalTransform();
-
-		const PenObjectId			getParent();
-
-		void						SetLocalTransform(const PenMath::Transform& transform);
-		void						SetGlobalTransform(const PenMath::Transform& transform);
-
-		void						SetParent(const PenObjectId entity, bool keepPosition = true);
+		const PenObjectId			getParent()				const;
+		PenMath::Transform			getGlobalTransform()	const;
+		PenMath::Transform			getLocalTransform()		const;
+		void						setLocalTransform(const PenMath::Transform& transform);
+		void						setGlobalTransform(const PenMath::Transform& transform);
+		void						setParent(const PenObjectId entity, bool keepPosition = true);
 
 	private:
 		PenMath::Transform m_globalTransform;

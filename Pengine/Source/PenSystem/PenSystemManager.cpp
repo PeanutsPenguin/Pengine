@@ -31,6 +31,12 @@ void PenSystemManager::PenObjectSignatureChanged(PenObjectId entity, PenComponen
 	}
 }
 
+void PenSystemManager::updateAllSystem(double dt)
+{
+	for (auto const& pair : m_PenSystems)
+		pair.second->update(dt);
+}
+
 void PenSystemManager::onEntityInserted(const PenObjectId newObj)
 {
 	for(auto system : this->m_PenSystems)

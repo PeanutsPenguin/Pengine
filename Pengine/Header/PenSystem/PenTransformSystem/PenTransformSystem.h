@@ -13,7 +13,7 @@ namespace Pengine::System
 
 		~PenTransformSystem() override = default;
 
-		void update(double dt);
+		void update(double dt) override;
 
 		void addRoot(const PenObjectId obj);
 

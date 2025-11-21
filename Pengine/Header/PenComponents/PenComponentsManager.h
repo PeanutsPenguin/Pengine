@@ -29,6 +29,9 @@ namespace Pengine::Components
 		template<typename T>
 		T& getComponent(PenObjectId entity);
 
+		template<typename T>
+		bool containsComponent(PenObjectId entity);
+
 		void entityDestroyed(PenObjectId entity);
 
 #pragma region Private

@@ -39,6 +39,9 @@ namespace Pengine
 		T& getComponent(PenObjectId obj);
 
 		template<typename T>
+		bool containsComponent(PenObjectId obj);
+
+		template<typename T>
 		PenComponentType getComponentType();
 #pragma endregion
 
@@ -51,6 +54,8 @@ namespace Pengine
 
 		template<typename T>
 		_Ret_maybenull_ std::shared_ptr<T> getSystem();
+
+		void updateAllSystem(double dt);
 #pragma endregion
 
 #pragma region PenScene

@@ -23,6 +23,8 @@ namespace Pengine::Components
 
 		T& getData(PenObjectId entity);
 
+		bool contains(PenObjectId entity);
+
 		void entityDestroyed(PenObjectId entity) override;
 
 	private:

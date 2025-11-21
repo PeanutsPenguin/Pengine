@@ -39,6 +39,8 @@ namespace Pengine
 
 		static void stopPengine();
 
+		static bool shouldStop();
+
 		/// <summary>
 		/// Return the pointer to the main "PenWindow"
 		/// </summary>
@@ -66,8 +68,16 @@ namespace Pengine
 		static WindowLib windowLib();
 
 		static RenderLib renderLib();
+
+		static void frameUpdate();
+
+		static void renderUpdate();
+
+		static void switchFrame();
 		
 		static void destroy();
+
+		static double getDeltaTime();
 #pragma endregion
 
 #pragma region Private
@@ -75,11 +85,6 @@ namespace Pengine
 		static void updateDeltaTime();
 
 		static void updateInputs();
-
-		/// <summary>
-		/// Main loop of the engine
-		/// </summary>
-		static void update();
 
 		static void registerDefaultType();
 
@@ -91,6 +96,8 @@ namespace Pengine
 
 		static void registerRendererSystem();
 
+		static void registerCameraSystem();
+
 		static std::unique_ptr<PenWindowBase> m_window;
 		static std::unique_ptr<Pengine::PenOctopus> m_PenOctopus;
 		static std::unique_ptr<PenInputManager> m_inputManager;
@@ -98,8 +105,8 @@ namespace Pengine
 
 		static PenLibDefine m_libs;
 
-		static float m_deltaTime;
-		static float m_lastFrame;
+		static double m_deltaTime;
+		static double m_lastFrame;
 		static bool m_shouldStop;
 #pragma endregion
 

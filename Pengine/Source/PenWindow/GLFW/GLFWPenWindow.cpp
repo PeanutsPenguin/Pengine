@@ -1,9 +1,13 @@
 #include "PenWindow/GLFW/Private_GLFWPenWindow.h"
 
-#include "PenCore/PenCore.h"                     //Core
+#include "PenCore/PenCore.h"                    //Core
+#include "PenOctopus/PenOctopus.h"              //PenOctopus
 #include "PenScene/PenScene.h"                  //PenScene
 #include "PenInput/PenInput.h"                  //PenInput
 #include "PenColor/PenColor.h"                  //PenColor
+
+//Components
+#include "PenComponents/PenCamera/PenCamera.h"
 
 //Lib
 #include <glad/glad.h>
@@ -38,6 +42,18 @@ void GLFWPenWindow::setWindowSize(const PenMath::Vector2f& size, bool resizeWind
 
     if (resizeWindow)
         glViewport(0, 0, size.x, size.y);
+    
+    std::shared_ptr<System::PenCameraSystem> camPtr = PenCore::PenOctopus()->getSystem<System::PenCameraSystem>();
+
+    if (!camPtr)
+        return;
+
+    PenObjectId mainCam = camPtr->getMainCamera();
+
+    if (mainCam == g_PenObjectInvalidId)
+        return;
+
+    PenCore::PenOctopus()->getComponent<Components::PenCamera>(mainCam).setAspect(size.x / size.y);
 }
 
 void GLFWPenWindow::preRender(const PenScene& mainScene)
@@ -55,6 +71,32 @@ void GLFWPenWindow::render()
 void GLFWPenWindow::postRender()
 {
     this->GLBufferUpdate();
+}
+
+void Pengine::GLFWPenWindow::setCursorState(CursorState state)
+{
+    switch (state)
+    {
+    case Pengine::E_NORMAL:
+        glfwSetInputMode(this->m_windowPtr, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        this->m_state = state;
+        break;
+    case Pengine::E_HIDDEN:
+        glfwSetInputMode(this->m_windowPtr, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+        this->m_state = state;
+        break;
+    case Pengine::E_DISABLED:
+        glfwSetInputMode(this->m_windowPtr, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        this->m_state = state;
+        break;
+    default:
+        break;
+    }        
+}
+
+CursorState Pengine::PenWindowBase::getCursorState() const
+{
+    return this->m_state;
 }
 
 GLFWwindow* GLFWPenWindow::getWindowPtr() const noexcept
@@ -112,7 +154,7 @@ void GLFWPenWindow::GLBufferUpdate()
 
 void GLFWPenWindow::framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
-    PenCore::PenWindow()->setWindowSize({(float)width, (float)height}, false);
+    PenCore::PenWindow()->setWindowSize({(float)width, (float)height});
 }
 
 void GLFWPenWindow::window_close_callBack(GLFWwindow* window)

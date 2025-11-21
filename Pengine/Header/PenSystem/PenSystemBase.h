@@ -16,6 +16,8 @@ namespace Pengine::System
 
 		virtual void onEntityDestroyed(const PenObjectId obj) = 0;
 
+		virtual void update(double dt) = 0;
+
 		std::set<PenObjectId> m_PenObject;
 		PenComponentSignature m_signature;
 	};

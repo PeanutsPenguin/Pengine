@@ -11,6 +11,7 @@
 //Components
 #include "PenComponents/PenRenderer/PenRenderer.h"
 #include "PenComponents/PenTransform/PenTransform.h"
+#include "PenComponents/PenCamera/PenCamera.h"
 
 //Lib
 #include <GLFW/glfw3.h>
@@ -26,8 +27,8 @@ std::unique_ptr<Resources::PenResourcesManager> PenCore::m_resourcesManager = st
 
 PenLibDefine PenCore::m_libs = PenLibDefine();
 
-float PenCore::m_deltaTime = 0;
-float PenCore::m_lastFrame = glfwGetTime();
+double PenCore::m_deltaTime = 0;
+double PenCore::m_lastFrame = glfwGetTime();
 bool PenCore::m_shouldStop = 0;
 #pragma endregion
 
@@ -53,12 +54,26 @@ bool PenCore::init(const char* name, const PenMath::Vector2f& windowSize)
 void PenCore::startPengine()
 {
 	m_shouldStop = false;
-    update();
+    while (!m_shouldStop)
+    {
+        frameUpdate();
+
+        renderUpdate();
+
+        switchFrame();
+    }
+
+    destroy();
 }
 
 void PenCore::stopPengine()
 {
 	m_shouldStop = true;
+}
+
+bool Pengine::PenCore::shouldStop()
+{
+    return m_shouldStop;
 }
 
 #pragma region Getter
@@ -102,6 +117,10 @@ RenderLib PenCore::renderLib()
     return m_libs.render;
 }
 
+double PenCore::getDeltaTime()
+{
+    return m_deltaTime;
+}
 #pragma endregion
 
 #pragma region Updates
@@ -109,7 +128,7 @@ void PenCore::updateDeltaTime()
 {
     const double currentFrame = glfwGetTime();
     m_deltaTime = currentFrame - m_lastFrame;
-    m_deltaTime = currentFrame;
+    m_lastFrame = currentFrame;
 }
 
 void PenCore::updateInputs()
@@ -117,24 +136,25 @@ void PenCore::updateInputs()
     m_inputManager->update();
 }
 
-void PenCore::update()
+void PenCore::frameUpdate()
 {
-    while (!m_shouldStop)
-    {
-        updateDeltaTime();
-        updateInputs();
+    updateDeltaTime();
+    updateInputs();
 
-        m_window->preRender(*m_PenOctopus->getMainScene());
+    m_PenOctopus->updateAllSystem(m_deltaTime);
+}
+void PenCore::renderUpdate()
+{
+    m_window->preRender(*m_PenOctopus->getMainScene());
 
-		//Then the render ones
-        m_window->render();
+    //Then the render ones
+    m_window->render();
 
-        m_window->postRender();
-
-        m_resourcesManager->clearUnused();
-    }
-
-    destroy();
+    m_window->postRender();
+}
+void PenCore::switchFrame()
+{
+    m_resourcesManager->clearUnused();
 }
 #pragma endregion
 
@@ -149,26 +169,39 @@ void PenCore::registerComponents()
 {
     m_PenOctopus->registerComponent<Components::PenRenderer>();
     m_PenOctopus->registerComponent<Components::PenTransform>();
+    m_PenOctopus->registerComponent<Components::PenCamera>();
 }
 
 void PenCore::registerSystems()
 {
     registerRendererSystem();
     registerTransformSystem();
+    registerCameraSystem();
 }
 
 void PenCore::registerRendererSystem()
 {
     PenComponentSignature renderSig;
     renderSig.set(m_PenOctopus->getComponentType<Components::PenRenderer>());
+    renderSig.set(m_PenOctopus->getComponentType<Components::PenTransform>());
     m_window->setRenderSystem(m_PenOctopus->registerSystem<System::PenRendererSystem>());
     m_PenOctopus->setSystemSignature<System::PenRendererSystem>(renderSig);
+}
+
+void Pengine::PenCore::registerCameraSystem()
+{
+    PenComponentSignature camSig;
+    camSig.set(m_PenOctopus->getComponentType<Components::PenCamera>());
+    camSig.set(m_PenOctopus->getComponentType<Components::PenTransform>());
+    m_PenOctopus->registerSystem<System::PenCameraSystem>();
+    m_PenOctopus->setSystemSignature<System::PenCameraSystem>(camSig);
 }
 
 void PenCore::registerTransformSystem()
 {
     PenComponentSignature transSig;
     transSig.set(m_PenOctopus->getComponentType<Components::PenTransform>());
+    m_PenOctopus->registerSystem<System::PenTransformSystem>();
     m_PenOctopus->setSystemSignature<System::PenTransformSystem>(transSig);
 }
 #pragma endregion

@@ -35,6 +35,8 @@ namespace Pengine
 
 		void postRender() override;
 
+		void setCursorState(CursorState state) override;
+
 		GLFWwindow* getWindowPtr() const noexcept;
 #pragma endregion
 

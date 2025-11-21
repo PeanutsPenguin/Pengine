@@ -30,6 +30,11 @@ void PenOctopus::destroyPenObject(PenObjectId obj)
 	this->m_mainScene->removeObject(obj);
 }
 
+void PenOctopus::updateAllSystem(double dt)
+{
+	this->m_PenSystemManager->updateAllSystem(dt);
+}
+
 void PenOctopus::addToScene(const PenObjectId obj)
 {
 	this->m_mainScene->addObject(obj);
