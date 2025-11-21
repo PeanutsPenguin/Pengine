@@ -14,7 +14,7 @@ void PenCore::runEditor()
 {
 	m_shouldStop = false;
 
-	Pengine::PenCore::PenWindow()->setCursorState(false);
+	Pengine::PenCore::PenWindow()->setCursorState(Pengine::CursorState::E_DISABLED);
 
 	while (!m_shouldStop && !Pengine::PenCore::shouldStop())
 	{
@@ -44,6 +44,8 @@ std::unique_ptr<PenFreeCam>& Penditor::PenCore::getEditorCam()
 void PenCore::update(double dt)
 {
 	m_editorCam->update(dt);
+
+	handleInputs();
 }
 
 void PenCore::handleInputs()

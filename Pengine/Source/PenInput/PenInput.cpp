@@ -152,14 +152,16 @@ int PenInputManager::GLFWinput(const PenInput& input)
 {
 	int glfwKey = 0;
 
-	if (input <= 9)
-		glfwKey = input + 48;
-	else if (input > 9 && input <= 35)
-		glfwKey = input + 55;
+	if (input == PenInput::key_ESCAPE)
+		glfwKey = GLFW_KEY_ESCAPE;
 	else if (input == PenInput::key_SPACE)
 		glfwKey = GLFW_KEY_SPACE;
 	else if (input == PenInput::key_ENTER)
 		glfwKey = GLFW_KEY_ENTER;
+	else if (input <= 9)
+		glfwKey = input + 48;
+	else if (input > 9 && input <= 35)
+		glfwKey = input + 55;
 
 	return glfwKey;
 }
