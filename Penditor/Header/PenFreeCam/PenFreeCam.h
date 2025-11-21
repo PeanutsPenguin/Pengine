@@ -2,6 +2,13 @@
 
 #include "PengineDefine.h"
 
+#include <Transform.h>
+
+namespace Pengine::Components
+{
+	class PenCamera;
+}
+
 namespace Penditor
 {
 	class PenFreeCam
@@ -24,8 +31,13 @@ namespace Penditor
 		float getSpeed() const;
 
 	private:
+		void handleCameraMovement(PenMath::Transform& trans, Pengine::Components::PenCamera& cam, float speed);
+
+		void handleCameraRotation(PenMath::Transform& trans, Pengine::Components::PenCamera& cam);
+
+
 		Pengine::PenObjectId m_camObject = Pengine::g_PenObjectInvalidId;
 		float m_speed = 2;
-		float m_sensitivity = .5f;
+		float m_sensitivity = .2f;
 	};
 }

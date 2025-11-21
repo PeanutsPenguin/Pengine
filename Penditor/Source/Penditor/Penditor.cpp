@@ -14,8 +14,6 @@ void PenCore::runEditor()
 {
 	m_shouldStop = false;
 
-	Pengine::PenCore::PenWindow()->setCursorState(Pengine::CursorState::E_DISABLED);
-
 	while (!m_shouldStop && !Pengine::PenCore::shouldStop())
 	{
 		Pengine::PenCore::frameUpdate();
@@ -57,6 +55,14 @@ void PenCore::handleInputs()
 
 	if (ptr->isKeyPressed(Pengine::key_ESCAPE))
 		stopEditor();
+
+	if (ptr->isKeyPressed(Pengine::key_C))
+	{
+		if (Pengine::PenCore::PenWindow()->getCursorState() == Pengine::CursorState::E_DISABLED)
+			Pengine::PenCore::PenWindow()->setCursorState(Pengine::CursorState::E_NORMAL);
+		else
+			Pengine::PenCore::PenWindow()->setCursorState(Pengine::CursorState::E_DISABLED);
+	}
 }
 
 void PenCore::destroy()

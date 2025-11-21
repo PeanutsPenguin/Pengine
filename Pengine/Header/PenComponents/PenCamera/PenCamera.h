@@ -42,6 +42,7 @@ namespace Pengine::Components
 		void				setUp(const PenMath::Vector3f& up);
 		void				setYaw(const float yaw);
 		void				setPitch(const float pitch);
+		void				setAspect(const float aspect);
 #pragma endregion
 
 		void updateProjectionMatrix();

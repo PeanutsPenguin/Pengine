@@ -22,9 +22,16 @@ namespace Pengine
 
 		bool isKeyDown(const PenInput& input);
 
+		bool isKeyReleased(const PenInput& input);
+
 		PenInputType getKeyState(const PenInput& input);
 
 		PenMath::Vector2 getMouseOffset() const;
+
+		/// <summary>
+		/// Reset the mouse position to its last position
+		/// </summary>
+		void resetMousePos();
 
 		/// <summary>
 		/// Update all the stored input state 
@@ -36,17 +43,15 @@ namespace Pengine
 	private:
 
 #pragma region GLFW
-		PenInputType GLFWgetKeyState(const PenInput& input);
-
-		bool GLFWisKeyPressed(const PenInput& input);
-
 		PenInputType GLFWfindKeyState(const PenInput& input);
-
-		PenInput inputGLFW(int input);
 
 		int GLFWinput(const PenInput& input);
 
+		int GLFWMouseInput(const PenInput& input);
+
 		void updateGLFWMouse();
+
+		void GLFWResetMousePos();
 #pragma endregion
 
 		PenInputType updateInput(const PenInput& input, PenInputType curState);

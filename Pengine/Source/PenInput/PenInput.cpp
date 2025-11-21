@@ -23,7 +23,15 @@ bool PenInputManager::isKeyPressed(const PenInput& input)
 	}
 
 	if(PenCore::inputLib() == InputLib::E_GLFW_INPUT)
-		return GLFWisKeyPressed(input);
+	{
+		PenInputType result = this->GLFWfindKeyState(input);
+
+		if (result == PenInputType::E_PRESSED)
+		{
+			this->m_inputs[input] = PenInputType::E_PRESSED;
+			return true;
+		}
+	}
 
 	return false;
 }
@@ -40,76 +48,65 @@ bool PenInputManager::isKeyDown(const PenInput& input)
 		return false;
 	}
 
+	//Actually the key is not "down" but just "pressed" but i still count that as true
 	if (PenCore::inputLib() == InputLib::E_GLFW_INPUT)
-		return GLFWisKeyPressed(input);
+	{
+		PenInputType result = this->GLFWfindKeyState(input);
+
+		if (result == PenInputType::E_PRESSED)
+		{
+			this->m_inputs[input] = PenInputType::E_PRESSED;
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool PenInputManager::isKeyReleased(const PenInput& input)
+{
+	auto it = this->m_inputs.find(input);
+
+	if (it != this->m_inputs.end())
+	{
+		if (it->second == PenInputType::E_RELEASED)
+			return true;
+	}
 
 	return false;
 }
 
 PenInputType PenInputManager::getKeyState(const PenInput& input)
 {
+	PenInputType result = PenInputType::E_NONE;
+
 	auto it = this->m_inputs.find(input);
 
 	if (it != this->m_inputs.end())
 		return it->second;
 
 	if (PenCore::inputLib() == InputLib::E_GLFW_INPUT)
-		return GLFWgetKeyState(input);
+	{
+		result = this->GLFWfindKeyState(input);
 
-	return PenInputType::E_NONE;
+		if(result == PenInputType::E_PRESSED)
+			this->m_inputs[input] = PenInputType::E_PRESSED;
+	}
+
+	return result;
 }
 
 PenMath::Vector2 Pengine::PenInputManager::getMouseOffset() const
 {
-	//std::cout << m_offset.x << '\t' << m_offset.y << '\n';
 	return this->m_offset;
 }
 
-PenInputType Pengine::PenInputManager::GLFWgetKeyState(const PenInput& input)
+void PenInputManager::resetMousePos()
 {
-	int glfwKey = this->GLFWinput(input);
+	if (PenCore::inputLib() == InputLib::E_GLFW_INPUT)
+		this->GLFWResetMousePos();
 
-	GLFWPenWindow* window = dynamic_cast<GLFWPenWindow*>(PenCore::PenWindow().get());
-
-	if (!window)
-	{
-		std::cout << __FUNCTION__ "Failed to cast the PenWindow into GLFWPenWindow (Returning none state)\n";
-		return PenInputType::E_NONE;
-	}
-
-	int result = glfwGetKey(window->getWindowPtr(), glfwKey);
-
-	if (result == GLFW_PRESS)
-	{
-		this->m_inputs[input] = PenInputType::E_PRESSED;
-		return PenInputType::E_PRESSED;
-	}
-
-
-	return PenInputType::E_NONE;
-}
-
-bool PenInputManager::GLFWisKeyPressed(const PenInput& input)
-{
-	int glfwKey = this->GLFWinput(input);
-
-	GLFWPenWindow* window = dynamic_cast<GLFWPenWindow*>(PenCore::PenWindow().get());
-
-	if (!window)
-	{
-		std::cout << __FUNCTION__ "Failed to cast the PenWindow into GLFWPenWindow (Returning false)\n";
-		return false;
-	}
-
-	int result = glfwGetKey(window->getWindowPtr(), glfwKey);
-
-	if (result == GLFW_PRESS)
-	{
-		this->m_inputs[input] = PenInputType::E_PRESSED;
-		return true;
-	}
-
-	return false;
+	this->m_offset = PenMath::Vector2::Zero();
 }
 
 PenInputType Pengine::PenInputManager::GLFWfindKeyState(const PenInput& input)
@@ -124,35 +121,27 @@ PenInputType Pengine::PenInputManager::GLFWfindKeyState(const PenInput& input)
 		return PenInputType::E_NONE;
 	}
 
-	int result = glfwGetKey(window->getWindowPtr(), glfwKey);
+	int result = 0;
+
+	if(input >= 39 && input <= 41)
+		result = glfwGetMouseButton(window->getWindowPtr(), glfwKey);
+	else 
+		result = glfwGetKey(window->getWindowPtr(), glfwKey);
 
 	if (result == GLFW_PRESS)
 		return PenInputType::E_PRESSED;
-	else 
-		return PenInputType::E_RELEASED;
-}
+	
 
-PenInput PenInputManager::inputGLFW(int input)
-{
-	if (input >= 48 && input <= 57)
-		return PenInput(input - 48);
-	else if (input >= 65 && input <= 90)
-		return PenInput(input - 55);
-	else if (input == GLFW_KEY_SPACE)
-		return PenInput::key_SPACE;
-	else if (input == GLFW_KEY_ENTER)
-		return PenInput::key_ENTER;
-	else
-		std::cout << __FUNCTION__ "Input not supported\n";
-
-	return PenInput();
+	return PenInputType::E_NONE;
 }
 
 int PenInputManager::GLFWinput(const PenInput& input)
 {
 	int glfwKey = 0;
 
-	if (input == PenInput::key_ESCAPE)
+	if (input >= 39 && input <= 41)
+		return GLFWMouseInput(input);
+	else if (input == PenInput::key_ESCAPE)
 		glfwKey = GLFW_KEY_ESCAPE;
 	else if (input == PenInput::key_SPACE)
 		glfwKey = GLFW_KEY_SPACE;
@@ -162,6 +151,20 @@ int PenInputManager::GLFWinput(const PenInput& input)
 		glfwKey = input + 48;
 	else if (input > 9 && input <= 35)
 		glfwKey = input + 55;
+
+	return glfwKey;
+}
+
+int PenInputManager::GLFWMouseInput(const PenInput& input)
+{
+	int glfwKey = 0;
+
+	if (input == PenInput::key_MOUSE_LEFT)
+		glfwKey = GLFW_MOUSE_BUTTON_LEFT;
+	else if (input == PenInput::key_MOUSE_RIGHT)
+		glfwKey = GLFW_MOUSE_BUTTON_RIGHT;
+	else if (input == PenInput::key_MOUSE_WHEEL)
+		glfwKey = GLFW_MOUSE_BUTTON_MIDDLE;
 
 	return glfwKey;
 }
@@ -184,6 +187,22 @@ void PenInputManager::updateGLFWMouse()
 	this->m_mousePos = pos;
 }
 
+void PenInputManager::GLFWResetMousePos()
+{
+	GLFWPenWindow* window = dynamic_cast<GLFWPenWindow*>(PenCore::PenWindow().get());
+
+	if (!window)
+	{
+		std::cout << __FUNCTION__ "Failed to cast the PenWindow into GLFWPenWindow (No mouse reset)\n";
+		return;
+	}
+
+	PenMath::Vector2 oldMousePos = this->m_offset + this->m_mousePos;
+	this->m_mousePos = oldMousePos;
+
+	glfwSetCursorPos(window->getWindowPtr(), (double)oldMousePos.x, (double)oldMousePos.y);
+}
+
 PenInputType PenInputManager::updateInput(const PenInput& input, PenInputType prevState)
 {
 	PenInputType state = PenInputType::E_NONE;
@@ -196,20 +215,11 @@ PenInputType PenInputManager::updateInput(const PenInput& input, PenInputType pr
 		if (state == PenInputType::E_PRESSED)
 			return PenInputType::E_DOWN;
 
-		if (state == PenInputType::E_RELEASED)
+		if (state == PenInputType::E_NONE)
 			return PenInputType::E_RELEASED;
 	}
-
-	else if (prevState == PenInputType::E_RELEASED || prevState == PenInputType::E_NONE)
-	{
-		if (state == PenInputType::E_PRESSED)
-			return PenInputType::E_PRESSED;
-
-		if (state == PenInputType::E_RELEASED)
-			return PenInputType::E_NONE;
-	}
-
-	return PenInputType::E_NONE;
+	else
+		return state;
 }
 
 void PenInputManager::update()

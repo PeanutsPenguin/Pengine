@@ -110,6 +110,11 @@ void PenCamera::setPitch(const float pitch)
 	this->m_pitch = pitch;
 	this->SetState(PenComponentState::DIRTY, true);
 }
+void PenCamera::setAspect(const float aspect)
+{
+	this->m_values.aspectRatio = aspect;
+	this->SetState(PenComponentState::DIRTY, true);
+}
 #pragma endregion
 
 void PenCamera::updateProjectionMatrix()

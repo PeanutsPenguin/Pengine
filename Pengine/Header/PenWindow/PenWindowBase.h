@@ -34,7 +34,7 @@ namespace Pengine
 		/// Edit the private value "size" of this object and the window
 		/// </summary>
 		/// <param name="size">The new Size</param>
-		/// <param name="resizeWindow">True if you want to rescale the window</param>
+		/// <param name="resizeWindow">True if you want to resize the viewPort</param>
 		virtual void setWindowSize(const PenMath::Vector2f& size, bool resizeWindow = true) = 0;
 
 		virtual void preRender(const PenScene& mainScene) = 0;
