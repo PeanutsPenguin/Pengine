@@ -7,12 +7,12 @@ using namespace Pengine::Buffer;
 
 PenVertexBuffer::~PenVertexBuffer()
 {
-	PenBufferBase::destroy();
+	PenGLBufferBase::destroy();
 }
 
 void PenVertexBuffer::create(const void* data, size_t size)
 {
-	PenBufferBase::generateBuffer();
+	PenGLBufferBase::generateBuffer();
 	bind();
 
 	glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
@@ -26,7 +26,7 @@ void PenVertexBuffer::create(const void* data, size_t size)
 
 void PenVertexBuffer::destroy()
 {
-	PenBufferBase::destroy();
+	PenGLBufferBase::destroy();
 }
 
 void PenVertexBuffer::bind() const
