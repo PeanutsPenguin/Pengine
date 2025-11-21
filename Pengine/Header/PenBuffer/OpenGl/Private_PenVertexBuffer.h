@@ -1,13 +1,13 @@
 #pragma once 
 
-#include "PenBuffer/PenBufferBase.h"
+#include "PenBuffer/OpenGl/Private_PenGLBuferBase.h"
 
 namespace Pengine::Buffer
 {
     /// <summary>
     /// VBO for OpenGl draw
     /// </summary>
-    class PenVertexBuffer final : public PenBufferBase
+    class PenVertexBuffer final : public PenGLBufferBase
     {
 #pragma region Public
     public:

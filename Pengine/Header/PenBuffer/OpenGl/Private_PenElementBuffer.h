@@ -1,6 +1,6 @@
 #pragma once 
 
-#include "PenBuffer/PenBufferBase.h"
+#include "PenBuffer/OpenGl/Private_PenGLBuferBase.h"
 
 #include <span>
 
@@ -9,7 +9,7 @@ namespace Pengine::Buffer
 	/// <summary>
 	/// EBO class for OpenGl draw
 	/// </summary>
-	class PenElementBuffer final : public PenBufferBase
+	class PenElementBuffer final : public PenGLBufferBase
 	{
 #pragma region Public
 	public:

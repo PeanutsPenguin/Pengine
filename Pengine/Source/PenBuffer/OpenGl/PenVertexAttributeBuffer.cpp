@@ -9,7 +9,7 @@ using namespace Pengine::Buffer;
 
 PenVertexAttributeBuffer::~PenVertexAttributeBuffer()
 {
-	PenBufferBase::destroy();
+	PenGLBufferBase::destroy();
 }
 
 void PenVertexAttributeBuffer::create()
@@ -19,7 +19,7 @@ void PenVertexAttributeBuffer::create()
 
 void PenVertexAttributeBuffer::destroy()
 {
-	PenBufferBase::destroy();
+	PenGLBufferBase::destroy();
 }
 
 void PenVertexAttributeBuffer::bind() const

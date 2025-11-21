@@ -17,7 +17,7 @@ namespace Pengine::Buffer
 
 		virtual ~PenBufferBase() = default;
 
-		virtual void destroy();
+		virtual void destroy() = 0;
 
 		virtual void bind() const = 0;
 		virtual void unbind() const = 0;
@@ -30,7 +30,7 @@ namespace Pengine::Buffer
 	protected:
 		unsigned int m_id = 0;
 
-		void generateBuffer();
+		virtual void generateBuffer() = 0;
 #pragma endregion
-	};
+	}; 
 }

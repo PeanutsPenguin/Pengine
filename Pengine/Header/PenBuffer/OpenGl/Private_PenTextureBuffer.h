@@ -1,6 +1,6 @@
 #pragma once 
 
-#include "PenBuffer/PenBufferBase.h"
+#include "PenBuffer/OpenGl/Private_PenGLBuferBase.h"
 
 #include "Vector/Vector3/Vector3.h"
 
@@ -11,7 +11,7 @@ namespace Pengine::Buffer
 	/// <summary>
 	/// Texture Buffer class for OpenGl draw
 	/// </summary>
-	class PenTextureBuffer final : public PenBufferBase
+	class PenTextureBuffer final : public PenGLBufferBase
 	{
 #pragma region Public
 	public:
