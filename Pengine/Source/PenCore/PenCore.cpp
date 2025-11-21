@@ -54,12 +54,26 @@ bool PenCore::init(const char* name, const PenMath::Vector2f& windowSize)
 void PenCore::startPengine()
 {
 	m_shouldStop = false;
-    update();
+    while (!m_shouldStop)
+    {
+        frameUpdate();
+
+        renderUpdate();
+
+        switchFrame();
+    }
+
+    destroy();
 }
 
 void PenCore::stopPengine()
 {
 	m_shouldStop = true;
+}
+
+bool Pengine::PenCore::shouldStop()
+{
+    return m_shouldStop;
 }
 
 #pragma region Getter
@@ -103,6 +117,10 @@ RenderLib PenCore::renderLib()
     return m_libs.render;
 }
 
+double PenCore::getDeltaTime()
+{
+    return m_deltaTime;
+}
 #pragma endregion
 
 #pragma region Updates
@@ -118,26 +136,25 @@ void PenCore::updateInputs()
     m_inputManager->update();
 }
 
-void PenCore::update()
+void PenCore::frameUpdate()
 {
-    while (!m_shouldStop)
-    {
-        updateDeltaTime();
-        updateInputs();
+    updateDeltaTime();
+    updateInputs();
 
-        m_PenOctopus->updateAllSystem(m_deltaTime);
+    m_PenOctopus->updateAllSystem(m_deltaTime);
+}
+void PenCore::renderUpdate()
+{
+    m_window->preRender(*m_PenOctopus->getMainScene());
 
-        m_window->preRender(*m_PenOctopus->getMainScene());
+    //Then the render ones
+    m_window->render();
 
-		//Then the render ones
-        m_window->render();
-
-        m_window->postRender();
-
-        m_resourcesManager->clearUnused();
-    }
-
-    destroy();
+    m_window->postRender();
+}
+void PenCore::switchFrame()
+{
+    m_resourcesManager->clearUnused();
 }
 #pragma endregion
 

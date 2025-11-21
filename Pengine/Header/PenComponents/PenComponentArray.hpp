@@ -49,13 +49,19 @@ namespace Pengine::Components
 	template<typename T>
 	inline T& ComponentArray<T>::getData(PenObjectId entity)
 	{
-		if(m_PenObjectToArrayIndex.find(entity) ==  m_PenObjectToArrayIndex.end())
+		if(m_PenObjectToArrayIndex.find(entity) == m_PenObjectToArrayIndex.end())
 		{
 			std::cout << __FUNCTION__ "No component found with the specified PenObject (returning last components array)\n";
 			return m_PenComponentArray[m_count - 1];
 		}
 
 		return m_PenComponentArray[m_PenObjectToArrayIndex[entity]];
+	}
+
+	template<typename T>
+	inline bool ComponentArray<T>::contains(PenObjectId entity)
+	{
+		return (m_PenObjectToArrayIndex.find(entity) != m_PenObjectToArrayIndex.end());
 	}
 
 	template<typename T>

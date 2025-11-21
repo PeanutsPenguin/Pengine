@@ -2,6 +2,8 @@
 
 #include "PenStructsAndEnum/PenInput.h"
 
+#include "Vector/Vector2/Vector2.h"
+
 #include <unordered_map>
 
 namespace Pengine
@@ -22,6 +24,8 @@ namespace Pengine
 
 		PenInputType getKeyState(const PenInput& input);
 
+		PenMath::Vector2 getMouseOffset() const;
+
 		/// <summary>
 		/// Update all the stored input state 
 		/// </summary>
@@ -30,6 +34,8 @@ namespace Pengine
 
 #pragma region Private
 	private:
+
+#pragma region GLFW
 		PenInputType GLFWgetKeyState(const PenInput& input);
 
 		bool GLFWisKeyPressed(const PenInput& input);
@@ -38,11 +44,16 @@ namespace Pengine
 
 		PenInput inputGLFW(int input);
 
-		std::unordered_map<PenInput, PenInputType> m_inputs;
-
 		int GLFWinput(const PenInput& input);
 
+		void updateGLFWMouse();
+#pragma endregion
+
 		PenInputType updateInput(const PenInput& input, PenInputType curState);
+
+		std::unordered_map<PenInput, PenInputType> m_inputs;
+		PenMath::Vector2 m_mousePos;
+		PenMath::Vector2 m_offset = 0;
 #pragma endregion
 	};
 }

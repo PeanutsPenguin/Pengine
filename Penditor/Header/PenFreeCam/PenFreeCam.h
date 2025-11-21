@@ -20,7 +20,12 @@ namespace Penditor
 
 		void update(double dt);
 
+		void setSpeed(float speed);
+		float getSpeed() const;
+
 	private:
 		Pengine::PenObjectId m_camObject = Pengine::g_PenObjectInvalidId;
+		float m_speed = 2;
+		float m_sensitivity = .5f;
 	};
 }

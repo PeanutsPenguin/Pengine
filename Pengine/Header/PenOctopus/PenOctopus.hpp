@@ -47,6 +47,12 @@ namespace Pengine
 	}
 
 	template<typename T>
+	inline bool PenOctopus::containsComponent(PenObjectId obj)
+	{
+		return m_PenComponentManager->containsComponent<T>(obj);
+	}
+
+	template<typename T>
 	inline PenComponentType PenOctopus::getComponentType()
 	{
 		return m_PenComponentManager->getComponentType<T>();

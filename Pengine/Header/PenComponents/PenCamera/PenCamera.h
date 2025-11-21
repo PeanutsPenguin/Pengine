@@ -40,6 +40,8 @@ namespace Pengine::Components
 		void				setFront(const PenMath::Vector3f& front);
 		void				setRight(const PenMath::Vector3f& right);
 		void				setUp(const PenMath::Vector3f& up);
+		void				setYaw(const float yaw);
+		void				setPitch(const float pitch);
 #pragma endregion
 
 		void updateProjectionMatrix();

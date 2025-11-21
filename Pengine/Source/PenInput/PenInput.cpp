@@ -59,6 +59,12 @@ PenInputType PenInputManager::getKeyState(const PenInput& input)
 	return PenInputType::E_NONE;
 }
 
+PenMath::Vector2 Pengine::PenInputManager::getMouseOffset() const
+{
+	//std::cout << m_offset.x << '\t' << m_offset.y << '\n';
+	return this->m_offset;
+}
+
 PenInputType Pengine::PenInputManager::GLFWgetKeyState(const PenInput& input)
 {
 	int glfwKey = this->GLFWinput(input);
@@ -158,6 +164,24 @@ int PenInputManager::GLFWinput(const PenInput& input)
 	return glfwKey;
 }
 
+void PenInputManager::updateGLFWMouse()
+{
+	GLFWPenWindow* window = dynamic_cast<GLFWPenWindow*>(PenCore::PenWindow().get());
+
+	if (!window)
+	{
+		std::cout << __FUNCTION__ "Failed to cast the PenWindow into GLFWPenWindow (No mouse update)\n";
+		return;
+	}
+
+	double xpos, ypos;
+	glfwGetCursorPos(window->getWindowPtr(), &xpos, &ypos);
+
+	PenMath::Vector2 pos{ (int)xpos, (int)ypos };
+	this->m_offset = pos - m_mousePos;
+	this->m_mousePos = pos;
+}
+
 PenInputType PenInputManager::updateInput(const PenInput& input, PenInputType prevState)
 {
 	PenInputType state = PenInputType::E_NONE;
@@ -200,4 +224,7 @@ void PenInputManager::update()
 			input++;
 		}
 	}
+
+	if (PenCore::inputLib() == InputLib::E_GLFW_INPUT)
+		updateGLFWMouse();
 }

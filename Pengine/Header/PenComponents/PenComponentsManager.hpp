@@ -58,6 +58,12 @@ namespace Pengine::Components
 	}
 
 	template<typename T>
+	inline bool PenComponentsManager::containsComponent(PenObjectId entity)
+	{
+		return getComponentArray<T>()->contains(entity);
+	}
+
+	template<typename T>
 	inline std::shared_ptr<ComponentArray<T>> PenComponentsManager::getComponentArray()
 	{
 		const char* typeName = typeid(T).name();

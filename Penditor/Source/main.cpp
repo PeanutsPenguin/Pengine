@@ -3,6 +3,8 @@
 #include "PenWindow/PenWindowBase.h"	//Window
 #include "PenColor/PenColor.h"			//Color
 #include "PenOctopus/PenOctopus.h"		//Octopus
+#include "Penditor/Penditor.h"			//Penditor
+#include "PenFreeCam/PenFreeCam.h"
 
 //Define
 #include "PenditorDefine.h"
@@ -70,10 +72,9 @@ int main()
 		camSystemPtr->setMainCamera(camObj);
 		Pengine::PenCore::PenOctopus()->addToScene(camObj);
 
-		Pengine::PenCore::startPengine();
+		Penditor::PenCore::getEditorCam()->setCamObject(camObj);
 
-		Pengine::PenCore::destroy();
-
+		Penditor::PenCore::runEditor();
 #if CHECK_MEMORY_LEAKS
 	}
 	afterMain(start);

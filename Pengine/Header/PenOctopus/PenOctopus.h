@@ -39,6 +39,9 @@ namespace Pengine
 		T& getComponent(PenObjectId obj);
 
 		template<typename T>
+		bool containsComponent(PenObjectId obj);
+
+		template<typename T>
 		PenComponentType getComponentType();
 #pragma endregion
 

@@ -13,26 +13,17 @@ PenTransform::PenTransform()
 }
 
 #pragma region Getter
-const PenMath::Transform& PenTransform::getGlobalTransform() const
+PenMath::Transform PenTransform::getGlobalTransform() const
 {
 	return this->m_globalTransform;
 }
 
-PenMath::Transform& PenTransform::getGlobalTransform()
-{
-	return this->m_globalTransform;
-}
-
-const PenMath::Transform& PenTransform::getLocalTransform() const
+PenMath::Transform PenTransform::getLocalTransform() const
 {
 	return this->m_localTransform;
 }
 
-PenMath::Transform& PenTransform::getLocalTransform()
-{
-	return this->m_localTransform;
-}
-const Pengine::PenObjectId PenTransform::getParent()
+const Pengine::PenObjectId PenTransform::getParent() const
 {
 	return m_parent;
 }

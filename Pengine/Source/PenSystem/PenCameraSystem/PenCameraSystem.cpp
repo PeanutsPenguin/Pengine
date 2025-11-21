@@ -27,25 +27,6 @@ void PenCameraSystem::update(double dt)
 
 			cam.SetState(Components::PenComponentState::DIRTY, false);
 		}
-
-		const float cameraSpeed = 1.f * dt; // adjust accordingly
-
-		PenMath::Transform newTrans = transform.getGlobalTransform();
-
-		if (Pengine::PenCore::InputManager()->isKeyDown(Pengine::key_W))
-			newTrans.position += PenMath::Vector3f{0, 0, -1} * cameraSpeed;
-		if (Pengine::PenCore::InputManager()->isKeyDown(Pengine::key_S))
-			newTrans.position -= PenMath::Vector3f{ 0, 0, -1 } * cameraSpeed;
-		if (Pengine::PenCore::InputManager()->isKeyDown(Pengine::key_A))
-			newTrans.position -= PenMath::Vector3f{ 1, 0, 0 } * cameraSpeed;
-		if (Pengine::PenCore::InputManager()->isKeyDown(Pengine::key_D))
-			newTrans.position += PenMath::Vector3f{ 1, 0, 0 } * cameraSpeed;
-
-		//std::cout << newTrans.position.x << '\t' << newTrans.position.y << '\t' << newTrans.position.z << '\n';
-		std::cout << cameraSpeed << '\n';
-
-		transform.setGlobalTransform(newTrans);
-		cam.SetState(Components::PenComponentState::DIRTY);
 	}
 }
 
@@ -59,6 +40,6 @@ void PenCameraSystem::setMainCamera(const PenObjectId cam)
 	if (this->m_PenObject.contains(cam))
 		this->m_mainCamera = cam;
 	else
-		std::cout << __FUNCTION__ "Object to not have camera component\n";
+		std::cout << __FUNCTION__ "Object do not have camera component\n";
 
 }

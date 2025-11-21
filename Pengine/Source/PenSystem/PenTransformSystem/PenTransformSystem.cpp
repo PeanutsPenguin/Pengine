@@ -1,6 +1,7 @@
 #include "PenSystem/PenTransformSystem/PenTransformSystem.h"
 
 #include "PenComponents/PenTransform/PenTransform.h"	//Transform Components
+#include "PenComponents/PenCamera/PenCamera.h"			//Camera Components
 #include "PenCore/PenCore.h"							//Core
 #include "PenOctopus/PenOctopus.h"						//Octopus
 
@@ -28,8 +29,11 @@ void PenTransformSystem::update(double dt)
 			transform.setLocalTransform(transform.getGlobalTransform());	  // roots global and local should be equal
 
 		// check if component is dirty with some flags
-		if (transform.IsState(Components::PenComponentState::DIRTY)) 
+		if (transform.IsState(Components::PenComponentState::DIRTY))
 		{
+			if (PenCore::PenOctopus()->containsComponent<Components::PenCamera>(current))
+				PenCore::PenOctopus()->getComponent<Components::PenCamera>(current).SetState(Components::PenComponentState::DIRTY);
+
 			PenMath::Transform result = transform.getLocalTransform();
 
 			if (parent != g_PenObjectInvalidId) 
@@ -51,6 +55,7 @@ void PenTransformSystem::update(double dt)
 				process.push(child);
 			}
 		}
+
 		transform.SetState(Components::PenComponentState::DIRTY, false);
 	}
 }
