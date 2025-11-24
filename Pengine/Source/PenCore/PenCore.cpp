@@ -4,6 +4,7 @@
 #include "PenResources/PenResourcesManager.h"       //PenResource Manager
 #include "PenInput/PenInput.h"                      //PenInput
 #include "PenOctopus/PenOctopus.h"                  //PenOctopus
+#include "PenSerializer/PenSerializer.h"            //PenSerializer
 
 //Window
 #include "PenWindow/GLFW/Private_GLFWPenWindow.h"
@@ -22,8 +23,9 @@ using namespace Pengine;
 
 std::unique_ptr<PenWindowBase> PenCore::m_window = nullptr;
 std::unique_ptr<PenOctopus> PenCore::m_PenOctopus = std::make_unique<Pengine::PenOctopus>();
-std::unique_ptr<PenInputManager> PenCore::m_inputManager = std::make_unique<PenInputManager>();
+std::unique_ptr<PenInputManager> PenCore::m_PenInputManager = std::make_unique<Pengine::PenInputManager>();
 std::unique_ptr<Resources::PenResourcesManager> PenCore::m_resourcesManager = std::make_unique<Resources::PenResourcesManager>();
+std::unique_ptr<Serialize::PenSerializer> PenCore::m_PenSerializer = std::make_unique<Serialize::PenSerializer>();
 
 PenLibDefine PenCore::m_libs = PenLibDefine();
 
@@ -82,9 +84,9 @@ std::unique_ptr<PenWindowBase>& PenCore::PenWindow()
 	return m_window;
 }
 
-std::unique_ptr<PenInputManager>& PenCore::InputManager()
+std::unique_ptr<PenInputManager>& PenCore::PenInputManager()
 {
-    return m_inputManager;
+    return m_PenInputManager;
 }
 
 std::unique_ptr<PenOctopus>& PenCore::PenOctopus()
@@ -95,6 +97,11 @@ std::unique_ptr<PenOctopus>& PenCore::PenOctopus()
 std::unique_ptr<Resources::PenResourcesManager>& PenCore::ResourcesManager()
 {
     return m_resourcesManager;
+}
+
+std::unique_ptr<Serialize::PenSerializer>& PenCore::PenSerializer()
+{
+    return m_PenSerializer;
 }
 
 PenLibDefine& PenCore::libDefine()
@@ -133,7 +140,7 @@ void PenCore::updateDeltaTime()
 
 void PenCore::updateInputs()
 {
-    m_inputManager->update();
+    m_PenInputManager->update();
 }
 
 void PenCore::frameUpdate()
@@ -226,10 +233,10 @@ void PenCore::destroy()
         m_resourcesManager = nullptr;
     }
 
-    if (m_inputManager)
+    if (m_PenInputManager)
     {
-        m_inputManager.reset();
-        m_inputManager = nullptr;
+        m_PenInputManager.reset();
+        m_PenInputManager = nullptr;
     }
 }
 #pragma endregion

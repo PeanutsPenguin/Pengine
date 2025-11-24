@@ -43,7 +43,7 @@ int main()
 		std::unique_ptr<Pengine::Resources::PenResourcesManager>& resourceManager = Pengine::PenCore::ResourcesManager();
 
 		//Load mnodel
-		std::shared_ptr<Pengine::Resources::PenModel> modelPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenModel>("Models/padoru.obj");
+		std::shared_ptr<Pengine::Resources::PenModel> modelPtr = resourceManager->createResourceFromFile<Pengine::Resources::PenModel>("Models/padoru.obj", "Mesh/");
 
 		//Create shaders
 		std::shared_ptr<Pengine::Resources::PenGLShader> ptr = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLShader>("Shaders/cameraVertexShader.vert", Pengine::PenShaderType::VERTEX_SHADER);

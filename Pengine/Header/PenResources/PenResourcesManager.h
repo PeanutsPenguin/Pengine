@@ -21,6 +21,10 @@ namespace Pengine::Resources
 
 		template<typename _ResourceType, typename... Args>
 			requires std::derived_from<_ResourceType, PenResourcesBase>
+		_NODISCARD std::shared_ptr<_ResourceType> createResourceFromFile(const char* sourcePath, const char* destinationPath, Args... data);
+
+		template<typename _ResourceType, typename... Args>
+			requires std::derived_from<_ResourceType, PenResourcesBase>
 		_NODISCARD std::shared_ptr<_ResourceType> loadResourceFromFile(const char* path, Args... data);
 
 		template<typename _ResourceType>
@@ -28,7 +32,7 @@ namespace Pengine::Resources
 		_NODISCARD std::shared_ptr<_ResourceType> getResourceById(const PenResourcesId id);
 
 		_NODISCARD std::string_view getResourcePathById(const PenResourcesId id) const;
-
+		
 		/// <summary>
 		/// Call this at the end of every frame to clear unused resoruces
 		/// </summary>

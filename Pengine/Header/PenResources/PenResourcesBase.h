@@ -20,6 +20,8 @@ namespace Pengine::Resources
 		
 		virtual bool loadResource(const char* path) = 0;
 
+		virtual bool createResource(const char* PenfilePath, const char* sourcePath) = 0;
+
 		virtual ~PenResourcesBase() = default;
 #pragma endregion
 

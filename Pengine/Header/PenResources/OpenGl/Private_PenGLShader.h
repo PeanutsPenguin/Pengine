@@ -20,6 +20,8 @@ namespace Pengine::Resources
 		_NODISCARD bool loadResource(const char* path) override;
 
 		_NODISCARD bool loadResource(const char* path, Pengine::PenShaderType type);
+		
+		bool createResource(const char* PenfilePath, const char* sourcePath) override { return false; };
 
 		_NODISCARD bool setType(Pengine::PenShaderType type);
 

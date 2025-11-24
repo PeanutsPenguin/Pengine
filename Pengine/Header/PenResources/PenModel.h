@@ -27,11 +27,15 @@ namespace Pengine::Resources
 
 		bool loadResource(const char* path) override;
 
+		bool createResource(const char* PenfilePath, const char* sourcePath) override;
+
 		void render(std::shared_ptr<Pengine::Resources::PenShaderProgramBase> shaderProg);
 #pragma endregion
 
 #pragma region Private
 	private:
+		bool generateResource(const char* path);
+
 		bool loadPenGLMesh(const aiMesh& mesh);
 
 		void GLRender(std::shared_ptr<Pengine::Resources::PenShaderProgramBase> shaderProg);

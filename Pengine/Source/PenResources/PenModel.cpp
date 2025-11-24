@@ -6,9 +6,10 @@
 #include "PenResources/OpenGl/Private_PenGLMesh.h"
 #include "PenResources/OpenGl/Private_PenGLShaderProgram.h"
 
-#include "PenCore/PenCore.h"					//Core
-#include "PenOctopus/PenOctopus.h"				//Octopus
+#include "PenCore/PenCore.h"					//PenCore
+#include "PenOctopus/PenOctopus.h"				//PenOctopus
 #include "PenComponents/PenCamera/PenCamera.h"	//PenCameraComponents
+#include "PenSerializer/PenSerializer.h"		//PenSerializer
 
 
 #include <iostream>
@@ -26,8 +27,38 @@ PenModel::~PenModel()
 
 bool PenModel::loadResource(const char* path)
 {
+	//Create variables 
+	std::string sourcePath;
+	std::filebuf fb;
+
+	//If failed to open in the file
+	if (!fb.open(path, std::ios::in))
+	{
+		std::cout << __FUNCTION__ "\t Failed to open for read the file : " << path << '\n';
+		return false;
+	}
+
+	//Read in file
+	std::istream buf(&fb);
+	PenCore::PenSerializer()->read(buf, sourcePath);
+
+	//Generate the mesh
+	return generateResource(sourcePath.c_str());
+}
+
+bool PenModel::createResource(const char* PenfilePath, const char* sourcePath)
+{
+	std::ofstream outfile(PenfilePath);
+
+	PenCore::PenSerializer()->write(outfile, (std::string)sourcePath);
+
+	return generateResource(sourcePath);
+}
+
+bool PenModel::generateResource(const char* path)
+{
 	std::cout << __FUNCTION__ ": Loading model from file " << path << std::endl;
-	
+
 	Assimp::Importer importer;
 
 	//Open the model file

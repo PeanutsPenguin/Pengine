@@ -8,7 +8,6 @@ namespace Pengine::Components
 	class PenTransform : public PenComponentBase
 	{
 	public:
-		///* CONSTRUCTOR/DESTRUCTOR */
 		PenTransform();
 		PenTransform(const PenTransform& other) = default;
 		PenTransform(PenTransform&& other) = default;

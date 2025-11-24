@@ -48,7 +48,7 @@ void PenCore::update(double dt)
 
 void PenCore::handleInputs()
 {
-	std::unique_ptr<Pengine::PenInputManager>& ptr = Pengine::PenCore::InputManager();
+	std::unique_ptr<Pengine::PenInputManager>& ptr = Pengine::PenCore::PenInputManager();
 
 	if (!ptr)
 		return;

@@ -27,6 +27,8 @@ namespace Pengine::Resources
 
 		bool loadResource(const char* path) override;
 
+		bool createResource(const char* PenfilePath, const char* sourcePath) override { return false; };
+
 		_NODISCARD const std::string_view getTexturePath() const;
 
 		/// <summary>
