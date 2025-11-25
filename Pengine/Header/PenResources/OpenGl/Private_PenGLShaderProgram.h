@@ -15,11 +15,21 @@ namespace Pengine::Resources
 	public:
 		PenGLShaderProgram() = default;
 
+		PenGLShaderProgram(const PenResourcesId& id) : PenShaderProgramBase(id) {}
+
 		~PenGLShaderProgram() override;
+
+		_NODISCARD bool loadResource(const char* path) override;
+
+		_NODISCARD bool createResource(const char* PenfilePath, const char* sourcePath) override;
+
+		_NODISCARD bool createResource(const char* PenfilePath, const char* sourcePath,
+			std::shared_ptr<PenShaderBase> vertexShader,
+			std::shared_ptr<PenShaderBase> fragmentShader) override;
 
 		/// TODO: We should be able to create shader Program with more than just one frag and one vert. 
 		/// This will come in the futur with the real resource manager
-		bool createShaderProgram(std::shared_ptr<PenGLShader> vertPtr, std::shared_ptr<PenGLShader> fragPtr);
+		_NODISCARD bool createShaderProgram(std::shared_ptr<PenGLShader> vertPtr, std::shared_ptr<PenGLShader> fragPtr);
 	
 		bool use() const override;
 
@@ -48,7 +58,7 @@ namespace Pengine::Resources
 
 #pragma region Private
 	private:
-		unsigned int m_shaderProgramId;
+		unsigned int m_shaderProgramId = 0;
 #pragma endregion
 	};
 }

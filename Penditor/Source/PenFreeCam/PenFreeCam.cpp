@@ -41,13 +41,15 @@ void PenFreeCam::update(double dt)
 
     PenMath::Transform newTrans = transComp.getGlobalTransform();
 
+    std::unique_ptr<Pengine::PenInputManager>& input = Pengine::PenCore::PenInputManager();
+
     //TODO : need to add the "Focus on Window" bool to this 
-    if (Pengine::PenCore::InputManager()->isKeyPressed(Pengine::PenInput::key_MOUSE_RIGHT))
+    if (input->isKeyPressed(Pengine::PenInput::key_MOUSE_RIGHT))
         Pengine::PenCore::PenWindow()->setCursorState(Pengine::CursorState::E_DISABLED);
-    else if (Pengine::PenCore::InputManager()->isKeyReleased(Pengine::PenInput::key_MOUSE_RIGHT))
+    else if (input->isKeyReleased(Pengine::PenInput::key_MOUSE_RIGHT))
         Pengine::PenCore::PenWindow()->setCursorState(Pengine::CursorState::E_NORMAL);
 
-    if(Pengine::PenCore::InputManager()->isKeyDown(Pengine::PenInput::key_MOUSE_RIGHT))
+    if (input->isKeyDown(Pengine::PenInput::key_MOUSE_RIGHT))
     {
         this->handleCameraMovement(newTrans, cam, cameraSpeed);
         this->handleCameraRotation(newTrans, cam);
@@ -68,24 +70,26 @@ float Penditor::PenFreeCam::getSpeed() const
 
 void PenFreeCam::handleCameraMovement(PenMath::Transform& trans, Pengine::Components::PenCamera& cam, float speed)
 {
-    if (Pengine::PenCore::InputManager()->isKeyDown(Pengine::key_W))
+    std::unique_ptr<Pengine::PenInputManager>& input = Pengine::PenCore::PenInputManager();
+
+    if (input->isKeyDown(Pengine::key_W))
         trans.position -= cam.getFront() * speed;
-    if (Pengine::PenCore::InputManager()->isKeyDown(Pengine::key_S))
+    if (input->isKeyDown(Pengine::key_S))
         trans.position += cam.getFront() * speed;
-    if (Pengine::PenCore::InputManager()->isKeyDown(Pengine::key_A))
+    if (input->isKeyDown(Pengine::key_A))
         trans.position -= cam.getRight() * speed;
-    if (Pengine::PenCore::InputManager()->isKeyDown(Pengine::key_D))
+    if (input->isKeyDown(Pengine::key_D))
         trans.position += cam.getRight() * speed;
 
-    if (Pengine::PenCore::InputManager()->isKeyDown(Pengine::key_Q))
+    if (input->isKeyDown(Pengine::key_Q))
         trans.position += PenMath::Vector3f::Up() * speed;
-    if (Pengine::PenCore::InputManager()->isKeyDown(Pengine::key_E))
+    if (input->isKeyDown(Pengine::key_E))
         trans.position -= PenMath::Vector3f::Up() * speed;
 }
 
 void PenFreeCam::handleCameraRotation(PenMath::Transform& trans, Pengine::Components::PenCamera& cam)
 {
-    PenMath::Vector2 offset = Pengine::PenCore::InputManager()->getMouseOffset();
+    PenMath::Vector2 offset = Pengine::PenCore::PenInputManager()->getMouseOffset();
 
     if (offset != PenMath::Vector2::Zero())
     {

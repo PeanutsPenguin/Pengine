@@ -1,5 +1,8 @@
 #include "PenResources/OpenGl/Private_PenGLShaderProgram.h"
 
+#include "PenCore/PenCore.h"				//PenCore
+#include "PenSerializer/PenSerializer.h"	//PenSerializer
+
 #include <glad/glad.h>
 #include <iostream>
 
@@ -9,6 +12,80 @@ PenGLShaderProgram::~PenGLShaderProgram()
 {
 	std::cout << __FUNCTION__ ": Destryoing with id : (not yet it's a shaderProgram) " << std::endl;
 	destroy();
+}
+
+bool Pengine::Resources::PenGLShaderProgram::loadResource(const char* path)
+{
+	//Create variables 
+	std::string vert;
+	std::string frag;
+	std::filebuf fb;
+
+	//If failed to open in the file
+	if (!fb.open(path, std::ios::in))
+	{
+		std::cout << __FUNCTION__ "\t Failed to open for read the file : " << path << '\n';
+		return false;
+	}
+
+	//Read in file
+	std::istream buf(&fb);
+	PenCore::PenSerializer()->read(buf, vert);
+	PenCore::PenSerializer()->read(buf, frag);
+
+	fb.close();
+
+	std::shared_ptr<PenGLShader> vertPtr = PenCore::ResourcesManager()->loadResourceFromFile<PenGLShader>(vert.c_str());;
+	std::shared_ptr<PenGLShader> fragPtr = PenCore::ResourcesManager()->loadResourceFromFile<PenGLShader>(frag.c_str());;
+
+	if (!vertPtr || !fragPtr)
+	{
+		std::cout << __FUNCTION__ "\t Failed to finc vertex or fragment shader resource\n";
+		return false;
+	}
+
+	return this->createShaderProgram(vertPtr, fragPtr);
+}
+
+bool PenGLShaderProgram::createResource(const char* PenfilePath, const char* sourcePath)
+{
+	std::cout << __FUNCTION__ "\t No Shader specified for shader program creation\n";
+	return false;
+}
+
+bool PenGLShaderProgram::createResource(const char* PenfilePath, const char* sourcePath, std::shared_ptr<PenShaderBase> vertexShader, std::shared_ptr<PenShaderBase> fragmentShader)
+{
+	std::ofstream outfile(PenfilePath);
+
+	if (vertexShader == nullptr)
+	{
+		std::cout << __FUNCTION__ "\t Given vertex shader is null, can't create shader program without it\n";
+		return false;
+	}
+
+	if (fragmentShader == nullptr)
+	{
+		std::cout << __FUNCTION__ "\t Given fragment shader is null, can't create shader program without it\n";
+		return false;
+	}
+
+	PenCore::PenSerializer()->write(outfile, (std::string)vertexShader->getResourcePath());
+	PenCore::PenSerializer()->write(outfile, (std::string)fragmentShader->getResourcePath());
+
+	outfile.close();
+
+	std::shared_ptr<PenGLShader> vert = std::dynamic_pointer_cast<PenGLShader>(vertexShader);
+	std::shared_ptr<PenGLShader> frag = std::dynamic_pointer_cast<PenGLShader>(fragmentShader);
+
+	this->m_penfilePath = PenfilePath;
+
+	if (!vert || !frag)
+	{
+		std::cout << __FUNCTION__ "\t Dynamic cast to PenGlShader failed\n";
+		return false;
+	}
+
+	return this->createShaderProgram(vert, frag);
 }
 
 void PenGLShaderProgram::destroy()
@@ -41,7 +118,7 @@ bool PenGLShaderProgram::createShaderProgram(std::shared_ptr<PenGLShader> vertPt
 		destroy();
 	}
 
-	return false;
+	return true;
 }
 
 bool PenGLShaderProgram::use() const

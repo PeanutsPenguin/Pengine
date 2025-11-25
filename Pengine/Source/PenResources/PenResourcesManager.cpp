@@ -15,12 +15,12 @@ void PenResourcesManager::clearUnused()
     }
 }
 
-std::string_view PenResourcesManager::getResourcePathById(const PenResourcesId id) const
+const char* PenResourcesManager::getResourcePathById(const PenResourcesId id) const
 {
     auto it = m_idToPathfile.find(id);
     if (it != m_idToPathfile.end())
         return it->second;
 
 	std::cerr << "__FUNCTION__ : Resource ID " << id << " not found." << std::endl;
-    return std::string_view("Resource doesn't exist");
+    return nullptr;
 }

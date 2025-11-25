@@ -17,6 +17,11 @@ namespace Pengine
 	{
 		class PenResourcesManager;
 	}
+
+	namespace Serialize
+	{
+		class PenSerializer;
+	}
 }	
 #pragma endregion
 
@@ -49,7 +54,7 @@ namespace Pengine
 		/// <summary>
 		/// Return the pointer to the object manager
 		/// </summary>
-		static std::unique_ptr<PenInputManager>& InputManager();
+		static std::unique_ptr<Pengine::PenInputManager>& PenInputManager();
 
 		/// <summary>
 		/// Return the pointer to the object manager
@@ -60,6 +65,11 @@ namespace Pengine
 		/// Return the pointer to the Resources manager
 		/// </summary>
 		static std::unique_ptr<Resources::PenResourcesManager>& ResourcesManager();
+
+		/// <summary>
+		/// Return the pointer to the Resources manager
+		/// </summary>
+		static std::unique_ptr<Serialize::PenSerializer>& PenSerializer();
 
 		static PenLibDefine& libDefine();
 
@@ -100,8 +110,9 @@ namespace Pengine
 
 		static std::unique_ptr<PenWindowBase> m_window;
 		static std::unique_ptr<Pengine::PenOctopus> m_PenOctopus;
-		static std::unique_ptr<PenInputManager> m_inputManager;
+		static std::unique_ptr<Pengine::PenInputManager> m_PenInputManager;
 		static std::unique_ptr<Resources::PenResourcesManager> m_resourcesManager;
+		static std::unique_ptr<Serialize::PenSerializer> m_PenSerializer;
 
 		static PenLibDefine m_libs;
 
