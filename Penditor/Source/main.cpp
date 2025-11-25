@@ -42,14 +42,11 @@ int main()
 		//PenResorucesManager
 		std::unique_ptr<Pengine::Resources::PenResourcesManager>& resourceManager = Pengine::PenCore::ResourcesManager();
 
-		//Load mnodel
-		std::shared_ptr<Pengine::Resources::PenModel> modelPtr = resourceManager->createResourceFromFile<Pengine::Resources::PenModel>("Models/padoru.obj", "Mesh/");
-
-		//Create shaders
-		std::shared_ptr<Pengine::Resources::PenGLShader> ptr = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLShader>("Shaders/cameraVertexShader.vert", Pengine::PenShaderType::VERTEX_SHADER);
-		std::shared_ptr<Pengine::Resources::PenGLShader> ptr2 = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLShader>("Shaders/basicFragmentShader.frag", Pengine::PenShaderType::FRAGMENT_SHADER);
-		std::shared_ptr<Pengine::Resources::PenGLShaderProgram> progPtr = std::make_shared<Pengine::Resources::PenGLShaderProgram>();
-		progPtr->createShaderProgram(ptr, ptr2);
+		//Create model
+		std::shared_ptr<Pengine::Resources::PenModel> modelPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenModel>("Mesh/padoru.penfile");
+		
+		//LoadShaderProgram
+		std::shared_ptr<Pengine::Resources::PenGLShaderProgram> progPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLShaderProgram>("Shaders/BasicShaderProg.penfile");
 
 		//Create Component
 		Pengine::Components::PenRenderer renderComp;

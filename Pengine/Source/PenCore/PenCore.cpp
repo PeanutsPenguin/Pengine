@@ -238,5 +238,11 @@ void PenCore::destroy()
         m_PenInputManager.reset();
         m_PenInputManager = nullptr;
     }
+
+    if (m_PenSerializer)
+    {
+        m_PenSerializer.reset();
+        m_PenSerializer = nullptr;
+    }
 }
 #pragma endregion

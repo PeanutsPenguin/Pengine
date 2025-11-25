@@ -25,13 +25,17 @@ namespace Pengine::Resources
 
 		template<typename _ResourceType, typename... Args>
 			requires std::derived_from<_ResourceType, PenResourcesBase>
+		_NODISCARD std::shared_ptr<_ResourceType> createResource(const char* filename, const char* destinationPath, Args... data);
+
+		template<typename _ResourceType, typename... Args>
+			requires std::derived_from<_ResourceType, PenResourcesBase>
 		_NODISCARD std::shared_ptr<_ResourceType> loadResourceFromFile(const char* path, Args... data);
 
 		template<typename _ResourceType>
 			requires std::derived_from<_ResourceType, PenResourcesBase>
 		_NODISCARD std::shared_ptr<_ResourceType> getResourceById(const PenResourcesId id);
 
-		_NODISCARD std::string_view getResourcePathById(const PenResourcesId id) const;
+		_NODISCARD const char* getResourcePathById(const PenResourcesId id) const;
 		
 		/// <summary>
 		/// Call this at the end of every frame to clear unused resoruces
@@ -40,8 +44,8 @@ namespace Pengine::Resources
 #pragma endregion
 	private:
 
-		std::unordered_map<PenResourcesId, std::string_view> m_idToPathfile;
-		std::unordered_map<std::string_view, PenResourcesId> m_pathfileToId;
+		std::unordered_map<PenResourcesId, const char*> m_idToPathfile;
+		std::unordered_map<const char*, PenResourcesId> m_pathfileToId;
 
 		std::unordered_map<PenResourcesId, std::weak_ptr<PenResourcesBase>> m_resourceStocker;
 		PenResourcesId m_currentId = 0;

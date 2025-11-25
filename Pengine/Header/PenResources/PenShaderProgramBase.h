@@ -1,32 +1,36 @@
 #pragma once
 #include "PenResources/PenResourcesManager.h"
 
+#include "PenResources/PenShaderBase.h"
+
 #define VECTOR2_CAST
 #include <Vector/Vector2/Vector2.h>
-
 #include <Matrix/Mat3.h>
 #include <Matrix/Mat4.h>
 
 
 namespace Pengine::Resources
 {
-	/// I'll have to handle all the uniform one day 
-	class PenShaderProgramBase /*: public PenResoucesBase*/  //in the futur
+	class PenShaderProgramBase : public PenResourcesBase
 	{
 	public:
 		PenShaderProgramBase() = default;
-
-		/*PenShaderProgramBase(const PenResourcesId& id) : PenResoucesBase(id) {}*/		//in the furtur
-
+		PenShaderProgramBase(const PenResourcesId& id) : PenResourcesBase(id) {}
 		virtual ~PenShaderProgramBase() = default;
+
+		virtual bool loadResource(const char* path) = 0;
+
+		virtual bool createResource(const char* PenfilePath, const char* sourcePath) = 0;
+
+		virtual bool createResource(const char* PenfilePath, const char* sourcePath, 
+									std::shared_ptr<PenShaderBase> vertexShader, 
+									std::shared_ptr<PenShaderBase> fragmentShader) = 0;
 
 		virtual bool use() const = 0;
 
 		virtual void unuse() const = 0;
 
 		virtual void destroy() = 0;
-
-		/*bool loadResource(const char* path) override; */		//in the futur 
 
 		virtual bool initShaderProgram() = 0;
 

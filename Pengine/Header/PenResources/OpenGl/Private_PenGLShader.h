@@ -18,12 +18,10 @@ namespace Pengine::Resources
 		~PenGLShader() override;
 
 		_NODISCARD bool loadResource(const char* path) override;
-
-		_NODISCARD bool loadResource(const char* path, Pengine::PenShaderType type);
 		
-		bool createResource(const char* PenfilePath, const char* sourcePath) override { return false; };
+		bool createResource(const char* PenfilePath, const char* sourcePath) override;
 
-		_NODISCARD bool setType(Pengine::PenShaderType type);
+		bool changeShaderType(const PenShaderType type, const char* PenfilePath);
 
 		_NODISCARD bool reloadShaderContent(const char* path);
 
@@ -35,6 +33,12 @@ namespace Pengine::Resources
 #pragma region Private
 	private:
 		unsigned int m_shaderId = 0;
+
+		_NODISCARD bool setType(const char* sourcePath);
+
+		_NODISCARD bool setType(Pengine::PenShaderType type);
+
+		const char* getSourcePath();
 #pragma endregion
 	};
 }
