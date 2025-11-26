@@ -20,11 +20,14 @@ namespace Pengine::Resources
 
 		//Copy the source file
 		std::filesystem::path copyEmplacement = destinationPath / source.filename();
-		std::filesystem::copy_file(source, copyEmplacement, std::filesystem::copy_options::overwrite_existing);
-
+		if(!std::filesystem::copy_file(source, copyEmplacement, std::filesystem::copy_options::overwrite_existing))
+		{
+			std::cout << __FUNCTION__ << "\tFailed to copy the file : " << sourcePath << std::endl;
+			return nullptr;
+		}
 
 		//Check if ressources doesn't exist
-		auto it = m_pathfileToId.find(destination.c_str());
+		auto it = m_pathfileToId.find(destination);
 		if (it != m_pathfileToId.end())
 			return std::dynamic_pointer_cast<_ResourceType>(m_resourceStocker[it->second].lock());
 
@@ -34,15 +37,16 @@ namespace Pengine::Resources
 
 		std::shared_ptr<_ResourceType> ptr = std::make_shared<_ResourceType>(m_currentId);
 
-		if (!ptr->createResource(destination.c_str(), copyEmplacement.string().c_str(), data...))
+		if (!ptr->createResource(destination, copyEmplacement.string(), data...))
 		{
 			m_currentId--;
 			return nullptr;
 		}
+		
 
-		m_idToPathfile[m_currentId] = destination.c_str();
+		m_idToPathfile[m_currentId] = destination;
 		m_resourceStocker[m_currentId] = ptr;
-		m_pathfileToId[destination.c_str()] = m_currentId;
+		m_pathfileToId[destination] = m_currentId;
 
 		return ptr;
 	}
@@ -56,7 +60,7 @@ namespace Pengine::Resources
 		std::string destination = (std::string)destinationPath + fullname;				//*/xxx.penfile
 
 		//Check if ressources doesn't exist
-		auto it = m_pathfileToId.find(destination.c_str());
+		auto it = m_pathfileToId.find(destination);
 		if (it != m_pathfileToId.end())
 			return std::dynamic_pointer_cast<_ResourceType>(m_resourceStocker[it->second].lock());
 
@@ -66,15 +70,15 @@ namespace Pengine::Resources
 
 		std::shared_ptr<_ResourceType> ptr = std::make_shared<_ResourceType>(m_currentId);
 
-		if (!ptr->createResource(destination.c_str(), data...))
+		if (!ptr->createResource(destination, data...))
 		{
 			m_currentId--;
 			return nullptr;
 		}
 
-		m_idToPathfile[m_currentId] = destination.c_str();
+		m_idToPathfile[m_currentId] = destination;
 		m_resourceStocker[m_currentId] = ptr;
-		m_pathfileToId[destination.c_str()] = m_currentId;
+		m_pathfileToId[destination] = m_currentId;
 
 		return ptr;
 	}

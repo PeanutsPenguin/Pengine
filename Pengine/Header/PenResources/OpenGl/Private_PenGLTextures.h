@@ -26,9 +26,9 @@ namespace Pengine::Resources
 		PenGLTexture& operator=(const PenGLTexture& rhs) = default;
 		PenGLTexture& operator=(PenGLTexture&& rhs) = default;
 
-		bool loadResource(const char* path) override;
+		bool loadResource(const std::string path) override;
 
-		bool createResource(const char* PenfilePath, const char* sourcePath) override;
+		bool createResource(const std::string PenfilePath, const std::string sourcePath) override;
 
 		/// <summary>
 		/// Return a const pointer to the Texture buffer so the value can't be changed but can be used

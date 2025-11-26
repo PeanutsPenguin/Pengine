@@ -34,7 +34,7 @@ PenGLTexture::~PenGLTexture()
 }
 
 #pragma region Functions
-bool PenGLTexture::loadResource(const char* path)
+bool PenGLTexture::loadResource(const std::string path)
 {
 	std::cout << __FUNCTION__ << "\tLoading texture : " << path << std::endl;
 
@@ -53,22 +53,22 @@ bool PenGLTexture::loadResource(const char* path)
 	std::istream buf(&fb);
 	PenCore::PenSerializer()->read(buf, sourcePath);
 	fb.close();
-	
+
 	this->m_penfilePath = path;
 
 	return this->initializeTextureBuffer(sourcePath.c_str());
 }
 
-bool PenGLTexture::createResource(const char* PenfilePath, const char* sourcePath)
+bool PenGLTexture::createResource(const std::string PenfilePath, const std::string sourcePath)
 {
 	std::cout << __FUNCTION__ "\t Creating texture : " << sourcePath << std::endl;
 
-	if (!this->initializeTextureBuffer(sourcePath))
+	if (!this->initializeTextureBuffer(sourcePath.c_str()))
 		return false;
 
 	//Serialize source file
 	std::ofstream outfile(PenfilePath);
-	PenCore::PenSerializer()->write(outfile, (std::string)sourcePath);
+	PenCore::PenSerializer()->write(outfile, sourcePath);
 	outfile.close();
 
 	this->m_penfilePath = PenfilePath;

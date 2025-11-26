@@ -24,7 +24,7 @@ PenModel::~PenModel()
 	std::cout << __FUNCTION__ ": Destryoing with id : " << getId() << std::endl;
 }
 
-bool PenModel::loadResource(const char* path)
+bool PenModel::loadResource(const std::string path)
 {
 	//Create variables 
 	std::string sourcePath;
@@ -45,13 +45,13 @@ bool PenModel::loadResource(const char* path)
 	return generateResource(sourcePath.c_str());
 }
 
-bool PenModel::createResource(const char* PenfilePath, const char* sourcePath)
+bool PenModel::createResource(const std::string PenfilePath, const std::string sourcePath)
 {
 	std::ofstream outfile(PenfilePath);
 
-	PenCore::PenSerializer()->write(outfile, (std::string)sourcePath);
+	PenCore::PenSerializer()->write(outfile, sourcePath);
 
-	return generateResource(sourcePath);
+	return generateResource(sourcePath.c_str());
 }
 
 bool PenModel::generateResource(const char* path)

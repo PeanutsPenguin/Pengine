@@ -14,7 +14,7 @@ PenGLShaderProgram::~PenGLShaderProgram()
 	destroy();
 }
 
-bool Pengine::Resources::PenGLShaderProgram::loadResource(const char* path)
+bool Pengine::Resources::PenGLShaderProgram::loadResource(const std::string path)
 {
 	//Create variables 
 	std::string vert;
@@ -47,13 +47,13 @@ bool Pengine::Resources::PenGLShaderProgram::loadResource(const char* path)
 	return this->createShaderProgram(vertPtr, fragPtr);
 }
 
-bool PenGLShaderProgram::createResource(const char* PenfilePath, const char* sourcePath)
+bool PenGLShaderProgram::createResource(const std::string PenfilePath, const std::string sourcePath)
 {
 	std::cout << __FUNCTION__ "\t Can't specify a shader program for program creation\n";
 	return false;
 }
 
-bool PenGLShaderProgram::createResource(const char* PenfilePath, std::shared_ptr<PenShaderBase> vertexShader, std::shared_ptr<PenShaderBase> fragmentShader)
+bool PenGLShaderProgram::createResource(const std::string PenfilePath, std::shared_ptr<PenShaderBase> vertexShader, std::shared_ptr<PenShaderBase> fragmentShader)
 {
 	std::ofstream outfile(PenfilePath);
 
@@ -69,8 +69,8 @@ bool PenGLShaderProgram::createResource(const char* PenfilePath, std::shared_ptr
 		return false;
 	}
 
-	PenCore::PenSerializer()->write(outfile, (std::string)vertexShader->getResourcePath());
-	PenCore::PenSerializer()->write(outfile, (std::string)fragmentShader->getResourcePath());
+	PenCore::PenSerializer()->write(outfile, vertexShader->getResourcePath());
+	PenCore::PenSerializer()->write(outfile, fragmentShader->getResourcePath());
 
 	outfile.close();
 

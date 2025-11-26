@@ -41,25 +41,30 @@ int main()
 		//PenResorucesManager
 		std::unique_ptr<Pengine::Resources::PenResourcesManager>& resourceManager = Pengine::PenCore::ResourcesManager();
 
-		//Create model
-		std::shared_ptr<Pengine::Resources::PenModel> modelPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenModel>("Mesh/padoru.penfile");
-
-		//Create ShaderProgram
-		std::shared_ptr<Pengine::Resources::PenGLShader> vertShader = resourceManager->createResourceFromFile<Pengine::Resources::PenGLShader>("TextureVertexShader.vert", "Shaders/");
-		std::shared_ptr<Pengine::Resources::PenGLShader> fragShader = resourceManager->createResourceFromFile<Pengine::Resources::PenGLShader>("TextureFragmentShader.frag", "Shaders/");
-		std::shared_ptr<Pengine::Resources::PenGLShaderProgram> progPtr = resourceManager->createResource<Pengine::Resources::PenGLShaderProgram>("TextureShaderProgram", "Shaders/", vertShader, fragShader);
-
-		//Create Texture
-		std::shared_ptr<Pengine::Resources::PenGLTexture> glTexture = resourceManager->createResourceFromFile<Pengine::Resources::PenGLTexture>("padoru.png", "Textures/");
-
-		//Create Material
-		std::shared_ptr<Pengine::Resources::PenMaterial> materialPtr = resourceManager->createResource<Pengine::Resources::PenMaterial>("PadoruMaterial", "Material/", glTexture, progPtr);
-
-
 		//Create Component
 		Pengine::Components::PenRenderer renderComp;
-		renderComp.setModel(modelPtr);
-		renderComp.setMaterial(materialPtr);
+
+		
+		{
+			//Create model
+			std::shared_ptr<Pengine::Resources::PenModel> modelPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenModel>("Mesh/padoru.penfile");
+			renderComp.setModel(modelPtr);
+		}
+
+
+		////Create ShaderProgram
+		//std::shared_ptr<Pengine::Resources::PenGLShader> vertShader = resourceManager->createResourceFromFile<Pengine::Resources::PenGLShader>("TextureVertexShader.vert", "Shaders/");
+		//std::shared_ptr<Pengine::Resources::PenGLShader> fragShader = resourceManager->createResourceFromFile<Pengine::Resources::PenGLShader>("TextureFragmentShader.frag", "Shaders/");
+		//std::shared_ptr<Pengine::Resources::PenGLShaderProgram> progPtr = resourceManager->createResource<Pengine::Resources::PenGLShaderProgram>("DefaultShaderProgram", "Shaders/", vertShader, fragShader);
+
+		////Create Texture
+		//std::shared_ptr<Pengine::Resources::PenGLTexture> glTexture = resourceManager->createResourceFromFile<Pengine::Resources::PenGLTexture>("Padoru.png", "Textures/");
+
+		//Create Material
+		//std::shared_ptr<Pengine::Resources::PenMaterial> materialPtr = resourceManager->createResource<Pengine::Resources::PenMaterial>("DefaultMaterial", "Material/", nullptr, nullptr);
+
+		//renderComp.setMaterial(materialPtr);
+
 
 		//Add the component
 		Pengine::PenCore::PenOctopus()->addComponent(newObj, renderComp);

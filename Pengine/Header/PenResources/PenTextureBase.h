@@ -19,11 +19,13 @@ namespace Pengine::Resources
 		PenTextureBase& operator=(const PenTextureBase& rhs) = default;
 		PenTextureBase& operator=(PenTextureBase&& rhs) = default;
 
-		bool loadResource(const char* path) override = 0;
+		bool loadResource(const std::string path) override = 0;
 
-		bool createResource(const char* PenfilePath, const char* sourcePath) override = 0;
+		bool createResource(const std::string PenfilePath, const std::string sourcePath) override = 0;
 
-		_NODISCARD const char* getTexturePath() const;
+		static std::shared_ptr<PenTextureBase> defaultTexture();
+
+		_NODISCARD const std::string getTexturePath() const;
 #pragma endregion
 	};
 }

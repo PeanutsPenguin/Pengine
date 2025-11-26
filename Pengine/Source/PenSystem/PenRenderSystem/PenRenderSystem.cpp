@@ -41,7 +41,8 @@ void PenRendererSystem::GLrender()
 			if (!mat)
 			{
 				std::cout << __FUNCTION__ "\t Material of object : " << objId << " has not been found, replace it with default material\n";
-				//set default material
+				renderComp.setMaterial(Resources::PenMaterial::defaultMaterial());
+				mat = Resources::PenMaterial::defaultMaterial();
 			}
 
 			std::shared_ptr<Resources::PenGLTexture> tex = std::dynamic_pointer_cast<Resources::PenGLTexture>(mat->getTexture());
@@ -49,7 +50,7 @@ void PenRendererSystem::GLrender()
 			if (!tex)
 			{
 				std::cout << __FUNCTION__ "\t Texture of material : " << mat->getId() << " has not been found, replace it with default texture\n";
-				//set default texture
+				mat->setTexture(nullptr);
 			}
 
 			tex->dataPtr()->bind();
@@ -59,7 +60,7 @@ void PenRendererSystem::GLrender()
 			if(!prog)
 			{
 				std::cout << __FUNCTION__ "\t Shader program of material : " << mat->getId() << " has not been found, replace it with default shader program\n";
-				//set default shader program
+				mat->setShaderProgram(nullptr);
 			}
 
 			if (!prog->use())

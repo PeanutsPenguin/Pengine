@@ -22,15 +22,17 @@ namespace Pengine::Resources
 		PenMaterial& operator=(const PenMaterial& rhs) = default;
 		PenMaterial& operator=(PenMaterial&& rhs) = default;
 
-		bool loadResource(const char* path) override;
+		static std::shared_ptr<PenMaterial> defaultMaterial();
 
-		bool createResource(const char* penfilePath, const char* sourcePath) override;
+		bool loadResource(const std::string path) override;
 
-		bool createResource(const char* penfilePath, std::shared_ptr<PenTextureBase> tex);
+		bool createResource(const std::string penfilePath, const std::string sourcePath) override;
 
-		bool createResource(const char* penfilePath, std::shared_ptr<PenShaderProgramBase> prog);
+		bool createResource(const std::string penfilePath, std::shared_ptr<PenTextureBase> tex);
 
-		bool createResource(const char* penfilePath, std::shared_ptr<PenTextureBase> tex, 
+		bool createResource(const std::string penfilePath, std::shared_ptr<PenShaderProgramBase> prog);
+
+		bool createResource(const std::string penfilePath, std::shared_ptr<PenTextureBase> tex,
 													 std::shared_ptr<PenShaderProgramBase> prog);
 
 		void setShaderProgram(std::shared_ptr<PenShaderProgramBase> prog);

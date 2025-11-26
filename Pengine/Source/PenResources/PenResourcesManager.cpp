@@ -19,8 +19,8 @@ const char* PenResourcesManager::getResourcePathById(const PenResourcesId id) co
 {
     auto it = m_idToPathfile.find(id);
     if (it != m_idToPathfile.end())
-        return it->second;
+        return it->second.c_str();
 
 	std::cerr << "__FUNCTION__ : Resource ID " << id << " not found." << std::endl;
-    return nullptr;
+    return "";
 }
