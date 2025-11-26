@@ -22,7 +22,7 @@ namespace Pengine::Resources
 
 		virtual bool createResource(const char* PenfilePath, const char* sourcePath) = 0;
 
-		virtual bool createResource(const char* PenfilePath, const char* sourcePath, 
+		virtual bool createResource(const char* PenfilePath, 
 									std::shared_ptr<PenShaderBase> vertexShader, 
 									std::shared_ptr<PenShaderBase> fragmentShader) = 0;
 

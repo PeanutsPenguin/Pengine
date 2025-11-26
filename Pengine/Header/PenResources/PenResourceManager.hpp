@@ -66,7 +66,7 @@ namespace Pengine::Resources
 
 		std::shared_ptr<_ResourceType> ptr = std::make_shared<_ResourceType>(m_currentId);
 
-		if (!ptr->createResource(destination.c_str(), nullptr, data...))
+		if (!ptr->createResource(destination.c_str(), data...))
 		{
 			m_currentId--;
 			return nullptr;

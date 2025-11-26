@@ -1,7 +1,6 @@
 #include "PenResources/PenModel.h"
 
 //Resources
-#include "PenResources/PenTextures.h"
 #include "PenResources/PenResourcesManager.h"
 #include "PenResources/OpenGl/Private_PenGLMesh.h"
 #include "PenResources/OpenGl/Private_PenGLShaderProgram.h"
@@ -71,12 +70,12 @@ bool PenModel::generateResource(const char* path)
 		return false;
 	}
 
-	//Initiliaze every texture of the model
-	for (size_t i = 0; i < scene->mNumTextures; ++i)
-	{
-		aiTexture& tex = *scene->mTextures[i];
-		const std::shared_ptr<PenTexture> res = PenCore::ResourcesManager()->loadResourceFromFile<PenTexture>(tex.mFilename.C_Str());
-	}
+	////Initiliaze every texture of the model
+	//for (size_t i = 0; i < scene->mNumTextures; ++i)
+	//{
+	//	aiTexture& tex = *scene->mTextures[i];
+	//	const std::shared_ptr<PenTexture> res = PenCore::ResourcesManager()->loadResourceFromFile<PenTexture>(tex.mFilename.C_Str());
+	//}
 
 	//Suppose to have material here 
 
@@ -111,13 +110,13 @@ bool PenModel::loadPenGLMesh(const aiMesh& mesh)
 	return true;
 }
 
-void PenModel::render(std::shared_ptr<Pengine::Resources::PenShaderProgramBase> shaderProg)
+void PenModel::render()
 {
 	if(PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
-		this->GLRender(shaderProg);
+		this->GLRender();
 }
 
-void PenModel::GLRender(std::shared_ptr<Pengine::Resources::PenShaderProgramBase> shaderProg)
+void PenModel::GLRender()
 {
 	for (const std::shared_ptr<PenMeshBase> obj : m_meshes)
 	{

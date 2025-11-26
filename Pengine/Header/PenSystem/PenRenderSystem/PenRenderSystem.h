@@ -18,5 +18,8 @@ namespace Pengine::System
 		void onEntityDestroyed(const PenObjectId obj) override {};
 
 		void update(double dt) override {};
+	
+	private:
+		void GLrender();
 	};
 }

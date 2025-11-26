@@ -10,7 +10,7 @@ using namespace Pengine::Resources;
 
 PenGLShaderProgram::~PenGLShaderProgram()
 {
-	std::cout << __FUNCTION__ ": Destryoing with id : (not yet it's a shaderProgram) " << std::endl;
+	std::cout << __FUNCTION__ ": Destryoing with id : " << this->getId() << std::endl;
 	destroy();
 }
 
@@ -49,11 +49,11 @@ bool Pengine::Resources::PenGLShaderProgram::loadResource(const char* path)
 
 bool PenGLShaderProgram::createResource(const char* PenfilePath, const char* sourcePath)
 {
-	std::cout << __FUNCTION__ "\t No Shader specified for shader program creation\n";
+	std::cout << __FUNCTION__ "\t Can't specify a shader program for program creation\n";
 	return false;
 }
 
-bool PenGLShaderProgram::createResource(const char* PenfilePath, const char* sourcePath, std::shared_ptr<PenShaderBase> vertexShader, std::shared_ptr<PenShaderBase> fragmentShader)
+bool PenGLShaderProgram::createResource(const char* PenfilePath, std::shared_ptr<PenShaderBase> vertexShader, std::shared_ptr<PenShaderBase> fragmentShader)
 {
 	std::ofstream outfile(PenfilePath);
 

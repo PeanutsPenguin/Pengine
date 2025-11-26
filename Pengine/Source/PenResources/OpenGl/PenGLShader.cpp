@@ -52,7 +52,7 @@ bool PenGLShader::loadResource(const char* path)
 
 bool Pengine::Resources::PenGLShader::createResource(const char* PenfilePath, const char* sourcePath)
 {
-	std::cout << __FUNCTION__ "\tCreating Shader :" << sourcePath << std::endl;
+	std::cout << __FUNCTION__ "\tCreating Shader : " << sourcePath << std::endl;
 
 	//Serialize source file
 	std::ofstream outfile(PenfilePath);

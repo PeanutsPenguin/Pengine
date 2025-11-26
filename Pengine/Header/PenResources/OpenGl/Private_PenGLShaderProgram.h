@@ -23,7 +23,7 @@ namespace Pengine::Resources
 
 		_NODISCARD bool createResource(const char* PenfilePath, const char* sourcePath) override;
 
-		_NODISCARD bool createResource(const char* PenfilePath, const char* sourcePath,
+		_NODISCARD bool createResource(const char* PenfilePath,
 			std::shared_ptr<PenShaderBase> vertexShader,
 			std::shared_ptr<PenShaderBase> fragmentShader) override;
 

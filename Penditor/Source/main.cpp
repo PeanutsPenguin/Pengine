@@ -15,6 +15,7 @@
 #include "PenResources/PenResourcesManager.h"
 #include "PenResources/OpenGl/Private_PenGLShader.h"
 #include "PenResources/OpenGl/Private_PenGLShaderProgram.h"
+#include "PenResources/OpenGl/Private_PenGLTextures.h"
 
 //Components
 #include "PenComponents/PenRenderer/PenRenderer.h"
@@ -34,8 +35,6 @@ int main()
 #endif
 		Pengine::PenCore::init("Pengine Window", { Pengine::defaultWindowsValue::DEFAULT_WIDTH, Pengine::defaultWindowsValue::DEFAULT_HEIGHT });
 
-		//Pengine::PenCore::PenWindow()->getScene()->changeBackgroundColor(Pengine::PenColor::Blue);
-
 		//Create Obj
 		Pengine::PenObjectId newObj = Pengine::PenCore::PenOctopus()->createPenObject();
 
@@ -44,14 +43,23 @@ int main()
 
 		//Create model
 		std::shared_ptr<Pengine::Resources::PenModel> modelPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenModel>("Mesh/padoru.penfile");
-		
-		//LoadShaderProgram
-		std::shared_ptr<Pengine::Resources::PenGLShaderProgram> progPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLShaderProgram>("Shaders/BasicShaderProg.penfile");
+
+		//Create ShaderProgram
+		std::shared_ptr<Pengine::Resources::PenGLShader> vertShader = resourceManager->createResourceFromFile<Pengine::Resources::PenGLShader>("TextureVertexShader.vert", "Shaders/");
+		std::shared_ptr<Pengine::Resources::PenGLShader> fragShader = resourceManager->createResourceFromFile<Pengine::Resources::PenGLShader>("TextureFragmentShader.frag", "Shaders/");
+		std::shared_ptr<Pengine::Resources::PenGLShaderProgram> progPtr = resourceManager->createResource<Pengine::Resources::PenGLShaderProgram>("TextureShaderProgram", "Shaders/", vertShader, fragShader);
+
+		//Create Texture
+		std::shared_ptr<Pengine::Resources::PenGLTexture> glTexture = resourceManager->createResourceFromFile<Pengine::Resources::PenGLTexture>("padoru.png", "Textures/");
+
+		//Create Material
+		std::shared_ptr<Pengine::Resources::PenMaterial> materialPtr = resourceManager->createResource<Pengine::Resources::PenMaterial>("PadoruMaterial", "Material/", glTexture, progPtr);
+
 
 		//Create Component
 		Pengine::Components::PenRenderer renderComp;
 		renderComp.setModel(modelPtr);
-		renderComp.setShaderProgram(progPtr);
+		renderComp.setMaterial(materialPtr);
 
 		//Add the component
 		Pengine::PenCore::PenOctopus()->addComponent(newObj, renderComp);

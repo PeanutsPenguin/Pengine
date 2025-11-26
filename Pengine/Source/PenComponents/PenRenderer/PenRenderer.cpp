@@ -7,37 +7,24 @@ PenRenderer::PenRenderer()
 	this->SetState(PenComponentState::ENABLE, true);
 }
 
-PenRenderer::~PenRenderer()
-{
-	if (!this->m_model)
-	{
-		this->m_model.reset();
-		this->m_model = nullptr;
-	}
-
-	if(!this->m_shader)
-	{
-		this->m_shader.reset();
-		this->m_shader = nullptr;
-	}
-}
-
-void PenRenderer::setShaderProgram(std::shared_ptr<Pengine::Resources::PenShaderProgramBase> prog)
-{
-	this->m_shader = prog;
-}
-
 void PenRenderer::setModel(std::shared_ptr<Pengine::Resources::PenModel> model)
 {
 	this->m_model = model;
 }
 
-void PenRenderer::render()
+void PenRenderer::setMaterial(std::shared_ptr<Pengine::Resources::PenMaterial> mat)
 {
-	m_model->render(m_shader);
+	if(mat)
+		this->m_material = mat;
+	//TODO else : set default mat
 }
 
-std::shared_ptr<Pengine::Resources::PenShaderProgramBase> Pengine::Components::PenRenderer::getShaderProgram()
+void PenRenderer::render()
 {
-	return this->m_shader;
+	m_model->render();
+}
+
+std::shared_ptr<Pengine::Resources::PenMaterial> PenRenderer::getMaterial()
+{
+	return this->m_material;
 }

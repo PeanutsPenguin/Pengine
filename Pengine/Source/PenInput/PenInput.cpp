@@ -218,8 +218,8 @@ PenInputType PenInputManager::updateInput(const PenInput& input, PenInputType pr
 		if (state == PenInputType::E_NONE)
 			return PenInputType::E_RELEASED;
 	}
-	else
-		return state;
+
+	return state;
 }
 
 void PenInputManager::update()

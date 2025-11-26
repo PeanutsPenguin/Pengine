@@ -28,7 +28,7 @@ namespace Pengine::Resources
 #pragma endregion
 
 	protected:
-		const char* m_penfilePath = nullptr;
+		const char* m_penfilePath = "path";
 
 #pragma region Private
 	private:
