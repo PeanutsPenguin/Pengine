@@ -2,6 +2,7 @@
 
 using namespace Pengine;
 
+
 #pragma region Getter and Setter
 const PenLightType PenLightBase::getType()
 {

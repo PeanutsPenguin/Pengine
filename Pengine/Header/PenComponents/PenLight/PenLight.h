@@ -12,15 +12,20 @@ namespace Pengine::Components
 		PenLight(const PenLightType type);
 		PenLight(const PenLight& other) = default;
 		PenLight(PenLight&& other) = default;
-		~PenLight() = default;
+		~PenLight() final;
 
 		PenLight& operator=(const PenLight& rhs) = default;
 		PenLight& operator=(PenLight&& rhs) = default;
 
 		void useValues(const std::shared_ptr<Resources::PenShaderProgramBase> shader);
 
-		_Ret_maybenull_ PenLightBase* getLight();
+		std::shared_ptr<PenLightBase> getLight();
+
+		void				setAmbient(const PenMath::Vector3f& ambient);
+		void				setDiffuse(const PenMath::Vector3f& diffuse);
+		void				setSpecular(const PenMath::Vector3f& specular);
+
 	private:
-		PenLightBase* m_light = nullptr;
+		std::shared_ptr<PenLightBase> m_light = nullptr;
 	};
 }
