@@ -51,10 +51,11 @@ void PenRendererSystem::GLrender()
 				continue;
 
 			prog->setUniform("material.diffuse", 0);
+			prog->setUniform("material.specular", 1);
 
 			if(!tex.empty())
 			{
-				for (int i = 0; i < tex.size() - 1; ++i)
+				for (int i = 0; i < tex.size(); ++i)
 				{
 					std::shared_ptr<Resources::PenGLTexture> texture = std::dynamic_pointer_cast<Resources::PenGLTexture>(tex[i]);
 					texture->dataPtr()->activate(i);
@@ -65,7 +66,7 @@ void PenRendererSystem::GLrender()
 
 			lightSystem->renderUpdate(prog);
 			
-			prog->setUniform("material.specular", mat->getSpecular()); // specular lighting doesn't have full effect on this object's material
+			//prog->setUniform("material.specular", mat->getSpecular()); // specular lighting doesn't have full effect on this object's material
 			prog->setUniform("material.shininess", mat->getShininess());
 
 			PenObjectId cam = PenCore::PenOctopus()->getSystem<System::PenCameraSystem>()->getMainCamera();

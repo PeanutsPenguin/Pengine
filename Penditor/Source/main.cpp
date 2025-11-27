@@ -75,9 +75,10 @@ int main()
 
 		//Create Texture
 		std::shared_ptr<Pengine::Resources::PenGLTexture> glTexture = resourceManager->createResourceFromFile<Pengine::Resources::PenGLTexture>("container_diffuse.png", "Textures/");
+		std::shared_ptr<Pengine::Resources::PenGLTexture> glTexture2 = resourceManager->createResourceFromFile<Pengine::Resources::PenGLTexture>("container_specular.png", "Textures/");
 
 		//Create Material
-		std::shared_ptr<Pengine::Resources::PenMaterial> materialPtr = resourceManager->createResource<Pengine::Resources::PenMaterial>("CubeMaterial", "Material/", progPtr,  glTexture);
+		std::shared_ptr<Pengine::Resources::PenMaterial> materialPtr = resourceManager->createResource<Pengine::Resources::PenMaterial>("CubeMaterial", "Material/", progPtr,  glTexture, glTexture2);
 
 		renderComp.setMaterial(materialPtr);
 

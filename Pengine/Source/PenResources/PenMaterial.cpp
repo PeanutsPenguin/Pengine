@@ -46,29 +46,9 @@ bool PenMaterial::loadResource(const std::string path)
         this->m_shader = shader;
 
     this->m_penfilePath = path;
-
-    if (texPaths.empty())
-    {
-        this->m_texture.push_back(PenTextureBase::defaultTexture());
-        return true;
-    }
-
-    std::shared_ptr<PenTextureBase> tex = nullptr;
     
-    for(std::string path : texPaths)
-    {
-        if (PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
-            tex = PenCore::ResourcesManager()->loadResourceFromFile<PenGLTexture>(path.c_str());
+    this->generateTextures(texPaths);
 
-        if (!tex)
-        {
-            tex = nullptr;
-            continue;
-        }
-
-        this->m_texture.push_back(tex);
-    }
-    
     return true;
 }
 
@@ -157,5 +137,29 @@ const PenMath::Vector3f& PenMaterial::getSpecular() const
 const float PenMaterial::getShininess() const
 {
     return this->m_shininess;
+}
+void PenMaterial::generateTextures(const std::vector<std::string> texPath)
+{
+    if (texPath.empty())
+    {
+        this->m_texture.push_back(PenTextureBase::defaultTexture());
+        return;
+    }
+
+    std::shared_ptr<PenTextureBase> tex = nullptr;
+
+    for (std::string path : texPath)
+    {
+        if (PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
+            tex = PenCore::ResourcesManager()->loadResourceFromFile<PenGLTexture>(path.c_str());
+
+        if (!tex)
+        {
+            tex = nullptr;
+            continue;
+        }
+
+        this->m_texture.push_back(tex);
+    }
 }
 #pragma endregion

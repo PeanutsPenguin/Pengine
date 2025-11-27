@@ -29,6 +29,8 @@ namespace Pengine::Resources
 		std::vector<std::string> texPaths;
 		((texPaths.push_back(texs->getResourcePath())), ...);
 
+		this->generateTextures(texPaths);
+
 		PenCore::PenSerializer()->write(outfile, texPaths);
 
 		return true;

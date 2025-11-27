@@ -53,6 +53,8 @@ namespace Pengine::Resources
 		const float														getShininess()	const;
 
 	private:
+		void generateTextures(const std::vector<std::string> texPath);
+
 		std::vector<std::shared_ptr<PenTextureBase>>			m_texture;
 		std::shared_ptr<PenShaderProgramBase>					m_shader;
 
