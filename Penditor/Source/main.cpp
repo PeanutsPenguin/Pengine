@@ -37,6 +37,7 @@ int main()
 
 		//Create Obj
 		Pengine::PenObjectId newObj = Pengine::PenCore::PenOctopus()->createPenObject();
+		Pengine::PenObjectId seconNewObj = Pengine::PenCore::PenOctopus()->createPenObject();
 
 		//PenResorucesManager
 		std::unique_ptr<Pengine::Resources::PenResourcesManager>& resourceManager = Pengine::PenCore::ResourcesManager();
@@ -44,26 +45,22 @@ int main()
 		//Create Component
 		Pengine::Components::PenRenderer renderComp;
 
-		
-		{
-			//Create model
-			std::shared_ptr<Pengine::Resources::PenModel> modelPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenModel>("Mesh/padoru.penfile");
-			renderComp.setModel(modelPtr);
-		}
+		//Create model
+		std::shared_ptr<Pengine::Resources::PenModel> modelPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenModel>("Mesh/padoru.penfile");
+		renderComp.setModel(modelPtr);
 
+		Pengine::PenCore::PenOctopus()->addComponent(seconNewObj, renderComp);
 
-		////Create ShaderProgram
-		//std::shared_ptr<Pengine::Resources::PenGLShader> vertShader = resourceManager->createResourceFromFile<Pengine::Resources::PenGLShader>("TextureVertexShader.vert", "Shaders/");
-		//std::shared_ptr<Pengine::Resources::PenGLShader> fragShader = resourceManager->createResourceFromFile<Pengine::Resources::PenGLShader>("TextureFragmentShader.frag", "Shaders/");
-		//std::shared_ptr<Pengine::Resources::PenGLShaderProgram> progPtr = resourceManager->createResource<Pengine::Resources::PenGLShaderProgram>("DefaultShaderProgram", "Shaders/", vertShader, fragShader);
+		Pengine::Components::PenTransform trans = Pengine::Components::PenTransform();
+		PenMath::Transform newtrans;
+		newtrans.position = { 2, 0, 0 };
+		trans.setGlobalTransform(newtrans);
 
-		////Create Texture
-		//std::shared_ptr<Pengine::Resources::PenGLTexture> glTexture = resourceManager->createResourceFromFile<Pengine::Resources::PenGLTexture>("Padoru.png", "Textures/");
+		Pengine::PenCore::PenOctopus()->addComponent(seconNewObj, trans);
 
 		//Create Material
-		//std::shared_ptr<Pengine::Resources::PenMaterial> materialPtr = resourceManager->createResource<Pengine::Resources::PenMaterial>("DefaultMaterial", "Material/", nullptr, nullptr);
-
-		//renderComp.setMaterial(materialPtr);
+		std::shared_ptr<Pengine::Resources::PenMaterial> materialPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenMaterial>("Material/PadoruMaterial.penfile");
+		renderComp.setMaterial(materialPtr);
 
 
 		//Add the component
@@ -71,6 +68,7 @@ int main()
 		Pengine::PenCore::PenOctopus()->addComponent(newObj, Pengine::Components::PenTransform());
 
 		Pengine::PenCore::PenOctopus()->addToScene(newObj);
+		Pengine::PenCore::PenOctopus()->addToScene(seconNewObj);
 
 		//Create Obj
 		Pengine::PenObjectId camObj = Pengine::PenCore::PenOctopus()->createPenObject();
@@ -83,6 +81,8 @@ int main()
 		Pengine::PenCore::PenOctopus()->addToScene(camObj);
 
 		Penditor::PenCore::getEditorCam()->setCamObject(camObj);
+
+
 
 		Penditor::PenCore::runEditor();
 #if CHECK_MEMORY_LEAKS

@@ -48,7 +48,7 @@ namespace Pengine::Resources
 		std::unordered_map<std::string, PenResourcesId> m_pathfileToId;
 
 		std::unordered_map<PenResourcesId, std::weak_ptr<PenResourcesBase>> m_resourceStocker;
-		PenResourcesId m_currentId = 0;
+		static PenResourcesId m_currentId;
 #pragma endregion
 	};
 }

@@ -24,20 +24,11 @@ bool PenGLShader::loadResource(const std::string path)
 	//Create variables 
 	std::string sourcePath;
 	int shaderType = 0;
-	std::filebuf fb;
 
-	//If failed to open in the file
-	if (!fb.open(path, std::ios::in))
-	{
-		std::cout << __FUNCTION__ "\t Failed to open for read the file : " << path << '\n';
-		return false;
-	}
-
-	//Read in file
-	std::istream buf(&fb);
-	PenCore::PenSerializer()->read(buf, sourcePath);
-	PenCore::PenSerializer()->read(buf, shaderType);
-	fb.close();
+	std::ifstream infile(path, std::ios::binary);
+	PenCore::PenSerializer()->read(infile, sourcePath);
+	PenCore::PenSerializer()->read(infile, shaderType);
+	infile.close();
 
 	if(!this->setType((PenShaderType)shaderType))
 	{
@@ -55,7 +46,7 @@ bool Pengine::Resources::PenGLShader::createResource(const std::string PenfilePa
 	std::cout << __FUNCTION__ "\tCreating Shader : " << sourcePath << std::endl;
 
 	//Serialize source file
-	std::ofstream outfile(PenfilePath);
+	std::ofstream outfile(PenfilePath, std::ios::binary);
 	PenCore::PenSerializer()->write(outfile, (std::string)sourcePath);
 
 	//Serialize shader type

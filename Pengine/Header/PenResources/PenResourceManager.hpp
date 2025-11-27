@@ -66,19 +66,18 @@ namespace Pengine::Resources
 
 		std::cout << __FUNCTION__ << "\tResources : " << destination << " doesn't exist, creating it" << std::endl;
 
-		m_currentId++;
+		PenResourcesId curId = m_currentId++;
 
-		std::shared_ptr<_ResourceType> ptr = std::make_shared<_ResourceType>(m_currentId);
+		std::shared_ptr<_ResourceType> ptr = std::make_shared<_ResourceType>(curId);
 
 		if (!ptr->createResource(destination, data...))
 		{
-			m_currentId--;
 			return nullptr;
 		}
 
-		m_idToPathfile[m_currentId] = destination;
-		m_resourceStocker[m_currentId] = ptr;
-		m_pathfileToId[destination] = m_currentId;
+		m_idToPathfile[curId] = destination;
+		m_resourceStocker[curId] = ptr;
+		m_pathfileToId[destination] = curId;
 
 		return ptr;
 	}
@@ -94,19 +93,18 @@ namespace Pengine::Resources
 
 		std::cout << __FUNCTION__ << "\tResources : " << path << " doesn't exist, loading it" << std::endl;
 
-		m_currentId++;
+		PenResourcesId curId = m_currentId++;
 
-		std::shared_ptr<_ResourceType> ptr = std::make_shared<_ResourceType>(m_currentId);
+		std::shared_ptr<_ResourceType> ptr = std::make_shared<_ResourceType>(curId);
 
 		if(!ptr->loadResource(path, data...))
 		{
-			m_currentId--;
 			return nullptr;
 		}
 
-		m_idToPathfile[m_currentId] = path;
-		m_resourceStocker[m_currentId] = ptr;
-		m_pathfileToId[path] = m_currentId;
+		m_idToPathfile[curId] = path;
+		m_resourceStocker[curId] = ptr;
+		m_pathfileToId[path] = curId;
 
 		return ptr;
 	}

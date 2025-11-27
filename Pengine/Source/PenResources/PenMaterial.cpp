@@ -25,20 +25,11 @@ bool PenMaterial::loadResource(const std::string path)
     //Create variables 
     std::string texPath;
     std::string shaderPath;
-    std::filebuf fb;
 
-    //If failed to open in the file
-    if (!fb.open(path, std::ios::in))
-    {
-        std::cout << __FUNCTION__ "\t Failed to open for read the file : " << path << '\n';
-        return false;
-    }
-
-    //Read in file
-    std::istream buf(&fb);
-    PenCore::PenSerializer()->read(buf, texPath);
-    PenCore::PenSerializer()->read(buf, shaderPath);
-    fb.close();
+    std::ifstream infile(path, std::ios::binary);
+    PenCore::PenSerializer()->read(infile, texPath);
+    PenCore::PenSerializer()->read(infile, shaderPath);
+    infile.close();
 
     std::shared_ptr<PenTextureBase> tex = nullptr;
 
@@ -91,9 +82,7 @@ bool PenMaterial::createResource(const std::string penfilePath, std::shared_ptr<
 bool PenMaterial::createResource(const std::string penfilePath, std::shared_ptr<PenTextureBase> tex,
                                                           std::shared_ptr<Pengine::Resources::PenShaderProgramBase> prog)
 {
-    std::cout << __FUNCTION__ "\tCreating Material\n";
-
-    std::ofstream outfile(penfilePath);
+    std::ofstream outfile(penfilePath, std::ios::binary);
 
     if (!tex)
     {

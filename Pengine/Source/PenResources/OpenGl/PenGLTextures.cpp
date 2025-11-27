@@ -40,19 +40,10 @@ bool PenGLTexture::loadResource(const std::string path)
 
 	//Create variables 
 	std::string sourcePath;
-	std::filebuf fb;
 
-	//If failed to open in the file
-	if (!fb.open(path, std::ios::in))
-	{
-		std::cout << __FUNCTION__ "\t Failed to open for read the file : " << path << '\n';
-		return false;
-	}
-
-	//Read in file
-	std::istream buf(&fb);
-	PenCore::PenSerializer()->read(buf, sourcePath);
-	fb.close();
+	std::ifstream infile(path, std::ios::binary);
+	PenCore::PenSerializer()->read(infile, sourcePath);
+	infile.close();
 
 	this->m_penfilePath = path;
 
@@ -67,7 +58,7 @@ bool PenGLTexture::createResource(const std::string PenfilePath, const std::stri
 		return false;
 
 	//Serialize source file
-	std::ofstream outfile(PenfilePath);
+	std::ofstream outfile(PenfilePath, std::ios::binary);
 	PenCore::PenSerializer()->write(outfile, sourcePath);
 	outfile.close();
 

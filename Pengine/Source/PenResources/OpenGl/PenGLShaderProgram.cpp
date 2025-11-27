@@ -16,24 +16,16 @@ PenGLShaderProgram::~PenGLShaderProgram()
 
 bool Pengine::Resources::PenGLShaderProgram::loadResource(const std::string path)
 {
+	std::cout << "ID : " << this->getId() << std::endl;
 	//Create variables 
 	std::string vert;
 	std::string frag;
-	std::filebuf fb;
 
-	//If failed to open in the file
-	if (!fb.open(path, std::ios::in))
-	{
-		std::cout << __FUNCTION__ "\t Failed to open for read the file : " << path << '\n';
-		return false;
-	}
+	std::ifstream infile(path, std::ios::binary);
+	PenCore::PenSerializer()->read(infile, vert);
+	PenCore::PenSerializer()->read(infile, frag);
 
-	//Read in file
-	std::istream buf(&fb);
-	PenCore::PenSerializer()->read(buf, vert);
-	PenCore::PenSerializer()->read(buf, frag);
-
-	fb.close();
+	infile.close();
 
 	std::shared_ptr<PenGLShader> vertPtr = PenCore::ResourcesManager()->loadResourceFromFile<PenGLShader>(vert.c_str());;
 	std::shared_ptr<PenGLShader> fragPtr = PenCore::ResourcesManager()->loadResourceFromFile<PenGLShader>(frag.c_str());;
@@ -43,6 +35,8 @@ bool Pengine::Resources::PenGLShaderProgram::loadResource(const std::string path
 		std::cout << __FUNCTION__ "\t Failed to finc vertex or fragment shader resource\n";
 		return false;
 	}
+
+	this->m_penfilePath = path;
 
 	return this->createShaderProgram(vertPtr, fragPtr);
 }
@@ -55,7 +49,7 @@ bool PenGLShaderProgram::createResource(const std::string PenfilePath, const std
 
 bool PenGLShaderProgram::createResource(const std::string PenfilePath, std::shared_ptr<PenShaderBase> vertexShader, std::shared_ptr<PenShaderBase> fragmentShader)
 {
-	std::ofstream outfile(PenfilePath);
+	std::ofstream outfile(PenfilePath, std::ios::binary);
 
 	if (vertexShader == nullptr)
 	{
