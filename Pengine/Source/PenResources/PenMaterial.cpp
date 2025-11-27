@@ -1,10 +1,11 @@
 #include "PenResources/PenMaterial.h"
 
-#include "PenResources/OpenGl/Private_PenGLTextures.h"  //PenTexture
-#include "PenCore/PenCore.h"                            //PenCore
-#include "PenSerializer/PenSerializer.h"                //PenSerializer
-#include "PenResources/PenResourcesManager.h"           //PenResourceManager
-#include "PenResources/OpenGl/Private_PenGLShaderProgram.h"          //PenShaderProgram
+#include "PenCore/PenCore.h"                                        //PenCore
+#include "PenSerializer/PenSerializer.h"                            //PenSerializer
+
+#include "PenResources/PenResourcesManager.h"                       //PenResourceManager
+#include "PenResources/OpenGl/Private_PenGLTextures.h"              //PenTexture
+#include "PenResources/OpenGl/Private_PenGLShaderProgram.h"         //PenShaderProgram
 
 //std
 #include <iostream>
@@ -12,12 +13,17 @@
 
 using namespace Pengine::Resources;
 
+PenMaterial::~PenMaterial()
+{
+    std::cout << __FUNCTION__ ": Destryoing with id : " << this->getId() << std::endl;
+}
+
 std::shared_ptr<PenMaterial> PenMaterial::defaultMaterial()
 {
     return PenCore::ResourcesManager()->loadResourceFromFile<PenMaterial>("Material/DefaultMaterial.penfile");
 }
 
-
+#pragma region Resource
 bool PenMaterial::loadResource(const std::string path)
 {
     std::cout << __FUNCTION__ "\tLoading Material :" << path << std::endl;
@@ -79,8 +85,7 @@ bool PenMaterial::createResource(const std::string penfilePath, std::shared_ptr<
     return this->createResource(penfilePath, nullptr, tex);
 }
 
-bool PenMaterial::createResource(const std::string penfilePath, std::shared_ptr<PenTextureBase> tex,
-                                                          std::shared_ptr<Pengine::Resources::PenShaderProgramBase> prog)
+bool PenMaterial::createResource(const std::string penfilePath, std::shared_ptr<PenTextureBase> tex, std::shared_ptr<Pengine::Resources::PenShaderProgramBase> prog)
 {
     std::ofstream outfile(penfilePath, std::ios::binary);
 
@@ -110,7 +115,9 @@ bool PenMaterial::createResource(const std::string penfilePath, std::shared_ptr<
 
     return true;
 }
+#pragma endregion
 
+#pragma region Getter and Setter
 void PenMaterial::setShaderProgram(std::shared_ptr<Pengine::Resources::PenShaderProgramBase> prog)
 {
     if (prog)
@@ -129,10 +136,22 @@ void PenMaterial::setTexture(std::shared_ptr<PenTextureBase> tex)
 
 std::shared_ptr<PenShaderProgramBase> PenMaterial::getShaderProg()
 {
+    if(!this->m_shader)
+    {
+        std::cout << __FUNCTION__ "\t Shader program of material : " << this->getId() << " has not been found, replace it with default shader program\n";
+        this->setShaderProgram(nullptr);
+    }
     return this->m_shader;
 }
 
 std::shared_ptr<PenTextureBase> Pengine::Resources::PenMaterial::getTexture()
 {
+    if (!this->m_texture)
+    {
+        std::cout << __FUNCTION__ "\t Texture of material : " << this->getId() << " has not been found, replace it with default texture\n";
+        this->setTexture(nullptr);
+    }
+
     return this->m_texture;
 }
+#pragma endregion

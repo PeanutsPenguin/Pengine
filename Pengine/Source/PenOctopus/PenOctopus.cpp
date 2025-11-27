@@ -10,6 +10,7 @@ void PenOctopus::init()
 	this->m_PenSystemManager = std::make_unique<System::PenSystemManager>();
 }
 
+#pragma region PenObject
 PenObjectId PenOctopus::createPenObject()
 {
 	PenObjectId obj = this->m_PenObjectManager->createPenObject();
@@ -29,12 +30,16 @@ void PenOctopus::destroyPenObject(PenObjectId obj)
 
 	this->m_mainScene->removeObject(obj);
 }
+#pragma endregion
 
+#pragma region PenSystem
 void PenOctopus::updateAllSystem(double dt)
 {
 	this->m_PenSystemManager->updateAllSystem(dt);
 }
+#pragma endregion
 
+#pragma region PenScene
 void PenOctopus::addToScene(const PenObjectId obj)
 {
 	this->m_mainScene->addObject(obj);
@@ -53,3 +58,4 @@ std::unique_ptr<PenScene>& PenOctopus::getMainScene()
 {
 	return this->m_mainScene;
 }
+#pragma endregion

@@ -5,13 +5,13 @@
 
 namespace Pengine::Components
 {
-	class PenTransform : public PenComponentBase
+	class PenTransform final : public PenComponentBase
 	{
 	public:
 		PenTransform();
 		PenTransform(const PenTransform& other) = default;
 		PenTransform(PenTransform&& other) = default;
-		~PenTransform() = default;
+		~PenTransform() final = default;
 
 		PenTransform& operator=(const PenTransform& rhs) = default;
 		PenTransform& operator=(PenTransform&& rhs) = default;

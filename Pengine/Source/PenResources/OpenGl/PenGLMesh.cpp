@@ -1,13 +1,18 @@
 #include "PenResources/OpenGl/Private_PenGLMesh.h"
 
-#include "PenStructsAndEnum/PenVertex.h"
+#include "PenStructsAndEnum/PenVertex.h"	//PenVertex
+#include "PengineDefine.h"
 
+//Lib
 #include <assimp/mesh.h>
 #include <glad/glad.h>
+
+//std
 #include <iostream>
 
 using namespace Pengine::Resources;
 
+#pragma region Getter
 Pengine::Buffer::PenVertexBuffer& PenGLMesh::vertexBuffer() noexcept
 {
 	return m_vertexBuffer;
@@ -37,6 +42,7 @@ const Pengine::Buffer::PenElementBuffer& PenGLMesh::elementBuffer() const noexce
 {
 	return m_elementBuffer;
 }
+#pragma endregion
 
 bool PenGLMesh::initMesh(const aiMesh& assimpMesh)
 {
@@ -107,6 +113,8 @@ void PenGLMesh::render()
 	m_vertexBuffer.bind();
 	m_elementBuffer.bind();
 
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	if(DRAW_LINE)
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
 	glDrawElements(GL_TRIANGLES, m_elementBuffer.count(), GL_UNSIGNED_INT, nullptr);
 }

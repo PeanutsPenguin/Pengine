@@ -27,57 +27,33 @@ namespace Pengine
 
 namespace Pengine
 {
-	/// <summary>
-	/// This class is the Core of the Pengine (will include Vector2.h)
-	/// </summary>
 	class PenCore
 	{
-#pragma region Public
 	public:
+		//Static class
 		PenCore() = delete;
-
 		~PenCore() = delete;
 
 		static bool init(const char* name, const PenMath::Vector2f& windowSize);
+
+		static std::unique_ptr<PenWindowBase>&						PenWindow();
+		static std::unique_ptr<Pengine::PenInputManager>&			PenInputManager();
+		static std::unique_ptr<Pengine::PenOctopus>&				PenOctopus();
+		static std::unique_ptr<Resources::PenResourcesManager>&		ResourcesManager();
+		static std::unique_ptr<Serialize::PenSerializer>&			PenSerializer();
+
+		static PenLibDefine&	libDefine();
+		static InputLib			inputLib();
+		static WindowLib		windowLib();
+		static RenderLib		renderLib();
+
+		static double getDeltaTime();
 
 		static void startPengine();
 
 		static void stopPengine();
 
 		static bool shouldStop();
-
-		/// <summary>
-		/// Return the pointer to the main "PenWindow"
-		/// </summary>
-		static std::unique_ptr<PenWindowBase>& PenWindow();
-
-		/// <summary>
-		/// Return the pointer to the object manager
-		/// </summary>
-		static std::unique_ptr<Pengine::PenInputManager>& PenInputManager();
-
-		/// <summary>
-		/// Return the pointer to the object manager
-		/// </summary>
-		static std::unique_ptr<Pengine::PenOctopus>& PenOctopus();
-
-		/// <summary>
-		/// Return the pointer to the Resources manager
-		/// </summary>
-		static std::unique_ptr<Resources::PenResourcesManager>& ResourcesManager();
-
-		/// <summary>
-		/// Return the pointer to the Resources manager
-		/// </summary>
-		static std::unique_ptr<Serialize::PenSerializer>& PenSerializer();
-
-		static PenLibDefine& libDefine();
-
-		static InputLib inputLib();
-
-		static WindowLib windowLib();
-
-		static RenderLib renderLib();
 
 		static void frameUpdate();
 
@@ -87,38 +63,28 @@ namespace Pengine
 		
 		static void destroy();
 
-		static double getDeltaTime();
-#pragma endregion
-
-#pragma region Private
 	private:
-		static void updateDeltaTime();
+		static void		updateDeltaTime();
+		static void		updateInputs();
 
-		static void updateInputs();
+		static void		registerDefaultType();
+		static void		registerComponents();
+		static void		registerSystems();
+		static void		registerTransformSystem();
+		static void		registerRendererSystem();
+		static void		registerCameraSystem();
 
-		static void registerDefaultType();
-
-		static void registerComponents();
-
-		static void registerSystems();
-
-		static void registerTransformSystem();
-
-		static void registerRendererSystem();
-
-		static void registerCameraSystem();
-
-		static std::unique_ptr<PenWindowBase> m_window;
-		static std::unique_ptr<Pengine::PenOctopus> m_PenOctopus;
-		static std::unique_ptr<Pengine::PenInputManager> m_PenInputManager;
-		static std::unique_ptr<Resources::PenResourcesManager> m_resourcesManager;
-		static std::unique_ptr<Serialize::PenSerializer> m_PenSerializer;
+		static std::unique_ptr<PenWindowBase>					m_window;
+		static std::unique_ptr<Pengine::PenOctopus>				m_PenOctopus;
+		static std::unique_ptr<Pengine::PenInputManager>		m_PenInputManager;
+		static std::unique_ptr<Resources::PenResourcesManager>	m_resourcesManager;
+		static std::unique_ptr<Serialize::PenSerializer>		m_PenSerializer;
 
 		static PenLibDefine m_libs;
 
-		static double m_deltaTime;
-		static double m_lastFrame;
-		static bool m_shouldStop;
+		static double	m_deltaTime;
+		static double	m_lastFrame;
+		static bool		m_shouldStop;
 #pragma endregion
 
 	};

@@ -4,9 +4,6 @@
 
 namespace Pengine::Components
 {
-	/// <summary>
-	/// Contains every components (will include "PenComponentsBase.h")
-	/// </summary>
 	class PenComponentsManager
 	{
 	public:

@@ -9,9 +9,8 @@
 
 namespace Pengine::Components
 {
-	class PenCamera : public PenComponentBase
+	class PenCamera final: public PenComponentBase
 	{
-#pragma region Public
 	public:
 		PenCamera();
 		PenCamera(const PenCamera& other) = default;
@@ -21,7 +20,7 @@ namespace Pengine::Components
 		PenCamera& operator=(const PenCamera& rhs) = default;
 		PenCamera& operator=(PenCamera&& rhs) = default;
 
-#pragma region Getter
+#pragma region Getter and Setter
 		PenMath::Mat4		getProjectionMatrix()	const;
 		PenMath::Mat4		getViewMatrix()			const;
 		PerspectiveCamera	getPerpectiveValue()	const;
@@ -31,9 +30,7 @@ namespace Pengine::Components
 		PenMath::Vector3f	getUp()					const;
 		float				getYaw()				const;
 		float				getPitch()				const;
-#pragma endregion
 
-#pragma region Setter
 		void				setProjectionMatrix(const PenMath::Mat4& mat);
 		void				setViewMatrix(const PenMath::Mat4& mat);
 		void				setPerpectiveValue(const PerspectiveCamera& values);
@@ -47,9 +44,7 @@ namespace Pengine::Components
 
 		void updateProjectionMatrix();
 		void updateViewMatrix(const PenMath::Transform& trans);
-#pragma endregion
 
-#pragma region Private
 	private:
 		PenMath::Mat4 m_projectionMatrix;
 		PenMath::Mat4 m_viewMatrix;
@@ -62,6 +57,5 @@ namespace Pengine::Components
 		float m_pitch = 0;
 		
 		PerspectiveCamera m_values;
-#pragma endregion
 	};
 }

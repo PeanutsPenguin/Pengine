@@ -2,11 +2,9 @@
 
 #include "PenResources/PenResourcesBase.h"
 
+//Base class for mesh DO NOT DELETE
 namespace Pengine::Resources
 {
-	/// <summary>
-	/// Base class for a mesh because i think i'll try to render with multiple graphic API
-	/// </summary>
 	class PenMeshBase
 	{
 	public:

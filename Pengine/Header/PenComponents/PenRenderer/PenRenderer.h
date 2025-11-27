@@ -10,24 +10,24 @@ namespace Pengine::Components
 {
 	class PenRenderer : public PenComponentBase
 	{
-#pragma region Public
 	public:
 		PenRenderer();
+		PenRenderer(const PenRenderer& other) = default;
+		PenRenderer(PenRenderer&& other) = default;
+		~PenRenderer() final = default;
 
-		~PenRenderer() override = default;
+		PenRenderer& operator=(const PenRenderer& rhs) = default;
+		PenRenderer& operator=(PenRenderer&& rhs) = default;
 
 		void setModel(std::shared_ptr<Pengine::Resources::PenModel> model);
-
 		void setMaterial(std::shared_ptr<Pengine::Resources::PenMaterial> mat);
 
+		std::shared_ptr<Pengine::Resources::PenMaterial> getMaterial();
+		
 		void render();
 
-		std::shared_ptr<Pengine::Resources::PenMaterial> getMaterial();
-#pragma endregion
-#pragma region Private
 	private:
 		std::shared_ptr<Pengine::Resources::PenModel> m_model;
 		std::shared_ptr<Pengine::Resources::PenMaterial> m_material;
-#pragma endregion
 	};
 }

@@ -9,9 +9,12 @@ namespace Pengine::Buffer
 #pragma region Public
 	public:
 		PenGLBufferBase() = default;
-		PenGLBufferBase(const PenGLBufferBase&) = delete;
-		PenGLBufferBase(PenGLBufferBase&&) noexcept = default;
-		virtual ~PenGLBufferBase() = default;
+		PenGLBufferBase(const PenGLBufferBase& other) = delete;
+		PenGLBufferBase(PenGLBufferBase&& other) = default;
+		virtual ~PenGLBufferBase() override = default;
+
+		PenGLBufferBase& operator=(const PenGLBufferBase& rhs) = delete;
+		PenGLBufferBase& operator=(PenGLBufferBase&& rhs) = default;
 
 		virtual void destroy() override;
 

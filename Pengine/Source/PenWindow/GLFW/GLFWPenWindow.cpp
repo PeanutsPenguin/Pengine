@@ -9,6 +9,9 @@
 //Components
 #include "PenComponents/PenCamera/PenCamera.h"
 
+//System
+#include "PenSystem/PenCameraSystem/PenCameraSystem.h"
+
 //Lib
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>

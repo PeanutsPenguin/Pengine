@@ -14,11 +14,12 @@ namespace Pengine::Buffer
 #pragma region Public
 	public:
 		PenElementBuffer() = default;
-		PenElementBuffer(const PenElementBuffer&) = delete;
-		PenElementBuffer(PenElementBuffer&&) noexcept = default;
-		PenElementBuffer& operator=(PenElementBuffer&&) = default;
-
+		PenElementBuffer(const PenElementBuffer& other) = delete;
+		PenElementBuffer(PenElementBuffer&& other) = default;
 		~PenElementBuffer() final;
+
+		PenElementBuffer& operator=(const PenElementBuffer& rhs) = delete;
+		PenElementBuffer& operator=(PenElementBuffer&& rhs) = default;
 
 		/// <summary>
 		/// Create an EBO (stored in the id) with the given array of indices
@@ -26,8 +27,8 @@ namespace Pengine::Buffer
 		/// <param name="indices">Array of index to draw the object</param>
 		void create(const std::span<const unsigned int>& indices);
 
-		void bind() const override;
-		void unbind() const override;
+		void bind() const final;
+		void unbind() const final;
 
 		/// <summary>
 		/// Returns how much indices the EBO is storing

@@ -1,14 +1,16 @@
 #pragma once 
 
 #include "PenResources/PenResourcesManager.h"
-#include "PenResources/AllPenResources.h"
 
+//std
 #include <iostream>
 #include <fstream>
 
+#define RESOURCE_TEMPLATE template<typename _ResourceType, typename ...Args>
+
 namespace Pengine::Resources
 {
-	template<typename _ResourceType, typename ...Args>
+	RESOURCE_TEMPLATE
 		requires std::derived_from<_ResourceType, PenResourcesBase>
 	inline std::shared_ptr<_ResourceType> PenResourcesManager::createResourceFromFile(const char* sourcePath, const char* destinationPath, Args ...data)
 	{
@@ -51,7 +53,7 @@ namespace Pengine::Resources
 		return ptr;
 	}
 
-	template<typename _ResourceType, typename ...Args>
+	RESOURCE_TEMPLATE
 		requires std::derived_from<_ResourceType, PenResourcesBase>
 	inline std::shared_ptr<_ResourceType> PenResourcesManager::createResource(const char* fileName, const char* destinationPath, Args ...data)
 	{
@@ -82,7 +84,7 @@ namespace Pengine::Resources
 		return ptr;
 	}
 
-	template<typename _ResourceType, typename... Args>
+	RESOURCE_TEMPLATE
 		requires std::derived_from<_ResourceType, PenResourcesBase>
 	inline std::shared_ptr<_ResourceType> PenResourcesManager::loadResourceFromFile(const char* path, Args... data)
 	{

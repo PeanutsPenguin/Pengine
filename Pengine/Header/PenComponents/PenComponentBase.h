@@ -8,13 +8,10 @@ namespace Pengine::Components
 	class PenComponentBase
 	{
 	public:
-		PenComponentBase(void) = default;
-
+		PenComponentBase() = default;
 		PenComponentBase(const PenComponentBase& other) = default;
-
 		PenComponentBase(PenComponentBase& other) = default;
-
-		virtual ~PenComponentBase(void) = default;
+		virtual ~PenComponentBase() = default;
 
 		PenComponentBase& operator=(const PenComponentBase& rhs) = default;
 		PenComponentBase& operator=(PenComponentBase&& rhs) = default;

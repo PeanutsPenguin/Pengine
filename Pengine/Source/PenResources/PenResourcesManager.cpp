@@ -4,11 +4,9 @@
 
 using namespace Pengine::Resources;
 
-Pengine::PenResourcesId PenResourcesManager::m_currentId = 0;
-
 void PenResourcesManager::clearUnused()
 {
- /*   for (auto it = m_resourceStocker.begin(); it != m_resourceStocker.end();)
+    for (auto it = m_resourceStocker.begin(); it != m_resourceStocker.end();)
     {
         if (it->second.expired())
         {
@@ -25,7 +23,7 @@ void PenResourcesManager::clearUnused()
         }
         else
             ++it;
-    }*/
+    }
 }
 
 const char* PenResourcesManager::getResourcePathById(const PenResourcesId id) const

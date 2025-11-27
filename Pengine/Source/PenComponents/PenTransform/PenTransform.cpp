@@ -1,8 +1,8 @@
 #include "PenComponents/PenTransform/PenTransform.h"
 
-#include "PenCore/PenCore.h"
-#include "PenOctopus/PenOctopus.h"
-#include "PenSystem/PenTransformSystem/PenTransformSystem.h"
+#include "PenCore/PenCore.h"									//PenCore
+#include "PenOctopus/PenOctopus.h"								//PenOctopus
+#include "PenSystem/PenTransformSystem/PenTransformSystem.h"	//PenTransformSystem
 
 using namespace Pengine::Components;
 
@@ -12,7 +12,7 @@ PenTransform::PenTransform()
 	this->m_parent = g_PenObjectInvalidId;
 }
 
-#pragma region Getter
+#pragma region Getter and Setter
 PenMath::Transform PenTransform::getGlobalTransform() const
 {
 	return this->m_globalTransform;
@@ -36,6 +36,7 @@ void PenTransform::setLocalTransform(const PenMath::Transform& transform)
 	this->m_localTransform = transform;
 	this->SetState(PenComponentState::DIRTY);
 }
+
 void PenTransform::setGlobalTransform(const PenMath::Transform& transform)
 {
 	if (transform == this->m_globalTransform)
@@ -61,4 +62,5 @@ void PenTransform::setParent(const PenObjectId entity, bool keepPosition)
 	}
 }
 #pragma endregion
+
 

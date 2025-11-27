@@ -17,33 +17,31 @@ namespace Pengine
 
 namespace Pengine
 {
-	class GLFWPenWindow : public PenWindowBase
+	class GLFWPenWindow final : public PenWindowBase
 	{
-#pragma endregion Public
 	public:
 		GLFWPenWindow() = default;
+		GLFWPenWindow(const GLFWPenWindow& other) = default;
+		GLFWPenWindow(GLFWPenWindow&& other) = default;
+		~GLFWPenWindow() final = default;
 
-		~GLFWPenWindow() override;
+		GLFWPenWindow& operator=(const GLFWPenWindow& rhs) = default;
+		GLFWPenWindow& operator=(GLFWPenWindow&& rhs) = default;
 
-		bool init(const char* name, const PenMath::Vector2f& size) override;
+		bool init(const char* name, const PenMath::Vector2f& size) final;
 
-		void setWindowSize(const PenMath::Vector2f& size, bool resizeWindow = true) override;
+		void preRender(const PenScene& mainScene) final;
+		void render() final;
+		void postRender() final;
 
-		void preRender(const PenScene& mainScene) override;
-
-		void render() override;
-
-		void postRender() override;
-
-		void setCursorState(CursorState state) override;
+		void setWindowSize(const PenMath::Vector2f& size, bool resizeWindow = true) final;
+		void setCursorState(CursorState state) final;
 
 		GLFWwindow* getWindowPtr() const noexcept;
-#pragma endregion
 
-#pragma region Private
 	private:
-
 		bool GLInit(const char* name, const PenMath::Vector2f& windowSize);
+		void GLBufferUpdate();
 
 		/// <summary>
 		/// Called during a window resize
@@ -55,9 +53,6 @@ namespace Pengine
 		/// </summary>
 		static void window_close_callBack(GLFWwindow* window);
 
-		void GLBufferUpdate();
-
 		GLFWwindow* m_windowPtr = nullptr;
-#pragma endregion
 	};
 }

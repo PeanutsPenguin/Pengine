@@ -10,10 +10,14 @@ namespace Pengine::System
 	{
 	public:
 		PenSystemBase() = default;
+		PenSystemBase(const PenSystemBase& other) = default;
+		PenSystemBase(PenSystemBase&& other) = default;
 		virtual ~PenSystemBase() = default;
 
-		virtual void onEntityInserted(const PenObjectId newObj) = 0;
+		PenSystemBase& operator=(const PenSystemBase& rhs) = default;
+		PenSystemBase& operator=(PenSystemBase&& rhs) = default;
 
+		virtual void onEntityInserted(const PenObjectId newObj) = 0;
 		virtual void onEntityDestroyed(const PenObjectId obj) = 0;
 
 		virtual void update(double dt) = 0;

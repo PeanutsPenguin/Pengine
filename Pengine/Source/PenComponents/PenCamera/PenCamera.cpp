@@ -8,7 +8,7 @@ PenCamera::PenCamera()
 	this->SetState(PenComponentState::DIRTY);
 }
 
-#pragma region Getter
+#pragma region Getter and Setter
 
 PenMath::Mat4 PenCamera::getProjectionMatrix() const
 {
@@ -54,9 +54,7 @@ float Pengine::Components::PenCamera::getPitch() const
 {
 	return this->m_pitch;
 }
-#pragma endregion
 
-#pragma region Setter
 void PenCamera::setProjectionMatrix(const PenMath::Mat4& mat)
 {
 	this->m_projectionMatrix = mat;

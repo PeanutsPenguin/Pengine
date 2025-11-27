@@ -1,25 +1,28 @@
 #include "PenSystem/PenRenderSystem/PenRenderSystem.h"
 
+#include "PenOctopus/PenOctopus.h"		//PenOctopus
+#include "PenCore/PenCore.h"			//PenCore
+
+//PenComponents
 #include "PenComponents/PenRenderer/PenRenderer.h"
 #include "PenComponents/PenCamera/PenCamera.h"
 #include "PenComponents/PenTransform/PenTransform.h"
 
-#include "PenOctopus/PenOctopus.h"
-#include "PenCore/PenCore.h"
-
+//Resources
 #include "PenResources/PenShaderProgramBase.h"
 #include "PenResources/OpenGl/Private_PenGLTextures.h"
 
+//Buffer
 #include "PenBuffer/OpenGl/Private_PenTextureBuffer.h"
 
+//System
+#include "PenSystem/PenCameraSystem/PenCameraSystem.h"
+
+//PenMath
 #include <Angle/Radian.h>
 #include <Angle/Degree.h>
 
 using namespace Pengine::System;
-
-PenRendererSystem::~PenRendererSystem()
-{
-}
 
 void PenRendererSystem::render()
 {
@@ -36,32 +39,11 @@ void PenRendererSystem::GLrender()
 
 		if (renderComp.IsState(Components::PenComponentState::ENABLE))
 		{
-			std::shared_ptr<Pengine::Resources::PenMaterial> mat = renderComp.getMaterial();
-
-			if (!mat)
-			{
-				std::cout << __FUNCTION__ "\t Material of object : " << objId << " has not been found, replace it with default material\n";
-				renderComp.setMaterial(Resources::PenMaterial::defaultMaterial());
-				mat = Resources::PenMaterial::defaultMaterial();
-			}
-
-			std::shared_ptr<Resources::PenGLTexture> tex = std::dynamic_pointer_cast<Resources::PenGLTexture>(mat->getTexture());
-
-			if (!tex)
-			{
-				std::cout << __FUNCTION__ "\t Texture of material : " << mat->getId() << " has not been found, replace it with default texture\n";
-				mat->setTexture(nullptr);
-			}
-
+			std::shared_ptr<Pengine::Resources::PenMaterial>	mat = renderComp.getMaterial();
+			std::shared_ptr<Resources::PenGLTexture>			tex = std::dynamic_pointer_cast<Resources::PenGLTexture>(mat->getTexture());
+			std::shared_ptr<Resources::PenShaderProgramBase>	prog = mat->getShaderProg();
+			
 			tex->dataPtr()->bind();
-
-			std::shared_ptr<Resources::PenShaderProgramBase> prog = mat->getShaderProg();
-
-			if(!prog)
-			{
-				std::cout << __FUNCTION__ "\t Shader program of material : " << mat->getId() << " has not been found, replace it with default shader program\n";
-				mat->setShaderProgram(nullptr);
-			}
 
 			if (!prog->use())
 				continue;
@@ -70,9 +52,8 @@ void PenRendererSystem::GLrender()
 
 			if (cam != g_PenObjectInvalidId)
 			{
-				Components::PenCamera& camComp = PenCore::PenOctopus()->getComponent<Components::PenCamera>(cam);
-
-				PenMath::Mat4 model = transComp.getGlobalTransform().toMatrix();
+				Components::PenCamera&	camComp = PenCore::PenOctopus()->getComponent<Components::PenCamera>(cam);
+				PenMath::Mat4			model = transComp.getGlobalTransform().toMatrix();
 
 				prog->setUniform("projection", camComp.getProjectionMatrix());
 				prog->setUniform("view", camComp.getViewMatrix());

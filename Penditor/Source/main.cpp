@@ -22,6 +22,9 @@
 #include "PenComponents/PenCamera/PenCamera.h"
 #include "PenComponents/PenTransform/PenTransform.h"
 
+//System
+#include "PenSystem/PenCameraSystem/PenCameraSystem.h"
+
 #if defined (CHECK_MEMORY_LEAKS)
 	#include "Memory/MemoryLeakChecker.h"
 #endif

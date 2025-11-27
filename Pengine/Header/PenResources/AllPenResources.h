@@ -5,3 +5,4 @@
 #include "PenResources/PenTextureBase.h"
 #include "PenResources/PenModel.h"
 #include "PenResources/PenShaderBase.h"
+#include "PenResources/PenShaderProgramBase.h"

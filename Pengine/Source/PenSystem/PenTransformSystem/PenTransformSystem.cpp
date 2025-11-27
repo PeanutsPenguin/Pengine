@@ -13,17 +13,16 @@ using namespace Pengine::System;
 void PenTransformSystem::update(double dt)
 {
 	std::queue<PenObjectId> process;
-	for (const auto& root : this->m_PenObject) {
+	for (const auto& root : this->m_PenObject)
 		process.push(root);
-	}
 
-	while (!process.empty()) {
+	while (!process.empty()) 
+	{
 		PenObjectId current = process.front();
 		process.pop();
 
-		Components::PenTransform& transform = PenCore::PenOctopus()->getComponent<Components::PenTransform>(current);
-		PenObjectId	parent = transform.getParent();
-
+		Components::PenTransform&	transform = PenCore::PenOctopus()->getComponent<Components::PenTransform>(current);
+		PenObjectId					parent = transform.getParent();
 
 		if (parent == g_PenObjectInvalidId)
 			transform.setLocalTransform(transform.getGlobalTransform());	  // roots global and local should be equal
@@ -108,9 +107,7 @@ void PenTransformSystem::reparentChild(const PenObjectId obj, const PenObjectId 
 	{
 		//If new Parent is in the root array
 		if(this->m_PenObject.count(newParent))
-		{
 			m_children[newParent].insert(obj);
-		}
 		else
 		{
 			m_PenObject.insert(newParent);
@@ -133,9 +130,7 @@ void PenTransformSystem::onEntityInserted(const PenObjectId newObj)
 	{
 		//If parent is in root array
 		if (this->m_PenObject.count(parent))
-		{
 			m_children[parent].insert(newObj);
-		}
 		else
 		{
 			m_PenObject.insert(parent);

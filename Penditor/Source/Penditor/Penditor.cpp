@@ -2,8 +2,8 @@
 
 #include "PenCore/PenCore.h"			//Pengine::PenCore
 #include "PenFreeCam/PenFreeCam.h"		//PenFreeCam
-#include "PenWindow/PenWindowBase.h"	//PenWindow
-#include "PenInput/PenInput.h"			//PenInput
+#include "PenWindow/PenWindowBase.h"	//Pengine::PenWindow
+#include "PenInput/PenInput.h"			//Pengine::PenInput
 
 using namespace Penditor;
 

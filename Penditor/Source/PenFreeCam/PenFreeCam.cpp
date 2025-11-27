@@ -16,6 +16,7 @@
 
 using namespace Penditor;
 
+#pragma region Getter and Setter
 void PenFreeCam::setCamObject(const Pengine::PenComponentsId id)
 {
 	this->m_camObject = id;
@@ -26,6 +27,17 @@ const Pengine::PenObjectId PenFreeCam::getCamObject() const
 	return this->m_camObject;
 }
 
+void PenFreeCam::setSpeed(float speed)
+{
+    this->m_speed = speed;
+}
+
+float Penditor::PenFreeCam::getSpeed() const
+{
+    return this->m_speed;
+}
+#pragma endregion
+
 void PenFreeCam::update(double dt)
 {
     if (this->m_camObject == Pengine::g_PenObjectInvalidId)
@@ -33,7 +45,7 @@ void PenFreeCam::update(double dt)
 
     const float cameraSpeed = this->m_speed * dt;
 
-    Pengine::Components::PenTransform& transComp = 
+    Pengine::Components::PenTransform& transComp =
         Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenTransform>(m_camObject);
 
     Pengine::Components::PenCamera& cam =
@@ -56,16 +68,6 @@ void PenFreeCam::update(double dt)
     }
 
     transComp.setGlobalTransform(newTrans);
-}
-
-void PenFreeCam::setSpeed(float speed)
-{
-    this->m_speed = speed;
-}
-
-float Penditor::PenFreeCam::getSpeed() const
-{
-    return this->m_speed;
 }
 
 void PenFreeCam::handleCameraMovement(PenMath::Transform& trans, Pengine::Components::PenCamera& cam, float speed)

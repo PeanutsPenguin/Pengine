@@ -2,14 +2,11 @@
 
 #include "PenCore/PenCore.h"			//PenCore
 #include "PenOctopus/PenOctopus.h"		//PenOctopus
-#include "PenInput/PenInput.h"
+#include "PenInput/PenInput.h"			//PenInput
 
 //Components
 #include "PenComponents/PenCamera/PenCamera.h"
 #include "PenComponents/PenTransform/PenTransform.h"
-
-
-#include <Quaternion.h>
 
 using namespace Pengine::System;
 
@@ -24,7 +21,6 @@ void PenCameraSystem::update(double dt)
 		{
 			cam.updateProjectionMatrix();
 			cam.updateViewMatrix(transform.getGlobalTransform());
-
 			cam.SetState(Components::PenComponentState::DIRTY, false);
 		}
 	}

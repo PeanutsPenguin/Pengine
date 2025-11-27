@@ -14,9 +14,9 @@ PenGLShaderProgram::~PenGLShaderProgram()
 	destroy();
 }
 
+#pragma region Resource
 bool Pengine::Resources::PenGLShaderProgram::loadResource(const std::string path)
 {
-	std::cout << "ID : " << this->getId() << std::endl;
 	//Create variables 
 	std::string vert;
 	std::string frag;
@@ -81,6 +81,7 @@ bool PenGLShaderProgram::createResource(const std::string PenfilePath, std::shar
 
 	return this->createShaderProgram(vert, frag);
 }
+#pragma endregion
 
 void PenGLShaderProgram::destroy()
 {
@@ -130,11 +131,7 @@ void PenGLShaderProgram::unuse() const
 	glUseProgram(0);
 }
 
-bool PenGLShaderProgram::initShaderProgram() 
-{
-	return true;
-}
-
+#pragma region SetUnitform
 void PenGLShaderProgram::setUniform(const char* name, bool value)
 {
 	glUniform1i(glGetUniformLocation(this->m_shaderProgramId, name), (int)value);
@@ -174,3 +171,4 @@ void PenGLShaderProgram::setUniform(const char* name, const PenMath::Mat4& value
 {
 	glUniformMatrix4fv(glGetUniformLocation(this->m_shaderProgramId, name), 1, GL_FALSE, &value[0][0]);
 }
+#pragma endregion
