@@ -62,9 +62,9 @@ int main()
 
 		Pengine::Components::PenLight lightComp(Pengine::PenLightType::E_POINT);
 		Pengine::PenLightBase* lightBase = lightComp.getLight();
-		lightBase->setAmbient(PenMath::Vector3f{ 1.0f, 0.5f, 0.31f });
-		lightBase->setDiffuse(PenMath::Vector3f{ 1.0f, 0.5f, 0.31f });
-		lightBase->setSpecular({ 0.5f, 0.5f, 0.5f });
+		lightBase->setAmbient(PenMath::Vector3f{ 0.2f, 0.2f, 0.2f });
+		lightBase->setDiffuse(PenMath::Vector3f{ 0.5f, 0.5f, 0.5f });
+		lightBase->setSpecular(PenMath::Vector3f{ 1.0f, 1.0f, 1.0f });
 
 		Pengine::PenCore::PenOctopus()->addComponent(seconNewObj, lightComp);
 
@@ -74,10 +74,10 @@ int main()
 		std::shared_ptr<Pengine::Resources::PenGLShaderProgram> progPtr = resourceManager->createResource<Pengine::Resources::PenGLShaderProgram>("LightningShaderProgram", "Shaders/", vertShader, fragShader);
 
 		//Create Texture
-		//std::shared_ptr<Pengine::Resources::PenGLTexture> glTexture = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLTexture>("Textures/Padoru.penfile");	
+		std::shared_ptr<Pengine::Resources::PenGLTexture> glTexture = resourceManager->createResourceFromFile<Pengine::Resources::PenGLTexture>("container_diffuse.png", "Textures/");
 
 		//Create Material
-		std::shared_ptr<Pengine::Resources::PenMaterial> materialPtr = resourceManager->createResource<Pengine::Resources::PenMaterial>("CubeMaterial", "Material/", nullptr, progPtr);
+		std::shared_ptr<Pengine::Resources::PenMaterial> materialPtr = resourceManager->createResource<Pengine::Resources::PenMaterial>("CubeMaterial", "Material/", progPtr,  glTexture);
 
 		renderComp.setMaterial(materialPtr);
 

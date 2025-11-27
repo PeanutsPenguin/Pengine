@@ -40,26 +40,33 @@ void PenRendererSystem::GLrender()
 
 		if (renderComp.IsState(Components::PenComponentState::ENABLE))
 		{
-			std::shared_ptr<Pengine::Resources::PenMaterial>	mat = renderComp.getMaterial();
-			std::shared_ptr<Resources::PenGLTexture>			tex = std::dynamic_pointer_cast<Resources::PenGLTexture>(mat->getTexture());
-			std::shared_ptr<Resources::PenShaderProgramBase>	prog = mat->getShaderProg();
+			std::shared_ptr<Pengine::Resources::PenMaterial>				mat = renderComp.getMaterial();
+			std::shared_ptr<Resources::PenShaderProgramBase>				prog = mat->getShaderProg();
+			std::vector<std::shared_ptr<Resources::PenTextureBase>>			tex = mat->getTextures();
 
 			std::shared_ptr<System::PenLightSystem> lightSystem = PenCore::PenOctopus()->getSystem<System::PenLightSystem>();
 			
-			//this might change when i'll have multiTexturing
-			tex->dataPtr()->activate(0);
-			tex->dataPtr()->bind();
 
 			if (!prog->use())
 				continue;
 
+			prog->setUniform("material.diffuse", 0);
+
+			if(!tex.empty())
+			{
+				for (int i = 0; i < tex.size() - 1; ++i)
+				{
+					std::shared_ptr<Resources::PenGLTexture> texture = std::dynamic_pointer_cast<Resources::PenGLTexture>(tex[i]);
+					texture->dataPtr()->activate(i);
+				}
+			}
+
+
+
 			lightSystem->renderUpdate(prog);
 			
-			prog->setUniform("material.ambient", mat->getAmbient());
-			prog->setUniform("material.diffuse", mat->getDiffuse());
 			prog->setUniform("material.specular", mat->getSpecular()); // specular lighting doesn't have full effect on this object's material
 			prog->setUniform("material.shininess", mat->getShininess());
-
 
 			PenObjectId cam = PenCore::PenOctopus()->getSystem<System::PenCameraSystem>()->getMainCamera();
 
@@ -74,6 +81,8 @@ void PenRendererSystem::GLrender()
 				prog->setUniform("view", camComp.getViewMatrix());
 				prog->setUniform("model", model);
 			}
+
+
 
 			renderComp.render();
 		}

@@ -1,15 +1,8 @@
 #include "PenResources/PenMaterial.h"
 
-#include "PenCore/PenCore.h"                                        //PenCore
-#include "PenSerializer/PenSerializer.h"                            //PenSerializer
-
 #include "PenResources/PenResourcesManager.h"                       //PenResourceManager
 #include "PenResources/OpenGl/Private_PenGLTextures.h"              //PenTexture
 #include "PenResources/OpenGl/Private_PenGLShaderProgram.h"         //PenShaderProgram
-
-//std
-#include <iostream>
-#include <fstream>
 
 using namespace Pengine::Resources;
 
@@ -29,33 +22,22 @@ bool PenMaterial::loadResource(const std::string path)
     std::cout << __FUNCTION__ "\tLoading Material :" << path << std::endl;
 
     //Create variables 
-    std::string texPath;
+    std::vector<std::string> texPaths;
     std::string shaderPath;
 
     std::ifstream infile(path, std::ios::binary);
-    PenCore::PenSerializer()->read(infile, texPath);
+    PenCore::PenSerializer()->read(infile, this->m_specular);
+    PenCore::PenSerializer()->read(infile, this->m_shininess);
     PenCore::PenSerializer()->read(infile, shaderPath);
+    PenCore::PenSerializer()->read(infile, texPaths);
     infile.close();
-
-    std::shared_ptr<PenTextureBase> tex = nullptr;
-
-    if(PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
-        tex = PenCore::ResourcesManager()->loadResourceFromFile<PenGLTexture>(texPath.c_str());
-
-    if (!tex)
-    {
-        std::cout << __FUNCTION__ "\t Material loaded with default texture in it\n";
-        this->m_texture = PenTextureBase::defaultTexture();
-    }
-    else
-        this->m_texture = tex;
 
     std::shared_ptr<PenShaderProgramBase> shader = nullptr;
 
     if (PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
         shader = PenCore::ResourcesManager()->loadResourceFromFile<PenGLShaderProgram>(shaderPath.c_str());
 
-    if (!tex)
+    if (!shader)
     {
         std::cout << __FUNCTION__ "\t Material loaded with default texture in it\n";
         this->m_shader = PenShaderProgramBase::defaultShaderProgram();
@@ -63,46 +45,51 @@ bool PenMaterial::loadResource(const std::string path)
     else
         this->m_shader = shader;
 
-    PenCore::PenSerializer()->read(infile, this->m_ambient);
-    PenCore::PenSerializer()->read(infile, this->m_diffuse);
-    PenCore::PenSerializer()->read(infile, this->m_specular);
-    PenCore::PenSerializer()->read(infile, this->m_shininess);
-
     this->m_penfilePath = path;
 
+    if (texPaths.empty())
+    {
+        this->m_texture.push_back(PenTextureBase::defaultTexture());
+        return true;
+    }
+
+    std::shared_ptr<PenTextureBase> tex = nullptr;
+    
+    for(std::string path : texPaths)
+    {
+        if (PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
+            tex = PenCore::ResourcesManager()->loadResourceFromFile<PenGLTexture>(path.c_str());
+
+        if (!tex)
+        {
+            tex = nullptr;
+            continue;
+        }
+
+        this->m_texture.push_back(tex);
+    }
+    
     return true;
 }
 
 bool PenMaterial::createResource(const std::string penfilePath, const std::string sourcePath)
 {
-    std::cout << __FUNCTION__ "\t Not ready yet.\n";
+    std::cout << __FUNCTION__ "\t Can't create a material form a source file for now\n";
 
-    return createResource(penfilePath, nullptr, nullptr);
+    return false;
 }
 
 bool PenMaterial::createResource(const std::string penfilePath, std::shared_ptr<PenTextureBase> tex)
 {
-    return this->createResource(penfilePath, tex, nullptr);
-}
-
-bool PenMaterial::createResource(const std::string penfilePath, std::shared_ptr<PenShaderProgramBase> tex)
-{
     return this->createResource(penfilePath, nullptr, tex);
 }
 
-bool PenMaterial::createResource(const std::string penfilePath, std::shared_ptr<PenTextureBase> tex, std::shared_ptr<Pengine::Resources::PenShaderProgramBase> prog)
+bool PenMaterial::createResource(const std::string penfilePath, std::shared_ptr<PenShaderProgramBase> prog)
 {
     std::ofstream outfile(penfilePath, std::ios::binary);
 
-    if (!tex)
-    {
-        std::cout << __FUNCTION__ "\t Material created with default texture in it\n";
-        this->m_texture = PenTextureBase::defaultTexture();
-    }
-    else
-        this->m_texture = tex;
-
-    PenCore::PenSerializer()->write(outfile, this->m_texture->getResourcePath());
+    PenCore::PenSerializer()->write(outfile, this->m_specular);
+    PenCore::PenSerializer()->write(outfile, this->m_shininess);
 
     if (!prog)
     {
@@ -113,12 +100,6 @@ bool PenMaterial::createResource(const std::string penfilePath, std::shared_ptr<
         this->m_shader = prog;
 
     PenCore::PenSerializer()->write(outfile, this->m_shader->getResourcePath());
-
-    PenCore::PenSerializer()->write(outfile, this->m_ambient);
-    PenCore::PenSerializer()->write(outfile, this->m_diffuse);
-    PenCore::PenSerializer()->write(outfile, this->m_specular);
-    PenCore::PenSerializer()->write(outfile, this->m_shininess);
-    outfile.close();
 
     this->m_penfilePath = penfilePath;
 
@@ -135,53 +116,46 @@ void PenMaterial::setShaderProgram(std::shared_ptr<Pengine::Resources::PenShader
         this->m_shader = PenShaderProgramBase::defaultShaderProgram();
 }
 
-void PenMaterial::setTexture(std::shared_ptr<PenTextureBase> tex)
+void PenMaterial::addTexture(std::shared_ptr<PenTextureBase> tex)
 {
     if (tex)
-        this->m_texture = tex;
-    else
-        this->m_texture = PenTextureBase::defaultTexture();
+        this->m_texture.push_back(tex);
 }
 
-std::shared_ptr<PenShaderProgramBase> PenMaterial::getShaderProg()
+void PenMaterial::setSpecular(const PenMath::Vector3f& spec)
+{
+    this->m_specular = spec;
+}
+
+void PenMaterial::setShininess(const float shininess)
+{
+    this->m_shininess = shininess;
+}
+
+
+const std::shared_ptr<PenShaderProgramBase>& PenMaterial::getShaderProg()
 {
     if(!this->m_shader)
     {
         std::cout << __FUNCTION__ "\t Shader program of material : " << this->getId() << " has not been found, replace it with default shader program\n";
         this->setShaderProgram(nullptr);
     }
+
     return this->m_shader;
 }
 
-std::shared_ptr<PenTextureBase> PenMaterial::getTexture()
+const std::vector<std::shared_ptr<PenTextureBase>>& PenMaterial::getTextures() const
 {
-    if (!this->m_texture)
-    {
-        std::cout << __FUNCTION__ "\t Texture of material : " << this->getId() << " has not been found, replace it with default texture\n";
-        this->setTexture(nullptr);
-    }
-
     return this->m_texture;
 }
 
-const PenMath::Vector3f& PenMaterial::getAmbient()
-{
-    return this->m_ambient;
-}
-
-const PenMath::Vector3f& PenMaterial::getDiffuse()
-{
-    return this->m_diffuse;
-}
-
-const PenMath::Vector3f& PenMaterial::getSpecular()
+const PenMath::Vector3f& PenMaterial::getSpecular() const
 {
     return this->m_specular;
 }
 
-const float PenMaterial::getShininess()
+const float PenMaterial::getShininess() const
 {
     return this->m_shininess;
 }
-
 #pragma endregion

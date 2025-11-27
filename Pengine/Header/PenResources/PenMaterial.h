@@ -1,8 +1,15 @@
 #pragma once 
 
 #include "PenResources/PenResourcesBase.h"
+#include "PenResources/PenShaderProgramBase.h"
+#include "PenCore/PenCore.h"                                        //PenCore
+#include "PenSerializer/PenSerializer.h"                            //PenSerializer
 
 #include <Vector/Vector3/Vector3.h>
+
+//std
+#include <iostream>
+#include <fstream>
 
 namespace Pengine::Resources
 {
@@ -27,25 +34,30 @@ namespace Pengine::Resources
 		bool	createResource(const std::string penfilePath, const std::string sourcePath) final;
 		bool	createResource(const std::string penfilePath, std::shared_ptr<PenTextureBase> tex);
 		bool	createResource(const std::string penfilePath, std::shared_ptr<PenShaderProgramBase> prog);
-		bool	createResource(const std::string penfilePath, std::shared_ptr<PenTextureBase> tex, std::shared_ptr<PenShaderProgramBase> prog);
 
-		void												setShaderProgram(std::shared_ptr<PenShaderProgramBase> prog);
-		void												setTexture(std::shared_ptr<PenTextureBase> tex);
-		_NODISCARD std::shared_ptr<PenShaderProgramBase>	getShaderProg();
-		_NODISCARD std::shared_ptr<PenTextureBase>			getTexture();
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="...texs">DO NOT SEND SOMETHING ELSE THAN TEXTURE PTR</param>
+		template<typename... _Texture>
+		bool	createResource(const std::string penfilePath, std::shared_ptr<PenShaderProgramBase> prog, _Texture... texs);
 
-		const PenMath::Vector3f&								getAmbient();
-		const PenMath::Vector3f&								getDiffuse();
-		const PenMath::Vector3f&								getSpecular();
-		const float												getShininess();
+		void	setShaderProgram(std::shared_ptr<PenShaderProgramBase> prog);
+		void	addTexture(std::shared_ptr<PenTextureBase> tex);
+		void	setSpecular(const PenMath::Vector3f& spec);
+		void	setShininess(const float shininess);
+
+		const std::shared_ptr<PenShaderProgramBase>&					getShaderProg();
+		const std::vector<std::shared_ptr<PenTextureBase>>&				getTextures()	const;
+		const PenMath::Vector3f&										getSpecular()	const;
+		const float														getShininess()	const;
 
 	private:
-		std::shared_ptr<PenTextureBase>			m_texture;
-		std::shared_ptr<PenShaderProgramBase>	m_shader;
+		std::vector<std::shared_ptr<PenTextureBase>>			m_texture;
+		std::shared_ptr<PenShaderProgramBase>					m_shader;
 
-		PenMath::Vector3f m_ambient = { 1.0f, 0.5f, 0.31f };
-		PenMath::Vector3f m_diffuse = { 1.0f, 0.5f, 0.31f };
-		PenMath::Vector3f m_specular = { 0.5f, 0.5f, 0.5f };
-		float m_shininess = 32.f;
+		PenMath::Vector3f m_specular = PenMath::Vector3f{ 0.5f, 0.5f, 0.5f };
+		float m_shininess = 64.f;
 	};
 }
+#include "PenMaterial.hpp"
