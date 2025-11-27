@@ -16,3 +16,17 @@ void PenSerializer::read(std::istream& in, std::string& s)
     s.resize(size);
     in.read(&s[0], size);
 }
+
+void PenSerializer::write(std::ostream& out, const PenMath::Vector3f& s)
+{
+    write(out, s.x);
+    write(out, s.y);
+    write(out, s.z);
+}
+
+void PenSerializer::read(std::istream& in, PenMath::Vector3f& s)
+{
+    read(in, s.x);
+    read(in, s.y);
+    read(in, s.z);
+}

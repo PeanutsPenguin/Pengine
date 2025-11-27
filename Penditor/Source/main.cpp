@@ -21,6 +21,7 @@
 #include "PenComponents/PenRenderer/PenRenderer.h"
 #include "PenComponents/PenCamera/PenCamera.h"
 #include "PenComponents/PenTransform/PenTransform.h"
+#include "PenComponents/PenLight/PenLight.h"
 
 //System
 #include "PenSystem/PenCameraSystem/PenCameraSystem.h"
@@ -49,21 +50,41 @@ int main()
 		Pengine::Components::PenRenderer renderComp;
 
 		//Create model
-		std::shared_ptr<Pengine::Resources::PenModel> modelPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenModel>("Mesh/padoru.penfile");
+		std::shared_ptr<Pengine::Resources::PenModel> modelPtr = resourceManager->createResourceFromFile<Pengine::Resources::PenModel>("Models/cube.obj", "Mesh/");
 		renderComp.setModel(modelPtr);
-
-		Pengine::PenCore::PenOctopus()->addComponent(seconNewObj, renderComp);
 
 		Pengine::Components::PenTransform trans = Pengine::Components::PenTransform();
 		PenMath::Transform newtrans;
-		newtrans.position = { 2, 0, 0 };
+		newtrans.position = { 1.2f, 1.0f, 2.0f };
 		trans.setGlobalTransform(newtrans);
 
 		Pengine::PenCore::PenOctopus()->addComponent(seconNewObj, trans);
 
+		Pengine::Components::PenLight lightComp(Pengine::PenLightType::E_POINT);
+		Pengine::PenLightBase* lightBase = lightComp.getLight();
+		lightBase->setAmbient(PenMath::Vector3f{ 1.0f, 0.5f, 0.31f });
+		lightBase->setDiffuse(PenMath::Vector3f{ 1.0f, 0.5f, 0.31f });
+		lightBase->setSpecular({ 0.5f, 0.5f, 0.5f });
+
+		Pengine::PenCore::PenOctopus()->addComponent(seconNewObj, lightComp);
+
+		//Create ShaderProgram
+		std::shared_ptr<Pengine::Resources::PenGLShader> vertShader = resourceManager->createResourceFromFile<Pengine::Resources::PenGLShader>("LightningVertexShader.vert", "Shaders/");
+		std::shared_ptr<Pengine::Resources::PenGLShader> fragShader = resourceManager->createResourceFromFile<Pengine::Resources::PenGLShader>("LightningFragmentShader.frag", "Shaders/");
+		std::shared_ptr<Pengine::Resources::PenGLShaderProgram> progPtr = resourceManager->createResource<Pengine::Resources::PenGLShaderProgram>("LightningShaderProgram", "Shaders/", vertShader, fragShader);
+
+		//Create Texture
+		//std::shared_ptr<Pengine::Resources::PenGLTexture> glTexture = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLTexture>("Textures/Padoru.penfile");	
+
 		//Create Material
-		std::shared_ptr<Pengine::Resources::PenMaterial> materialPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenMaterial>("Material/PadoruMaterial.penfile");
+		std::shared_ptr<Pengine::Resources::PenMaterial> materialPtr = resourceManager->createResource<Pengine::Resources::PenMaterial>("CubeMaterial", "Material/", nullptr, progPtr);
+
 		renderComp.setMaterial(materialPtr);
+
+
+		////Create Material
+		//std::shared_ptr<Pengine::Resources::PenMaterial> materialPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenMaterial>("Material/PadoruMaterial.penfile");
+		//renderComp.setMaterial(materialPtr);
 
 
 		//Add the component

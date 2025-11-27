@@ -2,6 +2,8 @@
 
 #include "PenResources/PenResourcesBase.h"
 
+#include <Vector/Vector3/Vector3.h>
+
 namespace Pengine::Resources
 {
 	class PenTextureBase;
@@ -32,8 +34,18 @@ namespace Pengine::Resources
 		_NODISCARD std::shared_ptr<PenShaderProgramBase>	getShaderProg();
 		_NODISCARD std::shared_ptr<PenTextureBase>			getTexture();
 
+		const PenMath::Vector3f&								getAmbient();
+		const PenMath::Vector3f&								getDiffuse();
+		const PenMath::Vector3f&								getSpecular();
+		const float												getShininess();
+
 	private:
 		std::shared_ptr<PenTextureBase>			m_texture;
 		std::shared_ptr<PenShaderProgramBase>	m_shader;
+
+		PenMath::Vector3f m_ambient = { 1.0f, 0.5f, 0.31f };
+		PenMath::Vector3f m_diffuse = { 1.0f, 0.5f, 0.31f };
+		PenMath::Vector3f m_specular = { 0.5f, 0.5f, 0.5f };
+		float m_shininess = 32.f;
 	};
 }

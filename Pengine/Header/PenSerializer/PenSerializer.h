@@ -1,5 +1,7 @@
 #pragma once 
 
+#include <Vector/Vector3/Vector3.h>
+
 //std
 #include <fstream>
 #include <vector>
@@ -42,6 +44,16 @@ namespace Pengine::Serialize
 		/// Deserialize Strings
 		/// </summary>
 		void read(std::istream& in, std::string& s);
+
+		/// <summary>
+		/// Serialize Strings
+		/// </summary>
+		void write(std::ostream& out, const PenMath::Vector3f& s);
+
+		/// <summary>
+		/// Deserialize Strings
+		/// </summary>
+		void read(std::istream& in, PenMath::Vector3f& s);
 
 		/// <summary>
 		/// Serialize Vectors

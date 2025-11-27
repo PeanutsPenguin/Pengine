@@ -73,6 +73,7 @@ namespace Pengine
 		static void		registerTransformSystem();
 		static void		registerRendererSystem();
 		static void		registerCameraSystem();
+		static void		registerLightSystem();
 
 		static std::unique_ptr<PenWindowBase>					m_window;
 		static std::unique_ptr<Pengine::PenOctopus>				m_PenOctopus;

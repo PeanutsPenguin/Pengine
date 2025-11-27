@@ -63,6 +63,11 @@ bool PenMaterial::loadResource(const std::string path)
     else
         this->m_shader = shader;
 
+    PenCore::PenSerializer()->read(infile, this->m_ambient);
+    PenCore::PenSerializer()->read(infile, this->m_diffuse);
+    PenCore::PenSerializer()->read(infile, this->m_specular);
+    PenCore::PenSerializer()->read(infile, this->m_shininess);
+
     this->m_penfilePath = path;
 
     return true;
@@ -109,6 +114,10 @@ bool PenMaterial::createResource(const std::string penfilePath, std::shared_ptr<
 
     PenCore::PenSerializer()->write(outfile, this->m_shader->getResourcePath());
 
+    PenCore::PenSerializer()->write(outfile, this->m_ambient);
+    PenCore::PenSerializer()->write(outfile, this->m_diffuse);
+    PenCore::PenSerializer()->write(outfile, this->m_specular);
+    PenCore::PenSerializer()->write(outfile, this->m_shininess);
     outfile.close();
 
     this->m_penfilePath = penfilePath;
@@ -144,7 +153,7 @@ std::shared_ptr<PenShaderProgramBase> PenMaterial::getShaderProg()
     return this->m_shader;
 }
 
-std::shared_ptr<PenTextureBase> Pengine::Resources::PenMaterial::getTexture()
+std::shared_ptr<PenTextureBase> PenMaterial::getTexture()
 {
     if (!this->m_texture)
     {
@@ -154,4 +163,25 @@ std::shared_ptr<PenTextureBase> Pengine::Resources::PenMaterial::getTexture()
 
     return this->m_texture;
 }
+
+const PenMath::Vector3f& PenMaterial::getAmbient()
+{
+    return this->m_ambient;
+}
+
+const PenMath::Vector3f& PenMaterial::getDiffuse()
+{
+    return this->m_diffuse;
+}
+
+const PenMath::Vector3f& PenMaterial::getSpecular()
+{
+    return this->m_specular;
+}
+
+const float PenMaterial::getShininess()
+{
+    return this->m_shininess;
+}
+
 #pragma endregion

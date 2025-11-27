@@ -9,7 +9,7 @@ using namespace Pengine;
 PenScene::PenScene()
 {
 	this->m_backgroundColor = new PenColor();
-	*this->m_backgroundColor = PenColor::Blue;
+	*this->m_backgroundColor = PenColor{.1f, .1f, .1f, 1.f};
 }
 
 Pengine::PenScene::~PenScene()
