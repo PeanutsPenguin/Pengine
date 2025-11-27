@@ -26,7 +26,7 @@ namespace Pengine
 		PenWindowBase() = default;
 		PenWindowBase(const PenWindowBase& other) = default;
 		PenWindowBase(PenWindowBase&& other) = default;
-		virtual ~PenWindowBase() = default;
+		virtual ~PenWindowBase();
 
 		PenWindowBase& operator=(const PenWindowBase& rhs) = default;
 		PenWindowBase& operator=(PenWindowBase&& rhs) = default;

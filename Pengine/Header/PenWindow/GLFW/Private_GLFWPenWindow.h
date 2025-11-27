@@ -23,7 +23,7 @@ namespace Pengine
 		GLFWPenWindow() = default;
 		GLFWPenWindow(const GLFWPenWindow& other) = default;
 		GLFWPenWindow(GLFWPenWindow&& other) = default;
-		~GLFWPenWindow() final = default;
+		~GLFWPenWindow() final;
 
 		GLFWPenWindow& operator=(const GLFWPenWindow& rhs) = default;
 		GLFWPenWindow& operator=(GLFWPenWindow&& rhs) = default;

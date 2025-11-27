@@ -43,6 +43,8 @@ void PenRendererSystem::GLrender()
 			std::shared_ptr<Resources::PenGLTexture>			tex = std::dynamic_pointer_cast<Resources::PenGLTexture>(mat->getTexture());
 			std::shared_ptr<Resources::PenShaderProgramBase>	prog = mat->getShaderProg();
 			
+			//this might change when i'll have multiTexturing
+			tex->dataPtr()->activate(0);
 			tex->dataPtr()->bind();
 
 			if (!prog->use())
