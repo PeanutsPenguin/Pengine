@@ -10,30 +10,22 @@ using namespace Pengine::Resources;
 
 PenGLShaderProgram::~PenGLShaderProgram()
 {
-	std::cout << __FUNCTION__ ": Destryoing with id : (not yet it's a shaderProgram) " << std::endl;
+	std::cout << __FUNCTION__ ": Destryoing with id : " << this->getId() << std::endl;
 	destroy();
 }
 
-bool Pengine::Resources::PenGLShaderProgram::loadResource(const char* path)
+bool Pengine::Resources::PenGLShaderProgram::loadResource(const std::string path)
 {
+	std::cout << "ID : " << this->getId() << std::endl;
 	//Create variables 
 	std::string vert;
 	std::string frag;
-	std::filebuf fb;
 
-	//If failed to open in the file
-	if (!fb.open(path, std::ios::in))
-	{
-		std::cout << __FUNCTION__ "\t Failed to open for read the file : " << path << '\n';
-		return false;
-	}
+	std::ifstream infile(path, std::ios::binary);
+	PenCore::PenSerializer()->read(infile, vert);
+	PenCore::PenSerializer()->read(infile, frag);
 
-	//Read in file
-	std::istream buf(&fb);
-	PenCore::PenSerializer()->read(buf, vert);
-	PenCore::PenSerializer()->read(buf, frag);
-
-	fb.close();
+	infile.close();
 
 	std::shared_ptr<PenGLShader> vertPtr = PenCore::ResourcesManager()->loadResourceFromFile<PenGLShader>(vert.c_str());;
 	std::shared_ptr<PenGLShader> fragPtr = PenCore::ResourcesManager()->loadResourceFromFile<PenGLShader>(frag.c_str());;
@@ -44,18 +36,20 @@ bool Pengine::Resources::PenGLShaderProgram::loadResource(const char* path)
 		return false;
 	}
 
+	this->m_penfilePath = path;
+
 	return this->createShaderProgram(vertPtr, fragPtr);
 }
 
-bool PenGLShaderProgram::createResource(const char* PenfilePath, const char* sourcePath)
+bool PenGLShaderProgram::createResource(const std::string PenfilePath, const std::string sourcePath)
 {
-	std::cout << __FUNCTION__ "\t No Shader specified for shader program creation\n";
+	std::cout << __FUNCTION__ "\t Can't specify a shader program for program creation\n";
 	return false;
 }
 
-bool PenGLShaderProgram::createResource(const char* PenfilePath, const char* sourcePath, std::shared_ptr<PenShaderBase> vertexShader, std::shared_ptr<PenShaderBase> fragmentShader)
+bool PenGLShaderProgram::createResource(const std::string PenfilePath, std::shared_ptr<PenShaderBase> vertexShader, std::shared_ptr<PenShaderBase> fragmentShader)
 {
-	std::ofstream outfile(PenfilePath);
+	std::ofstream outfile(PenfilePath, std::ios::binary);
 
 	if (vertexShader == nullptr)
 	{
@@ -69,8 +63,8 @@ bool PenGLShaderProgram::createResource(const char* PenfilePath, const char* sou
 		return false;
 	}
 
-	PenCore::PenSerializer()->write(outfile, (std::string)vertexShader->getResourcePath());
-	PenCore::PenSerializer()->write(outfile, (std::string)fragmentShader->getResourcePath());
+	PenCore::PenSerializer()->write(outfile, vertexShader->getResourcePath());
+	PenCore::PenSerializer()->write(outfile, fragmentShader->getResourcePath());
 
 	outfile.close();
 

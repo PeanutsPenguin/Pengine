@@ -18,9 +18,9 @@ namespace Pengine::Resources
 
 		~PenShaderBase() override = default;
 
-		bool loadResource(const char* path) override = 0;
+		bool loadResource(const std::string path) override = 0;
 
-		bool createResource(const char* PenfilePath, const char* sourcePath) = 0;
+		bool createResource(const std::string PenfilePath, const std::string sourcePath) = 0;
 #pragma endregion
 
 #pragma region Protected

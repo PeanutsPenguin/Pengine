@@ -15,6 +15,7 @@
 #include "PenResources/PenResourcesManager.h"
 #include "PenResources/OpenGl/Private_PenGLShader.h"
 #include "PenResources/OpenGl/Private_PenGLShaderProgram.h"
+#include "PenResources/OpenGl/Private_PenGLTextures.h"
 
 //Components
 #include "PenComponents/PenRenderer/PenRenderer.h"
@@ -34,30 +35,40 @@ int main()
 #endif
 		Pengine::PenCore::init("Pengine Window", { Pengine::defaultWindowsValue::DEFAULT_WIDTH, Pengine::defaultWindowsValue::DEFAULT_HEIGHT });
 
-		//Pengine::PenCore::PenWindow()->getScene()->changeBackgroundColor(Pengine::PenColor::Blue);
-
 		//Create Obj
 		Pengine::PenObjectId newObj = Pengine::PenCore::PenOctopus()->createPenObject();
+		Pengine::PenObjectId seconNewObj = Pengine::PenCore::PenOctopus()->createPenObject();
 
 		//PenResorucesManager
 		std::unique_ptr<Pengine::Resources::PenResourcesManager>& resourceManager = Pengine::PenCore::ResourcesManager();
 
-		//Create model
-		std::shared_ptr<Pengine::Resources::PenModel> modelPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenModel>("Mesh/padoru.penfile");
-		
-		//LoadShaderProgram
-		std::shared_ptr<Pengine::Resources::PenGLShaderProgram> progPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLShaderProgram>("Shaders/BasicShaderProg.penfile");
-
 		//Create Component
 		Pengine::Components::PenRenderer renderComp;
+
+		//Create model
+		std::shared_ptr<Pengine::Resources::PenModel> modelPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenModel>("Mesh/padoru.penfile");
 		renderComp.setModel(modelPtr);
-		renderComp.setShaderProgram(progPtr);
+
+		Pengine::PenCore::PenOctopus()->addComponent(seconNewObj, renderComp);
+
+		Pengine::Components::PenTransform trans = Pengine::Components::PenTransform();
+		PenMath::Transform newtrans;
+		newtrans.position = { 2, 0, 0 };
+		trans.setGlobalTransform(newtrans);
+
+		Pengine::PenCore::PenOctopus()->addComponent(seconNewObj, trans);
+
+		//Create Material
+		std::shared_ptr<Pengine::Resources::PenMaterial> materialPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenMaterial>("Material/PadoruMaterial.penfile");
+		renderComp.setMaterial(materialPtr);
+
 
 		//Add the component
 		Pengine::PenCore::PenOctopus()->addComponent(newObj, renderComp);
 		Pengine::PenCore::PenOctopus()->addComponent(newObj, Pengine::Components::PenTransform());
 
 		Pengine::PenCore::PenOctopus()->addToScene(newObj);
+		Pengine::PenCore::PenOctopus()->addToScene(seconNewObj);
 
 		//Create Obj
 		Pengine::PenObjectId camObj = Pengine::PenCore::PenOctopus()->createPenObject();
@@ -70,6 +81,8 @@ int main()
 		Pengine::PenCore::PenOctopus()->addToScene(camObj);
 
 		Penditor::PenCore::getEditorCam()->setCamObject(camObj);
+
+
 
 		Penditor::PenCore::runEditor();
 #if CHECK_MEMORY_LEAKS

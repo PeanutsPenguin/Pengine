@@ -18,13 +18,15 @@ namespace Pengine::Resources
 		PenShaderProgramBase(const PenResourcesId& id) : PenResourcesBase(id) {}
 		virtual ~PenShaderProgramBase() = default;
 
-		virtual bool loadResource(const char* path) = 0;
+		virtual bool loadResource(const std::string path) = 0;
 
-		virtual bool createResource(const char* PenfilePath, const char* sourcePath) = 0;
+		virtual bool createResource(const std::string PenfilePath, const std::string sourcePath) = 0;
 
-		virtual bool createResource(const char* PenfilePath, const char* sourcePath, 
+		virtual bool createResource(const std::string PenfilePath,
 									std::shared_ptr<PenShaderBase> vertexShader, 
 									std::shared_ptr<PenShaderBase> fragmentShader) = 0;
+
+		static std::shared_ptr<PenShaderProgramBase> defaultShaderProgram();
 
 		virtual bool use() const = 0;
 

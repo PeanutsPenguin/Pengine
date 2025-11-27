@@ -18,17 +18,17 @@ namespace Pengine::Resources
 
 		_NODISCARD PenResourcesId getId() const noexcept { return m_id; }
 		
-		_NODISCARD virtual bool loadResource(const char* path) = 0;
+		_NODISCARD virtual bool loadResource(const std::string path) = 0;
 
-		_NODISCARD virtual bool createResource(const char* PenfilePath, const char* sourcePath) = 0;
+		_NODISCARD virtual bool createResource(const std::string PenfilePath, const std::string sourcePath) = 0;
 
-		const char* getResourcePath() const { return this->m_penfilePath; } 
+		const std::string getResourcePath() const { return this->m_penfilePath; }
 
 		virtual ~PenResourcesBase() = default;
 #pragma endregion
 
 	protected:
-		const char* m_penfilePath = nullptr;
+		std::string m_penfilePath = "path";
 
 #pragma region Private
 	private:

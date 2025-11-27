@@ -17,27 +17,18 @@ PenGLShader::~PenGLShader()
 	destroy();
 }
 
-bool PenGLShader::loadResource(const char* path)
+bool PenGLShader::loadResource(const std::string path)
 {
 	std::cout << __FUNCTION__ "\tLoading Shader :" << path << std::endl;
 
 	//Create variables 
 	std::string sourcePath;
 	int shaderType = 0;
-	std::filebuf fb;
 
-	//If failed to open in the file
-	if (!fb.open(path, std::ios::in))
-	{
-		std::cout << __FUNCTION__ "\t Failed to open for read the file : " << path << '\n';
-		return false;
-	}
-
-	//Read in file
-	std::istream buf(&fb);
-	PenCore::PenSerializer()->read(buf, sourcePath);
-	PenCore::PenSerializer()->read(buf, shaderType);
-	fb.close();
+	std::ifstream infile(path, std::ios::binary);
+	PenCore::PenSerializer()->read(infile, sourcePath);
+	PenCore::PenSerializer()->read(infile, shaderType);
+	infile.close();
 
 	if(!this->setType((PenShaderType)shaderType))
 	{
@@ -50,16 +41,16 @@ bool PenGLShader::loadResource(const char* path)
 	return this->reloadShaderContent(sourcePath.c_str());
 }
 
-bool Pengine::Resources::PenGLShader::createResource(const char* PenfilePath, const char* sourcePath)
+bool Pengine::Resources::PenGLShader::createResource(const std::string PenfilePath, const std::string sourcePath)
 {
-	std::cout << __FUNCTION__ "\tCreating Shader :" << sourcePath << std::endl;
+	std::cout << __FUNCTION__ "\tCreating Shader : " << sourcePath << std::endl;
 
 	//Serialize source file
-	std::ofstream outfile(PenfilePath);
+	std::ofstream outfile(PenfilePath, std::ios::binary);
 	PenCore::PenSerializer()->write(outfile, (std::string)sourcePath);
 
 	//Serialize shader type
-	if (!this->setType(sourcePath))
+	if (!this->setType(sourcePath.c_str()))
 		return false;
 
 	PenCore::PenSerializer()->write(outfile, (int)this->m_type);
@@ -67,7 +58,7 @@ bool Pengine::Resources::PenGLShader::createResource(const char* PenfilePath, co
 
 	this->m_penfilePath = PenfilePath;
 
-	return this->reloadShaderContent(sourcePath);
+	return this->reloadShaderContent(sourcePath.c_str());
 }
 
 bool PenGLShader::changeShaderType(const PenShaderType type, const char* PenfilePath)
