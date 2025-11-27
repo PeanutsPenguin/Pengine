@@ -1,5 +1,7 @@
 #include "PenComponents/PenRenderer/PenRenderer.h"
 
+#include <iostream>
+
 using namespace Pengine::Components;
 
 PenRenderer::PenRenderer()
@@ -26,5 +28,11 @@ void PenRenderer::render()
 
 std::shared_ptr<Pengine::Resources::PenMaterial> PenRenderer::getMaterial()
 {
+	if(!this->m_material)
+	{
+		std::cout << __FUNCTION__ "\t Material of object : " << this->getPenObjectId() << " has not been found, replace it with default material\n";
+		this->setMaterial(Resources::PenMaterial::defaultMaterial());
+	}
+
 	return this->m_material;
 }

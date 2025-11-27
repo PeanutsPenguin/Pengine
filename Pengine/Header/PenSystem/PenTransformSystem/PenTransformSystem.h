@@ -6,26 +6,27 @@
 
 namespace Pengine::System
 {
-	class PenTransformSystem : public PenSystemBase
+	class PenTransformSystem final : public PenSystemBase
 	{
 	public:
-		PenTransformSystem() = default;	
+		PenTransformSystem() = default;
+		PenTransformSystem(const PenTransformSystem& other) = default;
+		PenTransformSystem(PenTransformSystem&& other) = default;
+		~PenTransformSystem() final = default;
 
-		~PenTransformSystem() override = default;
+		PenTransformSystem& operator=(const PenTransformSystem& rhs) = default;
+		PenTransformSystem& operator=(PenTransformSystem&& rhs) = default;
 
-		void update(double dt) override;
+		void update(double dt) final;
 
 		void addRoot(const PenObjectId obj);
-
-		void removeRoot(const PenObjectId obj);
-
 		void addChild(const PenObjectId obj, const PenObjectId parent);
+		void removeRoot(const PenObjectId obj);
 
 		void reparentChild(const PenObjectId obj, const PenObjectId oldParent, const PenObjectId newParent, bool keepPosition = true);
 
-		void onEntityInserted(const PenObjectId newObj) override;
-
-		void onEntityDestroyed(const PenObjectId obj) override;
+		void onEntityInserted(const PenObjectId newObj) final;
+		void onEntityDestroyed(const PenObjectId obj) final;
 
 	private:
 		std::unordered_map<PenObjectId, std::set<PenObjectId>> m_children;

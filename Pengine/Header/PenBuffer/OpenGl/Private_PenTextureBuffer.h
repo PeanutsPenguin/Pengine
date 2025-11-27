@@ -16,17 +16,21 @@ namespace Pengine::Buffer
 #pragma region Public
 	public:
 		PenTextureBuffer() = default;
-		PenTextureBuffer(const PenTextureBuffer&) = delete;
-		PenTextureBuffer(PenTextureBuffer&&) noexcept = default;
-		PenTextureBuffer& operator=(PenTextureBuffer&&) = default;
+		PenTextureBuffer(const PenTextureBuffer& other) = delete;
+		PenTextureBuffer(PenTextureBuffer&& other) = default;
+		~PenTextureBuffer() final;
 
-		~PenTextureBuffer() override;
+		PenTextureBuffer& operator=(const PenTextureBuffer& rhs) = delete;
+		PenTextureBuffer& operator=(PenTextureBuffer&& rhs) = default;
 
 		void destroy() final;
 
-		void bind() const override;
-		void unbind() const override;
+		void bind() const final;
+		void unbind() const final;
 
+		/// <summary>
+		/// Call glActiveTexture
+		/// </summary>
 		void activate(unsigned int unitIndex) const;
 
 		/// <summary>
@@ -42,11 +46,6 @@ namespace Pengine::Buffer
 		/// <param name="size">Size of the texture</param>
 		/// <param name="data">Data of the texture</param>
 		void resize(const PenMath::Vector3& size, const void* data);
-#pragma endregion
-
-#pragma region Private
-	private:
-		unsigned int m_type;
 #pragma endregion
 	};
 }

@@ -12,11 +12,12 @@ namespace Pengine::Buffer
 #pragma region Public
     public:
         PenVertexAttributeBuffer() = default;
-        PenVertexAttributeBuffer(const PenVertexAttributeBuffer&) = delete;
-        PenVertexAttributeBuffer(PenVertexAttributeBuffer&&) noexcept = default;
-        PenVertexAttributeBuffer& operator=(PenVertexAttributeBuffer&&) = default;
-
+        PenVertexAttributeBuffer(const PenVertexAttributeBuffer& other) = delete;
+        PenVertexAttributeBuffer(PenVertexAttributeBuffer&& other) = default;
         ~PenVertexAttributeBuffer() final;
+
+        PenVertexAttributeBuffer& operator=(const PenVertexAttributeBuffer& rhs) = delete;
+        PenVertexAttributeBuffer& operator=(PenVertexAttributeBuffer&& rhs) = default;
 
         void create();
         void destroy() final;

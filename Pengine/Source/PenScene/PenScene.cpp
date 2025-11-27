@@ -1,19 +1,17 @@
 #include "PenScene/PenScene.h"
-#include "PenColor/PenColor.h"
 
-#include "PenObject/PenObjectManager.h"
-#include "PenCore/PenCore.h"
-
-#include <glad/glad.h>
+#include "PenColor/PenColor.h"				//PenColor
+#include "PenObject/PenObjectManager.h"		//PenObjectManager
+#include "PenCore/PenCore.h"				//PenCore
 
 using namespace Pengine;
 
-#pragma region Constructors and Destructor
 PenScene::PenScene()
 {
 	this->m_backgroundColor = new PenColor();
 	*this->m_backgroundColor = PenColor::Blue;
 }
+
 Pengine::PenScene::~PenScene()
 {
 	if(this->m_backgroundColor)
@@ -22,9 +20,7 @@ Pengine::PenScene::~PenScene()
 		this->m_backgroundColor = nullptr;
 	}
 }
-#pragma endregion
 
-#pragma region Functions
 void PenScene::changeBackgroundColor(const PenColor& col)
 {
 	*this->m_backgroundColor = col;

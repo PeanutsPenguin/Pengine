@@ -1,15 +1,19 @@
 #include "PenInput/PenInput.h"
-#include "PenCore/PenCore.h"
-#include "PenWindow/GLFW/Private_GLFWPenWindow.h"
-#include "PengineDefine.h"
 
+#include "PenCore/PenCore.h"							//PenCore
+#include "PenWindow/GLFW/Private_GLFWPenWindow.h"		//PenWindow
+
+//Lib
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+
+//std
 #include <memory>
 #include <iostream>
 
 using namespace Pengine;
 
+#pragma region IsKey
 bool PenInputManager::isKeyPressed(const PenInput& input)
 {
 	auto it = this->m_inputs.find(input);
@@ -75,7 +79,9 @@ bool PenInputManager::isKeyReleased(const PenInput& input)
 
 	return false;
 }
+#pragma endregion
 
+#pragma region Getter
 PenInputType PenInputManager::getKeyState(const PenInput& input)
 {
 	PenInputType result = PenInputType::E_NONE;
@@ -100,15 +106,55 @@ PenMath::Vector2 Pengine::PenInputManager::getMouseOffset() const
 {
 	return this->m_offset;
 }
+#pragma endregion
 
 void PenInputManager::resetMousePos()
 {
 	if (PenCore::inputLib() == InputLib::E_GLFW_INPUT)
-		this->GLFWResetMousePos();
+		this->GLFWresetMousePos();
 
 	this->m_offset = PenMath::Vector2::Zero();
 }
 
+void PenInputManager::update()
+{
+	for (auto input = this->m_inputs.begin(); input != this->m_inputs.end();)
+	{
+		PenInputType type = this->updateInput(input->first, input->second);
+
+		if (type == PenInputType::E_NONE)
+			input = this->m_inputs.erase(input);
+		else
+		{
+			this->m_inputs[input->first] = type;
+			input++;
+		}
+	}
+
+	if (PenCore::inputLib() == InputLib::E_GLFW_INPUT)
+		GLFWupdateMouse();
+}
+
+PenInputType PenInputManager::updateInput(const PenInput& input, PenInputType prevState)
+{
+	PenInputType state = PenInputType::E_NONE;
+
+	if (PenCore::inputLib() == InputLib::E_GLFW_INPUT)
+		state = this->GLFWfindKeyState(input);
+
+	if (prevState == PenInputType::E_PRESSED || prevState == PenInputType::E_DOWN)
+	{
+		if (state == PenInputType::E_PRESSED)
+			return PenInputType::E_DOWN;
+
+		if (state == PenInputType::E_NONE)
+			return PenInputType::E_RELEASED;
+	}
+
+	return state;
+}
+
+#pragma region GLFW
 PenInputType Pengine::PenInputManager::GLFWfindKeyState(const PenInput& input)
 {
 	int glfwKey = this->GLFWinput(input);
@@ -169,7 +215,7 @@ int PenInputManager::GLFWMouseInput(const PenInput& input)
 	return glfwKey;
 }
 
-void PenInputManager::updateGLFWMouse()
+void PenInputManager::GLFWupdateMouse()
 {
 	GLFWPenWindow* window = dynamic_cast<GLFWPenWindow*>(PenCore::PenWindow().get());
 
@@ -187,7 +233,7 @@ void PenInputManager::updateGLFWMouse()
 	this->m_mousePos = pos;
 }
 
-void PenInputManager::GLFWResetMousePos()
+void PenInputManager::GLFWresetMousePos()
 {
 	GLFWPenWindow* window = dynamic_cast<GLFWPenWindow*>(PenCore::PenWindow().get());
 
@@ -202,41 +248,4 @@ void PenInputManager::GLFWResetMousePos()
 
 	glfwSetCursorPos(window->getWindowPtr(), (double)oldMousePos.x, (double)oldMousePos.y);
 }
-
-PenInputType PenInputManager::updateInput(const PenInput& input, PenInputType prevState)
-{
-	PenInputType state = PenInputType::E_NONE;
-
-	if (PenCore::inputLib() == InputLib::E_GLFW_INPUT)
-		state = this->GLFWfindKeyState(input);
-
-	if (prevState == PenInputType::E_PRESSED || prevState == PenInputType::E_DOWN)
-	{
-		if (state == PenInputType::E_PRESSED)
-			return PenInputType::E_DOWN;
-
-		if (state == PenInputType::E_NONE)
-			return PenInputType::E_RELEASED;
-	}
-
-	return state;
-}
-
-void PenInputManager::update()
-{
-	for (auto input = this->m_inputs.begin(); input != this->m_inputs.end();)
-	{
-		PenInputType type = this->updateInput(input->first, input->second);
-
-		if (type == PenInputType::E_NONE)
-			input = this->m_inputs.erase(input);	
-		else
-		{
-			this->m_inputs[input->first] = type;
-			input++;
-		}
-	}
-
-	if (PenCore::inputLib() == InputLib::E_GLFW_INPUT)
-		updateGLFWMouse();
-}
+#pragma endregion

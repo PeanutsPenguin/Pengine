@@ -1,8 +1,8 @@
 #include "PenResources/PenTextureBase.h"
 
-#include "PenCore/PenCore.h"					//PenCore
-#include "PenResources/PenResourcesManager.h"	//PenResourcesManager
-#include "PenResources/OpenGl/Private_PenGLTextures.h"
+#include "PenCore/PenCore.h"							//PenCore
+#include "PenResources/PenResourcesManager.h"			//PenResourcesManager
+#include "PenResources/OpenGl/Private_PenGLTextures.h"	//PenGLTexture
 
 using namespace Pengine::Resources;
 

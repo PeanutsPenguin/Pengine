@@ -3,7 +3,7 @@
 namespace Pengine::Buffer
 {
 	/// <summary>
-	/// Base class for buffers (Contains a private unigned int member plus bind, unbind, destroy and generate function.
+	/// Base class for buffers (Contains a private unigned int member plus bind, unbind, destroy and generate function)
 	/// </summary>
 	class PenBufferBase
 	{

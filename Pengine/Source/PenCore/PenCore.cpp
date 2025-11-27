@@ -1,18 +1,22 @@
-#include "PenCore/PenCore.h"                        //Core
+#include "PenCore/PenCore.h"                        
+
 #include "PenComponents/PenComponentsManager.h"     //Component Manager
 #include "PenObject/PenObjectManager.h"             //PenObject Manager
 #include "PenResources/PenResourcesManager.h"       //PenResource Manager
 #include "PenInput/PenInput.h"                      //PenInput
 #include "PenOctopus/PenOctopus.h"                  //PenOctopus
 #include "PenSerializer/PenSerializer.h"            //PenSerializer
-
-//Window
-#include "PenWindow/GLFW/Private_GLFWPenWindow.h"
+#include "PenWindow/GLFW/Private_GLFWPenWindow.h"   //PenWindow
 
 //Components
 #include "PenComponents/PenRenderer/PenRenderer.h"
 #include "PenComponents/PenTransform/PenTransform.h"
 #include "PenComponents/PenCamera/PenCamera.h"
+
+//System
+#include "PenSystem/PenCameraSystem/PenCameraSystem.h"
+#include "PenSystem/PenTransformSystem/PenTransformSystem.h"
+#include "PenSystem/PenRenderSystem/PenRenderSystem.h"
 
 //Lib
 #include <GLFW/glfw3.h>
@@ -20,18 +24,17 @@
 using namespace Pengine;
 
 #pragma region Static definiton
-
-std::unique_ptr<PenWindowBase> PenCore::m_window = nullptr;
-std::unique_ptr<PenOctopus> PenCore::m_PenOctopus = std::make_unique<Pengine::PenOctopus>();
-std::unique_ptr<PenInputManager> PenCore::m_PenInputManager = std::make_unique<Pengine::PenInputManager>();
-std::unique_ptr<Resources::PenResourcesManager> PenCore::m_resourcesManager = std::make_unique<Resources::PenResourcesManager>();
-std::unique_ptr<Serialize::PenSerializer> PenCore::m_PenSerializer = std::make_unique<Serialize::PenSerializer>();
+std::unique_ptr<PenWindowBase>                      PenCore::m_window               = nullptr;
+std::unique_ptr<PenOctopus>                         PenCore::m_PenOctopus           = std::make_unique<Pengine::PenOctopus>();
+std::unique_ptr<PenInputManager>                    PenCore::m_PenInputManager      = std::make_unique<Pengine::PenInputManager>();
+std::unique_ptr<Resources::PenResourcesManager>     PenCore::m_resourcesManager     = std::make_unique<Resources::PenResourcesManager>();
+std::unique_ptr<Serialize::PenSerializer>           PenCore::m_PenSerializer        = std::make_unique<Serialize::PenSerializer>();
 
 PenLibDefine PenCore::m_libs = PenLibDefine();
 
-double PenCore::m_deltaTime = 0;
-double PenCore::m_lastFrame = glfwGetTime();
-bool PenCore::m_shouldStop = 0;
+double PenCore::m_deltaTime     = 0;
+double PenCore::m_lastFrame     = glfwGetTime();
+bool PenCore::m_shouldStop      = 0;
 #pragma endregion
 
 bool PenCore::init(const char* name, const PenMath::Vector2f& windowSize)
@@ -51,31 +54,6 @@ bool PenCore::init(const char* name, const PenMath::Vector2f& windowSize)
     registerDefaultType();
 
     return true;
-}
-
-void PenCore::startPengine()
-{
-	m_shouldStop = false;
-    while (!m_shouldStop)
-    {
-        frameUpdate();
-
-        renderUpdate();
-
-        switchFrame();
-    }
-
-    destroy();
-}
-
-void PenCore::stopPengine()
-{
-	m_shouldStop = true;
-}
-
-bool Pengine::PenCore::shouldStop()
-{
-    return m_shouldStop;
 }
 
 #pragma region Getter
@@ -130,6 +108,64 @@ double PenCore::getDeltaTime()
 }
 #pragma endregion
 
+void PenCore::startPengine()
+{
+    m_shouldStop = false;
+    while (!m_shouldStop)
+    {
+        frameUpdate();
+
+        renderUpdate();
+
+        switchFrame();
+    }
+
+    destroy();
+}
+
+void PenCore::stopPengine()
+{
+    m_shouldStop = true;
+}
+
+bool PenCore::shouldStop()
+{
+    return m_shouldStop;
+}
+
+void PenCore::destroy()
+{
+    if (m_window)
+    {
+        m_window.reset();
+        m_window = nullptr;
+    }
+
+    if (m_PenOctopus)
+    {
+        m_PenOctopus.reset();
+        m_PenOctopus = nullptr;
+    }
+
+    if (m_resourcesManager)
+    {
+        m_resourcesManager.reset();
+        m_resourcesManager = nullptr;
+    }
+
+    if (m_PenInputManager)
+    {
+        m_PenInputManager.reset();
+        m_PenInputManager = nullptr;
+    }
+
+    if (m_PenSerializer)
+    {
+        m_PenSerializer.reset();
+        m_PenSerializer = nullptr;
+    }
+}
+
 #pragma region Updates
 void PenCore::updateDeltaTime()
 {
@@ -150,6 +186,7 @@ void PenCore::frameUpdate()
 
     m_PenOctopus->updateAllSystem(m_deltaTime);
 }
+
 void PenCore::renderUpdate()
 {
     m_window->preRender(*m_PenOctopus->getMainScene());
@@ -159,6 +196,7 @@ void PenCore::renderUpdate()
 
     m_window->postRender();
 }
+
 void PenCore::switchFrame()
 {
     m_resourcesManager->clearUnused();
@@ -213,36 +251,3 @@ void PenCore::registerTransformSystem()
 }
 #pragma endregion
 
-void PenCore::destroy()
-{
-    if(m_window)
-    {
-        m_window.reset();
-        m_window = nullptr;
-    }
-
-    if(m_PenOctopus)
-    {
-        m_PenOctopus.reset();
-        m_PenOctopus = nullptr;
-    }
-
-    if(m_resourcesManager)
-    {
-        m_resourcesManager.reset();
-        m_resourcesManager = nullptr;
-    }
-
-    if (m_PenInputManager)
-    {
-        m_PenInputManager.reset();
-        m_PenInputManager = nullptr;
-    }
-
-    if (m_PenSerializer)
-    {
-        m_PenSerializer.reset();
-        m_PenSerializer = nullptr;
-    }
-}
-#pragma endregion

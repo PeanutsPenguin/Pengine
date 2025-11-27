@@ -1,7 +1,5 @@
 #include "PenBuffer/PenBufferBase.h"
 
-#include <glad/glad.h>
-
 using namespace Pengine::Buffer;
 
 const unsigned int& PenBufferBase::id() const noexcept

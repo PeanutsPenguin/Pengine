@@ -12,37 +12,31 @@ namespace Pengine::Resources
 	class PenMeshBase;
 	class PenShaderProgramBase;
 
-	/// <summary>
-	/// Resource to handle rendering of model and meshes 
-	/// </summary>
-	class PenModel : public PenResourcesBase
+	class PenModel final : public PenResourcesBase
 	{
-#pragma region Public
 	public:
 		PenModel() = default;
+		PenModel(const PenObjectId& id) : PenResourcesBase(id) {};
+		PenModel(const PenModel& other) = default;
+		PenModel(PenModel&& other) = default;
+		~PenModel() final;
 
-		PenModel(const PenResourcesId& id) : PenResourcesBase(id) {}
+		PenModel& operator=(const PenModel& rhs) = default;
+		PenModel& operator=(PenModel&& rhs) = default;
 
-		~PenModel() override;
-
-		bool loadResource(const std::string path) override;
-
-		bool createResource(const std::string PenfilePath, const std::string sourcePath) override;
+		bool	loadResource(const std::string path) override;
+		bool	createResource(const std::string PenfilePath, const std::string sourcePath) override;
 
 		void render();
-#pragma endregion
 
-#pragma region Private
 	private:
 		bool generateResource(const char* path);
 
-		bool loadPenGLMesh(const aiMesh& mesh);
-
-		void GLRender();
-
 		bool processNode(aiNode* node, const aiScene* scene);
 
+		bool	GLloadMesh(const aiMesh& mesh);
+		void	GLRender();
+
 		std::vector<std::shared_ptr<PenMeshBase>> m_meshes;
-#pragma endregion
 	};
 }

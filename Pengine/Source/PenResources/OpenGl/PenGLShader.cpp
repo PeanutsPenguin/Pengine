@@ -17,6 +17,7 @@ PenGLShader::~PenGLShader()
 	destroy();
 }
 
+#pragma region Resource
 bool PenGLShader::loadResource(const std::string path)
 {
 	std::cout << __FUNCTION__ "\tLoading Shader :" << path << std::endl;
@@ -60,6 +61,7 @@ bool Pengine::Resources::PenGLShader::createResource(const std::string PenfilePa
 
 	return this->reloadShaderContent(sourcePath.c_str());
 }
+#pragma endregion
 
 bool PenGLShader::changeShaderType(const PenShaderType type, const char* PenfilePath)
 {
@@ -91,6 +93,7 @@ bool PenGLShader::changeShaderType(const PenShaderType type, const char* Penfile
 	return this->reloadShaderContent(sourcePath);
 }
 
+#pragma region SetType
 bool PenGLShader::setType(const char* sourcePath)
 {
 	std::filesystem::path pathCast(sourcePath);
@@ -135,27 +138,16 @@ bool PenGLShader::setType(Pengine::PenShaderType type)
 		return false;
 	}
 }
+#pragma endregion
 
 const char* PenGLShader::getSourcePath()
 {
 	//Create variables 
 	std::string sourcePath;
-	int shaderType = 0;
-	std::filebuf fb;
 
-
-	//If failed to open in the file
-	if (!fb.open(this->m_penfilePath, std::ios::in))
-	{
-		std::cout << __FUNCTION__ "\t Failed to open for read the file : " << this->m_penfilePath << '\n';
-		return nullptr;
-	}
-
-	//Read in file
-	std::istream buf(&fb);
-	PenCore::PenSerializer()->read(buf, sourcePath);
-
-	fb.close();
+	std::ifstream infile(this->m_penfilePath, std::ios::binary);
+	PenCore::PenSerializer()->read(infile, sourcePath);
+	infile.close();
 
 	return sourcePath.c_str();
 }

@@ -12,21 +12,21 @@ namespace Pengine
 	{
 		friend class GLFWPenWindow;
 
-#pragma region Public
 	public:
 		PenInputManager() = default;
-
+		PenInputManager(const PenInputManager& other) = default;
+		PenInputManager(PenInputManager&& other) = default;
 		~PenInputManager() = default;
 
-		bool isKeyPressed(const PenInput& input);
+		PenInputManager& operator=(const PenInputManager& rhs) = default;
+		PenInputManager& operator=(PenInputManager&& rhs) = default;
 
-		bool isKeyDown(const PenInput& input);
+		bool	isKeyPressed(const PenInput& input);
+		bool	isKeyDown(const PenInput& input);
+		bool	isKeyReleased(const PenInput& input);
 
-		bool isKeyReleased(const PenInput& input);
-
-		PenInputType getKeyState(const PenInput& input);
-
-		PenMath::Vector2 getMouseOffset() const;
+		PenInputType		getKeyState(const PenInput& input);
+		PenMath::Vector2	getMouseOffset() const;
 
 		/// <summary>
 		/// Reset the mouse position to its last position
@@ -37,28 +37,18 @@ namespace Pengine
 		/// Update all the stored input state 
 		/// </summary>
 		void update();
-#pragma endregion
 
-#pragma region Private
 	private:
-
-#pragma region GLFW
-		PenInputType GLFWfindKeyState(const PenInput& input);
-
-		int GLFWinput(const PenInput& input);
-
-		int GLFWMouseInput(const PenInput& input);
-
-		void updateGLFWMouse();
-
-		void GLFWResetMousePos();
-#pragma endregion
+		PenInputType	GLFWfindKeyState(const PenInput& input);
+		int				GLFWinput(const PenInput& input);
+		int				GLFWMouseInput(const PenInput& input);
+		void			GLFWupdateMouse();
+		void			GLFWresetMousePos();
 
 		PenInputType updateInput(const PenInput& input, PenInputType curState);
 
 		std::unordered_map<PenInput, PenInputType> m_inputs;
 		PenMath::Vector2 m_mousePos;
 		PenMath::Vector2 m_offset = 0;
-#pragma endregion
 	};
 }

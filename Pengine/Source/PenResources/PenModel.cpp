@@ -10,20 +10,22 @@
 #include "PenComponents/PenCamera/PenCamera.h"	//PenCameraComponents
 #include "PenSerializer/PenSerializer.h"		//PenSerializer
 
-
-#include <iostream>
-
+//Lib
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+
+//std
+#include <iostream>
 
 using namespace Pengine::Resources;
 
 PenModel::~PenModel()
 {
-	std::cout << __FUNCTION__ ": Destryoing with id : " << getId() << std::endl;
+	std::cout << __FUNCTION__ ": Destryoing with id : " << this->getId() << std::endl;
 }
 
+#pragma region Resource
 bool PenModel::loadResource(const std::string path)
 {
 	//Create variables 
@@ -62,6 +64,7 @@ bool PenModel::generateResource(const char* path)
 		return false;
 	}
 
+	//TODO
 	////Initiliaze every texture of the model
 	//for (size_t i = 0; i < scene->mNumTextures; ++i)
 	//{
@@ -69,16 +72,14 @@ bool PenModel::generateResource(const char* path)
 	//	const std::shared_ptr<PenTexture> res = PenCore::ResourcesManager()->loadResourceFromFile<PenTexture>(tex.mFilename.C_Str());
 	//}
 
+	//TODO
 	//Suppose to have material here 
 
 	m_meshes.reserve(scene->mNumMeshes);
 	processNode(scene->mRootNode, scene);
 
 	for (unsigned int i = 0; i < scene->mRootNode->mNumMeshes; i++)
-	{
 		aiMesh* mesh = scene->mMeshes[scene->mRootNode->mMeshes[i]];
-
-	}
 
 	for (unsigned int i = 0; i < scene->mRootNode->mNumChildren; i++)
 	{
@@ -88,12 +89,13 @@ bool PenModel::generateResource(const char* path)
 
 	return true;
 }
+#pragma endregion
 
-bool PenModel::loadPenGLMesh(const aiMesh& mesh)
+#pragma region OpenGl
+bool PenModel::GLloadMesh(const aiMesh& mesh)
 {
 	std::shared_ptr<PenGLMesh> ptr = std::make_shared<PenGLMesh>();
 
-	//Supposed to give the material too
 	if (!ptr->initMesh(mesh))
 		return false;
 
@@ -102,23 +104,24 @@ bool PenModel::loadPenGLMesh(const aiMesh& mesh)
 	return true;
 }
 
-void PenModel::render()
-{
-	if(PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
-		this->GLRender();
-}
-
 void PenModel::GLRender()
 {
 	for (const std::shared_ptr<PenMeshBase> obj : m_meshes)
 	{
 		std::shared_ptr<PenGLMesh> objPtr = std::dynamic_pointer_cast<PenGLMesh>(obj);
-		
+
 		if (objPtr)
 			objPtr->render();
 		else
 			std::cerr << __FUNCTION__ "\t Dynamic pointer cast failed\n";
 	}
+}
+#pragma endregion
+
+void PenModel::render()
+{
+	if(PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
+		this->GLRender();
 }
 
 bool PenModel::processNode(aiNode* node, const aiScene* scene)
@@ -129,7 +132,7 @@ bool PenModel::processNode(aiNode* node, const aiScene* scene)
 
 		if (PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
 		{
-			if (!loadPenGLMesh(*mesh))
+			if (!GLloadMesh(*mesh))
 				std::cerr << __FUNCTION__ ": Failed to load mesh : " << i << " in the model resource.\n";
 		}
 		

@@ -3,9 +3,9 @@
 #include <cstdint>
 #include <bitset>
 
-#pragma region Ids
 namespace Pengine
 {
+#pragma region Ids
 	typedef unsigned __int32 PenObjectId;
 
 	const PenObjectId g_maxEntity = 2048;
@@ -22,5 +22,7 @@ namespace Pengine
 	using PenComponentSignature = std::bitset<g_maxComponent>;
 
 	typedef unsigned __int32 PenResourcesId;
-}
 #pragma endregion
+
+#define DRAW_LINE 0
+}

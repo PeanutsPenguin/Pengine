@@ -20,14 +20,10 @@ void PenSystemManager::PenObjectSignatureChanged(PenObjectId entity, PenComponen
 
 		// Entity signature matches system signature - insert into set
 		if ((entitySignature & systemSignature) == systemSignature)
-		{
 			system->m_PenObject.insert(entity);
-		}
 		// Entity signature does not match system signature - erase from set
 		else
-		{
 			system->m_PenObject.erase(entity);
-		}
 	}
 }
 

@@ -33,7 +33,7 @@ PenGLTexture::~PenGLTexture()
 	std::cout << __FUNCTION__ << ": Erase texture with id : " << this->getId() << std::endl;
 }
 
-#pragma region Functions
+#pragma region Resource
 bool PenGLTexture::loadResource(const std::string path)
 {
 	std::cout << __FUNCTION__ << "\tLoading texture : " << path << std::endl;
@@ -66,6 +66,7 @@ bool PenGLTexture::createResource(const std::string PenfilePath, const std::stri
 
 	return true;
 }
+#pragma endregion
 
 const Pengine::Buffer::PenTextureBuffer* PenGLTexture::dataPtr() const noexcept
 {
@@ -90,5 +91,3 @@ bool PenGLTexture::initializeTextureBuffer(const char* sourcePath)
 
 	return true;
 }
-
-#pragma endregion

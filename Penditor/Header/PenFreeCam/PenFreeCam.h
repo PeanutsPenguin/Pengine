@@ -25,16 +25,15 @@ namespace Penditor
 		void							setCamObject(const Pengine::PenComponentsId id);
 		const Pengine::PenObjectId		getCamObject() const;
 
-		void update(double dt);
+		void							setSpeed(float speed);
+		float							getSpeed() const;
 
-		void setSpeed(float speed);
-		float getSpeed() const;
+		void update(double dt);
 
 	private:
 		void handleCameraMovement(PenMath::Transform& trans, Pengine::Components::PenCamera& cam, float speed);
 
 		void handleCameraRotation(PenMath::Transform& trans, Pengine::Components::PenCamera& cam);
-
 
 		Pengine::PenObjectId m_camObject = Pengine::g_PenObjectInvalidId;
 		float m_speed = 2;

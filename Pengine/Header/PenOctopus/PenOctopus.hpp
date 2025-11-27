@@ -2,9 +2,9 @@
 
 #include "PenOctopus/PenOctopus.h"
 
-
 namespace Pengine
 {
+#pragma region PenCompoenent
 	template<typename T>
 	inline void PenOctopus::registerComponent()
 	{
@@ -12,7 +12,6 @@ namespace Pengine
 	}
 
 	template<typename T>
-	//requires std::derived_from<T, Components::PenComponentBase>
 	inline void PenOctopus::addComponent(PenObjectId obj, T component)
 	{
 		this->m_PenComponentManager->addComponent<T>(obj, component);
@@ -39,7 +38,6 @@ namespace Pengine
 			m_PenSystemManager->PenObjectSignatureChanged(obj, signature);
 	}
 
-#pragma region Getter
 	template<typename T>
 	inline T& PenOctopus::getComponent(PenObjectId obj)
 	{
@@ -57,13 +55,14 @@ namespace Pengine
 	{
 		return m_PenComponentManager->getComponentType<T>();
 	}
+#pragma endregion
 
+#pragma region PenSystem
 	template<typename T>
 	inline std::shared_ptr<T> PenOctopus::getSystem()
 	{
 		return this->m_PenSystemManager->getSystem<T>();
 	}
-#pragma endregion
 
 	template<typename T>
 	inline std::shared_ptr<T> PenOctopus::registerSystem()
@@ -76,4 +75,5 @@ namespace Pengine
 	{
 		this->m_PenSystemManager->setSignature<T>(signature);
 	}
+#pragma endregion
 }
