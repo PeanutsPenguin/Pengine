@@ -4,8 +4,7 @@
 #include "PenStructsAndEnum/PenLightType.h"		//PenLightType
 #include "PenResources/PenShaderProgramBase.h"
 
-#define VECTOR3_CAST
-#include <Vector/Vector3/Vector3.h>
+#include <Transform.h>
 
 namespace Pengine
 {
@@ -20,24 +19,24 @@ namespace Pengine
 		PenLightBase& operator=(const PenLightBase& rhs) = default;
 		PenLightBase& operator=(PenLightBase&& rhs) = default;
 
-		virtual const PenLightType		getType();
-		const PenMath::Vector3f			getAmbient();
-		const PenMath::Vector3f			getDiffuse();
-		const PenMath::Vector3f			getSpecular();
+		virtual const PenLightType		getType() = 0;
+		const float						getAmbientIntensity();
+		const float						getDiffuseIntesity();
+		const PenMath::Vector3f			getLightColor();
 ;
-		void				setAmbient(const PenMath::Vector3f& ambient);
-		void				setDiffuse(const PenMath::Vector3f& diffuse);
-		void				setSpecular(const PenMath::Vector3f& specular);
+		void				setAmbientIntensity(float ambient);
+		void				setDiffuseIntensity(float diffuse);
+		void				setLightColor(const PenMath::Vector3f& color);
 
 		virtual void		setType(const PenLightType type) = 0;
 
-		virtual void useValues(std::shared_ptr<Resources::PenShaderProgramBase> prog) = 0;
+		virtual void useValues(std::shared_ptr<Resources::PenShaderProgramBase> prog, const PenMath::Transform& position, int index) = 0;
 
 	protected:
 		PenLightType m_type	= PenLightType::E_INVALID;
 
-		PenMath::Vector3f	m_ambientColor	= PenMath::Vector3f{ 1, 1, 1 };
-		PenMath::Vector3f	m_diffuseColor	= PenMath::Vector3f{ 1, 1, 1 };
-		PenMath::Vector3f	m_specular		= PenMath::Vector3f{ 1, 1, 1 };
+		PenMath::Vector3f m_lightColor = { 0, 1, 0 };
+		float m_ambientIntensity = 0.0f;
+		float m_diffuseIntensity = 0.0f;
 	};
 }

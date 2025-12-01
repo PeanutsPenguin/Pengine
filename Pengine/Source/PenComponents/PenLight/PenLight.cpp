@@ -31,27 +31,7 @@ PenLight::~PenLight()
 	}
 }
 
-void PenLight::useValues(const std::shared_ptr<Resources::PenShaderProgramBase> shader)
-{
-	this->m_light->useValues(shader);
-}
-
 std::shared_ptr<Pengine::PenLightBase> PenLight::getLight()
 {
 	return this->m_light;
-}
-
-void PenLight::setAmbient(const PenMath::Vector3f& ambient)
-{
-	this->m_light->setAmbient(ambient);
-}
-
-void PenLight::setDiffuse(const PenMath::Vector3f& diffuse)
-{
-	this->m_light->setDiffuse(diffuse);
-}
-
-void PenLight::setSpecular(const PenMath::Vector3f& specular)
-{
-	this->m_light->setSpecular(specular);
 }

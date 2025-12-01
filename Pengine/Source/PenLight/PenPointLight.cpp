@@ -1,27 +1,45 @@
 #include "PenLight/PenPointLight.h"
 
-//#include <GLFW/glfw3.h>
-
 using namespace Pengine;
+
+#pragma region Getter and Setter
+const float PenPointLight::getConstant() const
+{
+	return this->m_constant;
+}
+
+const float PenPointLight::getLinear() const
+{
+	return this->m_linear;
+}
+
+const float PenPointLight::getExp() const
+{
+	return this->m_exp;
+}
+
+void PenPointLight::setConstant(float constant)
+{
+	this->m_constant = constant;
+}
+
+void PenPointLight::setLinear(float linear)
+{
+	this->m_linear = linear;
+}
+
+void PenPointLight::setExp(float exp)
+{
+	this->m_exp = exp;
+}
 
 void PenPointLight::setType(const PenLightType type)
 {
+	this->m_type = PenLightType::E_POINT;
 }
+#pragma endregion
 
-void PenPointLight::useValues(std::shared_ptr<Resources::PenShaderProgramBase> prog)
+void PenPointLight::useValues(std::shared_ptr<Resources::PenShaderProgramBase> prog, const PenMath::Transform& position, int index)
 {
-	//CHANGE COLOR AT RUNTIME
- //   PenMath::Vector3f lightColor;
- //   lightColor.x = static_cast<float>(sin(glfwGetTime() * 2.0));
- //   lightColor.y = static_cast<float>(sin(glfwGetTime() * 0.7));
- //   lightColor.z = static_cast<float>(sin(glfwGetTime() * 1.3));
- //   PenMath::Vector3f diffuseColor = lightColor * PenMath::Vector3f(0.5f); // decrease the influence
- //   PenMath::Vector3f ambientColor = diffuseColor * PenMath::Vector3f(0.2f); // low influence
 
-	//prog->setUniform("light.ambient", ambientColor);
-	//prog->setUniform("light.diffuse", diffuseColor);
-
-	prog->setUniform("light.ambient", this->m_ambientColor);
-	prog->setUniform("light.diffuse", this->m_diffuseColor);
-	prog->setUniform("light.specular", this->m_specular);
 }

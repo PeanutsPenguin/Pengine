@@ -4,38 +4,35 @@ using namespace Pengine;
 
 
 #pragma region Getter and Setter
-const PenLightType PenLightBase::getType()
+
+const float PenLightBase::getAmbientIntensity()
 {
-	return this->m_type;
+	return this->m_ambientIntensity;
 }
 
-const PenMath::Vector3f PenLightBase::getAmbient()
+const float PenLightBase::getDiffuseIntesity()
 {
-	return this->m_ambientColor;
+	return this->m_diffuseIntensity;
 }
 
-const PenMath::Vector3f PenLightBase::getDiffuse()
+const PenMath::Vector3f PenLightBase::getLightColor()
 {
-	return this->m_diffuseColor;
+	return this->m_lightColor;
 }
 
-const PenMath::Vector3f PenLightBase::getSpecular()
+void PenLightBase::setAmbientIntensity(float ambient)
 {
-	return this->m_specular;
+	this->m_ambientIntensity = ambient;
 }
 
-void PenLightBase::setAmbient(const PenMath::Vector3f& ambient)
+void PenLightBase::setDiffuseIntensity(float diffuse)
 {
-	this->m_ambientColor = ambient;
+	this->m_diffuseIntensity = diffuse;
 }
 
-void PenLightBase::setDiffuse(const PenMath::Vector3f& diffuse)
+void PenLightBase::setLightColor(const PenMath::Vector3f& color)
 {
-	this->m_diffuseColor = diffuse;
-}
-
-void PenLightBase::setSpecular(const PenMath::Vector3f& specular)
-{
-	this->m_specular = specular;
+	this->m_lightColor = color;
 }
 #pragma endregion
+
