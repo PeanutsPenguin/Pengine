@@ -3,6 +3,12 @@
 using namespace Pengine;
 
 #pragma region Getter and Setter
+
+const PenLightType Pengine::PenPointLight::getType()
+{
+	return PenLightType::E_POINT;
+}
+
 const float PenPointLight::getConstant() const
 {
 	return this->m_constant;

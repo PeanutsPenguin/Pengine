@@ -38,7 +38,7 @@ namespace Pengine::Resources
 		/// <summary>
 		/// 
 		/// </summary>
-		/// <param name="...texs">DO NOT SEND SOMETHING ELSE THAN TEXTURE PTR</param>
+		/// <param name="...texs">DO NOT SEND SOMETHING ELSE THAN TEXTURE PTR PLS</param>
 		template<typename... _Texture>
 		bool	createResource(const std::string penfilePath, std::shared_ptr<PenShaderProgramBase> prog, _Texture... texs);
 

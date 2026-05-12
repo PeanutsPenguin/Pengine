@@ -15,6 +15,7 @@ namespace Pengine
 		PenPointLight& operator=(const PenPointLight& rhs) = default;
 		PenPointLight& operator=(PenPointLight&& rhs) = default;
 
+		const PenLightType		getType() final;
 		const float getConstant() const;
 		const float getLinear() const;
 		const float getExp() const;

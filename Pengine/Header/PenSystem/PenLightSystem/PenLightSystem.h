@@ -26,8 +26,8 @@ namespace Pengine::System
 		PenLightSystem& operator=(const PenLightSystem& rhs) = default;
 		PenLightSystem& operator=(PenLightSystem&& rhs) = default;
 
-		void onEntityInserted(const PenObjectId newObj) final;
-		void onEntityDestroyed(const PenObjectId obj) final;
+		void onEntityInserted(const PenObjectId newObj) final {};
+		void onEntityDestroyed(const PenObjectId obj) final {};
 
 		void update(double dt) final {};
 
