@@ -50,8 +50,7 @@ void PenRendererSystem::GLrender()
 			if (!prog->use())
 				continue;
 
-			prog->setUniform("material.diffuse", 0);
-			prog->setUniform("material.specular", 1);
+
 
 			if(!tex.empty())
 			{
@@ -66,8 +65,10 @@ void PenRendererSystem::GLrender()
 
 			lightSystem->renderUpdate(prog);
 			
-			//prog->setUniform("material.specular", mat->getSpecular()); // specular lighting doesn't have full effect on this object's material
-			prog->setUniform("material.shininess", mat->getShininess());
+			prog->setUniform("albedo", mat->getAlbedo());
+			prog->setUniform("metallic", mat->getMetallic());
+			prog->setUniform("roughness", mat->getRoughness());
+			prog->setUniform("ao", mat->getAmbientOcclusion());
 
 			PenObjectId cam = PenCore::PenOctopus()->getSystem<System::PenCameraSystem>()->getMainCamera();
 
@@ -81,8 +82,8 @@ void PenRendererSystem::GLrender()
 				prog->setUniform("projection", camComp.getProjectionMatrix());
 				prog->setUniform("view", camComp.getViewMatrix());
 				prog->setUniform("model", model);
+				prog->setUniform("camPos", transCamComp.getGlobalTransform().position);
 			}
-
 
 
 			renderComp.render();

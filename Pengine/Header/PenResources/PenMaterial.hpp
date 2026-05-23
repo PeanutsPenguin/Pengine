@@ -11,8 +11,8 @@ namespace Pengine::Resources
 	{
 		std::ofstream outfile(penfilePath, std::ios::binary);
 
-		PenCore::PenSerializer()->write(outfile, this->m_specular);
-		PenCore::PenSerializer()->write(outfile, this->m_shininess);
+		//PenCore::PenSerializer()->write(outfile, this->m_specular);
+		//PenCore::PenSerializer()->write(outfile, this->m_shininess);
 
 		if (!prog)
 		{

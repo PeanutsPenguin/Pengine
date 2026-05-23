@@ -47,5 +47,6 @@ void PenPointLight::setType(const PenLightType type)
 
 void PenPointLight::useValues(std::shared_ptr<Resources::PenShaderProgramBase> prog, const PenMath::Transform& position, int index)
 {
-
+	prog->setUniform("lightpos", position.position);
+	prog->setUniform("lightcolor", this->m_lightColor);
 }

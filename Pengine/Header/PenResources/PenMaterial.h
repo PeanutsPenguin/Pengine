@@ -44,13 +44,18 @@ namespace Pengine::Resources
 
 		void	setShaderProgram(std::shared_ptr<PenShaderProgramBase> prog);
 		void	addTexture(std::shared_ptr<PenTextureBase> tex);
-		void	setSpecular(const PenMath::Vector3f& spec);
-		void	setShininess(const float shininess);
+
+		void	setAlbedo(const PenMath::Vector3f& spec);
+		void	setMetallic(const float shininess);
+		void	setRoughness(const float roughness);
+		void	setAmbientOcclusion(const float ao);
 
 		const std::shared_ptr<PenShaderProgramBase>&					getShaderProg();
 		const std::vector<std::shared_ptr<PenTextureBase>>&				getTextures()	const;
-		const PenMath::Vector3f&										getSpecular()	const;
-		const float														getShininess()	const;
+		const PenMath::Vector3f&										getAlbedo()	const;
+		const float														getMetallic()	const;
+		const float														getRoughness()	const;
+		const float 													getAmbientOcclusion() const;	
 
 	private:
 		void generateTextures(const std::vector<std::string> texPath);
@@ -58,8 +63,10 @@ namespace Pengine::Resources
 		std::vector<std::shared_ptr<PenTextureBase>>			m_texture;
 		std::shared_ptr<PenShaderProgramBase>					m_shader;
 
-		PenMath::Vector3f m_specular = PenMath::Vector3f{ 0.5f, 0.5f, 0.5f };
-		float m_shininess = 64.f;
+		PenMath::Vector3f m_albedo = PenMath::Vector3f{ 0.5f, 0.5f, 0.5f };
+		float m_metallic = 64.f;
+		float m_roughness = 1.f;
+		float m_ambientOcclusion = 1.f;
 	};
 }
 #include "PenMaterial.hpp"

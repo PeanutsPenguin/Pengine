@@ -26,8 +26,8 @@ bool PenMaterial::loadResource(const std::string path)
     std::string shaderPath;
 
     std::ifstream infile(path, std::ios::binary);
-    PenCore::PenSerializer()->read(infile, this->m_specular);
-    PenCore::PenSerializer()->read(infile, this->m_shininess);
+    //PenCore::PenSerializer()->read(infile, this->m_specular);
+    //PenCore::PenSerializer()->read(infile, this->m_shininess);
     PenCore::PenSerializer()->read(infile, shaderPath);
     PenCore::PenSerializer()->read(infile, texPaths);
     infile.close();
@@ -68,8 +68,8 @@ bool PenMaterial::createResource(const std::string penfilePath, std::shared_ptr<
 {
     std::ofstream outfile(penfilePath, std::ios::binary);
 
-    PenCore::PenSerializer()->write(outfile, this->m_specular);
-    PenCore::PenSerializer()->write(outfile, this->m_shininess);
+    //PenCore::PenSerializer()->write(outfile, this->m_specular);
+    //PenCore::PenSerializer()->write(outfile, this->m_shininess);
 
     if (!prog)
     {
@@ -102,16 +102,25 @@ void PenMaterial::addTexture(std::shared_ptr<PenTextureBase> tex)
         this->m_texture.push_back(tex);
 }
 
-void PenMaterial::setSpecular(const PenMath::Vector3f& spec)
+void PenMaterial::setAlbedo(const PenMath::Vector3f& albedo)
 {
-    this->m_specular = spec;
+    this->m_albedo = albedo;
 }
 
-void PenMaterial::setShininess(const float shininess)
+void PenMaterial::setMetallic(const float metallic)
 {
-    this->m_shininess = shininess;
+    this->m_metallic = metallic;
 }
 
+void PenMaterial::setRoughness(const float roughness)
+{
+	this->m_roughness = roughness;
+}
+
+void PenMaterial::setAmbientOcclusion(const float ao)
+{
+    this->m_ambientOcclusion = ao;
+}
 
 const std::shared_ptr<PenShaderProgramBase>& PenMaterial::getShaderProg()
 {
@@ -129,15 +138,26 @@ const std::vector<std::shared_ptr<PenTextureBase>>& PenMaterial::getTextures() c
     return this->m_texture;
 }
 
-const PenMath::Vector3f& PenMaterial::getSpecular() const
+const PenMath::Vector3f& PenMaterial::getAlbedo() const
 {
-    return this->m_specular;
+    return this->m_albedo;
 }
 
-const float PenMaterial::getShininess() const
+const float PenMaterial::getMetallic() const
 {
-    return this->m_shininess;
+    return this->m_metallic;
 }
+
+const float PenMaterial::getRoughness() const
+{
+    return this->m_roughness;
+}
+
+const float PenMaterial::getAmbientOcclusion() const
+{
+    return this->m_ambientOcclusion;
+}
+
 void PenMaterial::generateTextures(const std::vector<std::string> texPath)
 {
     if (texPath.empty())
