@@ -20,12 +20,10 @@ namespace Pengine
 		PenLightBase& operator=(PenLightBase&& rhs) = default;
 
 		virtual const PenLightType		getType() = 0;
-		const float						getAmbientIntensity();
-		const float						getDiffuseIntesity();
+		const float						getIntensity();
 		const PenMath::Vector3f			getLightColor();
 ;
-		void				setAmbientIntensity(float ambient);
-		void				setDiffuseIntensity(float diffuse);
+		void				setIntensity(float intensity);
 		void				setLightColor(const PenMath::Vector3f& color);
 
 		virtual void		setType(const PenLightType type) = 0;
@@ -35,8 +33,7 @@ namespace Pengine
 	protected:
 		PenLightType m_type	= PenLightType::E_INVALID;
 
-		PenMath::Vector3f m_lightColor = { 0, 1, 0 };
-		float m_ambientIntensity = 0.0f;
-		float m_diffuseIntensity = 0.0f;
+		PenMath::Vector3f m_lightColor = { 1, 0, 0 };
+		float m_intensity = 0.0f;
 	};
 }

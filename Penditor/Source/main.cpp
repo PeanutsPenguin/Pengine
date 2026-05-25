@@ -78,15 +78,14 @@ int main()
 		
 
 		
-		Pengine::Components::PenLight lightData(Pengine::PenLightType::E_POINT);
+		Pengine::Components::PenLight lightData(Pengine::PenLightType::E_DIRECTIONNAL);
 
 		lightData.getLight()->setLightColor({ 1, 1, 1 });
+		lightData.getLight()->setIntensity(10.0f);
 		Pengine::PenCore::PenOctopus()->addComponent(seconNewObj, lightData);
 
 		// Create ShaderProgram
-		std::shared_ptr<Pengine::Resources::PenGLShader> vertShader = resourceManager->createResourceFromFile<Pengine::Resources::PenGLShader>("VertPBR.vert", "Shaders/");
-		std::shared_ptr<Pengine::Resources::PenGLShader> fragShader = resourceManager->createResourceFromFile<Pengine::Resources::PenGLShader>("FragPBR.frag", "Shaders/");
-		std::shared_ptr<Pengine::Resources::PenGLShaderProgram> progPtr = resourceManager->createResource<Pengine::Resources::PenGLShaderProgram>("PBRProg", "Shaders/", vertShader, fragShader);
+		std::shared_ptr<Pengine::Resources::PenGLShaderProgram> progPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLShaderProgram>("Shaders/PBRProg.penfile");
 		
 		//Create Texture
 		std::shared_ptr<Pengine::Resources::PenGLTexture> glTexture = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLTexture>("Textures/container_diffuse.penfile");

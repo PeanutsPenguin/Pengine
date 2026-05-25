@@ -54,4 +54,6 @@ void PenLightSystem::renderUpdate(const std::shared_ptr<Resources::PenShaderProg
 
 		++index;
 	}
+
+	this->m_hasDirectionnal = false;
 }

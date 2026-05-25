@@ -15,6 +15,8 @@ namespace Pengine
 		PenDirectionnalLight& operator=(const PenDirectionnalLight& rhs) = default;
 		PenDirectionnalLight& operator=(PenDirectionnalLight&& rhs) = default;
 
+		const PenLightType getType() final;
+
 		const PenMath::Vector3f& getWorldDirection() const;
 		void setWorldDirection(const PenMath::Vector3f& dir);
 
@@ -22,6 +24,6 @@ namespace Pengine
 		void useValues(std::shared_ptr<Resources::PenShaderProgramBase> prog, const PenMath::Transform& position, int index)  final;
 
 	private:
-		PenMath::Vector3f m_worldDirection = { 0.0f, 0.0f, 0.0f };
+		PenMath::Vector3f m_worldDirection = { -0.5f, -1.0f, -0.5f };
 	};
 }
