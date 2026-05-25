@@ -144,7 +144,7 @@ bool GLFWPenWindow::GLInit(const char* name, const PenMath::Vector2f& windowSize
     }
 
     glViewport(0, 0, this->m_windowSize.x, this->m_windowSize.y);
-    //glEnable(GL_DEPTH_TEST);
+    glEnable(GL_DEPTH_TEST);
 
     return true;
 }

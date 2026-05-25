@@ -44,32 +44,48 @@ int main()
 		//Create Obj
 		Pengine::PenObjectId newObj = Pengine::PenCore::PenOctopus()->createPenObject();
 		Pengine::PenObjectId seconNewObj = Pengine::PenCore::PenOctopus()->createPenObject();
+		Pengine::PenObjectId thirdObj = Pengine::PenCore::PenOctopus()->createPenObject();
 
 		//PenResorucesManager
 		std::unique_ptr<Pengine::Resources::PenResourcesManager>& resourceManager = Pengine::PenCore::ResourcesManager();
 
 		//Create Component
 		Pengine::Components::PenRenderer renderComp;
+		Pengine::Components::PenRenderer SecondrenderComp;
 
 		//Create model
-		std::shared_ptr<Pengine::Resources::PenModel> modelPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenModel>("Mesh/cube.penfile");
+		std::shared_ptr<Pengine::Resources::PenModel> modelPtr = resourceManager->createResourceFromFile<Pengine::Resources::PenModel>("sphere.fbx", "Mesh/");
 		renderComp.setModel(modelPtr);
+
+		std::shared_ptr<Pengine::Resources::PenModel> cubePtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenModel>("Mesh/cube.penfile");
+		SecondrenderComp.setModel(cubePtr);
+
+
+
 
 		Pengine::Components::PenTransform trans = Pengine::Components::PenTransform();
 		PenMath::Transform newtrans;
-		newtrans.position = { 1.2f, 1.0f, 2.0f };
+		newtrans.position = { 0, 3, 0 };
 		trans.setGlobalTransform(newtrans);
-		
 		Pengine::PenCore::PenOctopus()->addComponent(seconNewObj, trans);
+
+		Pengine::Components::PenTransform ThirdTrans = Pengine::Components::PenTransform();
+		PenMath::Transform newNewtrans;
+		newNewtrans.position = { 0, 0, 2 };
+		ThirdTrans.setGlobalTransform(newNewtrans);
+		Pengine::PenCore::PenOctopus()->addComponent(thirdObj, ThirdTrans);
+
+		
+
 		
 		Pengine::Components::PenLight lightData(Pengine::PenLightType::E_POINT);
 
-		lightData.getLight()->setLightColor({ 1, 0, 0 });
+		lightData.getLight()->setLightColor({ 1, 1, 1 });
 		Pengine::PenCore::PenOctopus()->addComponent(seconNewObj, lightData);
 
 		// Create ShaderProgram
-		std::shared_ptr<Pengine::Resources::PenGLShader> vertShader = resourceManager->createResourceFromFile<Pengine::Resources::PenGLShader>("PBR.vert", "Shaders/");
-		std::shared_ptr<Pengine::Resources::PenGLShader> fragShader = resourceManager->createResourceFromFile<Pengine::Resources::PenGLShader>("PBR.frag", "Shaders/");
+		std::shared_ptr<Pengine::Resources::PenGLShader> vertShader = resourceManager->createResourceFromFile<Pengine::Resources::PenGLShader>("VertPBR.vert", "Shaders/");
+		std::shared_ptr<Pengine::Resources::PenGLShader> fragShader = resourceManager->createResourceFromFile<Pengine::Resources::PenGLShader>("FragPBR.frag", "Shaders/");
 		std::shared_ptr<Pengine::Resources::PenGLShaderProgram> progPtr = resourceManager->createResource<Pengine::Resources::PenGLShaderProgram>("PBRProg", "Shaders/", vertShader, fragShader);
 		
 		//Create Texture
@@ -79,13 +95,17 @@ int main()
 		std::shared_ptr<Pengine::Resources::PenMaterial> materialPtr = resourceManager->createResource<Pengine::Resources::PenMaterial>("CubeMaterial", "Material/", progPtr,  glTexture);
 
 		renderComp.setMaterial(materialPtr);
+		SecondrenderComp.setMaterial(materialPtr);
 
 		//Add the component
 		Pengine::PenCore::PenOctopus()->addComponent(newObj, Pengine::Components::PenTransform());
 		Pengine::PenCore::PenOctopus()->addComponent(newObj, renderComp);
+		Pengine::PenCore::PenOctopus()->addComponent(thirdObj, SecondrenderComp);
 
 		Pengine::PenCore::PenOctopus()->addToScene(newObj);
 		Pengine::PenCore::PenOctopus()->addToScene(seconNewObj);
+		Pengine::PenCore::PenOctopus()->addToScene(thirdObj);
+
 
 		//Create Obj
 		Pengine::PenObjectId camObj = Pengine::PenCore::PenOctopus()->createPenObject();

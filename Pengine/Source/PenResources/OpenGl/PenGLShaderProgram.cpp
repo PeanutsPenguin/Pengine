@@ -104,7 +104,7 @@ bool PenGLShaderProgram::createShaderProgram(std::shared_ptr<PenGLShader> vertPt
 	int status;
 
 	glGetProgramiv(m_shaderProgramId, GL_LINK_STATUS, &status);
-	if (status)
+	if (!status)
 	{
 		char infoLog[512];
 		glGetProgramInfoLog(m_shaderProgramId, 512, nullptr, infoLog);
