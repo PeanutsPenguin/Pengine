@@ -16,20 +16,13 @@ namespace Pengine
 		PenPointLight& operator=(PenPointLight&& rhs) = default;
 
 		const PenLightType		getType() final;
-		const float getConstant() const;
-		const float getLinear() const;
-		const float getExp() const;
+		const float				getRadius();
 
-		void setConstant(float constant);
-		void setLinear(float linear);
-		void setExp(float exp);
-
+		void setRadius(float radius);
 		void setType(const PenLightType type) final;
 		void useValues(std::shared_ptr<Resources::PenShaderProgramBase> prog, const PenMath::Transform& position, int index) final;
 
 	private:
-		float m_constant = 1.0f;
-		float m_linear = 0.0f;
-		float m_exp = 0.0f;
+		float m_radius = 1.f;
 	};
 }

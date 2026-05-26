@@ -4,39 +4,19 @@ using namespace Pengine;
 
 #pragma region Getter and Setter
 
-const PenLightType Pengine::PenPointLight::getType()
+const PenLightType PenPointLight::getType()
 {
 	return PenLightType::E_POINT;
 }
 
-const float PenPointLight::getConstant() const
+const float PenPointLight::getRadius() 
 {
-	return this->m_constant;
+	return this->m_radius;
 }
 
-const float PenPointLight::getLinear() const
+void PenPointLight::setRadius(float radius) 
 {
-	return this->m_linear;
-}
-
-const float PenPointLight::getExp() const
-{
-	return this->m_exp;
-}
-
-void PenPointLight::setConstant(float constant)
-{
-	this->m_constant = constant;
-}
-
-void PenPointLight::setLinear(float linear)
-{
-	this->m_linear = linear;
-}
-
-void PenPointLight::setExp(float exp)
-{
-	this->m_exp = exp;
+	this->m_radius = radius;
 }
 
 void PenPointLight::setType(const PenLightType type)
@@ -47,6 +27,10 @@ void PenPointLight::setType(const PenLightType type)
 
 void PenPointLight::useValues(std::shared_ptr<Resources::PenShaderProgramBase> prog, const PenMath::Transform& position, int index)
 {
-	prog->setUniform("lightPos", position.position);
-	prog->setUniform("lightColor", this->m_lightColor);
+	std::string indexString = std::to_string(index);
+
+	prog->setUniform(("pointLights[" + indexString + "].position").c_str(), position.position);
+	prog->setUniform(("pointLights[" + indexString + "].color").c_str(), this->m_lightColor);
+	prog->setUniform(("pointLights[" + indexString + "].intensity").c_str(), this->m_intensity);
+	prog->setUniform(("pointLights[" + indexString + "].radius").c_str(), this->m_radius);
 }

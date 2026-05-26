@@ -10,7 +10,8 @@ using namespace Pengine::System;
 
 void PenLightSystem::renderUpdate(const std::shared_ptr<Resources::PenShaderProgramBase> shader)
 {
-	int index = 0;
+	uint16_t spotLightCount = 0, pointLightCount = 0;
+
 	for (PenObjectId obj : this->m_PenObject)
 	{
 		Components::PenLight& light = PenCore::PenOctopus()->getComponent<Components::PenLight>(obj);
@@ -19,12 +20,7 @@ void PenLightSystem::renderUpdate(const std::shared_ptr<Resources::PenShaderProg
 		std::shared_ptr<PenLightBase> lightData = light.getLight();
 
 		if (!lightData)
-		{
-			++index;
 			continue;
-		}
-
-		uint16_t spotLightCount = 0, pointLightCount = 0;
 
 		switch (lightData->getType())
 		{
@@ -38,22 +34,23 @@ void PenLightSystem::renderUpdate(const std::shared_ptr<Resources::PenShaderProg
 			}
 
 			this->m_hasDirectionnal = true;
-			lightData->useValues(shader, transComp.getGlobalTransform(), index);
+			lightData->useValues(shader, transComp.getGlobalTransform(), -1);
 			break;
 		case PenLightType::E_POINT:
+			lightData->useValues(shader, transComp.getGlobalTransform(), pointLightCount);
 			++pointLightCount;
-			lightData->useValues(shader, transComp.getGlobalTransform(), index);
 			break;
 		case PenLightType::E_SPOT:
+			lightData->useValues(shader, transComp.getGlobalTransform(), spotLightCount);
 			++spotLightCount;
-			lightData->useValues(shader, transComp.getGlobalTransform(), index);
 			break;
 		default:
 			break;
 		}
-
-		++index;
 	}
+	 
+	shader->setUniform("numPointLight", pointLightCount);
+	shader->setUniform("numSpotLight", spotLightCount);
 
 	this->m_hasDirectionnal = false;
 }

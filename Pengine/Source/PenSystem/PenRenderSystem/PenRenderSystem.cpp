@@ -78,7 +78,6 @@ void PenRendererSystem::GLrender()
 				Components::PenTransform&	transCamComp	= PenCore::PenOctopus()->getComponent<Components::PenTransform>(cam);
 				PenMath::Mat4			model = transComp.getGlobalTransform().toMatrix();
 
-				prog->setUniform("viewPos", transCamComp.getGlobalTransform().position);
 				prog->setUniform("projection", camComp.getProjectionMatrix());
 				prog->setUniform("view", camComp.getViewMatrix());
 				prog->setUniform("model", model);

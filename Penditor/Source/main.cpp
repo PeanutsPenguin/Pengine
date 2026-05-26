@@ -41,33 +41,61 @@ int main()
 #endif
 		Pengine::PenCore::init("Pengine Window", { Pengine::defaultWindowsValue::DEFAULT_WIDTH, Pengine::defaultWindowsValue::DEFAULT_HEIGHT });
 
-		//Create Obj
-		Pengine::PenObjectId newObj = Pengine::PenCore::PenOctopus()->createPenObject();
-		Pengine::PenObjectId seconNewObj = Pengine::PenCore::PenOctopus()->createPenObject();
-		Pengine::PenObjectId thirdObj = Pengine::PenCore::PenOctopus()->createPenObject();
-
 		//PenResorucesManager
 		std::unique_ptr<Pengine::Resources::PenResourcesManager>& resourceManager = Pengine::PenCore::ResourcesManager();
 
-		//Create Component
-		Pengine::Components::PenRenderer renderComp;
-		Pengine::Components::PenRenderer SecondrenderComp;
+		#pragma region Create Material
+		// Create ShaderProgram
+		std::shared_ptr<Pengine::Resources::PenGLShaderProgram> progPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLShaderProgram>("Shaders/PBRProg.penfile");
 
-		//Create model
+		//Create Texture
+		std::shared_ptr<Pengine::Resources::PenGLTexture> glTexture = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLTexture>("Textures/container_diffuse.penfile");
+
+		//Create Material
+		std::shared_ptr<Pengine::Resources::PenMaterial> materialPtr = resourceManager->createResource<Pengine::Resources::PenMaterial>("CubeMaterial", "Material/", progPtr, glTexture);
+		#pragma endregion
+
+		#pragma region Create First Object
+		Pengine::PenObjectId newObj = Pengine::PenCore::PenOctopus()->createPenObject();
+		Pengine::Components::PenRenderer renderComp;
+
 		std::shared_ptr<Pengine::Resources::PenModel> modelPtr = resourceManager->createResourceFromFile<Pengine::Resources::PenModel>("sphere.fbx", "Mesh/");
 		renderComp.setModel(modelPtr);
+		renderComp.setMaterial(materialPtr);
 
+		Pengine::PenCore::PenOctopus()->addComponent(newObj, Pengine::Components::PenTransform());
+		Pengine::PenCore::PenOctopus()->addComponent(newObj, renderComp);
+
+		Pengine::PenCore::PenOctopus()->addToScene(newObj);
+		#pragma endregion
+
+		//#pragma region Create second object
+		//Pengine::PenObjectId seconNewObj = Pengine::PenCore::PenOctopus()->createPenObject();
+
+		////Transform
+		//Pengine::Components::PenTransform trans = Pengine::Components::PenTransform();
+		//PenMath::Transform newtrans;
+		//newtrans.position = { 0, 3, 0 };
+		//trans.setGlobalTransform(newtrans);
+		//Pengine::PenCore::PenOctopus()->addComponent(seconNewObj, trans);
+
+		////Light
+		//Pengine::Components::PenLight lightData(Pengine::PenLightType::E_DIRECTIONNAL);
+		//lightData.getLight()->setLightColor({ 1, 1, 1 });
+		//lightData.getLight()->setIntensity(10.0f);
+		//Pengine::PenCore::PenOctopus()->addComponent(seconNewObj, lightData);
+
+		//Pengine::PenCore::PenOctopus()->addToScene(seconNewObj);
+		//#pragma endregion
+
+		#pragma region Create third object
+		Pengine::PenObjectId thirdObj = Pengine::PenCore::PenOctopus()->createPenObject();
+
+		Pengine::Components::PenRenderer SecondrenderComp;
 		std::shared_ptr<Pengine::Resources::PenModel> cubePtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenModel>("Mesh/cube.penfile");
 		SecondrenderComp.setModel(cubePtr);
-
-
-
-
-		Pengine::Components::PenTransform trans = Pengine::Components::PenTransform();
-		PenMath::Transform newtrans;
-		newtrans.position = { 0, 3, 0 };
-		trans.setGlobalTransform(newtrans);
-		Pengine::PenCore::PenOctopus()->addComponent(seconNewObj, trans);
+		SecondrenderComp.setMaterial(materialPtr);
+		Pengine::PenCore::PenOctopus()->addComponent(thirdObj, SecondrenderComp);
 
 		Pengine::Components::PenTransform ThirdTrans = Pengine::Components::PenTransform();
 		PenMath::Transform newNewtrans;
@@ -75,38 +103,31 @@ int main()
 		ThirdTrans.setGlobalTransform(newNewtrans);
 		Pengine::PenCore::PenOctopus()->addComponent(thirdObj, ThirdTrans);
 
-		
-
-		
-		Pengine::Components::PenLight lightData(Pengine::PenLightType::E_DIRECTIONNAL);
-
-		lightData.getLight()->setLightColor({ 1, 1, 1 });
-		lightData.getLight()->setIntensity(10.0f);
-		Pengine::PenCore::PenOctopus()->addComponent(seconNewObj, lightData);
-
-		// Create ShaderProgram
-		std::shared_ptr<Pengine::Resources::PenGLShaderProgram> progPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLShaderProgram>("Shaders/PBRProg.penfile");
-		
-		//Create Texture
-		std::shared_ptr<Pengine::Resources::PenGLTexture> glTexture = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLTexture>("Textures/container_diffuse.penfile");
-
-		//Create Material
-		std::shared_ptr<Pengine::Resources::PenMaterial> materialPtr = resourceManager->createResource<Pengine::Resources::PenMaterial>("CubeMaterial", "Material/", progPtr,  glTexture);
-
-		renderComp.setMaterial(materialPtr);
-		SecondrenderComp.setMaterial(materialPtr);
-
-		//Add the component
-		Pengine::PenCore::PenOctopus()->addComponent(newObj, Pengine::Components::PenTransform());
-		Pengine::PenCore::PenOctopus()->addComponent(newObj, renderComp);
-		Pengine::PenCore::PenOctopus()->addComponent(thirdObj, SecondrenderComp);
-
-		Pengine::PenCore::PenOctopus()->addToScene(newObj);
-		Pengine::PenCore::PenOctopus()->addToScene(seconNewObj);
 		Pengine::PenCore::PenOctopus()->addToScene(thirdObj);
+		#pragma endregion
 
+		#pragma region Create Fourth object
+		Pengine::PenObjectId fourthObj = Pengine::PenCore::PenOctopus()->createPenObject();
 
-		//Create Obj
+		//Transform
+		Pengine::Components::PenTransform trans4 = Pengine::Components::PenTransform();
+		PenMath::Transform newtrans4;
+		newtrans4.position = { 0, 0, -3 };
+		trans4.setGlobalTransform(newtrans4);
+		Pengine::PenCore::PenOctopus()->addComponent(fourthObj, trans4);
+
+		//Light
+		Pengine::Components::PenLight lightData2(Pengine::PenLightType::E_POINT);
+		lightData2.getLight()->setLightColor({ 1, 1, 1 });
+		lightData2.getLight()->setIntensity(30.0f);
+		std::dynamic_pointer_cast<Pengine::PenPointLight>(lightData2.getLight())->setRadius(10);
+
+		Pengine::PenCore::PenOctopus()->addComponent(fourthObj, lightData2);
+
+		Pengine::PenCore::PenOctopus()->addToScene(fourthObj);
+		#pragma endregion
+
+		#pragma region Create Camera
 		Pengine::PenObjectId camObj = Pengine::PenCore::PenOctopus()->createPenObject();
 		Pengine::PenCore::PenOctopus()->addComponent(camObj, Pengine::Components::PenTransform());
 		Pengine::PenCore::PenOctopus()->addComponent(camObj, Pengine::Components::PenCamera());
@@ -117,8 +138,7 @@ int main()
 		Pengine::PenCore::PenOctopus()->addToScene(camObj);
 
 		Penditor::PenCore::getEditorCam()->setCamObject(camObj);
-
-
+		#pragma endregion
 
 		Penditor::PenCore::runEditor();
 #if CHECK_MEMORY_LEAKS
