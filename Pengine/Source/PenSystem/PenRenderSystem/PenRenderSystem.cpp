@@ -61,8 +61,6 @@ void PenRendererSystem::GLrender()
 				}
 			}
 
-
-
 			lightSystem->renderUpdate(prog);
 			
 			prog->setUniform("albedo", mat->getAlbedo());
@@ -76,7 +74,7 @@ void PenRendererSystem::GLrender()
 			{
 				Components::PenCamera&		camComp			= PenCore::PenOctopus()->getComponent<Components::PenCamera>(cam);
 				Components::PenTransform&	transCamComp	= PenCore::PenOctopus()->getComponent<Components::PenTransform>(cam);
-				PenMath::Mat4			model = transComp.getGlobalTransform().toMatrix();
+				PenMath::Mat4				model			= transComp.getGlobalTransform().toMatrix();
 
 				prog->setUniform("projection", camComp.getProjectionMatrix());
 				prog->setUniform("view", camComp.getViewMatrix());

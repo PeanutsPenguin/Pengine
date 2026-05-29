@@ -83,17 +83,14 @@ vec3 fresnelSchlick(float cosTheta, vec3 F0)
     return F0 + (1.0 - F0) * pow(clamp(1.0 - cosTheta, 0.0, 1.0), 5.0);
 }
 
-
-
 vec3 ComputePBR(vec3 L, vec3 V, vec3 N, vec3 radiance, vec3 albedo, float metallic, float roughness, vec3 F0) 
 {
     vec3 H = normalize(V + L);
     
-    float NdotV = max(dot(N, V), 0.0001);
-    float NdotL = max(dot(N, L), 0.0001);
+    float NdotV = max(dot(N, V), 0);
+    float NdotL = max(dot(N, L), 0);
     float HdotV = max(dot(H, V), 0.0);
     
-    // Évaluations des termes de la BRDF
     float NDF = DistributionGGX(N, H, roughness);   
     float G   = GeometrySmith(NdotV, NdotL, roughness);   
     vec3 F    = fresnelSchlick(HdotV, F0);       
@@ -114,12 +111,11 @@ void main()
 {
     vec3 N = normalize(Normal);
     vec3 V = normalize(camPos - FragPos);
-//    vec3 V = vec3(0.0, 0.0, 1.5);
     vec3 F0 = mix(vec3(0.04), albedo, metallic);
     
     vec3 TotalLo = vec3(0.0);
 
-    TotalLo += ComputePBR(normalize(-dirLight.direction), V, N, dirLight.color * dirLight.intensity, albedo, metallic, roughness, F0);
+//    TotalLo += ComputePBR(normalize(-dirLight.direction), V, N, dirLight.color * dirLight.intensity, albedo, metallic, roughness, F0);
 
     for(int i = 0; i < numPointLight; ++i)
     {
@@ -137,17 +133,17 @@ void main()
 
     for(int i = 0; i < numSpotLight; ++i) 
     {
-        vec3 L = normalize(spotLights[i].position - FragPos);
-        float distance = length(spotLights[i].position - FragPos);
-
-        float attenuation = 1.0 / (distance * distance);
-
-        float theta = dot(L, normalize(-spotLights[i].direction)); 
-        float epsilon = spotLights[i].cutOff - spotLights[i].outerCutOff;
-        float spotIntensity = clamp((theta - spotLights[i].outerCutOff) / epsilon, 0.0, 1.0);
-
-        vec3 radiance = spotLights[i].color * spotLights[i].intensity * attenuation * spotIntensity;
-        TotalLo += ComputePBR(L, V, N, radiance, albedo, metallic, roughness, F0);
+//        vec3 L = normalize(spotLights[i].position - FragPos);
+//        float distance = length(spotLights[i].position - FragPos);
+//
+//        float attenuation = 1.0 / (distance * distance);
+//
+//        float theta = dot(L, normalize(-spotLights[i].direction)); 
+//        float epsilon = spotLights[i].cutOff - spotLights[i].outerCutOff;
+//        float spotIntensity = clamp((theta - spotLights[i].outerCutOff) / epsilon, 0.0, 1.0);
+//
+//        vec3 radiance = spotLights[i].color * spotLights[i].intensity * attenuation * spotIntensity;
+//        TotalLo += ComputePBR(L, V, N, radiance, albedo, metallic, roughness, F0);
     }
 
 

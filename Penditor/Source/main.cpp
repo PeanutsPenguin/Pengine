@@ -69,24 +69,24 @@ int main()
 		Pengine::PenCore::PenOctopus()->addToScene(newObj);
 		#pragma endregion
 
-		//#pragma region Create second object
+		#pragma region Create second object
 		//Pengine::PenObjectId seconNewObj = Pengine::PenCore::PenOctopus()->createPenObject();
 
 		////Transform
 		//Pengine::Components::PenTransform trans = Pengine::Components::PenTransform();
 		//PenMath::Transform newtrans;
-		//newtrans.position = { 0, 3, 0 };
+		//newtrans.position = { 0, 10, 0 };
 		//trans.setGlobalTransform(newtrans);
 		//Pengine::PenCore::PenOctopus()->addComponent(seconNewObj, trans);
 
 		////Light
 		//Pengine::Components::PenLight lightData(Pengine::PenLightType::E_DIRECTIONNAL);
-		//lightData.getLight()->setLightColor({ 1, 1, 1 });
+		//lightData.getLight()->setLightColor({ 1, 1, 1 });	
 		//lightData.getLight()->setIntensity(10.0f);
 		//Pengine::PenCore::PenOctopus()->addComponent(seconNewObj, lightData);
 
 		//Pengine::PenCore::PenOctopus()->addToScene(seconNewObj);
-		//#pragma endregion
+		#pragma endregion
 
 		#pragma region Create third object
 		Pengine::PenObjectId thirdObj = Pengine::PenCore::PenOctopus()->createPenObject();
@@ -112,14 +112,14 @@ int main()
 		//Transform
 		Pengine::Components::PenTransform trans4 = Pengine::Components::PenTransform();
 		PenMath::Transform newtrans4;
-		newtrans4.position = { 0, 0, -3 };
+		newtrans4.position = { 0, 1.5f, 0 };	
 		trans4.setGlobalTransform(newtrans4);
 		Pengine::PenCore::PenOctopus()->addComponent(fourthObj, trans4);
 
 		//Light
 		Pengine::Components::PenLight lightData2(Pengine::PenLightType::E_POINT);
 		lightData2.getLight()->setLightColor({ 1, 1, 1 });
-		lightData2.getLight()->setIntensity(30.0f);
+		lightData2.getLight()->setIntensity(30);
 		std::dynamic_pointer_cast<Pengine::PenPointLight>(lightData2.getLight())->setRadius(10);
 
 		Pengine::PenCore::PenOctopus()->addComponent(fourthObj, lightData2);

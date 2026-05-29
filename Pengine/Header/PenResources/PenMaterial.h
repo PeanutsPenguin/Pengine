@@ -64,8 +64,8 @@ namespace Pengine::Resources
 		std::shared_ptr<PenShaderProgramBase>					m_shader;
 
 		PenMath::Vector3f m_albedo = PenMath::Vector3f{ 1, 0, 0 };
-		float m_metallic = 0.9f;
-		float m_roughness = .9f;
+		float m_metallic = .2f;
+		float m_roughness = .1f;
 		float m_ambientOcclusion = 1.f;
 	};
 }
