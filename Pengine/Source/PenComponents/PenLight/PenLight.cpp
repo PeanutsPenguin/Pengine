@@ -24,6 +24,7 @@ PenLight::PenLight(const PenLightType type)
 	}
 
 	this->m_light->setType(type);
+	this->SetState(PenComponentState::ENABLE, true);
 }
 
 PenLight::~PenLight()

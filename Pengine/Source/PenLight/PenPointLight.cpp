@@ -25,10 +25,11 @@ void PenPointLight::setType(const PenLightType type)
 }
 #pragma endregion
 
-void PenPointLight::useValues(std::shared_ptr<Resources::PenShaderProgramBase> prog, const PenMath::Transform& position, int index)
+void PenPointLight::useValues(std::shared_ptr<Resources::PenShaderProgramBase> prog, const PenMath::Transform& position, int index, bool enabled)
 {
 	std::string indexString = std::to_string(index);
 
+	prog->setUniform(("pointLights[" + indexString + "].enabled").c_str(), enabled);
 	prog->setUniform(("pointLights[" + indexString + "].position").c_str(), position.position);
 	prog->setUniform(("pointLights[" + indexString + "].color").c_str(), this->m_lightColor);
 	prog->setUniform(("pointLights[" + indexString + "].intensity").c_str(), this->m_intensity);

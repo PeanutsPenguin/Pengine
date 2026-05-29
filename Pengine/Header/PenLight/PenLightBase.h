@@ -28,7 +28,7 @@ namespace Pengine
 
 		virtual void		setType(const PenLightType type) = 0;
 
-		virtual void useValues(std::shared_ptr<Resources::PenShaderProgramBase> prog, const PenMath::Transform& position, int index) = 0;
+		virtual void useValues(std::shared_ptr<Resources::PenShaderProgramBase> prog, const PenMath::Transform& position, int index, bool enabled) = 0;
 
 	protected:
 		PenLightType m_type	= PenLightType::E_INVALID;

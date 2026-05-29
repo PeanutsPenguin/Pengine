@@ -33,15 +33,17 @@ void PenLightSystem::renderUpdate(const std::shared_ptr<Resources::PenShaderProg
 				break;
 			}
 
-			this->m_hasDirectionnal = true;
-			lightData->useValues(shader, transComp.getGlobalTransform(), -1);
+			if(light.IsState(Components::PenComponentState::ENABLE))
+				this->m_hasDirectionnal = true;
+			
+			lightData->useValues(shader, transComp.getGlobalTransform(), -1, light.IsState(Components::PenComponentState::ENABLE));
 			break;
 		case PenLightType::E_POINT:
-			lightData->useValues(shader, transComp.getGlobalTransform(), pointLightCount);
+			lightData->useValues(shader, transComp.getGlobalTransform(), pointLightCount, light.IsState(Components::PenComponentState::ENABLE));
 			++pointLightCount;
 			break;
 		case PenLightType::E_SPOT:
-			lightData->useValues(shader, transComp.getGlobalTransform(), spotLightCount);
+			lightData->useValues(shader, transComp.getGlobalTransform(), spotLightCount, light.IsState(Components::PenComponentState::ENABLE));
 			++spotLightCount;
 			break;
 		default:

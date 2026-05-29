@@ -76,22 +76,24 @@ int main()
 		#pragma endregion
 
 		#pragma region Create second object
-		//Pengine::PenObjectId seconNewObj = Pengine::PenCore::PenOctopus()->createPenObject();
+		Pengine::PenObjectId seconNewObj = Pengine::PenCore::PenOctopus()->createPenObject();
 
-		////Transform
-		//Pengine::Components::PenTransform trans = Pengine::Components::PenTransform();
-		//PenMath::Transform newtrans;
-		//newtrans.position = { 0, 10, 0 };
-		//trans.setGlobalTransform(newtrans);
-		//Pengine::PenCore::PenOctopus()->addComponent(seconNewObj, trans);
+		//Transform
+		Pengine::Components::PenTransform trans = Pengine::Components::PenTransform();
+		PenMath::Transform newtrans;
+		newtrans.position = { 0, 10, 0 };
+		trans.setGlobalTransform(newtrans);
+		Pengine::PenCore::PenOctopus()->addComponent(seconNewObj, trans);
 
-		////Light
-		//Pengine::Components::PenLight lightData(Pengine::PenLightType::E_DIRECTIONNAL);
-		//lightData.getLight()->setLightColor({ .25f, 1, 0 });	
-		//lightData.getLight()->setIntensity(1.0f);
-		//Pengine::PenCore::PenOctopus()->addComponent(seconNewObj, lightData);
+		//Light
+		Pengine::Components::PenLight lightData(Pengine::PenLightType::E_DIRECTIONNAL);
+		lightData.getLight()->setLightColor({ 1, 1, 0 });	
+		lightData.getLight()->setIntensity(5);
+		//lightData.SetState(Pengine::Components::PenComponentState::ENABLE, false);
 
-		//Pengine::PenCore::PenOctopus()->addToScene(seconNewObj);
+		Pengine::PenCore::PenOctopus()->addComponent(seconNewObj, lightData);
+
+		Pengine::PenCore::PenOctopus()->addToScene(seconNewObj);
 		#pragma endregion
 
 		#pragma region Create third object

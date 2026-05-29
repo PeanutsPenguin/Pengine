@@ -48,10 +48,11 @@ void PenSpotLight::setWorldDirection(const PenMath::Vector3f& dir)
 #pragma endregion
 
 void PenSpotLight::useValues(std::shared_ptr<Resources::PenShaderProgramBase> prog, 
-							 const PenMath::Transform& position, int index)
+							 const PenMath::Transform& position, int index, bool enabled)
 {
 	std::string indexString = std::to_string(index);
 
+	prog->setUniform(("spotLights[" + indexString + "].enabled").c_str(), enabled);
 	prog->setUniform(("spotLights[" + indexString + "].position").c_str(), position.position);
 	prog->setUniform(("spotLights[" + indexString + "].direction").c_str(), this->m_worldDirection);
 	prog->setUniform(("spotLights[" + indexString + "].color").c_str(), this->m_lightColor);

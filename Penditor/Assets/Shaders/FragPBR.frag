@@ -24,6 +24,7 @@ struct PointLight
     float intensity;
     vec3 color;
     float radius;
+    bool enabled;
 };
 uniform PointLight pointLights[MAXPOINTLIGHT];
 
@@ -37,6 +38,7 @@ struct SpotLight
     vec3 color;
     float outerCutOff; 
     float radius;
+    bool enabled;
 };
 uniform SpotLight spotLights[MAXSPOTLIGHT];
 
@@ -45,6 +47,7 @@ struct DirectionnalLight
     vec3 direction;
     float intensity;
     vec3 color;
+    bool enabled;
 };
 uniform DirectionnalLight dirLight;
 
@@ -88,7 +91,7 @@ vec3 ComputePBR(vec3 L, vec3 V, vec3 N, vec3 radiance, vec3 albedo, float metall
     vec3 H = normalize(V + L);
     
     float NdotV = max(dot(N, V), 0);
-    float NdotL = max(dot(N, L), 0);
+    float NdotL = max(dot(N, L), 0.0001);
     float HdotV = max(dot(H, V), 0.0);
     
     float NDF = DistributionGGX(N, H, roughness);   
@@ -115,10 +118,14 @@ void main()
     
     vec3 TotalLo = vec3(0.0);
 
-//    TotalLo += ComputePBR(normalize(-dirLight.direction), V, N, dirLight.color * dirLight.intensity, albedo, metallic, roughness, F0);
+    if(dirLight.enabled)
+        TotalLo += ComputePBR(normalize(-dirLight.direction), V, N, dirLight.color * dirLight.intensity, albedo, metallic, roughness, F0);
 
     for(int i = 0; i < numPointLight; ++i)
     {
+        if(!pointLights[i].enabled)
+            continue;
+
         vec3 L = normalize(pointLights[i].position - FragPos);
         float distance = length(pointLights[i].position - FragPos);
 
@@ -133,6 +140,9 @@ void main()
 
     for(int i = 0; i < numSpotLight; ++i) 
     {
+        if(!spotLights[i].enabled)
+            continue;
+
         vec3 L = normalize(spotLights[i].position - FragPos);
         float distance = length(spotLights[i].position - FragPos);
 
