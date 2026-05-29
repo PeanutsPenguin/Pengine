@@ -15,7 +15,7 @@ namespace Pengine
 		PenPointLight& operator=(const PenPointLight& rhs) = default;
 		PenPointLight& operator=(PenPointLight&& rhs) = default;
 
-		const PenLightType		getType() final;
+		const PenLightType		getType() const final;
 		const float				getRadius();
 
 		void setRadius(float radius);

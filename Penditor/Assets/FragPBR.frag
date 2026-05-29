@@ -35,7 +35,6 @@ struct SpotLight{
     float intensity;
     float cutOff;
     float outerCutOff; 
-    float radius;
 };
 uniform SpotLight spotLights[MAXSPOTLIGHT];
 

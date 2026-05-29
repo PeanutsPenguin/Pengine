@@ -27,6 +27,7 @@
 #include "PenSystem/PenCameraSystem/PenCameraSystem.h"
 
 #include "PenLight/PenPointLight.h"
+#include "PenLight/PenSpotLight.h"
 
 #if defined (CHECK_MEMORY_LEAKS)
 	#include "Memory/MemoryLeakChecker.h"
@@ -63,7 +64,12 @@ int main()
 		renderComp.setModel(modelPtr);
 		renderComp.setMaterial(materialPtr);
 
-		Pengine::PenCore::PenOctopus()->addComponent(newObj, Pengine::Components::PenTransform());
+		Pengine::Components::PenTransform sphereTransComp = Pengine::Components::PenTransform();
+		PenMath::Transform sphereTrans;
+		sphereTrans.position = { 0, 1, 0 };
+		sphereTransComp.setGlobalTransform(sphereTrans);
+
+		Pengine::PenCore::PenOctopus()->addComponent(newObj, sphereTransComp);
 		Pengine::PenCore::PenOctopus()->addComponent(newObj, renderComp);
 
 		Pengine::PenCore::PenOctopus()->addToScene(newObj);
@@ -81,8 +87,8 @@ int main()
 
 		////Light
 		//Pengine::Components::PenLight lightData(Pengine::PenLightType::E_DIRECTIONNAL);
-		//lightData.getLight()->setLightColor({ 1, 1, 1 });	
-		//lightData.getLight()->setIntensity(10.0f);
+		//lightData.getLight()->setLightColor({ .25f, 1, 0 });	
+		//lightData.getLight()->setIntensity(1.0f);
 		//Pengine::PenCore::PenOctopus()->addComponent(seconNewObj, lightData);
 
 		//Pengine::PenCore::PenOctopus()->addToScene(seconNewObj);
@@ -91,17 +97,26 @@ int main()
 		#pragma region Create third object
 		Pengine::PenObjectId thirdObj = Pengine::PenCore::PenOctopus()->createPenObject();
 
+		Pengine::Components::PenTransform ThirdTrans = Pengine::Components::PenTransform();
+		PenMath::Transform newNewtrans;
+		newNewtrans.position = { 0, 0, 0 };
+		newNewtrans.scale = { 10, 1, 10 };
+		ThirdTrans.setGlobalTransform(newNewtrans);
+		Pengine::PenCore::PenOctopus()->addComponent(thirdObj, ThirdTrans);
+
+
 		Pengine::Components::PenRenderer SecondrenderComp;
 		std::shared_ptr<Pengine::Resources::PenModel> cubePtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenModel>("Mesh/cube.penfile");
+
 		SecondrenderComp.setModel(cubePtr);
+
+		std::shared_ptr<Pengine::Resources::PenMaterial> materialPtr2 = resourceManager->createResource<Pengine::Resources::PenMaterial>("BlackMaterial", "Material/", progPtr);
+		materialPtr2->setAlbedo({ 0, 0, 0 });
+
 		SecondrenderComp.setMaterial(materialPtr);
 		Pengine::PenCore::PenOctopus()->addComponent(thirdObj, SecondrenderComp);
 
-		Pengine::Components::PenTransform ThirdTrans = Pengine::Components::PenTransform();
-		PenMath::Transform newNewtrans;
-		newNewtrans.position = { 0, 0, 2 };
-		ThirdTrans.setGlobalTransform(newNewtrans);
-		Pengine::PenCore::PenOctopus()->addComponent(thirdObj, ThirdTrans);
+
 
 		Pengine::PenCore::PenOctopus()->addToScene(thirdObj);
 		#pragma endregion
@@ -112,16 +127,19 @@ int main()
 		//Transform
 		Pengine::Components::PenTransform trans4 = Pengine::Components::PenTransform();
 		PenMath::Transform newtrans4;
-		newtrans4.position = { 0, 1.5f, 0 };	
+		newtrans4.position = { 0, 3, 0 };	
 		trans4.setGlobalTransform(newtrans4);
 		Pengine::PenCore::PenOctopus()->addComponent(fourthObj, trans4);
 
 		//Light
-		Pengine::Components::PenLight lightData2(Pengine::PenLightType::E_POINT);
+		Pengine::Components::PenLight lightData2(Pengine::PenLightType::E_SPOT);
 		lightData2.getLight()->setLightColor({ 1, 1, 1 });
-		lightData2.getLight()->setIntensity(30);
-		std::dynamic_pointer_cast<Pengine::PenPointLight>(lightData2.getLight())->setRadius(10);
+		lightData2.getLight()->setIntensity(20);
+		std::shared_ptr<Pengine::PenSpotLight> spotPtr = std::dynamic_pointer_cast<Pengine::PenSpotLight>(lightData2.getLight());
+		spotPtr->setCutoff(15);
+		spotPtr->setOuterCutoff(25);
 
+		
 		Pengine::PenCore::PenOctopus()->addComponent(fourthObj, lightData2);
 
 		Pengine::PenCore::PenOctopus()->addToScene(fourthObj);

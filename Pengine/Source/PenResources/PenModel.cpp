@@ -76,18 +76,8 @@ bool PenModel::generateResource(const char* path)
 	//Suppose to have material here 
 
 	m_meshes.reserve(scene->mNumMeshes);
-	processNode(scene->mRootNode, scene);
-
-	for (unsigned int i = 0; i < scene->mRootNode->mNumMeshes; i++)
-		aiMesh* mesh = scene->mMeshes[scene->mRootNode->mMeshes[i]];
-
-	for (unsigned int i = 0; i < scene->mRootNode->mNumChildren; i++)
-	{
-		if (!processNode(scene->mRootNode->mChildren[i], scene))
-			std::cerr << __FUNCTION__ ": Failed to load child mesh : " << i << " in the model resource." << std::endl;
-	}
-
-	return true;
+	
+	return processNode(scene->mRootNode, scene);
 }
 #pragma endregion
 

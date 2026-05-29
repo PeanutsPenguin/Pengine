@@ -15,7 +15,7 @@ namespace Pengine
 		PenDirectionnalLight& operator=(const PenDirectionnalLight& rhs) = default;
 		PenDirectionnalLight& operator=(PenDirectionnalLight&& rhs) = default;
 
-		const PenLightType getType() final;
+		const PenLightType getType() const final;
 
 		const PenMath::Vector3f& getWorldDirection() const;
 		void setWorldDirection(const PenMath::Vector3f& dir);

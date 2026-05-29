@@ -8,7 +8,7 @@ const PenMath::Vector3f& PenDirectionnalLight::getWorldDirection() const
 	return this->m_worldDirection;
 }
 
-const PenLightType PenDirectionnalLight::getType()
+const PenLightType PenDirectionnalLight::getType() const 
 {
 	return this->m_type;
 }

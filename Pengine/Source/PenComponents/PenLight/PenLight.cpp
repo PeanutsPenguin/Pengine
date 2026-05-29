@@ -2,6 +2,7 @@
 
 #include "PenLight/PenPointLight.h"		//PenPointLight
 #include "PenLight/PenDirectionnalLight.h"	//PenDirectionnalLight
+#include "PenLight/PenSpotLight.h"		//PenSpotLight
 
 using namespace Pengine::Components;
 
@@ -16,7 +17,8 @@ PenLight::PenLight(const PenLightType type)
 		this->m_light = std::make_shared<PenPointLight>();
 		break;
 	case E_SPOT:
-		return;
+		this->m_light = std::make_shared<PenSpotLight>();
+		break;
 	default:
 		return;
 	}

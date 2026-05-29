@@ -4,9 +4,9 @@ using namespace Pengine;
 
 #pragma region Getter and Setter
 
-const PenLightType PenPointLight::getType()
+const PenLightType PenPointLight::getType() const 
 {
-	return PenLightType::E_POINT;
+	return this->m_type;
 }
 
 const float PenPointLight::getRadius() 

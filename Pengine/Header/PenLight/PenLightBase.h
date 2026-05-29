@@ -19,7 +19,7 @@ namespace Pengine
 		PenLightBase& operator=(const PenLightBase& rhs) = default;
 		PenLightBase& operator=(PenLightBase&& rhs) = default;
 
-		virtual const PenLightType		getType() = 0;
+		virtual const PenLightType		getType() const = 0;
 		const float						getIntensity();
 		const PenMath::Vector3f			getLightColor();
 ;
