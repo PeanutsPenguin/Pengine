@@ -47,7 +47,8 @@ namespace Pengine
 		virtual void	setCursorState(CursorState state) = 0;
 		void			setRenderSystem(std::shared_ptr<System::PenRendererSystem> system);
 
-		CursorState		getCursorState() const;
+		CursorState				getCursorState() const;
+		const PenMath::Vector2f getWindowSize() const;
 
 	protected:
 		std::shared_ptr<System::PenRendererSystem>	m_renderSystem;

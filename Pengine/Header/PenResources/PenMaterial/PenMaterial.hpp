@@ -1,8 +1,6 @@
 #pragma once 
 
-#include "PenResources/PenMaterial.h"
-
-
+#include "PenResources/PenMaterial/PenMaterial.h"
 
 namespace Pengine::Resources
 {

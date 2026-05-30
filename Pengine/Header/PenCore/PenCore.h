@@ -1,6 +1,6 @@
 #pragma once
 
-#include "PenStructsAndEnum/PenLibDefine.h"         //PenLibDefine
+#include "PenDefine/PenLibDefine.h"         //PenLibDefine
 
 #include "Vector/Vector2/Vector2.h"					//Vector 2
 

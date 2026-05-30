@@ -55,6 +55,7 @@ bool PenCore::init(const char* name, const PenMath::Vector2f& windowSize)
 
     registerDefaultType();
 
+
     return true;
 }
 
@@ -113,6 +114,10 @@ double PenCore::getDeltaTime()
 void PenCore::startPengine()
 {
     m_shouldStop = false;
+
+    //Resize the camera correctly before the start
+    m_window->setWindowSize(m_window->getWindowSize());
+
     while (!m_shouldStop)
     {
         frameUpdate();
@@ -193,7 +198,6 @@ void PenCore::renderUpdate()
 {
     m_window->preRender(*m_PenOctopus->getMainScene());
 
-    //Then the render ones
     m_window->render();
 
     m_window->postRender();

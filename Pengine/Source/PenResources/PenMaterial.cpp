@@ -1,4 +1,4 @@
-#include "PenResources/PenMaterial.h"
+#include "PenResources/PenMaterial/PenMaterial.h"
 
 #include "PenResources/PenResourcesManager.h"                       //PenResourceManager
 #include "PenResources/OpenGl/Private_PenGLTextures.h"              //PenTexture

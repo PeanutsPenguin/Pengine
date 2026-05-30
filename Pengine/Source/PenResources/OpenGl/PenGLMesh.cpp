@@ -1,7 +1,7 @@
 #include "PenResources/OpenGl/Private_PenGLMesh.h"
 
 #include "PenStructsAndEnum/PenVertex.h"	//PenVertex
-#include "PengineDefine.h"
+#include "PenDefine/PengineDefine.h"		//PengineDefine
 
 //Lib
 #include <assimp/mesh.h>

@@ -157,10 +157,10 @@ int main()
 		camSystemPtr->setMainCamera(camObj);
 		Pengine::PenCore::PenOctopus()->addToScene(camObj);
 
-		Penditor::PenCore::getEditorCam()->setCamObject(camObj);
+		Penditor::PenditorCore::getEditorCam()->setCamObject(camObj);
 		#pragma endregion
 
-		Penditor::PenCore::runEditor();
+		Penditor::PenditorCore::runEditor();
 #if CHECK_MEMORY_LEAKS
 	}
 	afterMain(start);
