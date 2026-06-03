@@ -36,7 +36,7 @@ namespace Penditor
 		void handleCameraRotation(PenMath::Transform& trans, Pengine::Components::PenCamera& cam);
 
 		Pengine::PenObjectId m_camObject = Pengine::g_PenObjectInvalidId;
-		float m_speed = 2;
+		float m_speed = 6;
 		float m_sensitivity = .2f;
 	};
 }

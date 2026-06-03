@@ -4,7 +4,18 @@
 #include "PenResources/OpenGl/Private_PenGLTextures.h"              //PenTexture
 #include "PenResources/OpenGl/Private_PenGLShaderProgram.h"         //PenShaderProgram
 
+#include "PenBuffer/OpenGl/Private_PenTextureBuffer.h"
+
+
 using namespace Pengine::Resources;
+
+PenMaterial::PenMaterial(const PenObjectId id) : PenResourcesBase(id)
+{
+    this->m_albedo = PenMaterialProperty<PenMath::Vector3f>(nullptr, { 1, 1, 1 });
+    this->m_metallic = PenMaterialProperty<float>(nullptr, 0);
+    this->m_roughness = PenMaterialProperty<float>(nullptr, .6f);
+    this->m_ambientOcclusion = PenMaterialProperty<float>(nullptr, 1.f);
+}
 
 PenMaterial::~PenMaterial()
 {
@@ -22,14 +33,18 @@ bool PenMaterial::loadResource(const std::string path)
     std::cout << __FUNCTION__ "\tLoading Material :" << path << std::endl;
 
     //Create variables 
-    std::vector<std::string> texPaths;
     std::string shaderPath;
 
     std::ifstream infile(path, std::ios::binary);
-    //PenCore::PenSerializer()->read(infile, this->m_specular);
-    //PenCore::PenSerializer()->read(infile, this->m_shininess);
     PenCore::PenSerializer()->read(infile, shaderPath);
-    PenCore::PenSerializer()->read(infile, texPaths);
+
+    std::string tempPath;
+
+    this->loadAlbedo(infile);
+    this->loadMetallic(infile);
+    this->loadRoughness(infile);
+    this->loadAmbientOcclusion(infile);
+
     infile.close();
 
     std::shared_ptr<PenShaderProgramBase> shader = nullptr;
@@ -46,9 +61,9 @@ bool PenMaterial::loadResource(const std::string path)
         this->m_shader = shader;
 
     this->m_penfilePath = path;
-    
-    this->generateTextures(texPaths);
 
+    //TOOD : load textures here
+    
     return true;
 }
 
@@ -59,17 +74,14 @@ bool PenMaterial::createResource(const std::string penfilePath, const std::strin
     return false;
 }
 
-bool PenMaterial::createResource(const std::string penfilePath, std::shared_ptr<PenTextureBase> tex)
-{
-    return this->createResource(penfilePath, nullptr, tex);
-}
-
 bool PenMaterial::createResource(const std::string penfilePath, std::shared_ptr<PenShaderProgramBase> prog)
 {
-    std::ofstream outfile(penfilePath, std::ios::binary);
+    return this->createResource(penfilePath, prog, nullptr);
+}
 
-    //PenCore::PenSerializer()->write(outfile, this->m_specular);
-    //PenCore::PenSerializer()->write(outfile, this->m_shininess);
+bool PenMaterial::createResource(const std::string penfilePath, std::shared_ptr<PenShaderProgramBase> prog, std::shared_ptr<PenTextureBase> tex)
+{
+    std::ofstream outfile(penfilePath, std::ios::binary);
 
     if (!prog)
     {
@@ -79,7 +91,19 @@ bool PenMaterial::createResource(const std::string penfilePath, std::shared_ptr<
     else
         this->m_shader = prog;
 
+    if (!tex)
+        std::cout << __FUNCTION__ "\t Given texture for the material creation is null\n";
+    else
+        this->m_albedo.texture = tex;
+
+
+    
     PenCore::PenSerializer()->write(outfile, this->m_shader->getResourcePath());
+
+    this->m_albedo.serializeProperty(outfile);
+    this->m_metallic.serializeProperty(outfile);
+    this->m_roughness.serializeProperty(outfile);
+    this->m_ambientOcclusion.serializeProperty(outfile);
 
     this->m_penfilePath = penfilePath;
 
@@ -87,7 +111,7 @@ bool PenMaterial::createResource(const std::string penfilePath, std::shared_ptr<
 }
 #pragma endregion
 
-#pragma region Getter and Setter
+#pragma region Shader program
 void PenMaterial::setShaderProgram(std::shared_ptr<Pengine::Resources::PenShaderProgramBase> prog)
 {
     if (prog)
@@ -96,35 +120,9 @@ void PenMaterial::setShaderProgram(std::shared_ptr<Pengine::Resources::PenShader
         this->m_shader = PenShaderProgramBase::defaultShaderProgram();
 }
 
-void PenMaterial::addTexture(std::shared_ptr<PenTextureBase> tex)
-{
-    if (tex)
-        this->m_texture.push_back(tex);
-}
-
-void PenMaterial::setAlbedo(const PenMath::Vector3f& albedo)
-{
-    this->m_albedo = albedo;
-}
-
-void PenMaterial::setMetallic(const float metallic)
-{
-    this->m_metallic = metallic;
-}
-
-void PenMaterial::setRoughness(const float roughness)
-{
-	this->m_roughness = roughness;
-}
-
-void PenMaterial::setAmbientOcclusion(const float ao)
-{
-    this->m_ambientOcclusion = ao;
-}
-
 const std::shared_ptr<PenShaderProgramBase>& PenMaterial::getShaderProg()
 {
-    if(!this->m_shader)
+    if (!this->m_shader)
     {
         std::cout << __FUNCTION__ "\t Shader program of material : " << this->getId() << " has not been found, replace it with default shader program\n";
         this->setShaderProgram(nullptr);
@@ -132,54 +130,239 @@ const std::shared_ptr<PenShaderProgramBase>& PenMaterial::getShaderProg()
 
     return this->m_shader;
 }
+#pragma endregion
 
-const std::vector<std::shared_ptr<PenTextureBase>>& PenMaterial::getTextures() const
+#pragma region Albedo
+void PenMaterial::setAlbedo(const PenMath::Vector3f& albedo)
 {
-    return this->m_texture;
+    this->m_albedo.defaultValue = albedo;
 }
 
-const PenMath::Vector3f& PenMaterial::getAlbedo() const
+void PenMaterial::setAlbedo(std::shared_ptr<PenTextureBase> ptr)
+{
+    this->m_albedo.texture = ptr;
+}
+
+void PenMaterial::setAlbedo(const PenMaterialProperty<PenMath::Vector3f>& prop)
+{
+    this->m_albedo = prop;
+}
+
+const PenMaterialProperty<PenMath::Vector3f>& PenMaterial::getAlbedo() const
 {
     return this->m_albedo;
 }
 
-const float PenMaterial::getMetallic() const
+void PenMaterial::loadAlbedo(std::ifstream& infile)
+{
+    std::string tempPath;
+
+    PenCore::PenSerializer()->read(infile, tempPath);
+
+    if (!tempPath.empty())
+    {
+        if (PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
+            this->m_albedo.texture = PenCore::ResourcesManager()->loadResourceFromFile<PenGLTexture>(tempPath.c_str());
+
+        tempPath = "";
+    }
+
+    PenCore::PenSerializer()->read(infile, this->m_albedo.defaultValue);
+}
+
+void PenMaterial::activateAlbedo()
+{
+    if (this->m_albedo.texture)
+    {
+        std::shared_ptr<PenGLTexture> ptr = std::dynamic_pointer_cast<PenGLTexture>(this->m_albedo.texture);
+        ptr->dataPtr()->activate(0);
+    }
+    else
+    {
+        PenGLTexture::defaultTexture()->dataPtr()->activate(0);
+    }
+
+    this->m_shader->setUniform("mat.albedoMap", 0);
+    this->m_shader->setUniform("mat.albedo", this->m_albedo.defaultValue);
+}
+#pragma endregion
+
+#pragma region Metallic
+void PenMaterial::setMetallic(const float metallic)
+{
+    this->m_metallic.defaultValue = metallic;
+}
+
+void PenMaterial::setMetallic(std::shared_ptr<PenTextureBase> ptr)
+{
+    this->m_metallic.texture = ptr;
+}
+
+void PenMaterial::setMetallic(const PenMaterialProperty<float>& prop)
+{
+    this->m_metallic = prop;
+}
+
+const PenMaterialProperty<float>& PenMaterial::getMetallic() const
 {
     return this->m_metallic;
 }
 
-const float PenMaterial::getRoughness() const
+void PenMaterial::loadMetallic(std::ifstream& infile)
+{
+    std::string tempPath;
+
+    PenCore::PenSerializer()->read(infile, tempPath);
+
+    if (!tempPath.empty())
+    {
+        if (PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
+            this->m_metallic.texture = PenCore::ResourcesManager()->loadResourceFromFile<PenGLTexture>(tempPath.c_str());
+
+        tempPath = "";
+    }
+
+    PenCore::PenSerializer()->read(infile, this->m_metallic.defaultValue);
+}
+
+void PenMaterial::activateMetallic()
+{
+    if (this->m_metallic.texture)
+    {
+        std::shared_ptr<PenGLTexture> ptr = std::dynamic_pointer_cast<PenGLTexture>(this->m_metallic.texture);
+        ptr->dataPtr()->activate(1);
+    }
+    else
+    {
+        PenGLTexture::defaultTexture()->dataPtr()->activate(1);
+    }
+
+    this->m_shader->setUniform("mat.metallicMap", 1);
+    this->m_shader->setUniform("mat.metallic", this->m_metallic.defaultValue);
+}
+
+#pragma endregion
+
+#pragma region Roughness
+void PenMaterial::setRoughness(const float rough)
+{
+    this->m_roughness.defaultValue = rough;
+}
+
+void PenMaterial::setRoughness(std::shared_ptr<PenTextureBase> ptr)
+{
+    this->m_roughness.texture = ptr;
+}
+
+void PenMaterial::setRoughness(const PenMaterialProperty<float>& prop)
+{
+    this->m_roughness = prop;
+}
+
+const PenMaterialProperty<float>& PenMaterial::getRoughness() const
 {
     return this->m_roughness;
 }
 
-const float PenMaterial::getAmbientOcclusion() const
+void PenMaterial::loadRoughness(std::ifstream& infile)
+{
+    std::string tempPath;
+
+    PenCore::PenSerializer()->read(infile, tempPath);
+
+    if (!tempPath.empty())
+    {
+        if (PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
+            this->m_roughness.texture = PenCore::ResourcesManager()->loadResourceFromFile<PenGLTexture>(tempPath.c_str());
+
+        tempPath = "";
+    }
+
+    PenCore::PenSerializer()->read(infile, this->m_roughness.defaultValue);
+}
+
+void PenMaterial::activateRoughness()
+{
+    if (this->m_roughness.texture)
+    {
+        std::shared_ptr<PenGLTexture> ptr = std::dynamic_pointer_cast<PenGLTexture>(this->m_roughness.texture);
+        ptr->dataPtr()->activate(2);
+    }
+    else
+    {
+        PenGLTexture::defaultTexture()->dataPtr()->activate(2);
+    }
+
+    this->m_shader->setUniform("mat.roughnessMap", 2);
+    this->m_shader->setUniform("mat.roughness", this->m_roughness.defaultValue);
+}
+#pragma endregion
+
+#pragma region Ambient occlusion
+void PenMaterial::setAmbientOcclusion(const float ao)
+{
+    this->m_ambientOcclusion.defaultValue = ao;
+}
+
+void PenMaterial::setAmbientOcclusion(std::shared_ptr<PenTextureBase> ptr)
+{
+    this->m_ambientOcclusion.texture = ptr;
+}
+
+void PenMaterial::setAmbientOcclusion(const PenMaterialProperty<float>& prop)
+{
+    this->m_ambientOcclusion = prop;
+}
+
+const PenMaterialProperty<float>& PenMaterial::getAmbientOcclusion() const
 {
     return this->m_ambientOcclusion;
 }
 
-void PenMaterial::generateTextures(const std::vector<std::string> texPath)
+void PenMaterial::loadAmbientOcclusion(std::ifstream& infile)
 {
-    if (texPath.empty())
-    {
-        this->m_texture.push_back(PenTextureBase::defaultTexture());
-        return;
-    }
+    std::string tempPath;
 
-    std::shared_ptr<PenTextureBase> tex = nullptr;
+    PenCore::PenSerializer()->read(infile, tempPath);
 
-    for (std::string path : texPath)
+    if (!tempPath.empty())
     {
         if (PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
-            tex = PenCore::ResourcesManager()->loadResourceFromFile<PenGLTexture>(path.c_str());
+            this->m_ambientOcclusion.texture = PenCore::ResourcesManager()->loadResourceFromFile<PenGLTexture>(tempPath.c_str());
 
-        if (!tex)
-        {
-            tex = nullptr;
-            continue;
-        }
-
-        this->m_texture.push_back(tex);
+        tempPath = "";
     }
+
+    PenCore::PenSerializer()->read(infile, this->m_ambientOcclusion.defaultValue);
+}
+
+void PenMaterial::activateAmbientOcclusion()
+{
+    if (this->m_ambientOcclusion.texture)
+    {
+        std::shared_ptr<PenGLTexture> ptr = std::dynamic_pointer_cast<PenGLTexture>(this->m_ambientOcclusion.texture);
+        ptr->dataPtr()->activate(3);
+    }
+    else
+    {
+        PenGLTexture::defaultTexture()->dataPtr()->activate(3);
+    }
+
+    this->m_shader->setUniform("mat.aoMap", 3);
+    this->m_shader->setUniform("mat.ao", this->m_ambientOcclusion.defaultValue);
 }
 #pragma endregion
+
+void PenMaterial::shaderActivation()
+{
+    if (PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
+        GLShaderActivation();
+}
+
+void PenMaterial::GLShaderActivation()
+{
+    this->activateAlbedo();
+    this->activateMetallic();
+    this->activateRoughness();
+    this->activateAmbientOcclusion();
+}

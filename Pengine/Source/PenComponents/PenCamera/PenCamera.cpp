@@ -1,4 +1,10 @@
 #include "PenComponents/PenCamera/PenCamera.h"
+#include "PenComponents/PenTransform/PenTransform.h"
+
+#include "PenResources/OpenGl/Private_PenGLShaderProgram.h"
+
+#include "Matrix/Mat4.h"
+
 
 using namespace Pengine::Components;
 
@@ -129,4 +135,12 @@ void PenCamera::updateViewMatrix(const PenMath::Transform& trans)
 
 	this->SetState(PenComponentState::DIRTY, true);
 }
+
+void PenCamera::shaderActivation(std::shared_ptr<Resources::PenShaderProgramBase> prog, const PenTransform& trans)
+{
+	prog->setUniform("projection", this->m_projectionMatrix);
+	prog->setUniform("view", this->m_viewMatrix);
+	prog->setUniform("camPos",trans.getGlobalTransform().position);
+}
+
 

@@ -9,13 +9,23 @@ in vec2 TexCoords;
 in vec3 FragPos;
 in vec3 Normal;
 
-//TODO: Material Struct here
-uniform vec3  albedo;
-uniform float metallic;
-uniform vec3 camPos;
-uniform float roughness;
-uniform float ao;
+struct Material
+{
+    vec3  albedo;
+    sampler2D albedoMap;
 
+    float metallic;
+    sampler2D metallicMap;
+
+    float roughness;
+    sampler2D roughnessMap;
+
+    float ao;
+    sampler2D aoMap;
+};
+uniform Material mat;
+
+uniform vec3 camPos;
 
 uniform int numPointLight;
 struct PointLight
@@ -90,7 +100,7 @@ vec3 ComputePBR(vec3 L, vec3 V, vec3 N, vec3 radiance, vec3 albedo, float metall
 {
     vec3 H = normalize(V + L);
     
-    float NdotV = max(dot(N, V), 0);
+    float NdotV = max(dot(N, V), 0.0001);
     float NdotL = max(dot(N, L), 0.0001);
     float HdotV = max(dot(H, V), 0.0);
     
@@ -114,6 +124,12 @@ void main()
 {
     vec3 N = normalize(Normal);
     vec3 V = normalize(camPos - FragPos);
+
+    vec3 albedo     =   texture(mat.albedoMap, TexCoords).rgb * mat.albedo;
+    float roughness =   texture(mat.roughnessMap, TexCoords).r * mat.roughness;
+    float metallic  =   texture(mat.metallicMap, TexCoords).r * mat.metallic;
+    float ao        =   texture(mat.aoMap, TexCoords).r * mat.ao;
+
     vec3 F0 = mix(vec3(0.04), albedo, metallic);
     
     vec3 TotalLo = vec3(0.0);
