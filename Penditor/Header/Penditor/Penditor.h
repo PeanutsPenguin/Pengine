@@ -6,12 +6,12 @@ namespace Penditor
 {
 	class PenFreeCam;
 
-	class PenCore
+	class PenditorCore
 	{
 	public:
-		PenCore() = delete;
+		PenditorCore() = delete;
 
-		~PenCore() = delete;
+		~PenditorCore() = delete;
 
 		static void runEditor();
 

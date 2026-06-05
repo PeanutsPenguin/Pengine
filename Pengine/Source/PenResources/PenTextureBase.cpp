@@ -9,7 +9,7 @@ using namespace Pengine::Resources;
 std::shared_ptr<PenTextureBase> PenTextureBase::defaultTexture()
 {
 	if(PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
-		return PenCore::ResourcesManager()->loadResourceFromFile<PenGLTexture>("Textures/NoTexture.penfile");
+		return PenCore::ResourcesManager()->loadResourceFromFile<PenGLTexture>("Textures/defaultTex.penfile");
 
 	return nullptr;
 }

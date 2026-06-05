@@ -10,6 +10,7 @@ namespace Pengine
 		PenMath::Vector3f position;
 		PenMath::Vector3f normal;
 		PenMath::Vector2f uv;
+		PenMath::Vector3f tangent;
 	};
 
 }

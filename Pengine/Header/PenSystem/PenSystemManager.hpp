@@ -2,6 +2,8 @@
 
 #include "PenSystem/PenSystemManager.h"
 
+#include "PenSystem/PenLightSystem/PenLightSystem.h"
+
 #include <iostream>
 
 namespace Pengine::System

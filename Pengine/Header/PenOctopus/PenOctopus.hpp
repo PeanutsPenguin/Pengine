@@ -28,14 +28,14 @@ namespace Pengine
 	template<typename T>
 	inline void PenOctopus::removeComponent(PenObjectId obj)
 	{
-		m_PenComponentManager->removeComponent<T>(obj);
-
 		PenComponentSignature signature = m_PenObjectManager->getSignature(obj);
 		signature.set(m_PenComponentManager->getComponentType<T>(), false);
 		m_PenObjectManager->setSignature(obj, signature);
 
 		if (this->m_mainScene->isObjectInScene(obj))
 			m_PenSystemManager->PenObjectSignatureChanged(obj, signature);
+
+		m_PenComponentManager->removeComponent<T>(obj);
 	}
 
 	template<typename T>

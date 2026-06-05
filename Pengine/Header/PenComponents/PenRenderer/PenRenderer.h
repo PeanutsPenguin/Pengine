@@ -4,7 +4,7 @@
 
 //Resources
 #include "PenResources/PenModel.h"
-#include "PenResources/PenMaterial.h"
+#include "PenResources/PenMaterial/PenMaterial.h"
 
 namespace Pengine::Components
 {

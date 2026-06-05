@@ -18,8 +18,6 @@ void PenResourcesManager::clearUnused()
                 m_idToPathfile.erase(it->first);
                 m_pathfileToId.erase(path);
             }
-
-
         }
         else
             ++it;

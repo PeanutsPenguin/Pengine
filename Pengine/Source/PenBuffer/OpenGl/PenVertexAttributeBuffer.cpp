@@ -58,6 +58,12 @@ bool PenVertexAttributeBuffer::defineAttribute(size_t index, unsigned int vertSi
 		glVertexAttribPointer(static_cast<GLuint>(index), components, GL_FLOAT, GL_FALSE, stride,
 			(void*)offsetof(Pengine::PenVertex, uv));
 		return true;
+	case 3:
+		components = 3;
+		glEnableVertexAttribArray(static_cast<GLuint>(index));
+		glVertexAttribPointer(static_cast<GLuint>(index), components, GL_FLOAT, GL_FALSE, stride,
+			(void*)offsetof(Pengine::PenVertex, tangent));
+		return true;
 	default:
 		std::cerr << __FUNCTION__ " Index value :" << index << " is out of range. Pointer not loaded" << std::endl;
 		return false;

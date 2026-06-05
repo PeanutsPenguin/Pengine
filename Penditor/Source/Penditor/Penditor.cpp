@@ -7,12 +7,14 @@
 
 using namespace Penditor;
 
-bool PenCore::m_shouldStop = true;
-std::unique_ptr<PenFreeCam> PenCore::m_editorCam = std::make_unique<PenFreeCam>();
+bool PenditorCore::m_shouldStop = true;
+std::unique_ptr<PenFreeCam> PenditorCore::m_editorCam = std::make_unique<PenFreeCam>();
 
-void PenCore::runEditor()
+void PenditorCore::runEditor()
 {
 	m_shouldStop = false;
+
+	Pengine::PenCore::PenWindow()->setWindowSize(Pengine::PenCore::PenWindow()->getWindowSize());
 
 	while (!m_shouldStop && !Pengine::PenCore::shouldStop())
 	{
@@ -29,24 +31,24 @@ void PenCore::runEditor()
 	destroy();
 }
 
-void PenCore::stopEditor()
+void PenditorCore::stopEditor()
 {
 	m_shouldStop = true;
 }
 
-std::unique_ptr<PenFreeCam>& Penditor::PenCore::getEditorCam()
+std::unique_ptr<PenFreeCam>& Penditor::PenditorCore::getEditorCam()
 {
 	return m_editorCam;
 }
 
-void PenCore::update(double dt)
+void PenditorCore::update(double dt)
 {
 	m_editorCam->update(dt);
 
 	handleInputs();
 }
 
-void PenCore::handleInputs()
+void PenditorCore::handleInputs()
 {
 	std::unique_ptr<Pengine::PenInputManager>& ptr = Pengine::PenCore::PenInputManager();
 
@@ -65,7 +67,7 @@ void PenCore::handleInputs()
 	}
 }
 
-void PenCore::destroy()
+void PenditorCore::destroy()
 {
 	if (m_editorCam)
 	{

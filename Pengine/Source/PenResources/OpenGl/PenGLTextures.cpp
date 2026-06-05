@@ -33,6 +33,16 @@ PenGLTexture::~PenGLTexture()
 	std::cout << __FUNCTION__ << ": Erase texture with id : " << this->getId() << std::endl;
 }
 
+std::shared_ptr<PenGLTexture> PenGLTexture::defaultTexture()
+{
+	return PenCore::ResourcesManager()->loadResourceFromFile<PenGLTexture>("Textures/defaultTex.penfile");
+}
+
+std::shared_ptr<PenGLTexture> PenGLTexture::noTexture()
+{
+	return PenCore::ResourcesManager()->loadResourceFromFile<PenGLTexture>("Textures/NoTexture.penfile");
+}
+
 #pragma region Resource
 bool PenGLTexture::loadResource(const std::string path)
 {

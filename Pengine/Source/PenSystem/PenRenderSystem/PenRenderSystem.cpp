@@ -17,6 +17,7 @@
 
 //System
 #include "PenSystem/PenCameraSystem/PenCameraSystem.h"
+#include "PenSystem/PenLightSystem/PenLightSystem.h"
 
 //PenMath
 #include <Angle/Radian.h>
@@ -39,26 +40,41 @@ void PenRendererSystem::GLrender()
 
 		if (renderComp.IsState(Components::PenComponentState::ENABLE))
 		{
-			std::shared_ptr<Pengine::Resources::PenMaterial>	mat = renderComp.getMaterial();
-			std::shared_ptr<Resources::PenGLTexture>			tex = std::dynamic_pointer_cast<Resources::PenGLTexture>(mat->getTexture());
-			std::shared_ptr<Resources::PenShaderProgramBase>	prog = mat->getShaderProg();
-			
-			tex->dataPtr()->bind();
+			std::shared_ptr<Pengine::Resources::PenMaterial>				mat = renderComp.getMaterial();
+			std::shared_ptr<Resources::PenShaderProgramBase>				prog = mat->getShaderProg();
 
 			if (!prog->use())
+			{
+				std::cout << "__FUNCTION__ : Shader program failed to use\n";
 				continue;
+			}
 
+			std::shared_ptr<System::PenLightSystem> lightSystem = PenCore::PenOctopus()->getSystem<System::PenLightSystem>();
+			
+			if (!lightSystem)
+			{
+				std::cout << "__FUNCTION__ : Light system failed to get\n";
+				continue;
+			}
+
+			lightSystem->renderUpdate(prog);
+			
 			PenObjectId cam = PenCore::PenOctopus()->getSystem<System::PenCameraSystem>()->getMainCamera();
 
-			if (cam != g_PenObjectInvalidId)
+			if (cam == g_PenObjectInvalidId)
 			{
-				Components::PenCamera&	camComp = PenCore::PenOctopus()->getComponent<Components::PenCamera>(cam);
-				PenMath::Mat4			model = transComp.getGlobalTransform().toMatrix();
-
-				prog->setUniform("projection", camComp.getProjectionMatrix());
-				prog->setUniform("view", camComp.getViewMatrix());
-				prog->setUniform("model", model);
+				std::cout << "__FUNCTION__ : Main camera failed to get or invalid\n";
+				continue;
 			}
+
+			Components::PenCamera&		camComp			= PenCore::PenOctopus()->getComponent<Components::PenCamera>(cam);
+			Components::PenTransform&	transCamComp	= PenCore::PenOctopus()->getComponent<Components::PenTransform>(cam);
+			camComp.shaderActivation(prog, transCamComp);
+
+			PenMath::Mat4 model = transComp.getGlobalTransform().toMatrix();
+			prog->setUniform("model", model);
+
+			mat->shaderActivation();
 
 			renderComp.render();
 		}

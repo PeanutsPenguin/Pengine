@@ -1,6 +1,6 @@
 #pragma once
 
-#include "PenStructsAndEnum/PenLibDefine.h"         //PenLibDefine
+#include "PenDefine/PenLibDefine.h"         //PenLibDefine
 
 #include "Vector/Vector2/Vector2.h"					//Vector 2
 
@@ -73,6 +73,7 @@ namespace Pengine
 		static void		registerTransformSystem();
 		static void		registerRendererSystem();
 		static void		registerCameraSystem();
+		static void		registerLightSystem();
 
 		static std::unique_ptr<PenWindowBase>					m_window;
 		static std::unique_ptr<Pengine::PenOctopus>				m_PenOctopus;

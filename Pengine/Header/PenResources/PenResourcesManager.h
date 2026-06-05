@@ -1,6 +1,7 @@
 #pragma once 
 
-#include "PengineDefine.h"						//PengineDefine
+#include "PenDefine/PengineDefine.h"		//PengineDefine
+
 #include "PenResources/PenResourcesBase.h"		//PenResourceBase
 
 //std

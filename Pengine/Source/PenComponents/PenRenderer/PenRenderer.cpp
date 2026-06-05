@@ -18,7 +18,8 @@ void PenRenderer::setMaterial(std::shared_ptr<Pengine::Resources::PenMaterial> m
 {
 	if(mat)
 		this->m_material = mat;
-	//TODO else : set default mat
+	else 
+		this->m_material = Resources::PenMaterial::defaultMaterial();
 }
 
 void PenRenderer::render()

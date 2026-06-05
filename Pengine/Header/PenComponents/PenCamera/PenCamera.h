@@ -1,4 +1,5 @@
 #pragma once 
+#include <memory>
 
 #include "PenComponents/PenComponentBase.h"
 #include "PenComponents/PenCamera/PenCameraTypesAndValues.h"
@@ -7,8 +8,16 @@
 #include <Matrix/Mat4.h>
 #include <Transform.h>
 
+namespace Pengine::Resources 
+{
+	class PenShaderProgramBase;
+}
+
+
 namespace Pengine::Components
 {
+	class PenTransform;
+
 	class PenCamera final: public PenComponentBase
 	{
 	public:
@@ -44,6 +53,8 @@ namespace Pengine::Components
 
 		void updateProjectionMatrix();
 		void updateViewMatrix(const PenMath::Transform& trans);
+
+		void shaderActivation(std::shared_ptr<Resources::PenShaderProgramBase> shader, const PenTransform& trans);
 
 	private:
 		PenMath::Mat4 m_projectionMatrix;

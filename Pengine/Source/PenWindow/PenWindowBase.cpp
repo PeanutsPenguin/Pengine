@@ -24,3 +24,8 @@ void PenWindowBase::setRenderSystem(std::shared_ptr<System::PenRendererSystem> s
 {
     this->m_renderSystem = system;
 }
+
+const PenMath::Vector2f PenWindowBase::getWindowSize() const
+{
+    return this->m_windowSize;
+}

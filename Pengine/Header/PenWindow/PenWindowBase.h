@@ -26,7 +26,7 @@ namespace Pengine
 		PenWindowBase() = default;
 		PenWindowBase(const PenWindowBase& other) = default;
 		PenWindowBase(PenWindowBase&& other) = default;
-		virtual ~PenWindowBase() = default;
+		virtual ~PenWindowBase();
 
 		PenWindowBase& operator=(const PenWindowBase& rhs) = default;
 		PenWindowBase& operator=(PenWindowBase&& rhs) = default;
@@ -37,7 +37,6 @@ namespace Pengine
 		virtual void render();
 		virtual void postRender() = 0;
 
-
 		/// <summary>
 		/// Edit the private value "size" of this object and the window
 		/// </summary>
@@ -47,7 +46,8 @@ namespace Pengine
 		virtual void	setCursorState(CursorState state) = 0;
 		void			setRenderSystem(std::shared_ptr<System::PenRendererSystem> system);
 
-		CursorState		getCursorState() const;
+		CursorState				getCursorState() const;
+		const PenMath::Vector2f getWindowSize() const;
 
 	protected:
 		std::shared_ptr<System::PenRendererSystem>	m_renderSystem;
