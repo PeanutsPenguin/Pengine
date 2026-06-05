@@ -52,20 +52,23 @@ bool PenGLMesh::initMesh(const aiMesh& assimpMesh)
 	vertices.reserve(assimpMesh.mNumVertices);
 	indices.reserve(static_cast<size_t>(assimpMesh.mNumFaces) * 3);
 
+	bool hasTangent = assimpMesh.HasTangentsAndBitangents();	
+
 	for (size_t i = 0; i < assimpMesh.mNumVertices; ++i)
 	{
 		const aiVector3D
-			&pos = assimpMesh.mVertices[i],
-			&normal = assimpMesh.mNormals[i],
-			&uv = assimpMesh.mTextureCoords[0][i],
-			&tangent = assimpMesh.mTangents[i],
-			&bitangent = assimpMesh.mBitangents[i];
+			& pos = assimpMesh.mVertices[i],
+			& normal = assimpMesh.mNormals[i],
+			& uv = assimpMesh.mTextureCoords[0][i];
+
+		aiVector3D tangent = hasTangent ? assimpMesh.mTangents[i] : aiVector3D(1.0f, 0.0f, 0.0f);
 
 		vertices.push_back(Pengine::PenVertex
 			{
 				.position = { pos.x, pos.y, pos.z }, 
 				.normal = { normal.x, normal.y, normal.z }, 
-				.uv = { uv.x, uv.y }
+				.uv = { uv.x, uv.y },
+				.tangent = { tangent.x, tangent.y, tangent.z }
 			});
 	}
 
@@ -96,7 +99,8 @@ bool PenGLMesh::initMesh(const aiMesh& assimpMesh)
 	m_vertexAttributeBuffer.defineAttribute(0, 3);	//define position
 	m_vertexAttributeBuffer.defineAttribute(1, 3);	//define normal
 	m_vertexAttributeBuffer.defineAttribute(2, 2);	//define uv
-
+	m_vertexAttributeBuffer.defineAttribute(3, 3);	//define tangent
+	
 	m_vertexAttributeBuffer.unbind();
 	m_vertexBuffer.unbind();
 	m_elementBuffer.unbind();

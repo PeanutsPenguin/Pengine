@@ -54,6 +54,8 @@ int main()
 
 		std::shared_ptr<Pengine::Resources::PenGLTexture> defaultText = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLTexture>("Textures/defaultTex.penfile");
 
+		std::shared_ptr<Pengine::Resources::PenGLTexture> noTex = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLTexture>("Textures/NoTexture.penfile");
+
 		//Create Material
 		std::shared_ptr<Pengine::Resources::PenMaterial> materialPtr = resourceManager->createResource<Pengine::Resources::PenMaterial>("CubeMaterial", "Material/", progPtr, glTexture);
 		#pragma endregion
@@ -68,11 +70,14 @@ int main()
 
 		std::shared_ptr<Pengine::Resources::PenGLTexture> basketmet = resourceManager->createResourceFromFile<Pengine::Resources::PenGLTexture>("met.png", "Textures/");
 
+		std::shared_ptr<Pengine::Resources::PenGLTexture> basketNormal = resourceManager->createResourceFromFile<Pengine::Resources::PenGLTexture>("normal.png", "Textures/");
+
 		//Create Material
 		std::shared_ptr<Pengine::Resources::PenMaterial> basketMat = resourceManager->createResource<Pengine::Resources::PenMaterial>("BasketBallMat", "Material/", progPtr, basketdiffuse);
 		basketMat->setAmbientOcclusion(basketao);
 		basketMat->setRoughness(basketRough);
 		basketMat->setMetallic(basketmet);
+		basketMat->setNormal(basketNormal);
 
 		Pengine::PenObjectId newObj = Pengine::PenCore::PenOctopus()->createPenObject();
 		Pengine::Components::PenRenderer renderComp;
@@ -96,24 +101,24 @@ int main()
 		#pragma endregion
 
 		#pragma region Create second object
-		//Pengine::PenObjectId seconNewObj = Pengine::PenCore::PenOctopus()->createPenObject();
+		Pengine::PenObjectId seconNewObj = Pengine::PenCore::PenOctopus()->createPenObject();
 
-		////Transform
-		//Pengine::Components::PenTransform trans = Pengine::Components::PenTransform();
-		//PenMath::Transform newtrans;
-		//newtrans.position = { 0, 100, 0 };
-		//trans.setGlobalTransform(newtrans);
-		//Pengine::PenCore::PenOctopus()->addComponent(seconNewObj, trans);
+		//Transform
+		Pengine::Components::PenTransform trans = Pengine::Components::PenTransform();
+		PenMath::Transform newtrans;
+		newtrans.position = { 0, 100, 0 };
+		trans.setGlobalTransform(newtrans);
+		Pengine::PenCore::PenOctopus()->addComponent(seconNewObj, trans);
 
-		////Light
-		//Pengine::Components::PenLight lightData(Pengine::PenLightType::E_DIRECTIONNAL);
-		//lightData.getLight()->setLightColor({ 1, 1, 1 });	
-		//lightData.getLight()->setIntensity(5);
-		////lightData.SetState(Pengine::Components::PenComponentState::ENABLE, false);
+		//Light
+		Pengine::Components::PenLight lightData(Pengine::PenLightType::E_DIRECTIONNAL);
+		lightData.getLight()->setLightColor({ 1, 1, 1 });	
+		lightData.getLight()->setIntensity(2);
+		//lightData.SetState(Pengine::Components::PenComponentState::ENABLE, false);
 
-		//Pengine::PenCore::PenOctopus()->addComponent(seconNewObj, lightData);
+		Pengine::PenCore::PenOctopus()->addComponent(seconNewObj, lightData);
 
-		//Pengine::PenCore::PenOctopus()->addToScene(seconNewObj);
+		Pengine::PenCore::PenOctopus()->addToScene(seconNewObj);
 		#pragma endregion
 
 		#pragma region Create third object
@@ -143,28 +148,28 @@ int main()
 		//Pengine::PenCore::PenOctopus()->addToScene(thirdObj);
 		#pragma endregion
 
-		#pragma region Create Fourth object
-		Pengine::PenObjectId fourthObj = Pengine::PenCore::PenOctopus()->createPenObject();
+		#pragma region Create Spot Light
+		//Pengine::PenObjectId fourthObj = Pengine::PenCore::PenOctopus()->createPenObject();
 
-		//Transform
-		Pengine::Components::PenTransform trans4 = Pengine::Components::PenTransform();
-		PenMath::Transform newtrans4;
-		newtrans4.position = { 0, 5, 0 };	
-		trans4.setGlobalTransform(newtrans4);
-		Pengine::PenCore::PenOctopus()->addComponent(fourthObj, trans4);
+		////Transform
+		//Pengine::Components::PenTransform trans4 = Pengine::Components::PenTransform();
+		//PenMath::Transform newtrans4;
+		//newtrans4.position = { 0, 5, 0 };	
+		//trans4.setGlobalTransform(newtrans4);
+		//Pengine::PenCore::PenOctopus()->addComponent(fourthObj, trans4);
 
-		//Light
-		Pengine::Components::PenLight lightData2(Pengine::PenLightType::E_SPOT);
-		lightData2.getLight()->setLightColor({ 1, 1, 0 });
-		lightData2.getLight()->setIntensity(20);
-		std::shared_ptr<Pengine::PenSpotLight> spotPtr = std::dynamic_pointer_cast<Pengine::PenSpotLight>(lightData2.getLight());
-		spotPtr->setCutoff(25);
-		spotPtr->setOuterCutoff(35);
+		////Light
+		//Pengine::Components::PenLight lightData2(Pengine::PenLightType::E_SPOT);
+		//lightData2.getLight()->setLightColor({ 1, 1, 0 });
+		//lightData2.getLight()->setIntensity(20);
+		//std::shared_ptr<Pengine::PenSpotLight> spotPtr = std::dynamic_pointer_cast<Pengine::PenSpotLight>(lightData2.getLight());
+		//spotPtr->setCutoff(25);
+		//spotPtr->setOuterCutoff(35);
 
-		
-		Pengine::PenCore::PenOctopus()->addComponent(fourthObj, lightData2);
+		//
+		//Pengine::PenCore::PenOctopus()->addComponent(fourthObj, lightData2);
 
-		Pengine::PenCore::PenOctopus()->addToScene(fourthObj);
+		//Pengine::PenCore::PenOctopus()->addToScene(fourthObj);
 		#pragma endregion
 
 		#pragma region Create Camera

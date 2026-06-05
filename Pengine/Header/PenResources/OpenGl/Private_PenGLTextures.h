@@ -28,6 +28,8 @@ namespace Pengine::Resources
 
 		static std::shared_ptr<PenGLTexture> defaultTexture();
 
+		static std::shared_ptr<PenGLTexture> noTexture();
+
 		/// <summary>
 		/// Return a const pointer to the Texture buffer so the value can't be changed but can be used
 		/// </summary>

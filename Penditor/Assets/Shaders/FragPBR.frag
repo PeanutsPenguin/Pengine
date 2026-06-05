@@ -7,7 +7,8 @@ out vec4 FragColor;
 
 in vec2 TexCoords;
 in vec3 FragPos;
-in vec3 Normal;
+//in vec3 Normal;
+in mat3 TBN;
 
 struct Material
 {
@@ -22,6 +23,8 @@ struct Material
 
     float ao;
     sampler2D aoMap;
+
+    sampler2D normalMap;
 };
 uniform Material mat;
 
@@ -122,8 +125,14 @@ vec3 ComputePBR(vec3 L, vec3 V, vec3 N, vec3 radiance, vec3 albedo, float metall
 
 void main() 
 {
-    vec3 N = normalize(Normal);
+    vec3 localNormal = texture(mat.normalMap, TexCoords).rgb;
+    localNormal = localNormal * 2.0 - 1.0;   
+    
+    vec3 N = normalize(TBN * localNormal);
+
+//    vec3 N = normalize(Normal);       <- Old School normal
     vec3 V = normalize(camPos - FragPos);
+
 
     vec3 albedo     =   texture(mat.albedoMap, TexCoords).rgb * mat.albedo;
     float roughness =   texture(mat.roughnessMap, TexCoords).r * mat.roughness;

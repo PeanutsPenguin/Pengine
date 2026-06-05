@@ -43,6 +43,12 @@ namespace Pengine::Resources
 		//Shader Program
 		void	setShaderProgram(std::shared_ptr<PenShaderProgramBase> prog);
 
+		//Normal
+		void	setNormal(std::shared_ptr<PenTextureBase> ptr);
+		void	saveNormal(std::ofstream& outfile);
+		void	loadNormal(std::ifstream& infile);
+		void	activateNormal();
+
 		//Albedo
 		void	setAlbedo(const PenMath::Vector3f& spec);
 		void	setAlbedo(std::shared_ptr<PenTextureBase> ptr);
@@ -73,16 +79,19 @@ namespace Pengine::Resources
 
 		//Getter
 		const std::shared_ptr<PenShaderProgramBase>&					getShaderProg();
+		const std::shared_ptr<PenTextureBase>&							getNormal();
 		const PenMaterialProperty<PenMath::Vector3f>&					getAlbedo() const;
 		const PenMaterialProperty<float>&								getMetallic() const;
 		const PenMaterialProperty<float>&								getRoughness() const;
 		const PenMaterialProperty<float>& 								getAmbientOcclusion() const;
 
 	private:
-		std::shared_ptr<PenShaderProgramBase>					m_shader;
 		PenMaterialProperty<PenMath::Vector3f>					m_albedo;
 		PenMaterialProperty<float>								m_metallic;
 		PenMaterialProperty<float>								m_roughness;
 		PenMaterialProperty<float>								m_ambientOcclusion;
+
+		std::shared_ptr<PenShaderProgramBase>					m_shader;
+		std::shared_ptr<PenTextureBase>							m_normal;
 	};
 }
