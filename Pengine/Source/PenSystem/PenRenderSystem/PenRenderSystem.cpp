@@ -67,11 +67,11 @@ void PenRendererSystem::GLrender()
 				continue;
 			}
 
-			Components::PenCamera&		camComp = PenCore::PenOctopus()->getComponent<Components::PenCamera>(cam);
-			Components::PenTransform&	transCamComp = PenCore::PenOctopus()->getComponent<Components::PenTransform>(cam);
+			Components::PenCamera&		camComp			= PenCore::PenOctopus()->getComponent<Components::PenCamera>(cam);
+			Components::PenTransform&	transCamComp	= PenCore::PenOctopus()->getComponent<Components::PenTransform>(cam);
 			camComp.shaderActivation(prog, transCamComp);
 
-			PenMath::Mat4				model = transComp.getGlobalTransform().toMatrix();
+			PenMath::Mat4 model = transComp.getGlobalTransform().toMatrix();
 			prog->setUniform("model", model);
 
 			mat->shaderActivation();

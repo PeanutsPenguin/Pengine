@@ -15,16 +15,15 @@ namespace Pengine
 		PenSpotLight& operator=(const PenSpotLight& rhs) = default;
 		PenSpotLight& operator=(PenSpotLight&& rhs) = default;
 
-		const PenMath::Vector3f& getWorldDirection() const;
-		const float getCutoff() const;
-		const float getOuterCutoff() const;
-		const PenLightType		getType() const final;
+		const PenMath::Vector3f&	getWorldDirection() const;
+		const float					getCutoff() const;
+		const float					getOuterCutoff() const;
+		const PenLightType			getType() const final;
 
-		void setWorldDirection(const PenMath::Vector3f& dir);
-		void setCutoff(float cutoff);
-		void setOuterCutoff(float outerCutoff);
-		void setType(const PenLightType type) final;
-
+		void	setWorldDirection(const PenMath::Vector3f& dir);
+		void	setCutoff(float cutoff);
+		void	setOuterCutoff(float outerCutoff);
+		void	setType(const PenLightType type) final;
 
 		void useValues(std::shared_ptr<Resources::PenShaderProgramBase> prog, const PenMath::Transform& position, int index, bool enabled) final;
 

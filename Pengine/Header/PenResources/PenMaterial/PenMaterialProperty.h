@@ -10,6 +10,12 @@ namespace Pengine::Resources
     {
     public:
         PenMaterialProperty() = default;
+        PenMaterialProperty(const PenMaterialProperty& other) = default;
+        PenMaterialProperty(PenMaterialProperty&& other) = default;
+        virtual ~PenMaterialProperty() = default;
+
+        PenMaterialProperty& operator=(const PenMaterialProperty& rhs) = default;
+        PenMaterialProperty& operator=(PenMaterialProperty&& rhs) = default;
 
         PenMaterialProperty(std::shared_ptr<PenTextureBase> ptr, T value)
         {

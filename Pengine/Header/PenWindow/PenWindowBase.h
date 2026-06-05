@@ -37,7 +37,6 @@ namespace Pengine
 		virtual void render();
 		virtual void postRender() = 0;
 
-
 		/// <summary>
 		/// Edit the private value "size" of this object and the window
 		/// </summary>

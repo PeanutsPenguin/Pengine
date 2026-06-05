@@ -40,6 +40,8 @@ namespace Pengine::Resources
 		void shaderActivation();
 		void GLShaderActivation();
 
+		void quickSave();
+
 		//Shader Program
 		void	setShaderProgram(std::shared_ptr<PenShaderProgramBase> prog);
 

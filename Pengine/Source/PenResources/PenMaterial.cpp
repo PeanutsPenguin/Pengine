@@ -9,6 +9,7 @@
 
 using namespace Pengine::Resources;
 
+#pragma region Constructors and destructor
 PenMaterial::PenMaterial(const PenObjectId id) : PenResourcesBase(id)
 {
     this->m_albedo = PenMaterialProperty<PenMath::Vector3f>(nullptr, { 1, 1, 1 });
@@ -21,6 +22,7 @@ PenMaterial::~PenMaterial()
 {
     std::cout << __FUNCTION__ ": Destryoing with id : " << this->getId() << std::endl;
 }
+#pragma endregion 
 
 std::shared_ptr<PenMaterial> PenMaterial::defaultMaterial()
 {
@@ -44,6 +46,7 @@ bool PenMaterial::loadResource(const std::string path)
     this->loadMetallic(infile);
     this->loadRoughness(infile);
     this->loadAmbientOcclusion(infile);
+    this->loadNormal(infile);
 
     infile.close();
 
@@ -61,9 +64,7 @@ bool PenMaterial::loadResource(const std::string path)
         this->m_shader = shader;
 
     this->m_penfilePath = path;
-
-    //TOOD : load textures here
-    
+   
     return true;
 }
 
@@ -95,8 +96,6 @@ bool PenMaterial::createResource(const std::string penfilePath, std::shared_ptr<
         std::cout << __FUNCTION__ "\t Given texture for the material creation is null\n";
     else
         this->m_albedo.texture = tex;
-
-
     
     PenCore::PenSerializer()->write(outfile, this->m_shader->getResourcePath());
 
@@ -105,9 +104,25 @@ bool PenMaterial::createResource(const std::string penfilePath, std::shared_ptr<
     this->m_roughness.serializeProperty(outfile);
     this->m_ambientOcclusion.serializeProperty(outfile);
 
+    this->saveNormal(outfile);
+
     this->m_penfilePath = penfilePath;
 
     return true;
+}
+
+void PenMaterial::quickSave()
+{
+    std::ofstream outfile(this->m_penfilePath, std::ios::binary);
+
+    PenCore::PenSerializer()->write(outfile, this->m_shader->getResourcePath());
+
+    this->m_albedo.serializeProperty(outfile);
+    this->m_metallic.serializeProperty(outfile);
+    this->m_roughness.serializeProperty(outfile);
+    this->m_ambientOcclusion.serializeProperty(outfile);
+
+    this->saveNormal(outfile);
 }
 #pragma endregion
 
