@@ -108,42 +108,35 @@ namespace Pengine::Resources
 		return ptr;
 	}
 
-	template<typename _ResourceType>
+	RESOURCE_TEMPLATE
 		requires std::derived_from<_ResourceType, PenResourcesBase>
-	inline std::shared_ptr<_ResourceType> PenResourcesManager::getResourceById(const PenResourcesId id)
+	inline std::shared_ptr<_ResourceType> PenResourcesManager::loadResourceFromFile(const char* path, bool persistent, Args... data)
 	{
 		//Check if it doesn't already exist
-		auto it = m_resourceStocker.find(id);
-		if (it != m_resourceStocker.end())
-		{
-			//If it exists but expired reload it (should not go there)
-			if(it->second.expired())
-			{
-				std::cout << __FUNCTION__ << "\tResources with id :" << id << "exists but is expired, reloading it" << std::endl;
-				std::shared_ptr<_ResourceType> ptr = std::dynamic_pointer_cast<_ResourceType>(it->second.lock());
-				if (!ptr->loadResource(m_idToPathfile[id].data()))
-					return nullptr;
+		auto it = m_pathfileToId.find(path);
 
-				return ptr;
-			}
-			else 
-				return std::dynamic_pointer_cast<_ResourceType>(it->second.lock());
+		if (it != m_pathfileToId.end())
+			return std::dynamic_pointer_cast<_ResourceType>(m_persistentResourcestocker[it->second]);
+
+		std::cout << __FUNCTION__ << "\tResources : " << path << " doesn't exist, loading it" << std::endl;
+
+		PenResourcesId curId = m_currentId++;
+
+		std::shared_ptr<_ResourceType> ptr = std::make_shared<_ResourceType>(curId);
+
+		if (!ptr->loadResource(path, data...))
+		{
+			return nullptr;
 		}
 
-		// If it doesn't exist, reload resources
-		auto pathIt = m_idToPathfile.find(id);
-		if (pathIt != m_idToPathfile.end()) 
-		{
-			std::cout << __FUNCTION__ << "\tResources with id :" << id << "is not loaded anymore, reloading it" << std::endl;
-			std::shared_ptr<_ResourceType> ptr = std::make_shared<_ResourceType>();
+		m_idToPathfile[curId] = path;
+		m_pathfileToId[path] = curId;
 
-			if (!ptr->loadResource(pathIt->second.data()))
-				return nullptr;
+		if(persistent)
+			m_persistentResourcestocker[curId] = ptr;
+		else 
+			m_resourceStocker[curId] = ptr;
 
-			m_resourceStocker[id] = ptr;
-			return ptr;
-		}
-
-		return nullptr;
+		return ptr;
 	}
 }

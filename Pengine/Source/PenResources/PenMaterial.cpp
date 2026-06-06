@@ -186,9 +186,8 @@ void PenMaterial::activateNormal()
 		ptr->dataPtr()->activate(3);
 	}
 	else
-	{
-		PenGLTexture::noTexture()->dataPtr()->activate(3);
-	}
+        PenGLTexture::noTexture()->dataPtr()->activate(3);
+
 	this->m_shader->setUniform("mat.normalMap", 3);
 }
 
