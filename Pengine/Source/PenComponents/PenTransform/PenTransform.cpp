@@ -39,6 +39,7 @@ void PenTransform::setLocalTransform(const PenMath::Transform& transform)
 
 void PenTransform::setGlobalTransform(const PenMath::Transform& transform)
 {
+	//TODO: Re-calculate local transform based on parent global transform 
 	if (transform == this->m_globalTransform)
 		return;
 
@@ -63,4 +64,19 @@ void PenTransform::setParent(const PenObjectId entity, bool keepPosition)
 }
 #pragma endregion
 
+#pragma region Direction Vectors
+PenMath::Vector3f PenTransform::getForward() const
+{
+	return this->m_globalTransform.getForward();
+}
 
+PenMath::Vector3f PenTransform::getUp() const
+{
+	return this->m_globalTransform.getUp();
+}
+
+PenMath::Vector3f PenTransform::getRight() const
+{
+	return this->m_globalTransform.getRight();
+}
+#pragma endregion

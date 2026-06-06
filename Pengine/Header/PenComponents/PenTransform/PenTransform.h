@@ -5,6 +5,7 @@
 
 namespace Pengine::Components
 {
+	//TODO: Do something when the omponent state is dirty
 	class PenTransform final : public PenComponentBase
 	{
 	public:
@@ -22,6 +23,9 @@ namespace Pengine::Components
 		void						setLocalTransform(const PenMath::Transform& transform);
 		void						setGlobalTransform(const PenMath::Transform& transform);
 		void						setParent(const PenObjectId entity, bool keepPosition = true);
+		PenMath::Vector3f 			getForward()			const;	
+		PenMath::Vector3f 			getUp()					const;
+		PenMath::Vector3f 			getRight()				const;
 
 	private:
 		PenMath::Transform m_globalTransform;
