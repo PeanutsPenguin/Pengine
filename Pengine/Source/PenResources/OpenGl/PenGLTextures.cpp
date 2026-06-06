@@ -35,12 +35,12 @@ PenGLTexture::~PenGLTexture()
 
 std::shared_ptr<PenGLTexture> PenGLTexture::defaultTexture()
 {
-	return PenCore::ResourcesManager()->loadResourceFromFile<PenGLTexture>("Textures/defaultTex.penfile");
+	return PenCore::ResourcesManager()->loadResourceFromFile<PenGLTexture>("Textures/defaultTex.penfile", true);
 }
 
 std::shared_ptr<PenGLTexture> PenGLTexture::noTexture()
 {
-	return PenCore::ResourcesManager()->loadResourceFromFile<PenGLTexture>("Textures/NoTexture.penfile");
+	return PenCore::ResourcesManager()->loadResourceFromFile<PenGLTexture>("Textures/NoTexture.penfile", true);
 }
 
 #pragma region Resource

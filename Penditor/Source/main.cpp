@@ -51,37 +51,8 @@ int main()
 
 		//Create Texture
 		std::shared_ptr<Pengine::Resources::PenGLTexture> glTexture = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLTexture>("Textures/container_diffuse.penfile");
-
-		std::shared_ptr<Pengine::Resources::PenGLTexture> defaultText = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLTexture>("Textures/defaultTex.penfile");
-
-		std::shared_ptr<Pengine::Resources::PenGLTexture> noTex = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLTexture>("Textures/NoTexture.penfile");
-
-		//Create Material
-		std::shared_ptr<Pengine::Resources::PenMaterial> materialPtr = resourceManager->createResource<Pengine::Resources::PenMaterial>("CubeMaterial", "Material/", progPtr, glTexture);
 		#pragma endregion
 		   
-
-		#pragma region Create PBR Material
-		//std::shared_ptr<Pengine::Resources::PenGLTexture> basketdiffuse = resourceManager->createResourceFromFile<Pengine::Resources::PenGLTexture>("base.png", "Textures/");
-
-		//std::shared_ptr<Pengine::Resources::PenGLTexture> basketRough = resourceManager->createResourceFromFile<Pengine::Resources::PenGLTexture>("rough.png", "Textures/");
-
-		//std::shared_ptr<Pengine::Resources::PenGLTexture> basketao = resourceManager->createResourceFromFile<Pengine::Resources::PenGLTexture>("ao.jpg", "Textures/");
-
-		//std::shared_ptr<Pengine::Resources::PenGLTexture> basketmet = resourceManager->createResourceFromFile<Pengine::Resources::PenGLTexture>("met.png", "Textures/");
-
-		//std::shared_ptr<Pengine::Resources::PenGLTexture> basketNormal = resourceManager->createResourceFromFile<Pengine::Resources::PenGLTexture>("normal.png", "Textures/");
-
-		////Create Material
-		//std::shared_ptr<Pengine::Resources::PenMaterial> basketMat = resourceManager->createResource<Pengine::Resources::PenMaterial>("BasketBallMat", "Material/", progPtr, basketdiffuse);
-		//basketMat->setAmbientOcclusion(basketao);
-		//basketMat->setRoughness(basketRough);
-		//basketMat->setMetallic(basketmet);
-		//basketMat->setNormal(basketNormal);
-
-		//basketMat->quickSave();
-		#pragma endregion
-
 		#pragma region Create First Object
 		std::shared_ptr<Pengine::Resources::PenMaterial> basketMat = resourceManager->loadResourceFromFile<Pengine::Resources::PenMaterial>("Material/BasketBallMat.penfile");
 

@@ -34,9 +34,13 @@ namespace Pengine::Resources
 			requires std::derived_from<_ResourceType, PenResourcesBase>
 		_NODISCARD std::shared_ptr<_ResourceType> loadResourceFromFile(const char* path, Args... data);
 
-		template<typename _ResourceType>
+		/// <summary>
+		/// Function to load a resource from file and stock it as persistent, so it won't be cleared by the clearUnused function
+		/// </summary>
+		/// <returns>Pointers to the loaded resource</returns>
+		template<typename _ResourceType, typename... Args>
 			requires std::derived_from<_ResourceType, PenResourcesBase>
-		_NODISCARD std::shared_ptr<_ResourceType> getResourceById(const PenResourcesId id);
+		_NODISCARD std::shared_ptr<_ResourceType> loadResourceFromFile(const char* path, bool persistent, Args... data);
 
 		_NODISCARD const char* getResourcePathById(const PenResourcesId id) const;
 		
@@ -49,6 +53,7 @@ namespace Pengine::Resources
 		std::unordered_map<PenResourcesId, std::string>							m_idToPathfile;
 		std::unordered_map<std::string, PenResourcesId>							m_pathfileToId;
 		std::unordered_map<PenResourcesId, std::weak_ptr<PenResourcesBase>>		m_resourceStocker;
+		std::unordered_map<PenResourcesId, std::shared_ptr<PenResourcesBase>>	m_persistentResourcestocker;
 
 		PenResourcesId m_currentId;
 	};
