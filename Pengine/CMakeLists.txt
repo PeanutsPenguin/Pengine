@@ -91,6 +91,7 @@ target_link_libraries(${TARGET_NAME} PUBLIC PenMath)
 
 target_include_directories(${TARGET_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Header)
 target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/Header)
+target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/Header/ImGui)
 
 foreach(DIRECTORY ${TARGET_DIRECTORIES})
     if(IS_DIRECTORY ${DIRECTORY})
