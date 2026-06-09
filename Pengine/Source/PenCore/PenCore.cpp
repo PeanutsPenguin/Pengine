@@ -1,12 +1,13 @@
 #include "PenCore/PenCore.h"                        
 
-#include "PenComponents/PenComponentsManager.h"     //Component Manager
-#include "PenObject/PenObjectManager.h"             //PenObject Manager
-#include "PenResources/PenResourcesManager.h"       //PenResource Manager
-#include "PenInput/PenInput.h"                      //PenInput
-#include "PenOctopus/PenOctopus.h"                  //PenOctopus
-#include "PenSerializer/PenSerializer.h"            //PenSerializer
-#include "PenWindow/GLFW/Private_GLFWPenWindow.h"   //PenWindow
+#include "PenComponents/PenComponentsManager.h"             //Component Manager
+#include "PenObject/PenObjectManager.h"                     //PenObject Manager
+#include "PenResources/PenResourcesManager.h"               //PenResource Manager
+#include "PenInput/PenInput.h"                              //PenInput
+#include "PenOctopus/PenOctopus.h"                          //PenOctopus
+#include "PenSerializer/PenSerializer.h"                    //PenSerializer
+#include "PenWindow/GLFW/Private_GLFWPenWindow.h"           //PenWindow
+#include "PenVirtualWindow/Private_ImGuiVirtualWindow.h"
 
 //Components
 #include "PenComponents/PenRenderer/PenRenderer.h"
@@ -41,9 +42,11 @@ bool PenCore::m_shouldStop      = 0;
 
 bool PenCore::init(const char* name, const PenMath::Vector2f& windowSize)
 {
-    m_libs.input = InputLib::E_GLFW_INPUT;
-    m_libs.window = WindowLib::E_GLFW_WINDOW;
-    m_libs.render = RenderLib::E_OPENGL_RENDER;
+    //Will be changed in defines
+    m_libs.input    = InputLib::E_GLFW_INPUT;
+    m_libs.window   = WindowLib::E_GLFW_WINDOW;
+    m_libs.render   = RenderLib::E_OPENGL_RENDER;
+	m_libs.ui       = UILib::E_IMGUI; 
 
     if (m_libs.window == WindowLib::E_GLFW_WINDOW)
         m_window = std::make_unique<GLFWPenWindow>();
@@ -51,10 +54,12 @@ bool PenCore::init(const char* name, const PenMath::Vector2f& windowSize)
     if(!m_window->init(name, windowSize))
         return false;
 
+    if (m_libs.ui == UILib::E_IMGUI)
+		//Pengine::ui::ImGuiWrapper::init();
+
     m_PenOctopus->init();
 
     registerDefaultType();
-
 
     return true;
 }
