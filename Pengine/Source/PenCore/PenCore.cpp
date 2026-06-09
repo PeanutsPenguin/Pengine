@@ -105,6 +105,11 @@ RenderLib PenCore::renderLib()
     return m_libs.render;
 }
 
+UILib PenCore::uiLib()
+{
+    return m_libs.ui;
+}
+
 double PenCore::getDeltaTime()
 {
     return m_deltaTime;

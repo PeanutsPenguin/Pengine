@@ -46,6 +46,7 @@ namespace Pengine
 		static InputLib			inputLib();
 		static WindowLib		windowLib();
 		static RenderLib		renderLib();
+		static UILib			uiLib();
 
 		static double getDeltaTime();
 
