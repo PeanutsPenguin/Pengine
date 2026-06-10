@@ -9,10 +9,14 @@
 #pragma region Forward declarations
 namespace Pengine
 {
-	class PenWindowBase;
 	class PenOctopus;
 	class PenInputManager;
 	
+	namespace Window
+	{
+		class PenWindow;
+	}
+
 	namespace Resources
 	{
 		class PenResourcesManager;
@@ -34,9 +38,9 @@ namespace Pengine
 		PenCore() = delete;
 		~PenCore() = delete;
 
-		static bool init(const char* name, const PenMath::Vector2f& windowSize);
+		static bool init(const char* name, const PenMath::Vector2& windowSize);
 
-		static std::unique_ptr<PenWindowBase>&						PenWindow();
+		static std::unique_ptr<Pengine::Window::PenWindow>&			MainPenWindow();
 		static std::unique_ptr<Pengine::PenInputManager>&			PenInputManager();
 		static std::unique_ptr<Pengine::PenOctopus>&				PenOctopus();
 		static std::unique_ptr<Resources::PenResourcesManager>&		ResourcesManager();
@@ -44,9 +48,7 @@ namespace Pengine
 
 		static PenLibDefine&	libDefine();
 		static InputLib			inputLib();
-		static WindowLib		windowLib();
 		static RenderLib		renderLib();
-		static UILib			uiLib();
 
 		static double getDeltaTime();
 
@@ -76,7 +78,7 @@ namespace Pengine
 		static void		registerCameraSystem();
 		static void		registerLightSystem();
 
-		static std::unique_ptr<PenWindowBase>					m_window;
+		static std::unique_ptr<Pengine::Window::PenWindow>		m_window;
 		static std::unique_ptr<Pengine::PenOctopus>				m_PenOctopus;
 		static std::unique_ptr<Pengine::PenInputManager>		m_PenInputManager;
 		static std::unique_ptr<Resources::PenResourcesManager>	m_resourcesManager;

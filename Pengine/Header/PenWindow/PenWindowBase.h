@@ -15,43 +15,50 @@ namespace Pengine
 	{
 		class PenRendererSystem;
 	}
+
+	namespace Window
+	{
+		class WindowWrapper;
+	}
 }
 #pragma endregion
 
-namespace Pengine
+namespace Pengine::Window
 {
-	class PenWindowBase
+	class PenWindow
 	{
 	public:
-		PenWindowBase() = default;
-		PenWindowBase(const PenWindowBase& other) = default;
-		PenWindowBase(PenWindowBase&& other) = default;
-		virtual ~PenWindowBase();
+		PenWindow() = default;
+		PenWindow(const PenWindow& other) = default;
+		PenWindow(PenWindow&& other) = default;
+		~PenWindow();
 
-		PenWindowBase& operator=(const PenWindowBase& rhs) = default;
-		PenWindowBase& operator=(PenWindowBase&& rhs) = default;
+		PenWindow& operator=(const PenWindow& rhs) = default;
+		PenWindow& operator=(PenWindow&& rhs) = default;
 
-		virtual bool init(const char* name, const PenMath::Vector2f& size) = 0;
+		bool init(const char* name, const PenMath::Vector2& size);
 
-		virtual void preRender(const PenScene& mainScene) = 0;
-		virtual void render();
-		virtual void postRender() = 0;
+		void preRender(const PenScene& mainScene);
+		void render();
+		void postRender();
 
 		/// <summary>
 		/// Edit the private value "size" of this object and the window
 		/// </summary>
 		/// <param name="size">The new Size</param>
 		/// <param name="resizeWindow">True if you want to resize the viewPort</param>
-		virtual void	setWindowSize(const PenMath::Vector2f& size, bool resizeWindow = true) = 0;
-		virtual void	setCursorState(CursorState state) = 0;
-		void			setRenderSystem(std::shared_ptr<System::PenRendererSystem> system);
+		void	setWindowSize(const PenMath::Vector2& size, bool resizeWindow = true);
+		void	setCursorState(CursorState state);
+		void	setRenderSystem(std::shared_ptr<System::PenRendererSystem> system);
 
-		CursorState				getCursorState() const;
-		const PenMath::Vector2f getWindowSize() const;
+		CursorState						getCursorState() const;
+		const PenMath::Vector2&			getWindowSize() const;
+		Window::WindowWrapper*			getWindow();
 
 	protected:
 		std::shared_ptr<System::PenRendererSystem>	m_renderSystem;
-		PenMath::Vector2f							m_windowSize;
+		PenMath::Vector2							m_windowSize;
 		CursorState									m_state = CursorState::E_NORMAL;
+		Window::WindowWrapper*						m_windowWrapper;
 	};
 }

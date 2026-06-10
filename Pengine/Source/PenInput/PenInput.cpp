@@ -1,7 +1,8 @@
 #include "PenInput/PenInput.h"
 
 #include "PenCore/PenCore.h"							//PenCore
-#include "PenWindow/GLFW/Private_GLFWPenWindow.h"		//PenWindow
+#include "PenWindow/Private_GLFWPenWindow.h"
+#include "PenWindow/PenWindowBase.h"
 
 //Lib
 #include <glad/glad.h>
@@ -159,7 +160,7 @@ PenInputType Pengine::PenInputManager::GLFWfindKeyState(const PenInput& input)
 {
 	int glfwKey = this->GLFWinput(input);
 
-	GLFWPenWindow* window = dynamic_cast<GLFWPenWindow*>(PenCore::PenWindow().get());
+	Pengine::Window::WindowWrapper* window = PenCore::MainPenWindow().get()->getWindow();
 
 	if (!window)
 	{
@@ -170,9 +171,9 @@ PenInputType Pengine::PenInputManager::GLFWfindKeyState(const PenInput& input)
 	int result = 0;
 
 	if(input >= 39 && input <= 41)
-		result = glfwGetMouseButton(window->getWindowPtr(), glfwKey);
+		result = glfwGetMouseButton(*window, glfwKey);
 	else 
-		result = glfwGetKey(window->getWindowPtr(), glfwKey);
+		result = glfwGetKey(*window, glfwKey);
 
 	if (result == GLFW_PRESS)
 		return PenInputType::E_PRESSED;
@@ -217,7 +218,7 @@ int PenInputManager::GLFWMouseInput(const PenInput& input)
 
 void PenInputManager::GLFWupdateMouse()
 {
-	GLFWPenWindow* window = dynamic_cast<GLFWPenWindow*>(PenCore::PenWindow().get());
+	Pengine::Window::WindowWrapper* window = PenCore::MainPenWindow().get()->getWindow();
 
 	if (!window)
 	{
@@ -226,7 +227,7 @@ void PenInputManager::GLFWupdateMouse()
 	}
 
 	double xpos, ypos;
-	glfwGetCursorPos(window->getWindowPtr(), &xpos, &ypos);
+	glfwGetCursorPos(*window, &xpos, &ypos);
 
 	PenMath::Vector2 pos{ (int)xpos, (int)ypos };
 	this->m_offset = pos - m_mousePos;
@@ -235,7 +236,7 @@ void PenInputManager::GLFWupdateMouse()
 
 void PenInputManager::GLFWresetMousePos()
 {
-	GLFWPenWindow* window = dynamic_cast<GLFWPenWindow*>(PenCore::PenWindow().get());
+	Pengine::Window::WindowWrapper* window = PenCore::MainPenWindow().get()->getWindow();
 
 	if (!window)
 	{
@@ -246,6 +247,6 @@ void PenInputManager::GLFWresetMousePos()
 	PenMath::Vector2 oldMousePos = this->m_offset + this->m_mousePos;
 	this->m_mousePos = oldMousePos;
 
-	glfwSetCursorPos(window->getWindowPtr(), (double)oldMousePos.x, (double)oldMousePos.y);
+	glfwSetCursorPos(*window, (double)oldMousePos.x, (double)oldMousePos.y);
 }
 #pragma endregion

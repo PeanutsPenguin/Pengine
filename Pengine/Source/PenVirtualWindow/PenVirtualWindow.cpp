@@ -10,20 +10,17 @@ using namespace Pengine::ui;
 #pragma region Base Function
 void PenVirtualWindow::render()
 {
-	if (PenCore::uiLib() == UILib::E_IMGUI)
-		ImGuiRendering();
+	ImGuiRendering();
 }
 
 void PenVirtualWindow::setViewportBackgroundColor(const Pengine::PenColor& col)
 {
-	if (PenCore::windowLib() == WindowLib::E_GLFW_WINDOW)
-		Window::GLFWWrapper::changeBackgroundColor(col);
+	Window::GLFWWrapper::changeBackgroundColor(col);
 }
 
 void PenVirtualWindow::setViewportTransform(const PenMath::Vector2& pos, const PenMath::Vector2& size)
 {
-	if (PenCore::windowLib() == WindowLib::E_GLFW_WINDOW)
-		Window::GLFWWrapper::resizeViewport(pos, size);
+	Window::GLFWWrapper::resizeViewport(pos, size);
 }
 
 void PenVirtualWindow::setWindowTitle(const char* name)

@@ -14,7 +14,7 @@ void PenditorCore::runEditor()
 {
 	m_shouldStop = false;
 
-	Pengine::PenCore::PenWindow()->setWindowSize(Pengine::PenCore::PenWindow()->getWindowSize());
+	Pengine::PenCore::MainPenWindow()->setWindowSize(Pengine::PenCore::MainPenWindow()->getWindowSize());
 
 	while (!m_shouldStop && !Pengine::PenCore::shouldStop())
 	{
@@ -60,10 +60,10 @@ void PenditorCore::handleInputs()
 
 	if (ptr->isKeyPressed(Pengine::key_C))
 	{
-		if (Pengine::PenCore::PenWindow()->getCursorState() == Pengine::CursorState::E_DISABLED)
-			Pengine::PenCore::PenWindow()->setCursorState(Pengine::CursorState::E_NORMAL);
+		if (Pengine::PenCore::MainPenWindow()->getCursorState() == Pengine::CursorState::E_DISABLED)
+			Pengine::PenCore::MainPenWindow()->setCursorState(Pengine::CursorState::E_NORMAL);
 		else
-			Pengine::PenCore::PenWindow()->setCursorState(Pengine::CursorState::E_DISABLED);
+			Pengine::PenCore::MainPenWindow()->setCursorState(Pengine::CursorState::E_DISABLED);
 	}
 }
 
