@@ -27,8 +27,8 @@ bool PenGLShader::loadResource(const std::string path)
 	int shaderType = 0;
 
 	std::ifstream infile(path, std::ios::binary);
-	PenCore::PenSerializer()->read(infile, sourcePath);
-	PenCore::PenSerializer()->read(infile, shaderType);
+	PenCore::Serializer()->read(infile, sourcePath);
+	PenCore::Serializer()->read(infile, shaderType);
 	infile.close();
 
 	if(!this->setType((PenShaderType)shaderType))
@@ -48,13 +48,13 @@ bool Pengine::Resources::PenGLShader::createResource(const std::string PenfilePa
 
 	//Serialize source file
 	std::ofstream outfile(PenfilePath, std::ios::binary);
-	PenCore::PenSerializer()->write(outfile, (std::string)sourcePath);
+	PenCore::Serializer()->write(outfile, (std::string)sourcePath);
 
 	//Serialize shader type
 	if (!this->setType(sourcePath.c_str()))
 		return false;
 
-	PenCore::PenSerializer()->write(outfile, (int)this->m_type);
+	PenCore::Serializer()->write(outfile, (int)this->m_type);
 	outfile.close();
 
 	this->m_penfilePath = PenfilePath;
@@ -76,7 +76,7 @@ bool PenGLShader::changeShaderType(const PenShaderType type, const char* Penfile
 	outfile.open(PenfilePath, std::ofstream::out | std::ofstream::trunc);
 
 	//re=write source path
-	PenCore::PenSerializer()->write(outfile, (std::string)sourcePath);
+	PenCore::Serializer()->write(outfile, (std::string)sourcePath);
 
 	//Rewrite shader type
 	if (type == PenShaderType::INVALID_SHADER)
@@ -86,7 +86,7 @@ bool PenGLShader::changeShaderType(const PenShaderType type, const char* Penfile
 	}
 
 	this->m_type = type;
-	PenCore::PenSerializer()->write(outfile, (int)this->m_type);
+	PenCore::Serializer()->write(outfile, (int)this->m_type);
 
 	outfile.close();
 
@@ -146,7 +146,7 @@ const char* PenGLShader::getSourcePath()
 	std::string sourcePath;
 
 	std::ifstream infile(this->m_penfilePath, std::ios::binary);
-	PenCore::PenSerializer()->read(infile, sourcePath);
+	PenCore::Serializer()->read(infile, sourcePath);
 	infile.close();
 
 	return sourcePath.c_str();

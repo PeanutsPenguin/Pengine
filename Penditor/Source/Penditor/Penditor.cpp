@@ -50,7 +50,7 @@ void PenditorCore::update(double dt)
 
 void PenditorCore::handleInputs()
 {
-	std::unique_ptr<Pengine::PenInputManager>& ptr = Pengine::PenCore::PenInputManager();
+	std::unique_ptr<Pengine::PenInputManager>& ptr = Pengine::PenCore::InputManager();
 
 	if (!ptr)
 		return;

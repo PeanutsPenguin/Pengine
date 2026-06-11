@@ -53,7 +53,7 @@ void PenFreeCam::update(double dt)
 
     PenMath::Transform newTrans = transComp.getGlobalTransform();
 
-    std::unique_ptr<Pengine::PenInputManager>& input = Pengine::PenCore::PenInputManager();
+    std::unique_ptr<Pengine::PenInputManager>& input = Pengine::PenCore::InputManager();
 
     //TODO : need to add the "Focus on Window" bool to this 
     if (input->isKeyPressed(Pengine::PenInput::key_MOUSE_RIGHT))
@@ -72,7 +72,7 @@ void PenFreeCam::update(double dt)
 
 void PenFreeCam::handleCameraMovement(PenMath::Transform& trans, Pengine::Components::PenCamera& cam, float speed)
 {
-    std::unique_ptr<Pengine::PenInputManager>& input = Pengine::PenCore::PenInputManager();
+    std::unique_ptr<Pengine::PenInputManager>& input = Pengine::PenCore::InputManager();
 
     if (input->isKeyDown(Pengine::key_W))
         trans.position -= cam.getFront() * speed;
@@ -91,7 +91,7 @@ void PenFreeCam::handleCameraMovement(PenMath::Transform& trans, Pengine::Compon
 
 void PenFreeCam::handleCameraRotation(PenMath::Transform& trans, Pengine::Components::PenCamera& cam)
 {
-    PenMath::Vector2 offset = Pengine::PenCore::PenInputManager()->getMouseOffset();
+    PenMath::Vector2 offset = Pengine::PenCore::InputManager()->getMouseOffset();
 
     if (offset != PenMath::Vector2::Zero())
     {
