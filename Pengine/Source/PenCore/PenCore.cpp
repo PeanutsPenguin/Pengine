@@ -6,8 +6,8 @@
 #include "PenInput/PenInput.h"                              //PenInput
 #include "PenOctopus/PenOctopus.h"                          //PenOctopus
 #include "PenSerializer/PenSerializer.h"                    //PenSerializer
-#include "PenVirtualWindow/Private_ImGuiVirtualWindow.h"
-#include "PenWindow/PenWindowBase.h"
+#include "PenWindow/PenWindowBase.h"                        //Penwindow
+#include "PenUIManager/PenUIManager.h"                             //PenUIManager
 
 //Components
 #include "PenComponents/PenRenderer/PenRenderer.h"
@@ -32,6 +32,7 @@ std::unique_ptr<PenOctopus>                         PenCore::m_PenOctopus       
 std::unique_ptr<PenInputManager>                    PenCore::m_PenInputManager      = std::make_unique<Pengine::PenInputManager>();
 std::unique_ptr<Resources::PenResourcesManager>     PenCore::m_resourcesManager     = std::make_unique<Resources::PenResourcesManager>();
 std::unique_ptr<Serialize::PenSerializer>           PenCore::m_PenSerializer        = std::make_unique<Serialize::PenSerializer>();
+std::unique_ptr<ui::PenUIManager>                   PenCore::m_PenUIManager         = std::make_unique<ui::PenUIManager>();
 
 PenLibDefine PenCore::m_libs = PenLibDefine();
 
@@ -49,6 +50,9 @@ bool PenCore::init(const char* name, const PenMath::Vector2& windowSize)
     if(!m_window->init(name, windowSize))
         return false;
 
+	if (!m_PenUIManager->init(m_window->getWindow()))
+		return false;
+
     m_PenOctopus->init();
 
     registerDefaultType();
@@ -62,7 +66,7 @@ std::unique_ptr<Window::PenWindow>& PenCore::MainPenWindow()
 	return m_window;
 }
 
-std::unique_ptr<PenInputManager>& PenCore::PenInputManager()
+std::unique_ptr<PenInputManager>& PenCore::InputManager()
 {
     return m_PenInputManager;
 }
@@ -77,9 +81,14 @@ std::unique_ptr<Resources::PenResourcesManager>& PenCore::ResourcesManager()
     return m_resourcesManager;
 }
 
-std::unique_ptr<Serialize::PenSerializer>& PenCore::PenSerializer()
+std::unique_ptr<Serialize::PenSerializer>& PenCore::Serializer()
 {
     return m_PenSerializer;
+}
+
+std::unique_ptr<ui::PenUIManager>& PenCore::UIManager()
+{
+    return m_PenUIManager;
 }
 
 PenLibDefine& PenCore::libDefine()
@@ -163,6 +172,12 @@ void PenCore::destroy()
         m_PenSerializer.reset();
         m_PenSerializer = nullptr;
     }
+
+	if (m_PenUIManager)
+    {
+        m_PenUIManager.reset();
+        m_PenUIManager = nullptr;
+	}
 }
 
 #pragma region Updates
@@ -188,11 +203,15 @@ void PenCore::frameUpdate()
 
 void PenCore::renderUpdate()
 {
+	//TODO: Create an "Editor" flag to decide if we want to dock the viewport or not
+    m_PenUIManager->newFrame(false);
+
 	//TODO: just pass the bg color instead of the whole scene
     m_window->preRender(*m_PenOctopus->getMainScene());
 
     m_window->render();
 
+	m_PenUIManager->endFrame();
     m_window->postRender();
 }
 

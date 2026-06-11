@@ -31,11 +31,11 @@ namespace Pengine::Resources
         void serializeProperty(std::ofstream& outfile) 
         {
             if(texture)
-                PenCore::PenSerializer()->write(outfile, texture->getTexturePath());
+                PenCore::Serializer()->write(outfile, texture->getTexturePath());
             else 
-                PenCore::PenSerializer()->write(outfile, "");
+                PenCore::Serializer()->write(outfile, "");
 
-            PenCore::PenSerializer()->write(outfile, defaultValue);
+            PenCore::Serializer()->write(outfile, defaultValue);
         }
 
         std::shared_ptr<PenTextureBase> texture = nullptr;      //Value of the texture

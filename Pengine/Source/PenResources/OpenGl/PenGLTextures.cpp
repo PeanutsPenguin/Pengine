@@ -52,7 +52,7 @@ bool PenGLTexture::loadResource(const std::string path)
 	std::string sourcePath;
 
 	std::ifstream infile(path, std::ios::binary);
-	PenCore::PenSerializer()->read(infile, sourcePath);
+	PenCore::Serializer()->read(infile, sourcePath);
 	infile.close();
 
 	this->m_penfilePath = path;
@@ -69,7 +69,7 @@ bool PenGLTexture::createResource(const std::string PenfilePath, const std::stri
 
 	//Serialize source file
 	std::ofstream outfile(PenfilePath, std::ios::binary);
-	PenCore::PenSerializer()->write(outfile, sourcePath);
+	PenCore::Serializer()->write(outfile, sourcePath);
 	outfile.close();
 
 	this->m_penfilePath = PenfilePath;

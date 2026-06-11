@@ -22,8 +22,8 @@ bool Pengine::Resources::PenGLShaderProgram::loadResource(const std::string path
 	std::string frag;
 
 	std::ifstream infile(path, std::ios::binary);
-	PenCore::PenSerializer()->read(infile, vert);
-	PenCore::PenSerializer()->read(infile, frag);
+	PenCore::Serializer()->read(infile, vert);
+	PenCore::Serializer()->read(infile, frag);
 
 	infile.close();
 
@@ -63,8 +63,8 @@ bool PenGLShaderProgram::createResource(const std::string PenfilePath, std::shar
 		return false;
 	}
 
-	PenCore::PenSerializer()->write(outfile, vertexShader->getResourcePath());
-	PenCore::PenSerializer()->write(outfile, fragmentShader->getResourcePath());
+	PenCore::Serializer()->write(outfile, vertexShader->getResourcePath());
+	PenCore::Serializer()->write(outfile, fragmentShader->getResourcePath());
 
 	outfile.close();
 

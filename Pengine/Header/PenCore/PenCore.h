@@ -26,6 +26,11 @@ namespace Pengine
 	{
 		class PenSerializer;
 	}
+
+	namespace ui
+	{
+		class PenUIManager;
+	}
 }	
 #pragma endregion
 
@@ -41,10 +46,11 @@ namespace Pengine
 		static bool init(const char* name, const PenMath::Vector2& windowSize);
 
 		static std::unique_ptr<Pengine::Window::PenWindow>&			MainPenWindow();
-		static std::unique_ptr<Pengine::PenInputManager>&			PenInputManager();
+		static std::unique_ptr<Pengine::PenInputManager>&			InputManager();
 		static std::unique_ptr<Pengine::PenOctopus>&				PenOctopus();
 		static std::unique_ptr<Resources::PenResourcesManager>&		ResourcesManager();
-		static std::unique_ptr<Serialize::PenSerializer>&			PenSerializer();
+		static std::unique_ptr<Serialize::PenSerializer>&			Serializer();
+		static std::unique_ptr<Pengine::ui::PenUIManager>&			UIManager();
 
 		static PenLibDefine&	libDefine();
 		static InputLib			inputLib();
@@ -83,6 +89,7 @@ namespace Pengine
 		static std::unique_ptr<Pengine::PenInputManager>		m_PenInputManager;
 		static std::unique_ptr<Resources::PenResourcesManager>	m_resourcesManager;
 		static std::unique_ptr<Serialize::PenSerializer>		m_PenSerializer;
+		static std::unique_ptr<Pengine::ui::PenUIManager>		m_PenUIManager;
 
 		static PenLibDefine m_libs;
 

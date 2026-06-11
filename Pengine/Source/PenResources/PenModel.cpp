@@ -33,7 +33,7 @@ bool PenModel::loadResource(const std::string path)
 
 	//Read in file
 	std::ifstream infile(path, std::ios::binary);
-	PenCore::PenSerializer()->read(infile, sourcePath);
+	PenCore::Serializer()->read(infile, sourcePath);
 
 	//Generate the mesh
 	return generateResource(sourcePath.c_str());
@@ -43,7 +43,7 @@ bool PenModel::createResource(const std::string PenfilePath, const std::string s
 {
 	std::ofstream outfile(PenfilePath, std::ios::binary);
 
-	PenCore::PenSerializer()->write(outfile, sourcePath);
+	PenCore::Serializer()->write(outfile, sourcePath);
 
 	return generateResource(sourcePath.c_str());
 }

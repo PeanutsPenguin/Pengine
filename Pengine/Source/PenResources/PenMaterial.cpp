@@ -38,7 +38,7 @@ bool PenMaterial::loadResource(const std::string path)
     std::string shaderPath;
 
     std::ifstream infile(path, std::ios::binary);
-    PenCore::PenSerializer()->read(infile, shaderPath);
+    PenCore::Serializer()->read(infile, shaderPath);
 
     std::string tempPath;
 
@@ -97,7 +97,7 @@ bool PenMaterial::createResource(const std::string penfilePath, std::shared_ptr<
     else
         this->m_albedo.texture = tex;
     
-    PenCore::PenSerializer()->write(outfile, this->m_shader->getResourcePath());
+    PenCore::Serializer()->write(outfile, this->m_shader->getResourcePath());
 
     this->m_albedo.serializeProperty(outfile);
     this->m_metallic.serializeProperty(outfile);
@@ -115,7 +115,7 @@ void PenMaterial::quickSave()
 {
     std::ofstream outfile(this->m_penfilePath, std::ios::binary);
 
-    PenCore::PenSerializer()->write(outfile, this->m_shader->getResourcePath());
+    PenCore::Serializer()->write(outfile, this->m_shader->getResourcePath());
 
     this->m_albedo.serializeProperty(outfile);
     this->m_metallic.serializeProperty(outfile);
@@ -169,7 +169,7 @@ void PenMaterial::loadNormal(std::ifstream& infile)
 {
     std::string tempPath;
 
-    PenCore::PenSerializer()->read(infile, tempPath);
+    PenCore::Serializer()->read(infile, tempPath);
 
     if (!tempPath.empty())
     {
@@ -194,9 +194,9 @@ void PenMaterial::activateNormal()
 void PenMaterial::saveNormal(std::ofstream& outfile)
 {
 	if (this->m_normal)
-		PenCore::PenSerializer()->write(outfile, this->m_normal->getResourcePath());
+		PenCore::Serializer()->write(outfile, this->m_normal->getResourcePath());
 	else
-		PenCore::PenSerializer()->write(outfile, std::string(""));
+		PenCore::Serializer()->write(outfile, std::string(""));
 }
 #pragma endregion
 
@@ -225,7 +225,7 @@ void PenMaterial::loadAlbedo(std::ifstream& infile)
 {
     std::string tempPath;
 
-    PenCore::PenSerializer()->read(infile, tempPath);
+    PenCore::Serializer()->read(infile, tempPath);
 
     if (!tempPath.empty())
     {
@@ -233,7 +233,7 @@ void PenMaterial::loadAlbedo(std::ifstream& infile)
             this->m_albedo.texture = PenCore::ResourcesManager()->loadResourceFromFile<PenGLTexture>(tempPath.c_str());
     }
 
-    PenCore::PenSerializer()->read(infile, this->m_albedo.defaultValue);
+    PenCore::Serializer()->read(infile, this->m_albedo.defaultValue);
 }
 
 void PenMaterial::activateAlbedo()
@@ -278,7 +278,7 @@ void PenMaterial::loadMetallic(std::ifstream& infile)
 {
     std::string tempPath;
 
-    PenCore::PenSerializer()->read(infile, tempPath);
+    PenCore::Serializer()->read(infile, tempPath);
 
     if (!tempPath.empty())
     {
@@ -286,7 +286,7 @@ void PenMaterial::loadMetallic(std::ifstream& infile)
             this->m_metallic.texture = PenCore::ResourcesManager()->loadResourceFromFile<PenGLTexture>(tempPath.c_str());
     }
 
-    PenCore::PenSerializer()->read(infile, this->m_metallic.defaultValue);
+    PenCore::Serializer()->read(infile, this->m_metallic.defaultValue);
 }
 
 void PenMaterial::activateMetallic()
@@ -332,7 +332,7 @@ void PenMaterial::loadRoughness(std::ifstream& infile)
 {
     std::string tempPath;
 
-    PenCore::PenSerializer()->read(infile, tempPath);
+    PenCore::Serializer()->read(infile, tempPath);
 
     if (!tempPath.empty())
     {
@@ -340,7 +340,7 @@ void PenMaterial::loadRoughness(std::ifstream& infile)
             this->m_roughness.texture = PenCore::ResourcesManager()->loadResourceFromFile<PenGLTexture>(tempPath.c_str());
     }
 
-    PenCore::PenSerializer()->read(infile, this->m_roughness.defaultValue);
+    PenCore::Serializer()->read(infile, this->m_roughness.defaultValue);
 }
 
 void PenMaterial::activateRoughness()
@@ -385,7 +385,7 @@ void PenMaterial::loadAmbientOcclusion(std::ifstream& infile)
 {
     std::string tempPath;
 
-    PenCore::PenSerializer()->read(infile, tempPath);
+    PenCore::Serializer()->read(infile, tempPath);
 
     if (!tempPath.empty())
     {
@@ -393,7 +393,7 @@ void PenMaterial::loadAmbientOcclusion(std::ifstream& infile)
             this->m_ambientOcclusion.texture = PenCore::ResourcesManager()->loadResourceFromFile<PenGLTexture>(tempPath.c_str());
     }
 
-    PenCore::PenSerializer()->read(infile, this->m_ambientOcclusion.defaultValue);
+    PenCore::Serializer()->read(infile, this->m_ambientOcclusion.defaultValue);
 }
 
 void PenMaterial::activateAmbientOcclusion()
