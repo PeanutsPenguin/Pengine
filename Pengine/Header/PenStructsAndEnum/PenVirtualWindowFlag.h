@@ -1,6 +1,8 @@
 #pragma once 
 
-
+/// <summary>
+/// Namespace for all things UI related (idk why i prefer write it in lower case, it just looks better to me)
+/// </summary>
 namespace Pengine::ui
 {
     enum PenVirtualWidnowFlags

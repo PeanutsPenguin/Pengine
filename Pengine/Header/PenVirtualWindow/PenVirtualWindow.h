@@ -6,9 +6,6 @@
 
 #include "PenStructsAndEnum/PenVirtualWindowFlag.h"
 
-/// <summary>
-/// Namespace for all things UI related (idk why i prefer write it in lower case, it just looks better to me)
-/// </summary>
 namespace Pengine::ui
 {
 	class PenVirtualWindow
@@ -23,8 +20,8 @@ namespace Pengine::ui
 		PenVirtualWindow& operator=(PenVirtualWindow&& rhs) = default;
 
 		void render();
-	protected:
 
+	protected:
 		virtual void renderCalls() {};
 
 		void setViewportBackgroundColor(const PenColor& col);
@@ -36,7 +33,6 @@ namespace Pengine::ui
 		int m_flgas;
 	
 	private:
-
 		void ImGuiRendering();
 	};
 }
