@@ -57,9 +57,9 @@ void PenFreeCam::update(double dt)
 
     //TODO : need to add the "Focus on Window" bool to this 
     if (input->isKeyPressed(Pengine::PenInput::key_MOUSE_RIGHT))
-        Pengine::PenCore::PenWindow()->setCursorState(Pengine::CursorState::E_DISABLED);
+        Pengine::PenCore::MainPenWindow()->setCursorState(Pengine::CursorState::E_DISABLED);
     else if (input->isKeyReleased(Pengine::PenInput::key_MOUSE_RIGHT))
-        Pengine::PenCore::PenWindow()->setCursorState(Pengine::CursorState::E_NORMAL);
+        Pengine::PenCore::MainPenWindow()->setCursorState(Pengine::CursorState::E_NORMAL);
 
     if (input->isKeyDown(Pengine::PenInput::key_MOUSE_RIGHT))
     {

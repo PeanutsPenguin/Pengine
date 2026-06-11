@@ -1,12 +1,13 @@
 #include "PenCore/PenCore.h"                        
 
-#include "PenComponents/PenComponentsManager.h"     //Component Manager
-#include "PenObject/PenObjectManager.h"             //PenObject Manager
-#include "PenResources/PenResourcesManager.h"       //PenResource Manager
-#include "PenInput/PenInput.h"                      //PenInput
-#include "PenOctopus/PenOctopus.h"                  //PenOctopus
-#include "PenSerializer/PenSerializer.h"            //PenSerializer
-#include "PenWindow/GLFW/Private_GLFWPenWindow.h"   //PenWindow
+#include "PenComponents/PenComponentsManager.h"             //Component Manager
+#include "PenObject/PenObjectManager.h"                     //PenObject Manager
+#include "PenResources/PenResourcesManager.h"               //PenResource Manager
+#include "PenInput/PenInput.h"                              //PenInput
+#include "PenOctopus/PenOctopus.h"                          //PenOctopus
+#include "PenSerializer/PenSerializer.h"                    //PenSerializer
+#include "PenVirtualWindow/Private_ImGuiVirtualWindow.h"
+#include "PenWindow/PenWindowBase.h"
 
 //Components
 #include "PenComponents/PenRenderer/PenRenderer.h"
@@ -26,7 +27,7 @@
 using namespace Pengine;
 
 #pragma region Static definiton
-std::unique_ptr<PenWindowBase>                      PenCore::m_window               = nullptr;
+std::unique_ptr<Window::PenWindow>                  PenCore::m_window               = std::make_unique<Window::PenWindow>();
 std::unique_ptr<PenOctopus>                         PenCore::m_PenOctopus           = std::make_unique<Pengine::PenOctopus>();
 std::unique_ptr<PenInputManager>                    PenCore::m_PenInputManager      = std::make_unique<Pengine::PenInputManager>();
 std::unique_ptr<Resources::PenResourcesManager>     PenCore::m_resourcesManager     = std::make_unique<Resources::PenResourcesManager>();
@@ -39,14 +40,11 @@ double PenCore::m_lastFrame     = glfwGetTime();
 bool PenCore::m_shouldStop      = 0;
 #pragma endregion
 
-bool PenCore::init(const char* name, const PenMath::Vector2f& windowSize)
+bool PenCore::init(const char* name, const PenMath::Vector2& windowSize)
 {
-    m_libs.input = InputLib::E_GLFW_INPUT;
-    m_libs.window = WindowLib::E_GLFW_WINDOW;
-    m_libs.render = RenderLib::E_OPENGL_RENDER;
-
-    if (m_libs.window == WindowLib::E_GLFW_WINDOW)
-        m_window = std::make_unique<GLFWPenWindow>();
+    //Will be changed in defines
+    m_libs.input    = InputLib::E_GLFW_INPUT;
+    m_libs.render   = RenderLib::E_OPENGL_RENDER;
 
     if(!m_window->init(name, windowSize))
         return false;
@@ -55,12 +53,11 @@ bool PenCore::init(const char* name, const PenMath::Vector2f& windowSize)
 
     registerDefaultType();
 
-
     return true;
 }
 
 #pragma region Getter
-std::unique_ptr<PenWindowBase>& PenCore::PenWindow()
+std::unique_ptr<Window::PenWindow>& PenCore::MainPenWindow()
 {
 	return m_window;
 }
@@ -93,11 +90,6 @@ PenLibDefine& PenCore::libDefine()
 InputLib PenCore::inputLib()
 {
     return m_libs.input;
-}
-
-WindowLib PenCore::windowLib()
-{
-    return m_libs.window;
 }
 
 RenderLib PenCore::renderLib()
@@ -196,6 +188,7 @@ void PenCore::frameUpdate()
 
 void PenCore::renderUpdate()
 {
+	//TODO: just pass the bg color instead of the whole scene
     m_window->preRender(*m_PenOctopus->getMainScene());
 
     m_window->render();

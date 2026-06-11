@@ -84,6 +84,8 @@ foreach(_dll ${TARGET_DLL_FILES})
 endforeach()
 
 
+file(GLOB TARGET_DIRECTORIES LIST_DIRECTORIES true ${CMAKE_CURRENT_SOURCE_DIR}/Header/*)
+
 target_sources(${TARGET_NAME} PRIVATE ${TARGET_FILES})
 
 target_link_libraries(${TARGET_NAME} PRIVATE ${TARGET_LIB_FILES})
@@ -91,6 +93,7 @@ target_link_libraries(${TARGET_NAME} PUBLIC PenMath)
 
 target_include_directories(${TARGET_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Header)
 target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/Header)
+target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/Header/ImGui)
 
 foreach(DIRECTORY ${TARGET_DIRECTORIES})
     if(IS_DIRECTORY ${DIRECTORY})
@@ -134,7 +137,6 @@ foreach(child ${children})
     add_source_group_dir("${child}")
   endif()
 endforeach()
-
 
 set(MODERN_LIBRARY ${TARGET_NAME} PARENT_SCOPE)
 
