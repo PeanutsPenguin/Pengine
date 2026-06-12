@@ -28,6 +28,7 @@ namespace Penditor
 
 		void							setSpeed(float speed);
 		float							getSpeed() const;
+		const Pengine::PenObjectId		getCamera() const;
 
 		void update(double dt);
 

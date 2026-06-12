@@ -41,3 +41,8 @@ void PenUIManager::renderImage(int textureID, const PenMath::Vector2& size)
 {
 	ImGuiWrapper::renderImage(textureID, size);
 }
+
+bool PenUIManager::isWindowHovered()
+{
+	return ImGuiWrapper::isMouseOverWindow();
+}

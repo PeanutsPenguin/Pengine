@@ -6,6 +6,7 @@
 #include "PenUIManager/PenUIManager.h"	//Pengine::ui::PenUIManager
 #include "PenFreeCam/PenFreeCam.h"		//Penditor::PenFreeCam
 #include "Penditor/Penditor.h"
+#include "PenInput/PenInput.h"
 
 #include "PenBuffer/OpenGl/Private_PenFrameBuffer.h"
 
@@ -17,7 +18,17 @@ namespace Penditor::Window
 		m_flgas = flags;
 		m_hasResized = false;
 		this->m_frameBuffer = new Pengine::Buffer::PenFrameBuffer();
+		this->m_camera = new Penditor::PenFreeCam();
 		this->m_size = { 800, 600 };
+	}
+
+	PenGameWindow::~PenGameWindow()
+	{
+		if (this->m_frameBuffer)
+			delete this->m_frameBuffer;
+
+		if (this->m_camera)
+			delete this->m_camera;
 	}
 
 	void PenGameWindow::init()
@@ -25,36 +36,70 @@ namespace Penditor::Window
 		this->m_frameBuffer->create(800, 600);
 	}
 
+	void PenGameWindow::setCamera(const Pengine::PenObjectId id)
+	{
+		this->m_camera->setCamObject(id);
+	}
+
 	void PenGameWindow::renderCalls()
 	{
-		Pengine::ui::PenUIManager* uiManager = Pengine::PenCore::UIManager().get();
-		this->m_size = uiManager->getContentSize();
-		this->m_hasResized = (this->m_size != this->m_prevSize);
-
-		if (this->m_hasResized)
-			this->resize();
-
-		this->m_frameBuffer->bind();
-		Pengine::Window::resizeViewport({ 0, 0 }, this->m_size);
-		Pengine::PenCore::MainPenWindow()->preRender(*Pengine::PenCore::PenOctopus()->getMainScene());
-
+		this->updateCursorStatus();
+		this->updateCamera();
+		this->checkWindowSize();
 		this->renderScene();
-		this->m_frameBuffer->unbind();
 
-		uiManager->renderImage(this->m_frameBuffer->getFrameTexture(), this->m_size);
+		Pengine::PenCore::UIManager()->renderImage(this->m_frameBuffer->getFrameTexture(), this->m_size);
 
 		this->m_prevSize = this->m_size;
 	}
 
-	void PenGameWindow::resize()
+	void PenGameWindow::updateCursorStatus()
 	{
-		this->m_frameBuffer->resize(this->m_size.x, this->m_size.y);
-		Penditor::PenditorCore::EditorCam()->setAspect((float)this->m_size.x / (float)this->m_size.y);
+		std::unique_ptr<Pengine::PenInputManager>& input = Pengine::PenCore::InputManager();
+
+		if (input->isKeyPressed(Pengine::PenInput::key_MOUSE_RIGHT) 
+			&& Pengine::PenCore::UIManager()->isWindowHovered())
+		{
+			//Set focus sur la window
+			m_navigating = true;
+			Pengine::PenCore::MainPenWindow()->setCursorState(Pengine::CursorState::E_DISABLED);
+		}
+		else if (input->isKeyReleased(Pengine::PenInput::key_MOUSE_RIGHT))
+		{
+			m_navigating = false;
+			Pengine::PenCore::MainPenWindow()->setCursorState(Pengine::CursorState::E_NORMAL);
+		}
+	}
+
+	void PenGameWindow::updateCamera()
+	{
+		std::unique_ptr<Pengine::PenInputManager>& input = Pengine::PenCore::InputManager();
+	
+
+		if (input->isKeyDown(Pengine::PenInput::key_MOUSE_RIGHT) && this->m_navigating)
+			this->m_camera->update(Pengine::PenCore::getDeltaTime());
+	}
+
+	void PenGameWindow::checkWindowSize()
+	{
+		this->m_size = Pengine::PenCore::UIManager()->getContentSize();
+		this->m_hasResized = (this->m_size != this->m_prevSize);
+
+		if (this->m_hasResized)
+		{
+			this->m_frameBuffer->resize(this->m_size.x, this->m_size.y);
+			m_camera->setAspect((float)this->m_size.x / (float)this->m_size.y);
+		}
 	}
 
 	void PenGameWindow::renderScene()
 	{
-		Pengine::PenCore::MainPenWindow()->render();
+		this->m_frameBuffer->bind();
+		Pengine::Window::resizeViewport({ 0, 0 }, this->m_size);
+		Pengine::PenCore::MainPenWindow()->preRender(*Pengine::PenCore::PenOctopus()->getMainScene());
+		Pengine::PenCore::MainPenWindow()->render(m_camera->getCamera());
 		Pengine::PenCore::MainPenWindow()->postRender();
+		this->m_frameBuffer->unbind();
+
 	}
 }

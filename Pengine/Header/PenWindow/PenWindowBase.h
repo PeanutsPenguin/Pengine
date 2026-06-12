@@ -1,6 +1,7 @@
 #pragma once 
 
 #include "PenStructsAndEnum/PenCursorState.h"
+#include "PenDefine/PengineDefine.h"
 
 #include <memory>
 
@@ -39,7 +40,7 @@ namespace Pengine::Window
 		bool init(const char* name, const PenMath::Vector2& size);
 
 		void preRender(const PenScene& mainScene);
-		void render();
+		void render(const PenObjectId cam = g_PenObjectInvalidId);
 		void postRender();
 		void switchFrame();
 

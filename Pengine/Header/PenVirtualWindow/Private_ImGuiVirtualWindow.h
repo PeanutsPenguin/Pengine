@@ -24,4 +24,6 @@ namespace Pengine::ui::ImGuiWrapper
 	PenMath::Vector2 getContentSize();
 
 	void renderImage(int textureID, const PenMath::Vector2& size);
+
+	bool isMouseOverWindow();
 }

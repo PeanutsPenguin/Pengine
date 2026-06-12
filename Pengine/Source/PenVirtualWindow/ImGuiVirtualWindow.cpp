@@ -83,4 +83,9 @@ namespace Pengine::ui::ImGuiWrapper
 	{
 		ImGui::Image(textureID, { (float)size.x, (float)size.y }, { 0, 1 }, { 1, 0 });
 	}
+
+	bool isMouseOverWindow()
+	{
+		return ImGui::IsWindowHovered();
+	}
 }

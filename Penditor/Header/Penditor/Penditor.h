@@ -21,13 +21,14 @@ namespace Penditor
 
 		~PenditorCore() = delete;
 
+		static void init();
+
 		static void runEditor();
 
 		static void stopEditor();
 
 		static void destroy();
 
-		static std::unique_ptr<PenFreeCam>& EditorCam();
 		static std::unique_ptr<Window::PenGameWindow>& GameWindow();
 
 	private:
@@ -37,7 +38,6 @@ namespace Penditor
 
 		static void handleInputs();
 
-		static std::unique_ptr<PenFreeCam>				m_editorCam;
 		static std::unique_ptr<Window::PenGameWindow>	m_PenGameWindow;
 		static bool m_shouldStop;
 	};

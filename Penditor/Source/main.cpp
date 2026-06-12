@@ -101,19 +101,7 @@ int main()
 		Pengine::PenCore::PenOctopus()->addToScene(seconNewObj);
 		#pragma endregion
 
-		#pragma region Create Camera
-		Pengine::PenObjectId camObj = Pengine::PenCore::PenOctopus()->createPenObject();
-		Pengine::PenCore::PenOctopus()->addComponent(camObj, Pengine::Components::PenTransform());
-		Pengine::PenCore::PenOctopus()->addComponent(camObj, Pengine::Components::PenCamera());
-
-		std::shared_ptr<Pengine::System::PenCameraSystem> camSystemPtr = Pengine::PenCore::PenOctopus()->getSystem<Pengine::System::PenCameraSystem>();
-
-		camSystemPtr->setMainCamera(camObj);
-		Pengine::PenCore::PenOctopus()->addToScene(camObj);
-
-		Penditor::PenditorCore::EditorCam()->setCamObject(camObj);
-		#pragma endregion
-
+		Penditor::PenditorCore::init();
 		Penditor::PenditorCore::runEditor();
 #if CHECK_MEMORY_LEAKS
 	}

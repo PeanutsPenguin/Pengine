@@ -30,5 +30,6 @@ namespace Pengine::ui
 
 		PenMath::Vector2	getContentSize();
 		void				renderImage(int textureID, const PenMath::Vector2& size);
+		bool				isWindowHovered();
 	};
 }

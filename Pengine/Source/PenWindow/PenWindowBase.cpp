@@ -82,10 +82,10 @@ void PenWindow::preRender(const PenScene& mainScene)
 	GLFWWrapper::preRender(col);
 }
 
-void PenWindow::render()
+void PenWindow::render(const PenObjectId camera)
 {
     if(this->m_renderSystem)
-        this->m_renderSystem->render();
+        this->m_renderSystem->render(camera);
 }
 
 void PenWindow::postRender()
