@@ -40,7 +40,10 @@ int main()
 	_CrtMemState* start = beforeMain();
 	{
 #endif
-		Pengine::PenCore::init("Pengine Window", { Pengine::defaultWindowsValue::DEFAULT_WIDTH, Pengine::defaultWindowsValue::DEFAULT_HEIGHT });
+		bool engineInit = Pengine::PenCore::init("Pengine Window", { Pengine::defaultWindowsValue::DEFAULT_WIDTH, Pengine::defaultWindowsValue::DEFAULT_HEIGHT });
+
+		if (!engineInit)
+			std::cout << "ho ho.. probem here\n";
 
 		//PenResorucesManager
 		std::unique_ptr<Pengine::Resources::PenResourcesManager>& resourceManager = Pengine::PenCore::ResourcesManager();
@@ -108,7 +111,7 @@ int main()
 		camSystemPtr->setMainCamera(camObj);
 		Pengine::PenCore::PenOctopus()->addToScene(camObj);
 
-		Penditor::PenditorCore::getEditorCam()->setCamObject(camObj);
+		Penditor::PenditorCore::EditorCam()->setCamObject(camObj);
 		#pragma endregion
 
 		Penditor::PenditorCore::runEditor();

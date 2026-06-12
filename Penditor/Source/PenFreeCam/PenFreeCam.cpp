@@ -36,6 +36,14 @@ float Penditor::PenFreeCam::getSpeed() const
 {
     return this->m_speed;
 }
+
+void Penditor::PenFreeCam::setAspect(float aspect)
+{
+    Pengine::Components::PenCamera& cam =
+        Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenCamera>(m_camObject);
+
+    cam.setAspect(aspect);
+}
 #pragma endregion
 
 void PenFreeCam::update(double dt)

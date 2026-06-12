@@ -41,6 +41,7 @@ namespace Pengine::Window
 		void preRender(const PenScene& mainScene);
 		void render();
 		void postRender();
+		void switchFrame();
 
 		/// <summary>
 		/// Edit the private value "size" of this object and the window
@@ -61,4 +62,6 @@ namespace Pengine::Window
 		CursorState									m_state = CursorState::E_NORMAL;
 		Window::WindowWrapper*						m_windowWrapper;
 	};
+
+	void resizeViewport(const PenMath::Vector2& pos, const PenMath::Vector2& size);
 }

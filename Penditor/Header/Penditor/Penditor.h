@@ -6,6 +6,14 @@ namespace Penditor
 {
 	class PenFreeCam;
 
+	namespace Window
+	{
+		class PenGameWindow;
+	}
+}
+
+namespace Penditor
+{
 	class PenditorCore
 	{
 	public:
@@ -19,15 +27,18 @@ namespace Penditor
 
 		static void destroy();
 
-		static std::unique_ptr<PenFreeCam>& getEditorCam();
+		static std::unique_ptr<PenFreeCam>& EditorCam();
+		static std::unique_ptr<Window::PenGameWindow>& GameWindow();
 
 	private:
-		static void update(double dt);
+		static void update();
+
+		static void render();
 
 		static void handleInputs();
 
-		static std::unique_ptr<PenFreeCam> m_editorCam;
-		
+		static std::unique_ptr<PenFreeCam>				m_editorCam;
+		static std::unique_ptr<Window::PenGameWindow>	m_PenGameWindow;
 		static bool m_shouldStop;
 	};
 }

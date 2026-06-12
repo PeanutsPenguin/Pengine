@@ -24,6 +24,7 @@ namespace Penditor
 
 		void							setCamObject(const Pengine::PenComponentsId id);
 		const Pengine::PenObjectId		getCamObject() const;
+		void							setAspect(float aspect);
 
 		void							setSpeed(float speed);
 		float							getSpeed() const;

@@ -1,5 +1,7 @@
 #pragma once 
 
+#include "Vector/Vector2/Vector2.h"
+
 namespace Pengine::Window
 {
 	class WindowWrapper;
@@ -25,5 +27,8 @@ namespace Pengine::ui
 		void	endFrame();
 
 		void	shutDown();
+
+		PenMath::Vector2	getContentSize();
+		void				renderImage(int textureID, const PenMath::Vector2& size);
 	};
 }
