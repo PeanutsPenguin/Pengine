@@ -7,8 +7,7 @@
 #include "PenFreeCam/PenFreeCam.h"		//Penditor::PenFreeCam
 #include "Penditor/Penditor.h"
 #include "PenInput/PenInput.h"
-
-#include "PenBuffer/OpenGl/Private_PenFrameBuffer.h"
+#include "PenBuffer/PenFrameBuffer.h"
 
 namespace Penditor::Window
 {
