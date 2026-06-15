@@ -2,7 +2,7 @@
 
 #include "PenCore/PenCore.h"							//PenCore
 #include "PenResources/PenResourcesManager.h"			//PenResourceManager
-#include "PenBuffer/OpenGl/Private_PenTextureBuffer.h"	//PenTextureBuffer
+#include "PenBuffer/PenTextureBuffer.h"					//PenTextureBuffer
 #include "PenSerializer/PenSerializer.h"				//PenSerializer
 
 //PenMAth
@@ -96,7 +96,7 @@ bool PenGLTexture::initializeTextureBuffer(const char* sourcePath)
 		return false;
 	}
 
-	m_texBuffer->create(size, imageData);
+	m_texBuffer->create({ size.x, size.y }, imageData, size.z);
 	stbi_image_free(imageData);
 
 	return true;

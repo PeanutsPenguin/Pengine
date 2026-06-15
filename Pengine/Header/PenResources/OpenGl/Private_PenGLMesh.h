@@ -4,9 +4,9 @@
 #include "PenResources/OpenGl/Private_PenGLShaderProgram.h"		//PenGLShaderProgram
 
 //Buffer
-#include "PenBuffer/OpenGl/Private_PenElementBuffer.h"
-#include "PenBuffer/OpenGl/Private_PenVertexBuffer.h"
-#include "PenBuffer/OpenGl/Private_PenVertexAttributeBuffer.h"
+#include "PenBuffer/PenElementBuffer.h"
+#include "PenBuffer/PenVertexBuffer.h"
+#include "PenBuffer/PenVertexAttributeBuffer.h"
 
 class aiMesh;
 

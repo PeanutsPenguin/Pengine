@@ -1,22 +1,16 @@
 #pragma once 
 
-#include "PenBuffer/OpenGl/Private_PenGLBuferBase.h"
-
 #include <span>
 
 namespace Pengine::Buffer
 {
-	/// <summary>
-	/// EBO class for OpenGl draw
-	/// </summary>
-	class PenElementBuffer final : public PenGLBufferBase
+	class PenElementBuffer
 	{
-#pragma region Public
 	public:
 		PenElementBuffer() = default;
 		PenElementBuffer(const PenElementBuffer& other) = delete;
 		PenElementBuffer(PenElementBuffer&& other) = default;
-		~PenElementBuffer() final;
+		~PenElementBuffer();
 
 		PenElementBuffer& operator=(const PenElementBuffer& rhs) = delete;
 		PenElementBuffer& operator=(PenElementBuffer&& rhs) = default;
@@ -26,19 +20,18 @@ namespace Pengine::Buffer
 		/// </summary>
 		/// <param name="indices">Array of index to draw the object</param>
 		void create(const std::span<const unsigned int>& indices);
+		void destroy();
 
-		void bind() const final;
-		void unbind() const final;
+		void bind() const;
+		void unbind() const;
 
 		/// <summary>
 		/// Returns how much indices the EBO is storing
 		/// </summary>
 		_NODISCARD const int& count() const noexcept;
-#pragma endregion
 
-#pragma region Private
 	private:
+		unsigned int m_id;
 		int m_count = 0;
-#pragma endregion
 	};
 }

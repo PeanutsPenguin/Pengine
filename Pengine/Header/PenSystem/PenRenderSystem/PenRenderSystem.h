@@ -15,7 +15,7 @@ namespace Pengine::System
 		PenRendererSystem& operator=(const PenRendererSystem& rhs) = default;
 		PenRendererSystem& operator=(PenRendererSystem&& rhs) = default;
 
-		void render();
+		void render(const PenObjectId camera);
 
 		void onEntityInserted(const PenObjectId newObj) override {};
 		void onEntityDestroyed(const PenObjectId obj) override {};
@@ -23,6 +23,6 @@ namespace Pengine::System
 		void update(double dt) override {};
 	
 	private:
-		void GLrender();
+		void GLrender(const PenObjectId camera);
 	};
 }

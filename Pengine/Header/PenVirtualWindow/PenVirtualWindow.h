@@ -14,7 +14,7 @@ namespace Pengine::ui
 		PenVirtualWindow() = default;
 		PenVirtualWindow(const PenVirtualWindow& other) = default;
 		PenVirtualWindow(PenVirtualWindow&& other) = default;
-		~PenVirtualWindow() = default;
+		virtual ~PenVirtualWindow() = default;
 
 		PenVirtualWindow& operator=(const PenVirtualWindow& rhs) = default;
 		PenVirtualWindow& operator=(PenVirtualWindow&& rhs) = default;

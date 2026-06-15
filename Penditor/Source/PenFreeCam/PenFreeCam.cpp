@@ -22,11 +22,6 @@ void PenFreeCam::setCamObject(const Pengine::PenComponentsId id)
 	this->m_camObject = id;
 }
 
-const Pengine::PenObjectId PenFreeCam::getCamObject() const
-{
-	return this->m_camObject;
-}
-
 void PenFreeCam::setSpeed(float speed)
 {
     this->m_speed = speed;
@@ -35,6 +30,19 @@ void PenFreeCam::setSpeed(float speed)
 float Penditor::PenFreeCam::getSpeed() const
 {
     return this->m_speed;
+}
+
+const Pengine::PenObjectId  PenFreeCam::getCamera() const
+{
+    return this->m_camObject;
+}
+
+void Penditor::PenFreeCam::setAspect(float aspect)
+{
+    Pengine::Components::PenCamera& cam =
+        Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenCamera>(m_camObject);
+
+    cam.setAspect(aspect);
 }
 #pragma endregion
 
@@ -53,19 +61,8 @@ void PenFreeCam::update(double dt)
 
     PenMath::Transform newTrans = transComp.getGlobalTransform();
 
-    std::unique_ptr<Pengine::PenInputManager>& input = Pengine::PenCore::InputManager();
-
-    //TODO : need to add the "Focus on Window" bool to this 
-    if (input->isKeyPressed(Pengine::PenInput::key_MOUSE_RIGHT))
-        Pengine::PenCore::MainPenWindow()->setCursorState(Pengine::CursorState::E_DISABLED);
-    else if (input->isKeyReleased(Pengine::PenInput::key_MOUSE_RIGHT))
-        Pengine::PenCore::MainPenWindow()->setCursorState(Pengine::CursorState::E_NORMAL);
-
-    if (input->isKeyDown(Pengine::PenInput::key_MOUSE_RIGHT))
-    {
-        this->handleCameraMovement(newTrans, cam, cameraSpeed);
-        this->handleCameraRotation(newTrans, cam);
-    }
+    this->handleCameraMovement(newTrans, cam, cameraSpeed);
+    this->handleCameraRotation(newTrans, cam);
 
     transComp.setGlobalTransform(newTrans);
 }

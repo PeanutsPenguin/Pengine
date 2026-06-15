@@ -63,7 +63,6 @@ namespace Pengine::ui::ImGuiWrapper
 		ImGui::DestroyContext();
 	}
 
-
 	void startRendering(const char* title, int flags)
 	{
 		ImGui::Begin(title, nullptr, flags);
@@ -72,5 +71,21 @@ namespace Pengine::ui::ImGuiWrapper
 	void endRendering()
 	{
 		ImGui::End();
+	}
+
+	PenMath::Vector2 getContentSize()
+	{
+		ImVec2 size = ImGui::GetContentRegionAvail();
+		return { (int)size.x, (int)size.y };
+	}
+
+	void renderImage(int textureID, const PenMath::Vector2& size)
+	{
+		ImGui::Image(textureID, { (float)size.x, (float)size.y }, { 0, 1 }, { 1, 0 });
+	}
+
+	bool isMouseOverWindow()
+	{
+		return ImGui::IsWindowHovered();
 	}
 }

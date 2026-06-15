@@ -107,7 +107,7 @@ namespace Pengine::Window::GLFWWrapper
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
-	void postRender(Pengine::Window::WindowWrapper* window)
+	void switchFrame(Pengine::Window::WindowWrapper* window)
 	{
 		glfwPollEvents();
 		glfwSwapBuffers(*window);

@@ -22,12 +22,27 @@ void PenUIManager::newFrame(bool dockableWindow)
 	ImGuiWrapper::startUIFrame(dockableWindow);
 }
 
-void PenUIManager::endFrame(void)
+void PenUIManager::endFrame()
 {
 	ImGuiWrapper::endUIFrame();
 }
 
-void PenUIManager::shutDown(void)
+void PenUIManager::shutDown()
 {
 	ImGuiWrapper::shutDownLib();
+}
+
+PenMath::Vector2 PenUIManager::getContentSize()
+{
+	return ImGuiWrapper::getContentSize();
+}
+
+void PenUIManager::renderImage(int textureID, const PenMath::Vector2& size)
+{
+	ImGuiWrapper::renderImage(textureID, size);
+}
+
+bool PenUIManager::isWindowHovered()
+{
+	return ImGuiWrapper::isMouseOverWindow();
 }

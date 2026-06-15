@@ -13,7 +13,7 @@
 #include "PenResources/OpenGl/Private_PenGLTextures.h"
 
 //Buffer
-#include "PenBuffer/OpenGl/Private_PenTextureBuffer.h"
+#include "PenBuffer/PenTextureBuffer.h"
 
 //System
 #include "PenSystem/PenCameraSystem/PenCameraSystem.h"
@@ -25,13 +25,13 @@
 
 using namespace Pengine::System;
 
-void PenRendererSystem::render()
+void PenRendererSystem::render(const PenObjectId camera)
 {
 	if (PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
-		this->GLrender();
+		this->GLrender(camera);
 }
 
-void PenRendererSystem::GLrender()
+void PenRendererSystem::GLrender(const PenObjectId camera)
 {
 	for (PenObjectId objId : m_PenObject)
 	{
@@ -58,17 +58,22 @@ void PenRendererSystem::GLrender()
 			}
 
 			lightSystem->renderUpdate(prog);
-			
-			PenObjectId cam = PenCore::PenOctopus()->getSystem<System::PenCameraSystem>()->getMainCamera();
 
-			if (cam == g_PenObjectInvalidId)
+			PenObjectId renderCam = camera;
+			
+			if (renderCam == g_PenObjectInvalidId)
 			{
-				std::cout << "__FUNCTION__ : Main camera failed to get or invalid\n";
-				continue;
+				renderCam = PenCore::PenOctopus()->getSystem<System::PenCameraSystem>()->getMainCamera();
+
+				if(renderCam == g_PenObjectInvalidId)
+				{
+					std::cout << __FUNCTION__ " : Default camera is invalid skip rendering\n";
+					continue;
+				}
 			}
 
-			Components::PenCamera&		camComp			= PenCore::PenOctopus()->getComponent<Components::PenCamera>(cam);
-			Components::PenTransform&	transCamComp	= PenCore::PenOctopus()->getComponent<Components::PenTransform>(cam);
+			Components::PenCamera&		camComp			= PenCore::PenOctopus()->getComponent<Components::PenCamera>(renderCam);
+			Components::PenTransform&	transCamComp	= PenCore::PenOctopus()->getComponent<Components::PenTransform>(renderCam);
 			camComp.shaderActivation(prog, transCamComp);
 
 			PenMath::Mat4 model = transComp.getGlobalTransform().toMatrix();

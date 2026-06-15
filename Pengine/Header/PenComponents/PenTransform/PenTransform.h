@@ -5,7 +5,6 @@
 
 namespace Pengine::Components
 {
-	//TODO: Do something when the omponent state is dirty
 	class PenTransform final : public PenComponentBase
 	{
 	public:

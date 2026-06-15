@@ -82,15 +82,20 @@ void PenWindow::preRender(const PenScene& mainScene)
 	GLFWWrapper::preRender(col);
 }
 
-void PenWindow::render()
+void PenWindow::render(const PenObjectId camera)
 {
     if(this->m_renderSystem)
-        this->m_renderSystem->render();
+        this->m_renderSystem->render(camera);
 }
 
 void PenWindow::postRender()
 {
-	GLFWWrapper::postRender(this->m_windowWrapper);
+
+}
+
+void PenWindow::switchFrame()
+{
+	GLFWWrapper::switchFrame(this->m_windowWrapper);
 }
 
 void PenWindow::setRenderSystem(std::shared_ptr<System::PenRendererSystem> system)
@@ -106,4 +111,9 @@ const PenMath::Vector2& PenWindow::getWindowSize() const
 Pengine::Window::WindowWrapper* PenWindow::getWindow() 
 {
     return this->m_windowWrapper;
+}
+
+void Pengine::Window::resizeViewport(const PenMath::Vector2& pos, const PenMath::Vector2& size)
+{
+    GLFWWrapper::resizeViewport(pos, size);
 }

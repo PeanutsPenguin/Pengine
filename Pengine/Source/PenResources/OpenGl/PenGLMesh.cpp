@@ -110,7 +110,7 @@ bool PenGLMesh::initMesh(const aiMesh& assimpMesh)
 
 void PenGLMesh::render()
 {
-	if (!m_vertexBuffer.valid())
+	if (!m_vertexBuffer.isValid())
 		return;
 
 	m_vertexAttributeBuffer.bind();

@@ -5,8 +5,8 @@
 #include "PenStructsAndEnum/PenCursorState.h"
 
 //Lib
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#include "glad/glad.h"
+#include "GLFW/glfw3.h"
 
 namespace Pengine::Window
 {
@@ -58,7 +58,7 @@ namespace Pengine::Window
 	
 		void preRender(const PenColor& col);
 
-		void postRender(WindowWrapper* window);
+		void switchFrame(WindowWrapper* window);
 
 		void destroyWindow(WindowWrapper* window);
 	}

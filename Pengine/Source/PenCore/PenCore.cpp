@@ -211,12 +211,14 @@ void PenCore::renderUpdate()
 
     m_window->render();
 
+	m_window->postRender();
+
 	m_PenUIManager->endFrame();
-    m_window->postRender();
 }
 
 void PenCore::switchFrame()
 {
+    m_window->switchFrame();
     m_resourcesManager->clearUnused();
 }
 #pragma endregion
