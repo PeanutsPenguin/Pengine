@@ -1,10 +1,22 @@
 #include "Private_GladBuffer.h"
 
+#include "PenStructsAndEnum/PenVertex.h"
 #include "glad/glad.h"
+#include <iostream>
 
 namespace Pengine::Buffer::GladWrapper
 {
 	#pragma region Create
+	void createBasicBuffer(unsigned int* id)
+	{
+		glGenBuffers(1, id);
+	}
+
+	void createVertexAttributeBuffer(unsigned int* id)
+	{
+		glGenVertexArrays(1, id);
+	}
+
 	void createFrameBuffer(unsigned int* id)
 	{
 		glGenFramebuffers(1, id);
@@ -22,6 +34,21 @@ namespace Pengine::Buffer::GladWrapper
 	#pragma endregion
 
 	#pragma region Bind
+	void bindVertexBuffer(unsigned int id)
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, id);
+	}
+
+	void bindVertexAttributeBuffer(unsigned int id)
+	{
+		glBindVertexArray(id);
+	}
+
+	void bindElementBuffer(unsigned int id)
+	{
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
+	}
+
 	void bindFrameBuffer(unsigned int id)
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, id);
@@ -39,6 +66,56 @@ namespace Pengine::Buffer::GladWrapper
 	#pragma endregion
 
 	#pragma region Fill
+	void fillVertexBuffer(const void* data, size_t size, unsigned int id)
+	{
+		bindVertexBuffer(id);
+		glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
+		bindVertexBuffer(0);
+	}
+
+	void fillVertexAttributeBuffer(size_t index, unsigned int vertSize, unsigned int id)
+	{
+		const GLsizei stride = static_cast<GLsizei>(sizeof(Pengine::PenVertex));
+
+		unsigned int components = vertSize;
+
+		switch (static_cast<GLuint>(index))
+		{
+		case 0:
+			components = 3;
+			glEnableVertexAttribArray(static_cast<GLuint>(index));
+			glVertexAttribPointer(static_cast<GLuint>(index), components, GL_FLOAT, GL_FALSE, stride,
+				(void*)offsetof(Pengine::PenVertex, position));
+			break;
+		case 1:
+			components = 3;
+			glEnableVertexAttribArray(static_cast<GLuint>(index));
+			glVertexAttribPointer(static_cast<GLuint>(index), components, GL_FLOAT, GL_FALSE, stride,
+				(void*)offsetof(Pengine::PenVertex, normal));
+			break;
+		case 2:
+			components = 2;
+			glEnableVertexAttribArray(static_cast<GLuint>(index));
+			glVertexAttribPointer(static_cast<GLuint>(index), components, GL_FLOAT, GL_FALSE, stride,
+				(void*)offsetof(Pengine::PenVertex, uv));
+			break;
+		case 3:
+			components = 3;
+			glEnableVertexAttribArray(static_cast<GLuint>(index));
+			glVertexAttribPointer(static_cast<GLuint>(index), components, GL_FLOAT, GL_FALSE, stride,
+				(void*)offsetof(Pengine::PenVertex, tangent));
+			break;
+		default:
+			std::cout << __FUNCTION__ " Index value :" << index << " is out of range. Pointer not loaded" << std::endl;
+			break;
+		}
+	}
+
+	void fillElementBuffer(const std::span<const unsigned int>& indices)
+	{
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size_bytes(), indices.data(), GL_STATIC_DRAW);
+	}
+
 	void fillFrameBuffer(unsigned int textBuffer, unsigned int renderBuffer, unsigned int frameBuffer)
 	{
 		bindFrameBuffer(frameBuffer);
@@ -49,14 +126,31 @@ namespace Pengine::Buffer::GladWrapper
 		bindFrameBuffer(0);
 	}
 
-	void fillTextureBuffer(const PenMath::Vector2& size, const void* data, unsigned int id)
+	void fillTextureBuffer(const PenMath::Vector2& size, const void* data, int format, unsigned int id)
 	{
+		GLint type;
+
+		switch (format)
+		{
+		case 1:
+			type = GL_RED;
+			break;
+		case 3:
+			type = GL_RGB;
+			break;
+		case 4:
+			type = GL_RGBA;
+			break;
+		default:
+			type = GL_INVALID_ENUM;
+		}
+
 		bindTextureBuffer(id);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, size.x, size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		glTexImage2D(GL_TEXTURE_2D, 0, type, size.x, size.y, 0, type, GL_UNSIGNED_BYTE, data);
 
 		bindTextureBuffer(0);
 	}
@@ -69,7 +163,12 @@ namespace Pengine::Buffer::GladWrapper
 	}
 	#pragma endregion
 
-	#pragma region
+	#pragma region Destroy
+	void destroyBasicBuffer(unsigned int* id)
+	{
+		glDeleteBuffers(1, id);
+	}
+
 	void destroyFrameBuffer(unsigned int* id)
 	{
 		glDeleteFramebuffers(1, id);
@@ -83,6 +182,18 @@ namespace Pengine::Buffer::GladWrapper
 	void destroyRenderBuffer(unsigned int* id)
 	{
 		glDeleteRenderbuffers(1, id);
+	}
+	#pragma endregion
+
+	#pragma region Textures
+	void activateTexture(unsigned int unitIndex)
+	{
+		glActiveTexture(GL_TEXTURE0 + unitIndex);
+	}
+
+	void generateMipMap()
+	{
+		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 	#pragma endregion
 }

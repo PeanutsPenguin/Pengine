@@ -45,7 +45,7 @@ namespace Pengine::Buffer
 		m_size = { width, height };
 
 		GladWrapper::createTextureBuffer(&m_texBuffer);
-		GladWrapper::fillTextureBuffer({ width, height }, nullptr, m_texBuffer);
+		GladWrapper::fillTextureBuffer({ width, height }, nullptr, 3, m_texBuffer);
 
 		GladWrapper::createRenderBuffer(&m_renderBuffer);
 		GladWrapper::fillRenderbuffer(width, height, m_renderBuffer);
@@ -56,7 +56,7 @@ namespace Pengine::Buffer
 
 	void PenFrameBuffer::resize(int width, int height)
 	{
-		GladWrapper::fillTextureBuffer({ width, height }, nullptr, m_texBuffer);
+		GladWrapper::fillTextureBuffer({ width, height }, nullptr, 3, m_texBuffer);
 		GladWrapper::fillRenderbuffer(width, height, m_renderBuffer);
 		GladWrapper::fillFrameBuffer(m_texBuffer, m_renderBuffer, m_frameBuffer);
 	}

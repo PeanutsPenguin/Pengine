@@ -1,29 +1,27 @@
 #pragma once 
 
-#include "PenBuffer/OpenGl/Private_PenGLBuferBase.h"
-
 namespace Pengine::Buffer
 {
-    /// <summary>
-    /// VBO for OpenGl draw
-    /// </summary>
-    class PenVertexBuffer final : public PenGLBufferBase
+    class PenVertexBuffer 
     {
-#pragma region Public
     public:
         PenVertexBuffer() = default;
         PenVertexBuffer(const PenVertexBuffer& other) = delete;
         PenVertexBuffer(PenVertexBuffer&& other) = default;
-        ~PenVertexBuffer() final;
+        ~PenVertexBuffer();
 
         PenVertexBuffer& operator=(const PenVertexBuffer& rhs) = delete;
         PenVertexBuffer& operator=(PenVertexBuffer&& rhs) = default;
 
         void create(const void* data, size_t size);
-        void destroy() final;
+        void destroy();
 
-        void bind() const final;
-        void unbind() const final;
-#pragma endregion
+        void bind() const;
+        void unbind() const;
+
+        bool isValid();
+
+    private:
+        unsigned int m_id = 0;
     };
 }

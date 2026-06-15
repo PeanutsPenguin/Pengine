@@ -13,7 +13,7 @@
 #include "PenResources/OpenGl/Private_PenGLTextures.h"
 
 //Buffer
-#include "PenBuffer/OpenGl/Private_PenTextureBuffer.h"
+#include "PenBuffer/PenTextureBuffer.h"
 
 //System
 #include "PenSystem/PenCameraSystem/PenCameraSystem.h"

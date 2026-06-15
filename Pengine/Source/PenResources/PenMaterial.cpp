@@ -4,7 +4,7 @@
 #include "PenResources/OpenGl/Private_PenGLTextures.h"              //PenTexture
 #include "PenResources/OpenGl/Private_PenGLShaderProgram.h"         //PenShaderProgram
 
-#include "PenBuffer/OpenGl/Private_PenTextureBuffer.h"
+#include "PenBuffer/PenTextureBuffer.h"
 
 
 using namespace Pengine::Resources;

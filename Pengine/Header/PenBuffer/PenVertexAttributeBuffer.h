@@ -1,37 +1,32 @@
 #pragma once 
 
-#include "PenBuffer/OpenGl/Private_PenGLBuferBase.h"
-
 namespace Pengine::Buffer
 {
-    /// <summary>
-    /// VAO class for OpenGl draw
-    /// </summary>
-    class PenVertexAttributeBuffer final : public PenGLBufferBase
+    class PenVertexAttributeBuffer
     {
-#pragma region Public
     public:
         PenVertexAttributeBuffer() = default;
         PenVertexAttributeBuffer(const PenVertexAttributeBuffer& other) = delete;
         PenVertexAttributeBuffer(PenVertexAttributeBuffer&& other) = default;
-        ~PenVertexAttributeBuffer() final;
+        ~PenVertexAttributeBuffer();
 
         PenVertexAttributeBuffer& operator=(const PenVertexAttributeBuffer& rhs) = delete;
         PenVertexAttributeBuffer& operator=(PenVertexAttributeBuffer&& rhs) = default;
 
         void create();
-        void destroy() final;
+        void destroy();
 
-        void bind() const final;
-        void unbind() const final;
+        void bind() const;
+        void unbind() const;
 
         /// <summary>
         /// Define attributes for the Pengine::Vertex class
         /// </summary>
         /// <param name="index">Index of layout</param>
         /// <param name="vertSize">Size of the vector your defining</param>
-        /// <returns>True if the attribute has been succesfully defined</returns>
-        bool defineAttribute(size_t index, unsigned int vertSize);
-#pragma endregion
+        void defineAttribute(size_t index, unsigned int vertSize);
+
+    private:
+        unsigned int m_id;
     };
 }

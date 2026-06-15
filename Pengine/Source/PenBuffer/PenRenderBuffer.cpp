@@ -1,6 +1,6 @@
-#include "PenBuffer/OpenGl/Private_PenRenderBuffer.h"
+#include "PenBuffer/PenRenderBuffer.h"	
 
-#include <glad/glad.h>
+#include "Private_GladBuffer.h"
 
 namespace Pengine::Buffer
 {
@@ -11,17 +11,17 @@ namespace Pengine::Buffer
 
 	void PenRenderBuffer::bind() const
 	{
-		glBindRenderbuffer(GL_RENDERBUFFER, id());
+		GladWrapper::bindRenderBuffer(m_id);
 	}
 
 	void PenRenderBuffer::unbind() const
 	{
-		glBindRenderbuffer(GL_RENDERBUFFER, 0);
+		GladWrapper::bindRenderBuffer(0);
 	}
 
 	void PenRenderBuffer::create(const PenMath::Vector2& size)
 	{
-		glGenRenderbuffers(1, &m_id);
+		GladWrapper::createRenderBuffer(&m_id);
 
 		this->resize(size);
 	}
@@ -31,17 +31,13 @@ namespace Pengine::Buffer
 		if (!m_id)
 			return;
 
-		glDeleteRenderbuffers(1, &m_id);
+		GladWrapper::destroyRenderBuffer(&m_id);
 
 		m_id = 0;
 	}
 
 	void PenRenderBuffer::resize(const PenMath::Vector2& size)
 	{
-		bind();
-
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, size.x, size.y);
-
-		unbind();
+		GladWrapper::fillRenderbuffer(size.x, size.y, m_id);
 	}
 }
