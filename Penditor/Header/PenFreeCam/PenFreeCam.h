@@ -23,7 +23,6 @@ namespace Penditor
 		PenFreeCam& operator=(PenFreeCam&& rhs) = default;
 
 		void							setCamObject(const Pengine::PenComponentsId id);
-		const Pengine::PenObjectId		getCamObject() const;
 		void							setAspect(float aspect);
 
 		void							setSpeed(float speed);

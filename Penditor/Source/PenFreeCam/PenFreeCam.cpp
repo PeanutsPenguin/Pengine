@@ -22,11 +22,6 @@ void PenFreeCam::setCamObject(const Pengine::PenComponentsId id)
 	this->m_camObject = id;
 }
 
-const Pengine::PenObjectId PenFreeCam::getCamObject() const
-{
-	return this->m_camObject;
-}
-
 void PenFreeCam::setSpeed(float speed)
 {
     this->m_speed = speed;
