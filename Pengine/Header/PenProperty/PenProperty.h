@@ -2,7 +2,6 @@
 
 #include "PenStructsAndEnum/PenPropertyType.h"
 
-
 namespace Pengine
 {
 	class IPenProperty
@@ -29,7 +28,7 @@ namespace Pengine
 	class PenProperty : public IPenProperty 
 	{
 	public:
-		TProperty(const char* propName, PenPropertyType propType, T* data)
+		PenProperty(const char* propName, PenPropertyType propType, T* data)
 		{
 			m_name = propName;
 			m_type = propType;
