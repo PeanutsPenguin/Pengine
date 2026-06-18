@@ -14,9 +14,11 @@ namespace Pengine
 	template<typename T>
 	inline void PenOctopus::addComponent(PenObjectId obj, T component)
 	{
-		this->m_PenComponentManager->addComponent<T>(obj, component);
+		//TODO: check if the object pass by is a component
+		T& newComp = this->m_PenComponentManager->addComponent<T>(obj, component);
 
-		component.setPenObjectId(obj);
+		newComp.setPenObjectId(obj);
+		newComp.registerProperty(this->m_PenPropertyManager.get());
 		PenComponentSignature signature = m_PenObjectManager->getSignature(obj);
 		signature.set(m_PenComponentManager->getComponentType<T>(), true);
 		m_PenObjectManager->setSignature(obj, signature);

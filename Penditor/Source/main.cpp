@@ -73,7 +73,6 @@ int main()
 		sphereTrans.rotation.setRotationEuler({ 0, 180, 0 });
 		sphereTransComp.setGlobalTransform(sphereTrans);
 
-
 		Pengine::PenCore::PenOctopus()->addComponent(newObj, sphereTransComp);
 		Pengine::PenCore::PenOctopus()->addComponent(newObj, renderComp);
 

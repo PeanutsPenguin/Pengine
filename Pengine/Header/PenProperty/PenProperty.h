@@ -37,7 +37,7 @@ namespace Pengine
 
 		void* getData() override 
 		{ 
-			return static_cast<void*>(dataPointer); 
+			return static_cast<void*>(m_data); 
 		}
 
 	private:

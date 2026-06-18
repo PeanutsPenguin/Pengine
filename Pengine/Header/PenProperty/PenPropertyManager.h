@@ -21,7 +21,7 @@ namespace Pengine
 		PenPropertyManager& operator=(PenPropertyManager&& rhs) = default;
 
 		template<typename T>
-		void addProperty(const PenObjectId id, const char* name, PenPropertyType type, T* data)
+		void addProperty(PenObjectId id, const char* name, PenPropertyType type, T* data)
 		{
 			this->m_propertyArray[id].push_back(new PenProperty<T>(name, type, data));
 		}

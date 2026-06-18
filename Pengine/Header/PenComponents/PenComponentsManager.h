@@ -18,7 +18,7 @@ namespace Pengine::Components
 		PenComponentType getComponentType();
 
 		template<typename T>
-		void addComponent(PenObjectId entity, T component);
+		T& addComponent(PenObjectId entity, T component);
 
 		template<typename T>
 		void removeComponent(PenObjectId entity);
