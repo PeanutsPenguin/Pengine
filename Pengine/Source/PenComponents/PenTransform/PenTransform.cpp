@@ -3,6 +3,7 @@
 #include "PenCore/PenCore.h"									//PenCore
 #include "PenOctopus/PenOctopus.h"								//PenOctopus
 #include "PenSystem/PenTransformSystem/PenTransformSystem.h"	//PenTransformSystem
+#include "PenProperty/PenPropertyManager.h"
 
 using namespace Pengine::Components;
 
@@ -11,6 +12,16 @@ PenTransform::PenTransform()
 	this->SetState(PenComponentState::ENABLE, true);
 	this->m_parent = g_PenObjectInvalidId;
 }
+
+void PenTransform::registerProperty(PenPropertyManager* manager)
+{
+	PenObjectId id = this->getPenObjectId();
+	manager->addProperty(id, "Transform Component", E_COMPONENT, this);
+	manager->addProperty(id, "Position", E_VEC3, &this->m_globalTransform.position);
+	manager->addProperty(id, "Rotation", E_VEC3, &this->m_globalTransform.scale);
+	//Rotation should be here but since it's a quat and i want to edit it with euler angles i don't push it
+}
+
 
 #pragma region Getter and Setter
 PenMath::Transform PenTransform::getGlobalTransform() const

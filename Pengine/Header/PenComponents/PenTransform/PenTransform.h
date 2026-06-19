@@ -3,8 +3,6 @@
 #include "PenComponents/PenComponentBase.h"
 #include "Transform.h"
 
-#include "PenProperty/PenPropertyManager.h"
-
 namespace Pengine::Components
 {
 	class PenTransform final : public PenComponentBase

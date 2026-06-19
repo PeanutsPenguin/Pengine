@@ -32,7 +32,7 @@ namespace Pengine::Components
 
 		const PenObjectId getPenObjectId() const;
 
-		virtual void registerProperty(PenPropertyManager* manager);
+		virtual void registerProperty(PenPropertyManager* manager) {};
 	
 	private:
 		void setPenObjectId(const PenObjectId id);
