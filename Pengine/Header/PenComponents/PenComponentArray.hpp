@@ -7,12 +7,12 @@
 namespace Pengine::Components
 {
 	template<typename T>
-	inline void ComponentArray<T>::insertData(PenObjectId entity, T component)
+	inline T& ComponentArray<T>::insertData(PenObjectId entity, T component)
 	{
 		if(m_PenObjectToArrayIndex.find(entity) != m_PenObjectToArrayIndex.end())
 		{
 			std::cout << __FUNCTION__ "Component added to same PenObject more than once.\n";
-			return;
+			return this->getData(entity);
 		}
 
 		// Put new entry at end and update the maps
@@ -21,6 +21,8 @@ namespace Pengine::Components
 		m_arrayIndexToPenObject[newIndex] = entity;
 		m_PenComponentArray[newIndex] = component;
 		++m_count;
+
+		return m_PenComponentArray[newIndex];
 	}
 
 	template<typename T>

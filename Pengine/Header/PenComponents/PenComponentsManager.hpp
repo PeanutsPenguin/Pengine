@@ -42,9 +42,9 @@ namespace Pengine::Components
 	}
 
 	template<typename T>
-	inline void PenComponentsManager::addComponent(PenObjectId entity, T component)
+	inline T& PenComponentsManager::addComponent(PenObjectId entity, T component)
 	{
-		getComponentArray<T>()->insertData(entity, component);
+		return getComponentArray<T>()->insertData(entity, component);
 	}
 
 	template<typename T>

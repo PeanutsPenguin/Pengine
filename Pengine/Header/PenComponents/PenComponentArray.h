@@ -19,15 +19,15 @@ namespace Pengine::Components
 	class ComponentArray : public IPenComponentArray
 	{
 	public:
-		void insertData(PenObjectId entity, T component);
+		T&		insertData(PenObjectId entity, T component);
 
-		void removeData(PenObjectId entity);
+		void	removeData(PenObjectId entity);
 
-		T& getData(PenObjectId entity);
+		T&		getData(PenObjectId entity);
 
-		bool contains(PenObjectId entity);
+		bool	contains(PenObjectId entity);
 
-		void entityDestroyed(PenObjectId entity) override;
+		void	entityDestroyed(PenObjectId entity) override;
 
 	private:
 		std::array<T, g_maxEntity> m_PenComponentArray;						//Array of components associated with a max size

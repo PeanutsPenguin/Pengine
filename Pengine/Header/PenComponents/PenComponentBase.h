@@ -1,12 +1,14 @@
 #pragma once 
 
 #include "PenDefine/PengineDefine.h"		//PengineDefine
-
 #include "PenStructsAndEnum/PenComponentState.h"
+
+#include <iostream>
 
 namespace Pengine
 {
 	class PenOctopus;
+	class PenPropertyManager;
 }
 
 namespace Pengine::Components
@@ -28,9 +30,9 @@ namespace Pengine::Components
 
 		void SetState(PenComponentState state, bool enable = true);
 
-
 		const PenObjectId getPenObjectId() const;
 
+		virtual void registerProperty(PenPropertyManager* manager) {};
 	
 	private:
 		void setPenObjectId(const PenObjectId id);

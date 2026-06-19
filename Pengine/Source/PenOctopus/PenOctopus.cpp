@@ -8,6 +8,7 @@ void PenOctopus::init()
 	this->m_PenComponentManager = std::make_unique<Components::PenComponentsManager>();
 	this->m_PenObjectManager = std::make_unique<PenObjectManager>();
 	this->m_PenSystemManager = std::make_unique<System::PenSystemManager>();
+	this->m_PenPropertyManager = std::make_unique<PenPropertyManager>();
 }
 
 #pragma region PenObject
@@ -57,5 +58,17 @@ void PenOctopus::removeFromScene(const PenObjectId obj)
 std::unique_ptr<PenScene>& PenOctopus::getMainScene()
 {
 	return this->m_mainScene;
+}
+#pragma endregion
+
+#pragma region PenPropery
+std::vector<IPenProperty*>& PenOctopus::getProperty(const PenObjectId obj)
+{
+	return this->m_PenPropertyManager->getProperties(obj);
+}
+
+std::unique_ptr<PenPropertyManager>& PenOctopus::PropertyManager()
+{
+	return this->m_PenPropertyManager;
 }
 #pragma endregion
