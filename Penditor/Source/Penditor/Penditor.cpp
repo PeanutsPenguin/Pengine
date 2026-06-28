@@ -36,7 +36,6 @@ void PenditorCore::runEditor()
 {
 	while (!m_shouldStop && !Pengine::PenCore::shouldStop())
 	{
-		//TODO: Seperate UI Render from engine render so ImGui is rendered first and values are updated
 		update();
 
 		render();

@@ -1,3 +1,4 @@
+#pragma once 
 
 #include "PenVirtualWindow/PenVirtualWindow.h"
 #include "PenDefine/PengineDefine.h"
