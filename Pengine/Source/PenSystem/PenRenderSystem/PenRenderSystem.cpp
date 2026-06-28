@@ -74,6 +74,10 @@ void PenRendererSystem::GLrender(const PenObjectId camera)
 
 			Components::PenCamera&		camComp			= PenCore::PenOctopus()->getComponent<Components::PenCamera>(renderCam);
 			Components::PenTransform&	transCamComp	= PenCore::PenOctopus()->getComponent<Components::PenTransform>(renderCam);
+
+			if (!transComp.IsState(Components::PenComponentState::ENABLE))
+				continue;
+
 			camComp.shaderActivation(prog, transCamComp);
 
 			PenMath::Mat4 model = transComp.getGlobalTransform().toMatrix();

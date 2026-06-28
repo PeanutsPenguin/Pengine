@@ -9,6 +9,7 @@ namespace Penditor
 	namespace Window
 	{
 		class PenGameWindow;
+		class PenPropertyWindow;
 	}
 }
 
@@ -29,7 +30,9 @@ namespace Penditor
 
 		static void destroy();
 
-		static std::unique_ptr<Window::PenGameWindow>& GameWindow();
+		static std::unique_ptr<Window::PenGameWindow>&		GameWindow();
+
+		static std::unique_ptr<Window::PenPropertyWindow>&	PropertyWindow();
 
 	private:
 		static void update();
@@ -38,7 +41,8 @@ namespace Penditor
 
 		static void handleInputs();
 
-		static std::unique_ptr<Window::PenGameWindow>	m_PenGameWindow;
+		static std::unique_ptr<Window::PenGameWindow>		m_PenGameWindow;
+		static std::unique_ptr<Window::PenPropertyWindow>	m_PenPropertyWindow;
 		static bool m_shouldStop;
 	};
 }

@@ -68,9 +68,6 @@ int main()
 
 		Pengine::Components::PenTransform sphereTransComp = Pengine::Components::PenTransform();
 		PenMath::Transform sphereTrans;
-		sphereTrans.position = { 0, 0, 0 };
-		sphereTrans.scale = { .05f, .05f, .05f };
-		sphereTrans.rotation.setRotationEuler({ 0, 180, 0 });
 		sphereTransComp.setGlobalTransform(sphereTrans);
 
 		Pengine::PenCore::PenOctopus()->addComponent(newObj, sphereTransComp);
@@ -99,9 +96,10 @@ int main()
 
 		Pengine::PenCore::PenOctopus()->addToScene(seconNewObj);
 		#pragma endregion
-
+		
 		Penditor::PenditorCore::init();
 		Penditor::PenditorCore::runEditor();
+
 #if CHECK_MEMORY_LEAKS
 	}
 	afterMain(start);

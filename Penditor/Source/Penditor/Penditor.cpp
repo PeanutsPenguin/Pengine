@@ -10,12 +10,14 @@
 #include "PenComponents/PenTransform/PenTransform.h"
 #include "PenComponents/PenCamera/PenCamera.h"
 
-#include "PenGameWindow/PenGameWindow.h"	//Penditor::Window::PenGameWindow
+#include "PenGameWindow/PenGameWindow.h"			//Penditor::Window::PenGameWindow
+#include "PenPropertyWindow/PenPropertyWindow.h"	//Penditor::Window::PenPropertyWindow
 
 using namespace Penditor;
 
 bool PenditorCore::m_shouldStop = true;
-std::unique_ptr<Window::PenGameWindow> PenditorCore::m_PenGameWindow	= std::make_unique<Window::PenGameWindow>("PenGameWindow");
+std::unique_ptr<Window::PenGameWindow>		PenditorCore::m_PenGameWindow		= std::make_unique<Window::PenGameWindow>("PenGameWindow");
+std::unique_ptr<Window::PenPropertyWindow>	PenditorCore::m_PenPropertyWindow	= std::make_unique<Window::PenPropertyWindow>("PenPropertyWindow");
 
 void PenditorCore::init()
 {
@@ -62,10 +64,11 @@ void PenditorCore::render()
 	Pengine::PenCore::UIManager()->newFrame(true);
 	
 	m_PenGameWindow->render();
+	m_PenPropertyWindow->render();
 
 	Pengine::PenCore::UIManager()->endFrame();
-
 }
+
 void PenditorCore::handleInputs()
 {
 	std::unique_ptr<Pengine::PenInputManager>& ptr = Pengine::PenCore::InputManager();
@@ -92,4 +95,20 @@ void PenditorCore::destroy()
 		m_PenGameWindow.reset();
 		m_PenGameWindow = nullptr;
 	}
+
+	if (m_PenPropertyWindow)
+	{
+		m_PenPropertyWindow.reset();
+		m_PenPropertyWindow = nullptr;
+	}
+}
+
+std::unique_ptr<Window::PenGameWindow>& PenditorCore::GameWindow()
+{
+	return m_PenGameWindow;
+}
+
+std::unique_ptr<Window::PenPropertyWindow>& PenditorCore::PropertyWindow()
+{
+	return m_PenPropertyWindow;
 }

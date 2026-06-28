@@ -10,6 +10,7 @@ namespace Pengine
 		E_FLOAT, 
 		E_VEC3, 
 		E_VEC2, 
+		E_QUATERNION,
 		E_COLOR
 	};
 }

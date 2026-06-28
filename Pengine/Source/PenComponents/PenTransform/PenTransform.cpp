@@ -18,8 +18,8 @@ void PenTransform::registerProperty(PenPropertyManager* manager)
 	PenObjectId id = this->getPenObjectId();
 	manager->addProperty(id, "Transform Component", E_COMPONENT, this);
 	manager->addProperty(id, "Position", E_VEC3, &this->m_globalTransform.position);
-	manager->addProperty(id, "Rotation", E_VEC3, &this->m_globalTransform.scale);
-	//Rotation should be here but since it's a quat and i want to edit it with euler angles i don't push it
+	manager->addProperty(id, "Rotation", E_QUATERNION, &this->m_globalTransform.rotation);
+	manager->addProperty(id, "Scale", E_VEC3, &this->m_globalTransform.scale);
 }
 
 
