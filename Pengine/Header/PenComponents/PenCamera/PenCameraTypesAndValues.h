@@ -9,7 +9,7 @@ namespace Pengine
 		float fov = 70;
 		float aspectRatio = defaultWindowsValue::DEFAULT_WIDTH / defaultWindowsValue::DEFAULT_HEIGHT;
 		float near = 0.1f;
-		float far = 100.f;
+		float far = 500.f;
 	};	
 
 	struct defaultCameraValues

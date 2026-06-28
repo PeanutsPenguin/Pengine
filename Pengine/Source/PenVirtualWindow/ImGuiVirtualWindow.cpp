@@ -38,8 +38,6 @@ namespace Pengine::ui::ImGuiWrapper
 		ImGui::NewFrame();
 
 		ImGui::DockSpaceOverViewport();
-
-		ImGui::ShowDemoWindow();
 	}
 
 	void endUIFrame()
@@ -79,13 +77,87 @@ namespace Pengine::ui::ImGuiWrapper
 		return { (int)size.x, (int)size.y };
 	}
 
-	void renderImage(int textureID, const PenMath::Vector2& size)
+	PenMath::Vector2 getCursorPos()
 	{
-		ImGui::Image(textureID, { (float)size.x, (float)size.y }, { 0, 1 }, { 1, 0 });
+		ImVec2 pos = ImGui::GetCursorPos();
+		return { (int)pos.x, (int)pos.y };
+	}
+
+	float getFrameHeight() 
+	{
+		return ImGui::GetFrameHeight();
+	}
+
+	void setCursorPos(const PenMath::Vector2f& pos)
+	{
+		ImGui::SetCursorPos({ pos.x, pos.y });
+	}
+
+	void setCursorPosX(float x)
+	{
+		ImGui::SetCursorPosX(x);
+	}
+
+	void setCursorPosY(float y)
+	{
+		ImGui::SetCursorPosY(y);
+	}
+
+	void setNextItemWidth(float width)
+	{
+		ImGui::SetNextItemWidth(width);
 	}
 
 	bool isMouseOverWindow()
 	{
 		return ImGui::IsWindowHovered();
 	}
+
+	#pragma region Render Calls
+	void renderOnSameLine(float spacing)
+	{
+		ImGui::SameLine(spacing);
+	}
+
+	void renderImage(int textureID, const PenMath::Vector2& size)
+	{
+		ImGui::Image(textureID, { (float)size.x, (float)size.y }, { 0, 1 }, { 1, 0 });
+	}
+
+	void renderBool(bool* value, const char* name)
+	{
+		ImGui::Checkbox(name, value);
+	}
+
+	void renderText(const char* value)
+	{
+		ImGui::Text(value);
+	}
+
+	bool renderCollapsingHeader(const char* name)
+	{
+		return ImGui::CollapsingHeader(name, ImGuiTreeNodeFlags_DefaultOpen);
+	}
+
+	bool renderVector3(PenMath::Vector3& vec, const char* name)
+	{
+
+		return ImGui::InputInt3(name, &vec[0]);
+	}
+
+	bool renderVector3(PenMath::Vector3f& vec, const char* name)
+	{
+		float arr[3] = { vec.x, vec.y, vec.z };
+
+		if(ImGui::InputFloat3(name, &arr[0]))
+		{
+			vec.x = arr[0];
+			vec.y = arr[1];
+			vec.z = arr[2];
+			return true;
+		}
+
+		return false;
+	}
+	#pragma endregion
 }

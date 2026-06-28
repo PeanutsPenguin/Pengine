@@ -37,12 +37,72 @@ PenMath::Vector2 PenUIManager::getContentSize()
 	return ImGuiWrapper::getContentSize();
 }
 
+PenMath::Vector2 PenUIManager::getUICursorPos()
+{
+	return ImGuiWrapper::getCursorPos();
+}
+
+float PenUIManager::getFrameHeight()
+{
+	return ImGuiWrapper::getFrameHeight();
+}
+
+void PenUIManager::setUICursorPos(const PenMath::Vector2f& pos)
+{
+	ImGuiWrapper::setCursorPos(pos);
+}
+
+void PenUIManager::setUICursorPosX(float x)
+{
+	ImGuiWrapper::setCursorPosX(x);
+}
+
+void PenUIManager::setUICursorPosY(float y)
+{
+	ImGuiWrapper::setCursorPosY(y);
+}
+
+void PenUIManager::setNextItemWidth(float width)
+{
+	ImGuiWrapper::setNextItemWidth(width);
+}
+
+void PenUIManager::renderOnSameLine(float spacing)
+{
+	ImGuiWrapper::renderOnSameLine(spacing);
+}
+
 void PenUIManager::renderImage(int textureID, const PenMath::Vector2& size)
 {
 	ImGuiWrapper::renderImage(textureID, size);
 }
 
+void PenUIManager::renderBool(bool* value, const char* name)
+{
+	ImGuiWrapper::renderBool(value, name);
+}
+
+void PenUIManager::renderText(const char* value)
+{
+	ImGuiWrapper::renderText(value);
+}
+
+bool PenUIManager::renderCollapsingHeader(const char* name)
+{
+	return ImGuiWrapper::renderCollapsingHeader(name);
+}
+
 bool PenUIManager::isWindowHovered()
 {
 	return ImGuiWrapper::isMouseOverWindow();
+}
+
+bool PenUIManager::renderVector3(PenMath::Vector3& vec, const char* name)
+{
+	return ImGuiWrapper::renderVector3(vec, name);
+}
+
+bool PenUIManager::renderVector3(PenMath::Vector3f& vec, const char* name)
+{
+	return ImGuiWrapper::renderVector3(vec, name);
 }

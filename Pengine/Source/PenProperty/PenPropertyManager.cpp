@@ -8,7 +8,9 @@ namespace Pengine
 	{
 		for (auto& it : m_propertyArray) 
 		{
-			for(int i = 0; i < it.second.size() - 1; ++i)
+			int length = it.second.size();
+
+			for(int i = 0; i < length; ++i)
 			{
 				delete it.second[i];
 			}

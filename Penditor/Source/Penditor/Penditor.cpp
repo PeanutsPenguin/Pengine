@@ -96,6 +96,12 @@ void PenditorCore::destroy()
 		m_PenGameWindow.reset();
 		m_PenGameWindow = nullptr;
 	}
+
+	if (m_PenPropertyWindow)
+	{
+		m_PenPropertyWindow.reset();
+		m_PenPropertyWindow = nullptr;
+	}
 }
 
 std::unique_ptr<Window::PenGameWindow>& PenditorCore::GameWindow()
