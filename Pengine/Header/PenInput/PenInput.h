@@ -25,13 +25,8 @@ namespace Pengine
 		bool	isKeyDown(const PenInput& input);
 		bool	isKeyReleased(const PenInput& input);
 
-		PenInputType		getKeyState(const PenInput& input);
+		PenInputState		getKeyState(const PenInput& input);
 		PenMath::Vector2	getMouseOffset() const;
-
-		/// <summary>
-		/// Reset the mouse position to its last position
-		/// </summary>
-		void resetMousePos();
 
 		/// <summary>
 		/// Update all the stored input state 
@@ -39,15 +34,12 @@ namespace Pengine
 		void update();
 
 	private:
-		PenInputType	GLFWfindKeyState(const PenInput& input);
-		int				GLFWinput(const PenInput& input);
 		int				GLFWMouseInput(const PenInput& input);
-		void			GLFWupdateMouse();
-		void			GLFWresetMousePos();
+		void			updateMouse();
 
-		PenInputType updateInput(const PenInput& input, PenInputType curState);
+		PenInputState updateInput(const PenInput& input, PenInputState curState);
 
-		std::unordered_map<PenInput, PenInputType> m_inputs;
+		std::unordered_map<PenInput, PenInputState> m_inputs;
 		PenMath::Vector2 m_mousePos;
 		PenMath::Vector2 m_offset = 0;
 	};
