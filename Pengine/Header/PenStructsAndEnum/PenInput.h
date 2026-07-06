@@ -2,7 +2,7 @@
 
 namespace Pengine
 {
-	enum PenInputType
+	enum PenInputState
 	{
 		E_NONE, 
 		E_RELEASED, 

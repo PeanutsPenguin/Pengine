@@ -4,7 +4,7 @@
 #include "PenSystem/PenRenderSystem/PenRenderSystem.h"
 #include "PenSystem/PenCameraSystem/PenCameraSystem.h"
 
-#include "PenWindow/Private_GLFWPenWindow.h"
+#include "Wrapper/Private_GLFWWrapper.h"
 
 #include "PenCore/PenCore.h "
 #include "PenOctopus/PenOctopus.hpp"

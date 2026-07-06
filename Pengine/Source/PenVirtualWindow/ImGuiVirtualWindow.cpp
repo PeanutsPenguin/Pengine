@@ -1,5 +1,5 @@
 #include "PenVirtualWindow/Private_ImGuiVirtualWindow.h"
-#include "PenWindow/Private_GLFWPenWindow.h"
+#include "Wrapper/Private_GLFWWrapper.h"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_opengl3.h"

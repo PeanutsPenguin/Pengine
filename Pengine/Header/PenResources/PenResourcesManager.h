@@ -34,10 +34,7 @@ namespace Pengine::Resources
 			requires std::derived_from<_ResourceType, PenResourcesBase>
 		_NODISCARD std::shared_ptr<_ResourceType> loadResourceFromFile(const char* path, Args... data);
 
-		/// <summary>
 		/// Function to load a resource from file and stock it as persistent, so it won't be cleared by the clearUnused function
-		/// </summary>
-		/// <returns>Pointers to the loaded resource</returns>
 		template<typename _ResourceType, typename... Args>
 			requires std::derived_from<_ResourceType, PenResourcesBase>
 		_NODISCARD std::shared_ptr<_ResourceType> loadResourceFromFile(const char* path, bool persistent, Args... data);

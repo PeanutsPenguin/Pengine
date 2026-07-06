@@ -3,7 +3,7 @@
 #include "PenCore/PenCore.h"
 
 #include "PenVirtualWindow/Private_ImGuiVirtualWindow.h"
-#include "PenWindow/Private_GLFWPenWindow.h"
+#include "Wrapper/Private_GLFWWrapper.h"
 
 using namespace Pengine::ui;
 
@@ -15,12 +15,12 @@ void PenVirtualWindow::render()
 
 void PenVirtualWindow::setViewportBackgroundColor(const Pengine::PenColor& col)
 {
-	Window::GLFWWrapper::changeBackgroundColor(col);
+	GLFWWrapper::changeBackgroundColor(col);
 }
 
 void PenVirtualWindow::setViewportTransform(const PenMath::Vector2& pos, const PenMath::Vector2& size)
 {
-	Window::GLFWWrapper::resizeViewport(pos, size);
+	GLFWWrapper::resizeViewport(pos, size);
 }
 
 void PenVirtualWindow::setWindowTitle(const char* name)
