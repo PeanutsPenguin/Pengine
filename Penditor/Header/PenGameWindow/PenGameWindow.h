@@ -6,9 +6,19 @@
 #define VECTOR2_DEBUG
 #include "Vector/Vector2/Vector2.hpp"
 
-namespace Pengine::Buffer
+#include <memory>
+
+namespace Pengine
 {
-	class PenFrameBuffer;
+	namespace Buffer
+	{
+		class PenFrameBuffer;
+	}
+
+	namespace System
+	{
+		class PenRendererSystem;
+	}
 }
 
 namespace Penditor
@@ -35,7 +45,8 @@ namespace Penditor::Window
 
 		void init();
 
-		void setCamera(const Pengine::PenObjectId id);
+		void							setCamera(const Pengine::PenObjectId id);
+		const Pengine::PenObjectId		getCamera();
 
 	private:
 		void renderScene();
@@ -46,6 +57,8 @@ namespace Penditor::Window
 
 		void updateCamera();
 
+
+		std::shared_ptr<Pengine::System::PenRendererSystem> m_renderSystem;
 		PenMath::Vector2 m_size;
 		PenMath::Vector2 m_prevSize;
 		Pengine::Buffer::PenFrameBuffer* m_frameBuffer;

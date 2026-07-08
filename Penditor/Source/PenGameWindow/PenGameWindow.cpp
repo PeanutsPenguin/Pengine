@@ -4,10 +4,12 @@
 #include "PenWindow/PenWindowBase.h"	//Pengine::PenWindow
 #include "PenOctopus/PenOctopus.hpp"	//Pengine::PenOctopus
 #include "PenUIManager/PenUIManager.h"	//Pengine::ui::PenUIManager
-#include "PenFreeCam/PenFreeCam.h"		//Penditor::PenFreeCam
-#include "Penditor/Penditor.h"
 #include "PenInput/PenInput.h"
 #include "PenBuffer/PenFrameBuffer.h"
+#include "PenSystem/PenRenderSystem/PenRenderSystem.h"
+
+#include "PenFreeCam/PenFreeCam.h"		//Penditor::PenFreeCam
+#include "Penditor/Penditor.h"
 
 namespace Penditor::Window
 {
@@ -33,12 +35,19 @@ namespace Penditor::Window
 	void PenGameWindow::init()
 	{
 		this->m_frameBuffer->create(800, 600);
+		this->m_renderSystem = Pengine::PenCore::PenOctopus()->getSystem<Pengine::System::PenRendererSystem>();
 	}
 
 	void PenGameWindow::setCamera(const Pengine::PenObjectId id)
 	{
 		this->m_camera->setCamObject(id);
 	}
+
+	const Pengine::PenObjectId PenGameWindow::getCamera()
+	{
+		return this->m_camera->getCamera();
+	}
+
 
 	void PenGameWindow::renderCalls()
 	{
@@ -95,10 +104,14 @@ namespace Penditor::Window
 	{
 		this->m_frameBuffer->bind();
 		Pengine::Window::resizeViewport({ 0, 0 }, this->m_size);
-		Pengine::PenCore::MainPenWindow()->preRender(*Pengine::PenCore::PenOctopus()->getMainScene());
-		Pengine::PenCore::MainPenWindow()->render(m_camera->getCamera());
-		Pengine::PenCore::MainPenWindow()->postRender();
-		this->m_frameBuffer->unbind();
 
+		if(this->m_renderSystem)
+		{
+			this->m_renderSystem->preRender(Pengine::PenCore::PenOctopus()->getMainScene()->getBackgroundColor());
+			this->m_renderSystem->render(m_camera->getCamera());
+			this->m_renderSystem->postRender();
+		}
+
+		this->m_frameBuffer->unbind();
 	}
 }

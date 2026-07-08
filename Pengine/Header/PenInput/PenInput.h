@@ -27,6 +27,7 @@ namespace Pengine
 
 		PenInputState		getKeyState(const PenInput& input);
 		PenMath::Vector2	getMouseOffset() const;
+		PenMath::Vector2	getMousePosition() const;
 
 		/// <summary>
 		/// Update all the stored input state 
@@ -34,10 +35,8 @@ namespace Pengine
 		void update();
 
 	private:
-		int				GLFWMouseInput(const PenInput& input);
 		void			updateMouse();
-
-		PenInputState updateInput(const PenInput& input, PenInputState curState);
+		PenInputState	updateInput(const PenInput& input, PenInputState curState);
 
 		std::unordered_map<PenInput, PenInputState> m_inputs;
 		PenMath::Vector2 m_mousePos;
