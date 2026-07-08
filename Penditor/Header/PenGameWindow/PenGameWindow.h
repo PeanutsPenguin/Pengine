@@ -45,8 +45,9 @@ namespace Penditor::Window
 
 		void init();
 
-		void							setCamera(const Pengine::PenObjectId id);
-		const Pengine::PenObjectId		getCamera();
+		void												setCamera(const Pengine::PenObjectId id);
+		const Pengine::PenObjectId							getCamera();
+		std::shared_ptr<Pengine::System::PenRendererSystem> getRenderSystem();
 
 	private:
 		void renderScene();

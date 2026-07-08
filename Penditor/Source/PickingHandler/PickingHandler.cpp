@@ -5,13 +5,17 @@
 #include "PenFreeCam/PenFreeCam.h"
 
 #include "PenComponents/PenCamera/PenCamera.h"
+#include "PenComponents/PenTransform/PenTransform.h"
+#include "PenComponents/PenRenderer/PenRenderer.h"
+
 #include "PenCore/PenCore.h"
 #include "PenInput/PenInput.h"
+#include "PenOctopus/PenOctopus.hpp"
 
 #include "PenSystem/PenRenderSystem/PenRenderSystem.h"
 #include "PenResources/OpenGl/Private_PenGLShaderProgram.h"
 
-#include "Matrix/Mat4.h"
+
 
 namespace Penditor
 {
@@ -40,43 +44,34 @@ namespace Penditor
 		if (!this->m_pickingShader->use())
 			return;
 
-		const Pengine::PenObjectId cam = Penditor::PenditorCore::GameWindow()->getCamera();
+		const Pengine::PenObjectId camId = Penditor::PenditorCore::GameWindow()->getCamera();
 
+		if (camId == Pengine::g_PenObjectInvalidId || !Pengine::PenCore::PenOctopus()->containsComponent<Pengine::Components::PenCamera>(camId))
+			return;
 
+		Pengine::Components::PenCamera& mainCam = Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenCamera>(camId);
 
+		const PenMath::Mat4& projview = mainCam.getViewProjMatrix();
 
-
-		
-		const PenMath::Mat4& projview = ->getViewProjMatrix();
-		const PenMath::Mat4& model = object.getWorldTransformMatrix();
-
-		Matrix4f MVP = projview * model;
-
-		this->m_program->setUniform("MVP", MVP);
-		this->m_program->setUniform("PickingColor", col);
-
-		const RenderComponent* render = object.getComponent<RenderComponent>();
-
-		if (render)
-		{
-			std::shared_ptr<const Mesh> mesh = render->mesh();
-
-			if (mesh)
-				mesh->draw();
-			else
-				m_defaultMesh.draw();
-		}
-
+		for (Pengine::PenObjectId objId : Penditor::PenditorCore::GameWindow()->getRenderSystem()->m_PenObject)
+			renderObject(objId, renderer, projview);
 	}
 
-	void PickingHandler::renderObject(const Pengine::PenObjectId obj, std::shared_ptr<Pengine::System::PenRendererSystem> renderer)
+	void PickingHandler::renderObject(const Pengine::PenObjectId obj, std::shared_ptr<Pengine::System::PenRendererSystem> renderer, const PenMath::Mat4& viewProj)
 	{
 		const Pengine::PenColor col = this->getPickingColor(obj);
 
+		const PenMath::Mat4& model = Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenTransform>(obj).getGlobalTransform().toMatrix();
 
+		const PenMath::Mat4& MVP = viewProj * model;
 
+		this->m_pickingShader->setUniform("MVP", MVP);
+		this->m_pickingShader->setUniform("PickingColor", col);
 
+		if (!Pengine::PenCore::PenOctopus()->containsComponent<Pengine::Components::PenRenderer>(obj))
+			return;		//TODO: should use a default mesh here (same as in the scene renderer)
 
+		Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenRenderer>(obj).render();
 	}
 
 	const Pengine::PenColor& PickingHandler::getPickingColor(const Pengine::PenObjectId obj)

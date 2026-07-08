@@ -48,6 +48,11 @@ namespace Penditor::Window
 		return this->m_camera->getCamera();
 	}
 
+	std::shared_ptr<Pengine::System::PenRendererSystem> PenGameWindow::getRenderSystem()
+	{
+		return this->m_renderSystem;
+	}
+
 
 	void PenGameWindow::renderCalls()
 	{

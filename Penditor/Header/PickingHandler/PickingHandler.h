@@ -1,8 +1,10 @@
 #pragma once 
 
 #include "PenDefine/PengineDefine.h"
-#include "Vector/Vector2/Vector2.h"
 #include "PenColor/PenColor.h"
+
+#include "Vector/Vector2/Vector2.h"
+#include "Matrix/Mat4.h"
 
 #include <memory>
 
@@ -41,7 +43,7 @@ namespace Penditor
 
 		void renderPicking(std::shared_ptr<Pengine::System::PenRendererSystem> renderer);
 
-		void renderObject(const Pengine::PenObjectId obj, std::shared_ptr<Pengine::System::PenRendererSystem> renderer);
+		void renderObject(const Pengine::PenObjectId obj, std::shared_ptr<Pengine::System::PenRendererSystem> renderer, const PenMath::Mat4& viewProj);
 
 		const Pengine::PenColor& getPickingColor(const Pengine::PenObjectId obj);
 
