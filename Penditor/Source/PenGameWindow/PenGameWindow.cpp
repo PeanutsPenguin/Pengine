@@ -1,14 +1,16 @@
 #include "PenGameWindow/PenGameWindow.h"
 
-#include "PenCore/PenCore.h"			//Pengine::PenCore
-#include "PenWindow/PenWindowBase.h"	//Pengine::PenWindow
-#include "PenOctopus/PenOctopus.hpp"	//Pengine::PenOctopus
-#include "PenUIManager/PenUIManager.h"	//Pengine::ui::PenUIManager
+//Pengine include
+#include "PenCore/PenCore.h"			
+#include "PenWindow/PenWindowBase.h"	
+#include "PenOctopus/PenOctopus.hpp"	
+#include "PenUIManager/PenUIManager.h"	
 #include "PenInput/PenInput.h"
-#include "PenBuffer/PenFrameBuffer.h"
 #include "PenSystem/PenRenderSystem/PenRenderSystem.h"
+#include "PenBuffer/PenFrameBuffer.h"
 
-#include "PenFreeCam/PenFreeCam.h"			//Penditor::PenFreeCam
+//Penditor include
+#include "PenFreeCam/PenFreeCam.h"		
 #include "PickingHandler/PickingHandler.h"
 #include "Penditor/Penditor.h"
 
