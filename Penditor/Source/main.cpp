@@ -48,11 +48,6 @@ int main()
 		//PenResorucesManager
 		std::unique_ptr<Pengine::Resources::PenResourcesManager>& resourceManager = Pengine::PenCore::ResourcesManager();
 
-		// Create ShaderProgram
-		std::shared_ptr<Pengine::Resources::PenGLShader> vertShader = resourceManager->createResourceFromFile<Pengine::Resources::PenGLShader>("PickingVertex.vert", "Shaders/Picking/");
-		std::shared_ptr<Pengine::Resources::PenGLShader> fragShader = resourceManager->createResourceFromFile<Pengine::Resources::PenGLShader>("PickingFrag.frag", "Shaders/Picking/");
-		std::shared_ptr<Pengine::Resources::PenGLShaderProgram> pickingPtr = resourceManager->createResource<Pengine::Resources::PenGLShaderProgram>("PickingProg", "Shaders/Picking/", vertShader, fragShader);
-
 		#pragma region Create Material
 		// Create ShaderProgram
 		std::shared_ptr<Pengine::Resources::PenGLShaderProgram> progPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLShaderProgram>("Shaders/PBRProg.penfile");
