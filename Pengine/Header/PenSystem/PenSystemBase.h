@@ -22,6 +22,7 @@ namespace Pengine::System
 
 		virtual void update(double dt) = 0;
 
+		//TODO: this is public but shoulkd not be honestly
 		std::set<PenObjectId> m_PenObject;
 		PenComponentSignature m_signature;
 	};

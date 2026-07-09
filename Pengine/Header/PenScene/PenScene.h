@@ -7,7 +7,6 @@
 namespace Pengine
 {
 	class PenColor;
-	class PenObject;
 }
 #pragma endregion
 

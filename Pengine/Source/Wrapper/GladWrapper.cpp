@@ -1,4 +1,4 @@
-#include "Private_GladBuffer.h"
+#include "Wrapper/Private_GladWrapper.h"
 
 #include "PenStructsAndEnum/PenVertex.h"
 #include "glad/glad.h"
@@ -196,4 +196,17 @@ namespace Pengine::Buffer::GladWrapper
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 	#pragma endregion
+
+	#pragma region 
+	void setPixelStorageModeUnpack()
+	{
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	}
+
+	void readPixelColor(const PenMath::Vector2& mousePos, std::array<unsigned char, 4>& data)
+	{
+		//unsigned char test[4];
+		glReadPixels(mousePos.x, mousePos.y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data.data());
+	}
+	#pragma endregion 
 }

@@ -103,6 +103,11 @@ PenMath::Vector2 Pengine::PenInputManager::getMouseOffset() const
 {
 	return this->m_offset;
 }
+
+PenMath::Vector2 Pengine::PenInputManager::getMousePosition() const
+{
+	return this->m_mousePos;
+}
 #pragma endregion
 
 

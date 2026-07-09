@@ -8,12 +8,16 @@
 #include "PenPropertyWindow/PenPropertySettings.h"
 #include "PenComponents/PenTransform/PenTransform.h"
 
+
+#include "PickingHandler/PickingHandler.h"
+#include "Penditor/Penditor.h"
+
 namespace Penditor::Window
 {
 	PenPropertyWindow::PenPropertyWindow(const char* title, int flags)
 	{
-		m_title = title;
-		m_flgas = flags;
+		p_title = title;
+		p_flgas = flags;
 
 	}
 
@@ -24,17 +28,21 @@ namespace Penditor::Window
 
 	void PenPropertyWindow::renderCalls()
 	{
-		const Pengine::PenObjectId selectedObject = 1;
+		const Pengine::PenObjectId selectedObject = PenditorCore::PickingHandler()->getSelectedObject();
 
-		//TODO: this will be moved with Picking
-		if(!m_tempInit)
+		if (selectedObject == Pengine::g_PenObjectInvalidId)
+			return;
+
+		Pengine::ui::PenUIManager* manager = Pengine::PenCore::UIManager().get();
+
+		if(PenditorCore::PickingHandler()->hasSelectedObjectChanged())
 		{
 			m_objectEuler = Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenTransform>(selectedObject).getGlobalTransform().rotation.getRotationEuler();
-			m_tempInit = true;
+			manager->removeInputFocus();
 		}
 
 		std::vector<Pengine::IPenProperty*> prop = Pengine::PenCore::PenOctopus()->PropertyManager()->getProperties(selectedObject);
-		Pengine::ui::PenUIManager* manager = Pengine::PenCore::UIManager().get();
+
 
 		for (int i = 0; i < prop.size(); ++i)
 			this->renderProperty(prop[i], manager);

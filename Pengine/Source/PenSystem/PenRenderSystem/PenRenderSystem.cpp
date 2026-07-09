@@ -23,12 +23,25 @@
 #include <Angle/Radian.h>
 #include <Angle/Degree.h>
 
+//Wrapper
+#include "Wrapper/Private_GLFWWrapper.h"
+
 using namespace Pengine::System;
+
+void PenRendererSystem::preRender(const PenColor& color)
+{
+	GLFWWrapper::preRender(color);
+}
 
 void PenRendererSystem::render(const PenObjectId camera)
 {
 	if (PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
 		this->GLrender(camera);
+}
+
+void PenRendererSystem::postRender()
+{
+	
 }
 
 void PenRendererSystem::GLrender(const PenObjectId camera)

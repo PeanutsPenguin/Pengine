@@ -1,7 +1,6 @@
 #include "PenBuffer/PenVertexAttributeBuffer.h"
 
-
-#include "PenBuffer/Private_GladBuffer.h"
+#include "Wrapper/Private_GladWrapper.h"
 
 using namespace Pengine::Buffer;
 

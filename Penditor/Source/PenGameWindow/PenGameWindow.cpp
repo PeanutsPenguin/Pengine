@@ -4,20 +4,23 @@
 #include "PenWindow/PenWindowBase.h"	//Pengine::PenWindow
 #include "PenOctopus/PenOctopus.hpp"	//Pengine::PenOctopus
 #include "PenUIManager/PenUIManager.h"	//Pengine::ui::PenUIManager
-#include "PenFreeCam/PenFreeCam.h"		//Penditor::PenFreeCam
-#include "Penditor/Penditor.h"
 #include "PenInput/PenInput.h"
 #include "PenBuffer/PenFrameBuffer.h"
+#include "PenSystem/PenRenderSystem/PenRenderSystem.h"
+
+#include "PenFreeCam/PenFreeCam.h"			//Penditor::PenFreeCam
+#include "PickingHandler/PickingHandler.h"
+#include "Penditor/Penditor.h"
 
 namespace Penditor::Window
 {
 	PenGameWindow::PenGameWindow(const char* title, int flags)
 	{
-		m_title = title;
-		m_flgas = flags;
+		p_title = title;
+		p_flgas = flags;
 		m_hasResized = false;
 		this->m_frameBuffer = new Pengine::Buffer::PenFrameBuffer();
-		this->m_camera = new Penditor::PenFreeCam();
+		this->m_camera = new PenFreeCam();
 		this->m_size = { 800, 600 };
 	}
 
@@ -33,12 +36,24 @@ namespace Penditor::Window
 	void PenGameWindow::init()
 	{
 		this->m_frameBuffer->create(800, 600);
+		this->m_renderSystem = Pengine::PenCore::PenOctopus()->getSystem<Pengine::System::PenRendererSystem>();
 	}
 
 	void PenGameWindow::setCamera(const Pengine::PenObjectId id)
 	{
 		this->m_camera->setCamObject(id);
 	}
+
+	const Pengine::PenObjectId PenGameWindow::getCamera()
+	{
+		return this->m_camera->getCamera();
+	}
+
+	std::shared_ptr<Pengine::System::PenRendererSystem> PenGameWindow::getRenderSystem()
+	{
+		return this->m_renderSystem;
+	}
+
 
 	void PenGameWindow::renderCalls()
 	{
@@ -74,7 +89,6 @@ namespace Penditor::Window
 	{
 		std::unique_ptr<Pengine::PenInputManager>& input = Pengine::PenCore::InputManager();
 	
-
 		if (input->isKeyDown(Pengine::PenInput::key_MOUSE_RIGHT) && this->m_navigating)
 			this->m_camera->update(Pengine::PenCore::getDeltaTime());
 	}
@@ -95,10 +109,16 @@ namespace Penditor::Window
 	{
 		this->m_frameBuffer->bind();
 		Pengine::Window::resizeViewport({ 0, 0 }, this->m_size);
-		Pengine::PenCore::MainPenWindow()->preRender(*Pengine::PenCore::PenOctopus()->getMainScene());
-		Pengine::PenCore::MainPenWindow()->render(m_camera->getCamera());
-		Pengine::PenCore::MainPenWindow()->postRender();
-		this->m_frameBuffer->unbind();
 
+		PenditorCore::PickingHandler()->update(this->m_renderSystem);
+
+		if(this->m_renderSystem)
+		{
+			this->m_renderSystem->preRender(Pengine::PenCore::PenOctopus()->getMainScene()->getBackgroundColor());
+			this->m_renderSystem->render(m_camera->getCamera());
+			this->m_renderSystem->postRender();
+		}
+
+		this->m_frameBuffer->unbind();
 	}
 }

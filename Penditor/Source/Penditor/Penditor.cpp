@@ -12,12 +12,14 @@
 
 #include "PenGameWindow/PenGameWindow.h"			//Penditor::Window::PenGameWindow
 #include "PenPropertyWindow/PenPropertyWindow.h"	//Penditor::Window::PenPropertyWindow
+#include "PickingHandler/PickingHandler.h"
 
 using namespace Penditor;
 
 bool PenditorCore::m_shouldStop = true;
 std::unique_ptr<Window::PenGameWindow>		PenditorCore::m_PenGameWindow		= std::make_unique<Window::PenGameWindow>("PenGameWindow");
 std::unique_ptr<Window::PenPropertyWindow>	PenditorCore::m_PenPropertyWindow	= std::make_unique<Window::PenPropertyWindow>("PenPropertyWindow");
+std::unique_ptr<Penditor::PickingHandler>	PenditorCore::m_pickingHandler		= std::make_unique<Penditor::PickingHandler>();
 
 void PenditorCore::init()
 {
@@ -30,6 +32,7 @@ void PenditorCore::init()
 
 	Pengine::PenCore::MainPenWindow()->setWindowSize(Pengine::PenCore::MainPenWindow()->getWindowSize());
 	m_PenGameWindow->init();
+	m_pickingHandler->init();
 }
 
 void PenditorCore::runEditor()
@@ -101,6 +104,12 @@ void PenditorCore::destroy()
 		m_PenPropertyWindow.reset();
 		m_PenPropertyWindow = nullptr;
 	}
+
+	if (m_pickingHandler)
+	{
+		m_pickingHandler.reset();
+		m_pickingHandler = nullptr;
+	}
 }
 
 std::unique_ptr<Window::PenGameWindow>& PenditorCore::GameWindow()
@@ -112,3 +121,9 @@ std::unique_ptr<Window::PenPropertyWindow>& PenditorCore::PropertyWindow()
 {
 	return m_PenPropertyWindow;
 }
+
+std::unique_ptr<PickingHandler>& PenditorCore::PickingHandler()
+{
+	return m_pickingHandler;
+}
+

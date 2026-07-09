@@ -78,8 +78,8 @@ Pengine::CursorState PenWindow::getCursorState() const
 
 void PenWindow::preRender(const PenScene& mainScene)
 {
-	const PenColor& col = mainScene.getBackgroundColor();
-	GLFWWrapper::preRender(col);
+    if (this->m_renderSystem)
+        this->m_renderSystem->preRender(mainScene.getBackgroundColor());
 }
 
 void PenWindow::render(const PenObjectId camera)

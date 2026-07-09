@@ -2,6 +2,7 @@
 
 #include "Vector/Vector2/Vector2.h"
 #include <span>
+#include <array>
 
 namespace Pengine::Buffer::GladWrapper
 {
@@ -59,5 +60,11 @@ namespace Pengine::Buffer::GladWrapper
 	void activateTexture(unsigned int unitIndex);
 
 	void generateMipMap();
+	#pragma endregion
+
+	#pragma region Func
+	void setPixelStorageModeUnpack();
+
+	void readPixelColor(const PenMath::Vector2& mousePos, std::array<unsigned char, 4>& data);
 	#pragma endregion
 }

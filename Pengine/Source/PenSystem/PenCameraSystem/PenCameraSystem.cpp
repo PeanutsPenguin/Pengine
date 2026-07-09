@@ -37,5 +37,4 @@ void PenCameraSystem::setMainCamera(const PenObjectId cam)
 		this->m_mainCamera = cam;
 	else
 		std::cout << __FUNCTION__ "Object do not have camera component\n";
-
 }

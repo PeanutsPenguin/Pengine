@@ -1,6 +1,7 @@
 #pragma once 
 
 #include "PenSystem/PenSystemBase.h"
+#include "PenColor/PenColor.h"
 
 namespace Pengine::System
 {
@@ -15,7 +16,9 @@ namespace Pengine::System
 		PenRendererSystem& operator=(const PenRendererSystem& rhs) = default;
 		PenRendererSystem& operator=(PenRendererSystem&& rhs) = default;
 
+		void preRender(const PenColor& col);
 		void render(const PenObjectId camera);
+		void postRender();
 
 		void onEntityInserted(const PenObjectId newObj) override {};
 		void onEntityDestroyed(const PenObjectId obj) override {};

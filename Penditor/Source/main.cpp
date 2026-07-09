@@ -48,6 +48,11 @@ int main()
 		//PenResorucesManager
 		std::unique_ptr<Pengine::Resources::PenResourcesManager>& resourceManager = Pengine::PenCore::ResourcesManager();
 
+		// Create ShaderProgram
+		std::shared_ptr<Pengine::Resources::PenGLShader> vertShader = resourceManager->createResourceFromFile<Pengine::Resources::PenGLShader>("PickingVertex.vert", "Shaders/Picking/");
+		std::shared_ptr<Pengine::Resources::PenGLShader> fragShader = resourceManager->createResourceFromFile<Pengine::Resources::PenGLShader>("PickingFrag.frag", "Shaders/Picking/");
+		std::shared_ptr<Pengine::Resources::PenGLShaderProgram> pickingPtr = resourceManager->createResource<Pengine::Resources::PenGLShaderProgram>("PickingProg", "Shaders/Picking/", vertShader, fragShader);
+
 		#pragma region Create Material
 		// Create ShaderProgram
 		std::shared_ptr<Pengine::Resources::PenGLShaderProgram> progPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLShaderProgram>("Shaders/PBRProg.penfile");
@@ -97,6 +102,25 @@ int main()
 		Pengine::PenCore::PenOctopus()->addToScene(seconNewObj);
 		#pragma endregion
 		
+		#pragma region Create Third Object
+		Pengine::PenObjectId thirdObj = Pengine::PenCore::PenOctopus()->createPenObject();
+		Pengine::Components::PenRenderer thirdRenderComp;
+
+		std::shared_ptr<Pengine::Resources::PenModel> thirdModel = resourceManager->loadResourceFromFile<Pengine::Resources::PenModel>("Mesh/sphere.penfile");
+		thirdRenderComp.setModel(thirdModel);
+
+		Pengine::Components::PenTransform thirdTransComp = Pengine::Components::PenTransform();
+		PenMath::Transform thirdTrans;
+		thirdTrans.position = { -20, 0, 0 };
+		thirdTrans.scale = { 10, 10, 10 };
+		thirdTransComp.setGlobalTransform(thirdTrans);
+
+		Pengine::PenCore::PenOctopus()->addComponent(thirdObj, thirdTransComp);
+		Pengine::PenCore::PenOctopus()->addComponent(thirdObj, thirdRenderComp);
+
+		Pengine::PenCore::PenOctopus()->addToScene(thirdObj);
+		#pragma endregion
+
 		Penditor::PenditorCore::init();
 		Penditor::PenditorCore::runEditor();
 

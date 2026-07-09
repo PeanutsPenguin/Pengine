@@ -23,6 +23,8 @@ namespace Pengine::ui::ImGuiWrapper
 	void endRendering();
 
 	PenMath::Vector2	getContentSize();
+	PenMath::Vector2	getPadding();
+	PenMath::Vector2	getWindowPos();
 	PenMath::Vector2	getCursorPos();
 	float				getFrameHeight();
 
@@ -32,6 +34,7 @@ namespace Pengine::ui::ImGuiWrapper
 	void				setNextItemWidth(float width);
 
 	bool isMouseOverWindow();
+	void removeInputFocus();
 
 	void	renderOnSameLine(float spacing = 0);
 	void	renderImage(int textureID, const PenMath::Vector2& size);
