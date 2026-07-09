@@ -8,18 +8,19 @@
 #include "PenBuffer/PenFrameBuffer.h"
 #include "PenSystem/PenRenderSystem/PenRenderSystem.h"
 
-#include "PenFreeCam/PenFreeCam.h"		//Penditor::PenFreeCam
+#include "PenFreeCam/PenFreeCam.h"			//Penditor::PenFreeCam
+#include "PickingHandler/PickingHandler.h"
 #include "Penditor/Penditor.h"
 
 namespace Penditor::Window
 {
 	PenGameWindow::PenGameWindow(const char* title, int flags)
 	{
-		m_title = title;
-		m_flgas = flags;
+		p_title = title;
+		p_flgas = flags;
 		m_hasResized = false;
 		this->m_frameBuffer = new Pengine::Buffer::PenFrameBuffer();
-		this->m_camera = new Penditor::PenFreeCam();
+		this->m_camera = new PenFreeCam();
 		this->m_size = { 800, 600 };
 	}
 
@@ -88,7 +89,6 @@ namespace Penditor::Window
 	{
 		std::unique_ptr<Pengine::PenInputManager>& input = Pengine::PenCore::InputManager();
 	
-
 		if (input->isKeyDown(Pengine::PenInput::key_MOUSE_RIGHT) && this->m_navigating)
 			this->m_camera->update(Pengine::PenCore::getDeltaTime());
 	}
@@ -109,6 +109,8 @@ namespace Penditor::Window
 	{
 		this->m_frameBuffer->bind();
 		Pengine::Window::resizeViewport({ 0, 0 }, this->m_size);
+
+		PenditorCore::PickingHandler()->update(this->m_renderSystem);
 
 		if(this->m_renderSystem)
 		{

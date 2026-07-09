@@ -1,9 +1,10 @@
-#include "PenVirtualWindow/Private_ImGuiVirtualWindow.h"
+#include "Wrapper/Private_ImGuiWrapper.h"
 #include "Wrapper/Private_GLFWWrapper.h"
 
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_opengl3.h"
-#include "imgui/imgui_impl_glfw.h"
+#include <imgui.h>
+#include <imgui/imgui_internal.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
 
 
 #include <iostream>
@@ -77,6 +78,18 @@ namespace Pengine::ui::ImGuiWrapper
 		return { (int)size.x, (int)size.y };
 	}
 
+	PenMath::Vector2 getPadding()
+	{
+		ImVec2 pad = ImGui::GetCurrentWindow()->WindowPadding;
+		return { (int)pad.x, (int)pad.y };
+	}
+
+	PenMath::Vector2 getWindowPos()
+	{
+		ImRect windowRect = ImGui::GetCurrentWindow()->InnerRect;
+		return { (int)windowRect.Min.x, (int)windowRect.Min.y };
+	}
+
 	PenMath::Vector2 getCursorPos()
 	{
 		ImVec2 pos = ImGui::GetCursorPos();
@@ -111,6 +124,11 @@ namespace Pengine::ui::ImGuiWrapper
 	bool isMouseOverWindow()
 	{
 		return ImGui::IsWindowHovered();
+	}
+
+	void removeInputFocus()
+	{
+		ImGui::SetActiveID(0, ImGui::GetCurrentWindow());
 	}
 
 	#pragma region Render Calls

@@ -1,6 +1,6 @@
 #include "PenBuffer/PenElementBuffer.h"
 
-#include "PenBuffer/Private_GladBuffer.h"
+#include "Wrapper/Private_GladWrapper.h"
 
 namespace Pengine::Buffer
 {

@@ -1,9 +1,13 @@
 #include "PenVirtualWindow/PenVirtualWindow.h"
 
 #include "PenCore/PenCore.h"
+#include "PenInput/PenInput.h"
+#include "PenWindow/PenWindowBase.h"
 
-#include "PenVirtualWindow/Private_ImGuiVirtualWindow.h"
+#include "Wrapper/Private_ImGuiWrapper.h"
 #include "Wrapper/Private_GLFWWrapper.h"
+
+#include <iostream>
 
 using namespace Pengine::ui;
 
@@ -11,6 +15,21 @@ using namespace Pengine::ui;
 void PenVirtualWindow::render()
 {
 	ImGuiRendering();
+}
+
+/// <summary>
+/// Did this function for the picking not quite sure it'll work for every window
+/// </summary>
+/// <returns></returns>
+const PenMath::Vector2& PenVirtualWindow::getMousePosRelativeToWindow()
+{
+	PenMath::Vector2	contentSize = ImGuiWrapper::getContentSize(),
+						curorPos = ImGuiWrapper::getCursorPos(),
+						mousePos	= PenCore::InputManager()->getMousePosition();	//glfw mouse pos
+
+	mousePos -= curorPos;
+	mousePos.y = contentSize.y - mousePos.y - 1;
+	return mousePos;
 }
 
 void PenVirtualWindow::setViewportBackgroundColor(const Pengine::PenColor& col)
@@ -25,19 +44,19 @@ void PenVirtualWindow::setViewportTransform(const PenMath::Vector2& pos, const P
 
 void PenVirtualWindow::setWindowTitle(const char* name)
 {
-	this->m_title = name;
+	this->p_title = name;
 }
 
 void PenVirtualWindow::setFlags(PenVirtualWidnowFlags flags)
 {
-	this->m_flgas = flags;
+	this->p_flgas = flags;
 }
 #pragma endregion
 
 #pragma region IMGUI
 void PenVirtualWindow::ImGuiRendering()
 {
-	ImGuiWrapper::startRendering(this->m_title, this->m_flgas);
+	ImGuiWrapper::startRendering(this->p_title, this->p_flgas);
 	renderCalls();
 	ImGuiWrapper::endRendering();
 }

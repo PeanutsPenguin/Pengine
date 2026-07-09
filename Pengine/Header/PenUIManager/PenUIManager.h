@@ -39,6 +39,7 @@ namespace Pengine::ui
 		void				setNextItemWidth(float width);
 
 		bool				isWindowHovered();
+		void				removeInputFocus();
 		
 		void				renderOnSameLine(float spacing = 0);
 		void				renderImage(int textureID, const PenMath::Vector2& size);

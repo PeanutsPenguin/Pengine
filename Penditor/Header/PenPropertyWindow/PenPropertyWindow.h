@@ -44,6 +44,5 @@ namespace Penditor::Window
 		bool									m_headerOpen		= true;
 		Pengine::Components::PenComponentBase*	m_currentComponent	= nullptr;
 		PenMath::Vector3f						m_objectEuler		= PenMath::Vector3f::Zero();
-		bool									m_tempInit			= false;
 	};
 }

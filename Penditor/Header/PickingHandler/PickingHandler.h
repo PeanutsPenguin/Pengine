@@ -34,9 +34,13 @@ namespace Penditor
 		PickingHandler& operator=(const PickingHandler& rhs) = default;
 		PickingHandler& operator=(PickingHandler&& rhs) = default;
 
+		void init();
+
 		Pengine::PenObjectId getSelectedObject();
 
 		void update(std::shared_ptr<Pengine::System::PenRendererSystem> renderer);
+
+		bool hasSelectedObjectChanged();
 
 	private:
 		void updateSelectedObject(const PenMath::Vector2& mousPos, std::shared_ptr<Pengine::System::PenRendererSystem> renderer);
@@ -45,9 +49,12 @@ namespace Penditor
 
 		void renderObject(const Pengine::PenObjectId obj, std::shared_ptr<Pengine::System::PenRendererSystem> renderer, const PenMath::Mat4& viewProj);
 
-		const Pengine::PenColor& getPickingColor(const Pengine::PenObjectId obj);
+		const Pengine::PenColor idToColor(const Pengine::PenObjectId obj);
+
+		Pengine::PenObjectId colorToId(std::array<unsigned char, 4> col);
 
 		std::shared_ptr<Pengine::Resources::PenGLShaderProgram> m_pickingShader;
-		Pengine::PenObjectId m_selectedObject;
+		Pengine::PenObjectId m_selectedObject = Pengine::g_PenObjectInvalidId;
+		bool m_selectedObjectChanged = false;
 	};
 }

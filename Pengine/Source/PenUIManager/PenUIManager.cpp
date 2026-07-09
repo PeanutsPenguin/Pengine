@@ -1,6 +1,6 @@
 #include "PenUIManager.h"
 
-#include "PenVirtualWindow/Private_ImGuiVirtualWindow.h"
+#include "Wrapper/Private_ImGuiWrapper.h"
 
 using namespace Pengine::ui;
 
@@ -95,6 +95,11 @@ bool PenUIManager::renderCollapsingHeader(const char* name)
 bool PenUIManager::isWindowHovered()
 {
 	return ImGuiWrapper::isMouseOverWindow();
+}
+
+void PenUIManager::removeInputFocus()
+{
+	ImGuiWrapper::removeInputFocus();
 }
 
 bool PenUIManager::renderVector3(PenMath::Vector3& vec, const char* name)

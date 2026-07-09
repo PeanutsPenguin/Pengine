@@ -24,6 +24,7 @@ namespace Pengine
 namespace Penditor
 {
 	class PenFreeCam;
+	class PickingHandler;
 }
 
 
@@ -60,10 +61,10 @@ namespace Penditor::Window
 
 
 		std::shared_ptr<Pengine::System::PenRendererSystem> m_renderSystem;
+		PenFreeCam* m_camera;
 		PenMath::Vector2 m_size;
 		PenMath::Vector2 m_prevSize;
 		Pengine::Buffer::PenFrameBuffer* m_frameBuffer;
-		Penditor::PenFreeCam* m_camera;
 		bool m_hasResized;
 		bool m_navigating = false;
 	};

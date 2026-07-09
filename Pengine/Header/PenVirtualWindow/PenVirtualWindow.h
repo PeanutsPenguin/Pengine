@@ -21,6 +21,8 @@ namespace Pengine::ui
 
 		void render();
 
+		const PenMath::Vector2& getMousePosRelativeToWindow();
+
 	protected:
 		virtual void renderCalls() {};
 
@@ -29,8 +31,8 @@ namespace Pengine::ui
 		void setWindowTitle(const char* title);
 		void setFlags(PenVirtualWidnowFlags flags);
 
-		const char* m_title = "PenVirtualWindow";
-		int m_flgas;
+		const char* p_title = "PenVirtualWindow";
+		int p_flgas;
 	
 	private:
 		void ImGuiRendering();
