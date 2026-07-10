@@ -19,7 +19,7 @@ namespace Penditor::Window
 	PenGameWindow::PenGameWindow(const char* title, int flags)
 	{
 		p_title = title;
-		p_flgas = flags;
+		p_flags = flags;
 		m_hasResized = false;
 		this->m_frameBuffer = new Pengine::Buffer::PenFrameBuffer();
 		this->m_camera = new PenFreeCam();

@@ -17,7 +17,7 @@ namespace Penditor::Window
 	PenPropertyWindow::PenPropertyWindow(const char* title, int flags)
 	{
 		p_title = title;
-		p_flgas = flags;
+		p_flags = flags;
 
 	}
 

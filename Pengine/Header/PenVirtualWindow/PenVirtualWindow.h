@@ -32,7 +32,7 @@ namespace Pengine::ui
 		void setFlags(PenVirtualWidnowFlags flags);
 
 		const char* p_title = "PenVirtualWindow";
-		int p_flgas;
+		int p_flags;
 	
 	private:
 		void ImGuiRendering();

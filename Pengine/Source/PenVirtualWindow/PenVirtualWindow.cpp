@@ -49,14 +49,14 @@ void PenVirtualWindow::setWindowTitle(const char* name)
 
 void PenVirtualWindow::setFlags(PenVirtualWidnowFlags flags)
 {
-	this->p_flgas = flags;
+	this->p_flags = flags;
 }
 #pragma endregion
 
 #pragma region IMGUI
 void PenVirtualWindow::ImGuiRendering()
 {
-	ImGuiWrapper::startRendering(this->p_title, this->p_flgas);
+	ImGuiWrapper::startRendering(this->p_title, this->p_flags);
 	renderCalls();
 	ImGuiWrapper::endRendering();
 }
