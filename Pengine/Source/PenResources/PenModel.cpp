@@ -64,17 +64,6 @@ bool PenModel::generateResource(const char* path)
 		return false;
 	}
 
-	//TODO
-	////Initiliaze every texture of the model
-	//for (size_t i = 0; i < scene->mNumTextures; ++i)
-	//{
-	//	aiTexture& tex = *scene->mTextures[i];
-	//	const std::shared_ptr<PenTexture> res = PenCore::ResourcesManager()->loadResourceFromFile<PenTexture>(tex.mFilename.C_Str());
-	//}
-
-	//TODO
-	//Suppose to have material here 
-
 	m_meshes.reserve(scene->mNumMeshes);
 	
 	return processNode(scene->mRootNode, scene);

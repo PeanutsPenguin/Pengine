@@ -89,7 +89,7 @@ namespace Penditor
 
 		const PenMath::Mat4& projview = mainCam.getViewProjMatrix();
 
-		for (Pengine::PenObjectId objId : Penditor::PenditorCore::GameWindow()->getRenderSystem()->m_PenObject)
+		for (Pengine::PenObjectId objId : Penditor::PenditorCore::GameWindow()->getRenderSystem()->getRegisteredObject())
 			renderObject(objId, renderer, projview);
 	}
 

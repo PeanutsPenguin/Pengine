@@ -50,7 +50,6 @@ void PenTransform::setLocalTransform(const PenMath::Transform& transform)
 
 void PenTransform::setGlobalTransform(const PenMath::Transform& transform)
 {
-	//TODO: Re-calculate local transform based on parent global transform 
 	if (transform == this->m_globalTransform)
 		return;
 

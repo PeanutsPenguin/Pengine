@@ -6,9 +6,14 @@
 
 namespace Pengine::System
 {
+	class PenSystemManager;
+
 	class PenSystemBase
 	{
 	public:
+
+		friend class PenSystemManager;
+
 		PenSystemBase() = default;
 		PenSystemBase(const PenSystemBase& other) = default;
 		PenSystemBase(PenSystemBase&& other) = default;
@@ -22,7 +27,9 @@ namespace Pengine::System
 
 		virtual void update(double dt) = 0;
 
-		//TODO: this is public but should not be honestly
+		const std::set<PenObjectId>& getRegisteredObject() { return this->m_PenObject; }
+
+	protected:
 		std::set<PenObjectId> m_PenObject;
 		PenComponentSignature m_signature;
 	};

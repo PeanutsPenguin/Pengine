@@ -27,8 +27,6 @@ namespace Pengine::Resources
 		_NODISCARD bool		createResource(const std::string PenfilePath, const std::string sourcePath) final;
 		_NODISCARD bool		createResource(const std::string PenfilePath, std::shared_ptr<PenShaderBase> vertexShader, std::shared_ptr<PenShaderBase> fragmentShader) final;
 
-		/// TODO: We should be able to create shader Program with more than just one frag and one vert. 
-		/// This will come in the futur with the real resource manager
 		_NODISCARD bool createShaderProgram(std::shared_ptr<PenGLShader> vertPtr, std::shared_ptr<PenGLShader> fragPtr);
 	
 		bool use() const final;

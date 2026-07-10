@@ -76,10 +76,10 @@ Pengine::CursorState PenWindow::getCursorState() const
 	return this->m_state;
 }
 
-void PenWindow::preRender(const PenScene& mainScene)
+void PenWindow::preRender(const PenColor& bgColor)
 {
     if (this->m_renderSystem)
-        this->m_renderSystem->preRender(mainScene.getBackgroundColor());
+        this->m_renderSystem->preRender(bgColor);
 }
 
 void PenWindow::render(const PenObjectId camera)
