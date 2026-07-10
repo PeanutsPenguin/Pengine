@@ -9,8 +9,8 @@
 #include "PenComponents/PenTransform/PenTransform.h"
 
 //Resources
-#include "PenResources/PenShaderProgramBase.h"
-#include "PenResources/OpenGl/Private_PenGLTextures.h"
+#include "PenResources/PenShaderProgram.h"
+#include "PenResources/PenTexture.h"
 
 //Buffer
 #include "PenBuffer/PenTextureBuffer.h"
@@ -35,17 +35,6 @@ void PenRendererSystem::preRender(const PenColor& color)
 
 void PenRendererSystem::render(const PenObjectId camera)
 {
-	if (PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
-		this->GLrender(camera);
-}
-
-void PenRendererSystem::postRender()
-{
-	
-}
-
-void PenRendererSystem::GLrender(const PenObjectId camera)
-{
 	for (PenObjectId objId : m_PenObject)
 	{
 		Components::PenRenderer& renderComp = PenCore::PenOctopus()->getComponent<Components::PenRenderer>(objId);
@@ -54,7 +43,7 @@ void PenRendererSystem::GLrender(const PenObjectId camera)
 		if (renderComp.IsState(Components::PenComponentState::ENABLE))
 		{
 			std::shared_ptr<Pengine::Resources::PenMaterial>				mat = renderComp.getMaterial();
-			std::shared_ptr<Resources::PenShaderProgramBase>				prog = mat->getShaderProg();
+			std::shared_ptr<Resources::PenShaderProgram>					prog = mat->getShaderProg();
 
 			if (!prog->use())
 			{
@@ -63,7 +52,7 @@ void PenRendererSystem::GLrender(const PenObjectId camera)
 			}
 
 			std::shared_ptr<System::PenLightSystem> lightSystem = PenCore::PenOctopus()->getSystem<System::PenLightSystem>();
-			
+
 			if (!lightSystem)
 			{
 				std::cout << "__FUNCTION__ : Light system failed to get\n";
@@ -73,20 +62,20 @@ void PenRendererSystem::GLrender(const PenObjectId camera)
 			lightSystem->renderUpdate(prog);
 
 			PenObjectId renderCam = camera;
-			
+
 			if (renderCam == g_PenObjectInvalidId)
 			{
 				renderCam = PenCore::PenOctopus()->getSystem<System::PenCameraSystem>()->getMainCamera();
 
-				if(renderCam == g_PenObjectInvalidId)
+				if (renderCam == g_PenObjectInvalidId)
 				{
 					std::cout << __FUNCTION__ " : Default camera is invalid skip rendering\n";
 					continue;
 				}
 			}
 
-			Components::PenCamera&		camComp			= PenCore::PenOctopus()->getComponent<Components::PenCamera>(renderCam);
-			Components::PenTransform&	transCamComp	= PenCore::PenOctopus()->getComponent<Components::PenTransform>(renderCam);
+			Components::PenCamera& camComp = PenCore::PenOctopus()->getComponent<Components::PenCamera>(renderCam);
+			Components::PenTransform& transCamComp = PenCore::PenOctopus()->getComponent<Components::PenTransform>(renderCam);
 
 			if (!transComp.IsState(Components::PenComponentState::ENABLE))
 				continue;
@@ -101,4 +90,9 @@ void PenRendererSystem::GLrender(const PenObjectId camera)
 			renderComp.render();
 		}
 	}
+}
+
+void PenRendererSystem::postRender()
+{
+	
 }

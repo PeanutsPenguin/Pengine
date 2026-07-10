@@ -24,7 +24,7 @@ void PenDirectionnalLight::setType(const PenLightType type)
 }
 #pragma endregion
 
-void PenDirectionnalLight::useValues(std::shared_ptr<Resources::PenShaderProgramBase> prog, const PenMath::Transform& position, int index, bool enabled)
+void PenDirectionnalLight::useValues(std::shared_ptr<Resources::PenShaderProgram> prog, const PenMath::Transform& position, int index, bool enabled)
 {
 	prog->setUniform("dirLight.enabled", enabled);
 	prog->setUniform("dirLight.direction", this->m_worldDirection);

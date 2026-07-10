@@ -25,7 +25,7 @@ void PenPointLight::setType(const PenLightType type)
 }
 #pragma endregion
 
-void PenPointLight::useValues(std::shared_ptr<Resources::PenShaderProgramBase> prog, const PenMath::Transform& position, int index, bool enabled)
+void PenPointLight::useValues(std::shared_ptr<Resources::PenShaderProgram> prog, const PenMath::Transform& position, int index, bool enabled)
 {
 	std::string indexString = std::to_string(index);
 

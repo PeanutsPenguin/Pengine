@@ -20,7 +20,7 @@ namespace Pengine
 
 		void setRadius(float radius);
 		void setType(const PenLightType type) final;
-		void useValues(std::shared_ptr<Resources::PenShaderProgramBase> prog, const PenMath::Transform& position, int index, bool enabled) final;
+		void useValues(std::shared_ptr<Resources::PenShaderProgram> prog, const PenMath::Transform& position, int index, bool enabled) final;
 
 	private:
 		float m_radius = 1.f;

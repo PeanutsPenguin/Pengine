@@ -17,7 +17,7 @@ namespace Pengine
 
 	namespace Resources
 	{
-		class PenGLShaderProgram;
+		class PenShaderProgram;
 	}
 }
 
@@ -53,7 +53,7 @@ namespace Penditor
 
 		Pengine::PenObjectId colorToId(std::array<unsigned char, 4> col);
 
-		std::shared_ptr<Pengine::Resources::PenGLShaderProgram> m_pickingShader;
+		std::shared_ptr<Pengine::Resources::PenShaderProgram> m_pickingShader;
 		Pengine::PenObjectId m_selectedObject = Pengine::g_PenObjectInvalidId;
 		bool m_selectedObjectChanged = false;
 	};

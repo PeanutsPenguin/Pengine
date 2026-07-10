@@ -4,7 +4,7 @@
 #include "glad/glad.h"
 #include <iostream>
 
-namespace Pengine::Buffer::GladWrapper
+namespace Pengine::GladWrapper
 {
 	#pragma region Create
 	void createBasicBuffer(unsigned int* id)
@@ -197,10 +197,108 @@ namespace Pengine::Buffer::GladWrapper
 	}
 	#pragma endregion
 
-	#pragma region 
+	#pragma region Shaders
+	void createVertexShader(unsigned int* id)
+	{
+		*id = glCreateShader(GL_VERTEX_SHADER);
+	}
+
+	void createFragmentShader(unsigned int* id)
+	{
+		*id = glCreateShader(GL_FRAGMENT_SHADER);
+	}
+
+	void createShaderProgram(unsigned int* id)
+	{
+		*id = glCreateProgram();
+	}
+
+	void fillShader(unsigned int* id, const std::string& data)
+	{
+		const GLint length = static_cast<GLint>(data.length());
+
+		const char* shaderData = data.data();
+
+		glShaderSource(*id, 1, &shaderData, &length);
+		glCompileShader(*id);
+	}
+
+	void attachShader(unsigned int* id, unsigned int* otherId)
+	{
+		glAttachShader(*id, *otherId);
+	}
+
+	void linkProgram(unsigned int* id)
+	{
+		glLinkProgram(*id);
+	}
+
+	void useProgram(const unsigned int* id)
+	{
+		glUseProgram(*id);
+	}
+
+	bool debugShader(unsigned int* id)
+	{
+		int status = 0;
+
+		glGetShaderiv(*id, GL_COMPILE_STATUS, &status);
+
+		if (!status)
+		{
+			char infoLog[512];
+			glGetShaderInfoLog(*id, 512, nullptr, infoLog);
+			std::cerr << __FUNCTION__ "\tShader compilation failed. \t" << "Info : " << infoLog << '\n';
+			return false;
+		}
+
+		return true;
+	}
+
+	bool debugShaderProgram(unsigned int* id)
+	{
+		int status;
+
+		glGetProgramiv(*id, GL_LINK_STATUS, &status);
+		if (!status)
+		{
+			char infoLog[512];
+			glGetProgramInfoLog(*id, 512, nullptr, infoLog);
+			std::cerr << __FUNCTION__ "\tShader program linking failed. Info : " << infoLog << '\n';
+			return false;
+		}
+
+		return true;
+	}
+
+	void deleteShader(unsigned int* id)
+	{
+		glDeleteShader(*id);
+	}
+
+	void deleteShaderProgram(unsigned int* id)
+	{
+		glDeleteShader(*id);
+	}
+
+
+
+	#pragma endregion
+
+	#pragma region Functions
 	void setPixelStorageModeUnpack()
 	{
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	}
+
+	void activateDrawLine()
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
+
+	void drawElements(int count)
+	{
+		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
 	}
 
 	void readPixelColor(const PenMath::Vector2& mousePos, std::array<unsigned char, 4>& data)
@@ -209,4 +307,49 @@ namespace Pengine::Buffer::GladWrapper
 		glReadPixels(mousePos.x, mousePos.y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data.data());
 	}
 	#pragma endregion 
+
+	#pragma region Uniforms
+
+	void setUniform(unsigned int* id, const char* name, bool value)
+	{
+		glUniform1i(glGetUniformLocation(*id, name), (int)value);
+	}
+
+	void setUniform(unsigned int* id, const char* name, int value)
+	{
+		glUniform1i(glGetUniformLocation(*id, name), value);
+	}
+
+	void setUniform(unsigned int* id, const char* name, float value)
+	{
+		glUniform1f(glGetUniformLocation(*id, name), value);
+	}
+
+	void setUniform(unsigned int* id, const char* name, const PenMath::Vector2f& value)
+	{
+		glUniform2fv(glGetUniformLocation(*id, name), 1, &value[0]);
+	}
+
+	void setUniform(unsigned int* id, const char* name, const PenMath::Vector3f& value)
+	{
+		glUniform3fv(glGetUniformLocation(*id, name), 1, &value[0]);
+	}
+
+	void setUniform(unsigned int* id, const char* name, const PenMath::Vector4f& value)
+	{
+		glUniform4fv(glGetUniformLocation(*id, name), 1, &value[0]);
+	}
+
+	void setUniform(unsigned int* id, const char* name, const PenMath::Mat3& value)
+	{
+		glUniformMatrix3fv(glGetUniformLocation(*id, name), 1, GL_FALSE, &value[0][0]);
+	}
+
+	void setUniform(unsigned int* id, const char* name, const PenMath::Mat4& value)
+	{
+		glUniformMatrix4fv(glGetUniformLocation(*id, name), 1, GL_FALSE, &value[0][0]);
+	}
+
+	#pragma endregion
+
 }

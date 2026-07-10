@@ -1,20 +1,21 @@
 #pragma once 
+#include "PenResources/PenResourcesBase.h"
 
-#include "PenResources/PenShaderBase.h"
+#include "PenStructsAndEnum/PenShaderType.h"
 
 namespace Pengine::Resources
 {
-	class PenGLShader : public PenShaderBase
+	class PenShader : public PenResourcesBase
 	{
 	public:
-		PenGLShader() = default;
-		PenGLShader(const PenObjectId& id) : PenShaderBase(id) {};
-		PenGLShader(const PenGLShader& other) = default;
-		PenGLShader(PenGLShader&& other) = default;
-		~PenGLShader() final;
+		PenShader() = default;
+		PenShader(const PenObjectId& id) : PenResourcesBase(id) {};
+		PenShader(const PenShader& other) = default;
+		PenShader(PenShader&& other) = default;
+		~PenShader() override;
 
-		PenGLShader& operator=(const PenGLShader& rhs) = default;
-		PenGLShader& operator=(PenGLShader&& rhs) = default;
+		PenShader& operator=(const PenShader& rhs) = default;
+		PenShader& operator=(PenShader&& rhs) = default;
 
 		void destroy();
 
@@ -25,7 +26,11 @@ namespace Pengine::Resources
 
 		_NODISCARD const unsigned int getShaderId() const noexcept;
 
-	private:
+		unsigned int* getShaderIdPtr();
+
+	protected:
+		Pengine::PenShaderType m_type = Pengine::PenShaderType::INVALID_SHADER;
+
 		unsigned int m_shaderId = 0;
 
 		_NODISCARD bool reloadShaderContent(const char* path);

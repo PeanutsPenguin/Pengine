@@ -13,9 +13,9 @@
 //Resources
 #include "PenResources/PenModel.h"
 #include "PenResources/PenResourcesManager.h"
-#include "PenResources/OpenGl/Private_PenGLShader.h"
-#include "PenResources/OpenGl/Private_PenGLShaderProgram.h"
-#include "PenResources/OpenGl/Private_PenGLTextures.h"
+#include "PenResources/PenShader.h"
+#include "PenResources/PenShaderProgram.h"
+#include "PenResources/PenTexture.h"
 
 //Components
 #include "PenComponents/PenRenderer/PenRenderer.h"
@@ -50,10 +50,7 @@ int main()
 
 		#pragma region Create Material
 		// Create ShaderProgram
-		std::shared_ptr<Pengine::Resources::PenGLShaderProgram> progPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLShaderProgram>("Shaders/PBRProg.penfile");
-
-		//Create Texture
-		std::shared_ptr<Pengine::Resources::PenGLTexture> glTexture = resourceManager->loadResourceFromFile<Pengine::Resources::PenGLTexture>("Textures/container_diffuse.penfile");
+		std::shared_ptr<Pengine::Resources::PenShaderProgram> progPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenShaderProgram>("Shaders/PBRProg.penfile");
 		#pragma endregion
 		   
 		#pragma region Create First Object

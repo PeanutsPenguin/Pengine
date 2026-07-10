@@ -8,7 +8,7 @@
 
 namespace Pengine::Resources
 {
-	class PenShaderProgramBase;
+	class PenShaderProgram;
 }
 
 #pragma endregion
@@ -31,7 +31,7 @@ namespace Pengine::System
 
 		void update(double dt) final {};
 
-		void renderUpdate(const std::shared_ptr<Resources::PenShaderProgramBase> shader);
+		void renderUpdate(const std::shared_ptr<Resources::PenShaderProgram> shader);
 	private:
 
 		bool m_hasDirectionnal = false;
