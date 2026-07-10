@@ -47,8 +47,7 @@ void PenSpotLight::setWorldDirection(const PenMath::Vector3f& dir)
 }
 #pragma endregion
 
-void PenSpotLight::useValues(std::shared_ptr<Resources::PenShaderProgramBase> prog, 
-							 const PenMath::Transform& position, int index, bool enabled)
+void PenSpotLight::useValues(std::shared_ptr<Resources::PenShaderProgram> prog, const PenMath::Transform& position, int index, bool enabled)
 {
 	std::string indexString = std::to_string(index);
 

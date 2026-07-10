@@ -25,7 +25,7 @@ namespace Pengine
 		void	setOuterCutoff(float outerCutoff);
 		void	setType(const PenLightType type) final;
 
-		void useValues(std::shared_ptr<Resources::PenShaderProgramBase> prog, const PenMath::Transform& position, int index, bool enabled) final;
+		void useValues(std::shared_ptr<Resources::PenShaderProgram> prog, const PenMath::Transform& position, int index, bool enabled) final;
 
 	private:
 		PenMath::Vector3f m_worldDirection = { 0.0f, -1.0f, 0.0f };

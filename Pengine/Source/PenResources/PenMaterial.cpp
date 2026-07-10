@@ -2,7 +2,7 @@
 
 #include "PenResources/PenResourcesManager.h"                       //PenResourceManager
 #include "PenResources/OpenGl/Private_PenGLTextures.h"              //PenTexture
-#include "PenResources/OpenGl/Private_PenGLShaderProgram.h"         //PenShaderProgram
+#include "PenResources/PenShaderProgram.h"         //PenShaderProgram
 
 #include "PenBuffer/PenTextureBuffer.h"
 
@@ -50,21 +50,21 @@ bool PenMaterial::loadResource(const std::string path)
 
     infile.close();
 
-    std::shared_ptr<PenShaderProgramBase> shader = nullptr;
+    std::shared_ptr<PenShaderProgram> shader = nullptr;
 
     if (PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
-        shader = PenCore::ResourcesManager()->loadResourceFromFile<PenGLShaderProgram>(shaderPath.c_str());
+        shader = PenCore::ResourcesManager()->loadResourceFromFile<PenShaderProgram>(shaderPath.c_str());
 
     if (!shader)
     {
         std::cout << __FUNCTION__ "\t Material loaded with default texture in it\n";
-        this->m_shader = PenShaderProgramBase::defaultShaderProgram();
+        this->m_shader = PenShaderProgram::defaultShaderProgram();
     }
     else
         this->m_shader = shader;
 
     this->m_penfilePath = path;
-   
+
     return true;
 }
 
@@ -75,19 +75,19 @@ bool PenMaterial::createResource(const std::string penfilePath, const std::strin
     return false;
 }
 
-bool PenMaterial::createResource(const std::string penfilePath, std::shared_ptr<PenShaderProgramBase> prog)
+bool PenMaterial::createResource(const std::string penfilePath, std::shared_ptr<PenShaderProgram> prog)
 {
     return this->createResource(penfilePath, prog, nullptr);
 }
 
-bool PenMaterial::createResource(const std::string penfilePath, std::shared_ptr<PenShaderProgramBase> prog, std::shared_ptr<PenTextureBase> tex)
+bool PenMaterial::createResource(const std::string penfilePath, std::shared_ptr<PenShaderProgram> prog, std::shared_ptr<PenTextureBase> tex)
 {
     std::ofstream outfile(penfilePath, std::ios::binary);
 
     if (!prog)
     {
         std::cout << __FUNCTION__ "\t Material created with default shader program in it\n";
-        this->m_shader = PenShaderProgramBase::defaultShaderProgram();
+        this->m_shader = PenShaderProgram::defaultShaderProgram();
     }
     else
         this->m_shader = prog;
@@ -96,7 +96,7 @@ bool PenMaterial::createResource(const std::string penfilePath, std::shared_ptr<
         std::cout << __FUNCTION__ "\t Given texture for the material creation is null\n";
     else
         this->m_albedo.texture = tex;
-    
+
     PenCore::Serializer()->write(outfile, this->m_shader->getResourcePath());
 
     this->m_albedo.serializeProperty(outfile);
@@ -127,15 +127,15 @@ void PenMaterial::quickSave()
 #pragma endregion
 
 #pragma region Shader program
-void PenMaterial::setShaderProgram(std::shared_ptr<Pengine::Resources::PenShaderProgramBase> prog)
+void PenMaterial::setShaderProgram(std::shared_ptr<Pengine::Resources::PenShaderProgram> prog)
 {
     if (prog)
         this->m_shader = prog;
     else
-        this->m_shader = PenShaderProgramBase::defaultShaderProgram();
+        this->m_shader = PenShaderProgram::defaultShaderProgram();
 }
 
-const std::shared_ptr<PenShaderProgramBase>& PenMaterial::getShaderProg()
+const std::shared_ptr<PenShaderProgram>& PenMaterial::getShaderProg()
 {
     if (!this->m_shader)
     {

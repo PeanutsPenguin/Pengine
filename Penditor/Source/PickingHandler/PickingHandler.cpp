@@ -15,7 +15,7 @@
 
 #include "PenSystem/PenRenderSystem/PenRenderSystem.h"
 
-#include "PenResources/OpenGl/Private_PenGLShaderProgram.h"
+#include "PenResources/PenShaderProgram.h"
 
 #include "PenBuffer/PenColorBuffer.h"
 
@@ -28,7 +28,7 @@ namespace Penditor
 
 	void PickingHandler::init()
 	{
-		this->m_pickingShader = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenGLShaderProgram>("Shaders/Picking/PickingProg.penfile");
+		this->m_pickingShader = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenShaderProgram>("Shaders/Picking/PickingProg.penfile");
 	}
 
 	void PickingHandler::update(std::shared_ptr<Pengine::System::PenRendererSystem> renderer)

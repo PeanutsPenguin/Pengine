@@ -1,7 +1,6 @@
 #pragma once 
 
 #include "PenResources/PenResourcesBase.h"
-#include "PenResources/PenShaderProgramBase.h"
 #include "PenCore/PenCore.h"                                        //PenCore
 #include "PenSerializer/PenSerializer.h"                            //PenSerializer
 #include "PenMaterialProperty.h"
@@ -15,7 +14,7 @@
 namespace Pengine::Resources
 {
 	class PenTextureBase;
-	class PenShaderProgramBase;
+	class PenShaderProgram;
 
 	class PenMaterial final: public PenResourcesBase
 	{
@@ -34,8 +33,8 @@ namespace Pengine::Resources
 		//Resource
 		bool	loadResource(const std::string path) final;
 		bool	createResource(const std::string penfilePath, const std::string sourcePath) final;
-		bool	createResource(const std::string penfilePath, std::shared_ptr<PenShaderProgramBase> prog);
-		bool	createResource(const std::string penfilePath, std::shared_ptr<PenShaderProgramBase> prog, std::shared_ptr<PenTextureBase> tex);
+		bool	createResource(const std::string penfilePath, std::shared_ptr<PenShaderProgram> prog);
+		bool	createResource(const std::string penfilePath, std::shared_ptr<PenShaderProgram> prog, std::shared_ptr<PenTextureBase> tex);
 
 		void shaderActivation();
 		void GLShaderActivation();
@@ -43,7 +42,7 @@ namespace Pengine::Resources
 		void quickSave();
 
 		//Shader Program
-		void	setShaderProgram(std::shared_ptr<PenShaderProgramBase> prog);
+		void	setShaderProgram(std::shared_ptr<PenShaderProgram> prog);
 
 		//Normal
 		void	setNormal(std::shared_ptr<PenTextureBase> ptr);
@@ -80,7 +79,7 @@ namespace Pengine::Resources
 		void	activateAmbientOcclusion();
 
 		//Getter
-		const std::shared_ptr<PenShaderProgramBase>&					getShaderProg();
+		const std::shared_ptr<PenShaderProgram>&					getShaderProg();
 		const std::shared_ptr<PenTextureBase>&							getNormal();
 		const PenMaterialProperty<PenMath::Vector3f>&					getAlbedo() const;
 		const PenMaterialProperty<float>&								getMetallic() const;
@@ -93,7 +92,7 @@ namespace Pengine::Resources
 		PenMaterialProperty<float>								m_roughness;
 		PenMaterialProperty<float>								m_ambientOcclusion;
 
-		std::shared_ptr<PenShaderProgramBase>					m_shader;
+		std::shared_ptr<PenShaderProgram>					m_shader;
 		std::shared_ptr<PenTextureBase>							m_normal;
 	};
 }

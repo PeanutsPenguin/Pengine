@@ -9,7 +9,7 @@
 #include "PenComponents/PenTransform/PenTransform.h"
 
 //Resources
-#include "PenResources/PenShaderProgramBase.h"
+#include "PenResources/PenShaderProgram.h"
 #include "PenResources/OpenGl/Private_PenGLTextures.h"
 
 //Buffer
@@ -54,7 +54,7 @@ void PenRendererSystem::GLrender(const PenObjectId camera)
 		if (renderComp.IsState(Components::PenComponentState::ENABLE))
 		{
 			std::shared_ptr<Pengine::Resources::PenMaterial>				mat = renderComp.getMaterial();
-			std::shared_ptr<Resources::PenShaderProgramBase>				prog = mat->getShaderProg();
+			std::shared_ptr<Resources::PenShaderProgram>					prog = mat->getShaderProg();
 
 			if (!prog->use())
 			{

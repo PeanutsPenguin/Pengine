@@ -8,7 +8,7 @@
 
 using namespace Pengine::System;
 
-void PenLightSystem::renderUpdate(const std::shared_ptr<Resources::PenShaderProgramBase> shader)
+void PenLightSystem::renderUpdate(const std::shared_ptr<Resources::PenShaderProgram> shader)
 {
 	uint16_t spotLightCount = 0, pointLightCount = 0;
 

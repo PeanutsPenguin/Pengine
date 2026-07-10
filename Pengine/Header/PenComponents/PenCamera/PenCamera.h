@@ -10,7 +10,7 @@
 
 namespace Pengine::Resources 
 {
-	class PenShaderProgramBase;
+	class PenShaderProgram;
 }
 
 
@@ -54,7 +54,7 @@ namespace Pengine::Components
 		void updateProjectionMatrix();
 		void updateViewMatrix(const PenMath::Transform& trans);
 
-		void shaderActivation(std::shared_ptr<Resources::PenShaderProgramBase> shader, const PenTransform& trans);
+		void shaderActivation(std::shared_ptr<Resources::PenShaderProgram> shader, const PenTransform& trans);
 
 	private:
 		PenMath::Mat4 m_projectionMatrix;

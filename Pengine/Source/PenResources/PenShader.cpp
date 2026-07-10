@@ -1,4 +1,4 @@
-#include "PenResources/OpenGl/Private_PenGLShader.h"
+#include "PenResources/PenShader.h"
 
 #include "PenCore/PenCore.h"				//PenCore
 #include "PenSerializer/PenSerializer.h"	//PenSerializer
@@ -7,18 +7,18 @@
 #include <iostream>
 #include <fstream>
 
-#include <glad/glad.h>
+#include "Wrapper/Private_GladWrapper.h"
 
 using namespace Pengine::Resources;
 
-PenGLShader::~PenGLShader()
+PenShader::~PenShader()
 {
 	std::cout << __FUNCTION__ "\tDestroying Shader : " << getId() << std::endl;
 	destroy();
 }
 
 #pragma region Resource
-bool PenGLShader::loadResource(const std::string path)
+bool PenShader::loadResource(const std::string path)
 {
 	std::cout << __FUNCTION__ "\tLoading Shader :" << path << std::endl;
 
@@ -31,7 +31,7 @@ bool PenGLShader::loadResource(const std::string path)
 	PenCore::Serializer()->read(infile, shaderType);
 	infile.close();
 
-	if(!this->setType((PenShaderType)shaderType))
+	if (!this->setType((PenShaderType)shaderType))
 	{
 		std::cout << __FUNCTION__ "\t Failes to set a correct type at load\n";
 		return false;
@@ -42,7 +42,7 @@ bool PenGLShader::loadResource(const std::string path)
 	return this->reloadShaderContent(sourcePath.c_str());
 }
 
-bool Pengine::Resources::PenGLShader::createResource(const std::string PenfilePath, const std::string sourcePath)
+bool Pengine::Resources::PenShader::createResource(const std::string PenfilePath, const std::string sourcePath)
 {
 	std::cout << __FUNCTION__ "\tCreating Shader : " << sourcePath << std::endl;
 
@@ -63,7 +63,7 @@ bool Pengine::Resources::PenGLShader::createResource(const std::string PenfilePa
 }
 #pragma endregion
 
-bool PenGLShader::changeShaderType(const PenShaderType type, const char* PenfilePath)
+bool PenShader::changeShaderType(const PenShaderType type, const char* PenfilePath)
 {
 	//Clear the shader
 	this->destroy();
@@ -94,20 +94,20 @@ bool PenGLShader::changeShaderType(const PenShaderType type, const char* Penfile
 }
 
 #pragma region SetType
-bool PenGLShader::setType(const char* sourcePath)
+bool PenShader::setType(const char* sourcePath)
 {
 	std::filesystem::path pathCast(sourcePath);
 	std::string fileExtension = pathCast.extension().string();
 
 	if (fileExtension == ".vert" || fileExtension == ".vertexshader")
 	{
-		m_shaderId = glCreateShader(GL_VERTEX_SHADER);
+		GladWrapper::createVertexShader(&this->m_shaderId);
 		this->m_type = PenShaderType::VERTEX_SHADER;
 		return true;
 	}
 	else if (fileExtension == ".frag" || fileExtension == ".fragmentshader")
 	{
-		m_shaderId = glCreateShader(GL_FRAGMENT_SHADER);
+		GladWrapper::createFragmentShader(&this->m_shaderId);
 		this->m_type = PenShaderType::FRAGMENT_SHADER;
 		return true;
 	}
@@ -118,17 +118,17 @@ bool PenGLShader::setType(const char* sourcePath)
 	}
 }
 
-bool PenGLShader::setType(Pengine::PenShaderType type)
+bool PenShader::setType(Pengine::PenShaderType type)
 {
 	if (type == PenShaderType::VERTEX_SHADER)
 	{
-		m_shaderId = glCreateShader(GL_VERTEX_SHADER);
+		GladWrapper::createVertexShader(&this->m_shaderId);
 		this->m_type = PenShaderType::VERTEX_SHADER;
 		return true;
 	}
 	else if (type == PenShaderType::FRAGMENT_SHADER)
 	{
-		m_shaderId = glCreateShader(GL_FRAGMENT_SHADER);
+		GladWrapper::createFragmentShader(&this->m_shaderId);
 		this->m_type = PenShaderType::FRAGMENT_SHADER;
 		return true;
 	}
@@ -140,7 +140,7 @@ bool PenGLShader::setType(Pengine::PenShaderType type)
 }
 #pragma endregion
 
-const char* PenGLShader::getSourcePath()
+const char* PenShader::getSourcePath()
 {
 	//Create variables 
 	std::string sourcePath;
@@ -152,7 +152,7 @@ const char* PenGLShader::getSourcePath()
 	return sourcePath.c_str();
 }
 
-bool Pengine::Resources::PenGLShader::reloadShaderContent(const char* path)
+bool Pengine::Resources::PenShader::reloadShaderContent(const char* path)
 {
 	std::ifstream file(path, std::ios::binary);
 
@@ -165,23 +165,10 @@ bool Pengine::Resources::PenGLShader::reloadShaderContent(const char* path)
 	std::string data(std::filesystem::file_size(path), '\0');
 	file.read(data.data(), data.size());
 
-	const GLint length = static_cast<GLint>(data.length());
+	GladWrapper::fillShader(&this->m_shaderId, data);
 
-	const char* shaderData = data.data();
-
-	glShaderSource(m_shaderId, 1, &shaderData, &length);
-	glCompileShader(m_shaderId);
-
-	int status = 0;
-
-	glGetShaderiv(m_shaderId, GL_COMPILE_STATUS, &status);
-
-	if (!status)
+	if(!GladWrapper::debugShader(&this->m_shaderId))
 	{
-		char infoLog[512];
-		glGetShaderInfoLog(m_shaderId, 512, nullptr, infoLog);
-		std::cerr << __FUNCTION__ "\tShader compilation failed. \t" << "Type :" << this->m_type << "\tPath : " << path << "\nInfo : " << infoLog << '\n';
-
 		destroy();
 		return false;
 	}
@@ -189,14 +176,19 @@ bool Pengine::Resources::PenGLShader::reloadShaderContent(const char* path)
 	return true;
 }
 
-const unsigned int PenGLShader::getShaderId() const noexcept
+const unsigned int PenShader::getShaderId() const noexcept
 {
 	return this->m_shaderId;
 }
 
-void PenGLShader::destroy()
+unsigned int* PenShader::getShaderIdPtr() 
 {
-	glDeleteShader(m_shaderId);
+	return &this->m_shaderId;
+}
+
+void PenShader::destroy()
+{
+	GladWrapper::deleteShader(&this->m_shaderId);
 	m_shaderId = 0;
 	m_type = Pengine::PenShaderType::INVALID_SHADER;
 }

@@ -3,7 +3,7 @@
 //Resources
 #include "PenResources/PenResourcesManager.h"
 #include "PenResources/PenMesh.h"
-#include "PenResources/OpenGl/Private_PenGLShaderProgram.h"
+#include "PenResources/PenShaderProgram.h"
 
 #include "PenCore/PenCore.h"					//PenCore
 #include "PenOctopus/PenOctopus.h"				//PenOctopus

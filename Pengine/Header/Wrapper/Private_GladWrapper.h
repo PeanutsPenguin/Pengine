@@ -1,8 +1,12 @@
 #pragma once
 
-#include "Vector/Vector2/Vector2.h"
+#include "Vector/Vector.h"
+#include "Matrix/Mat3.h"
+#include "Matrix/Mat4.h"
+
 #include <span>
 #include <array>
+#include <string>
 
 namespace Pengine::GladWrapper
 {
@@ -62,6 +66,24 @@ namespace Pengine::GladWrapper
 	void generateMipMap();
 	#pragma endregion
 
+	#pragma region Shaders
+	void createVertexShader(unsigned int* id);
+	void createFragmentShader(unsigned int* id);
+	void createShaderProgram(unsigned int* id);
+
+	void fillShader(unsigned int* id, const std::string& data);
+	void attachShader(unsigned int* id, unsigned int* otherId);
+
+	void linkProgram(unsigned int* id);
+	void useProgram(const unsigned int* id);
+
+	bool debugShader(unsigned int* id);
+	bool debugShaderProgram(unsigned int* id);
+
+	void deleteShader(unsigned int* id);
+	void deleteShaderProgram(unsigned int* id);
+	#pragma endregion
+
 	#pragma region Func
 	void setPixelStorageModeUnpack();
 
@@ -71,4 +93,17 @@ namespace Pengine::GladWrapper
 
 	void readPixelColor(const PenMath::Vector2& mousePos, std::array<unsigned char, 4>& data);
 	#pragma endregion
+
+	#pragma region SetUniform
+	void	setUniform(unsigned int* id, const char* name, bool value);
+	void	setUniform(unsigned int* id, const char* name, int value);
+	void	setUniform(unsigned int* id, const char* name, float value);
+	void	setUniform(unsigned int* id, const char* name, const PenMath::Vector2f& value);
+	void	setUniform(unsigned int* id, const char* name, const PenMath::Vector3f& value);
+	void	setUniform(unsigned int* id, const char* name, const PenMath::Vector4f& value);
+	void	setUniform(unsigned int* id, const char* name, const PenMath::Mat3& value);
+	void	setUniform(unsigned int* id, const char* name, const PenMath::Mat4& value);
+	#pragma endregion
+
+
 }
