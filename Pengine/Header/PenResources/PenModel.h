@@ -9,7 +9,7 @@ struct aiScene;
 
 namespace Pengine::Resources
 {
-	class PenMeshBase;
+	class PenMesh;
 	class PenShaderProgramBase;
 
 	class PenModel final : public PenResourcesBase
@@ -34,9 +34,8 @@ namespace Pengine::Resources
 
 		bool processNode(aiNode* node, const aiScene* scene);
 
-		bool	GLloadMesh(const aiMesh& mesh);
-		void	GLRender();
+		bool	loadMesh(const aiMesh& mesh);
 
-		std::vector<std::shared_ptr<PenMeshBase>> m_meshes;
+		std::vector<std::shared_ptr<PenMesh>> m_meshes;
 	};
 }

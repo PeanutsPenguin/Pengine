@@ -4,7 +4,7 @@
 #include "glad/glad.h"
 #include <iostream>
 
-namespace Pengine::Buffer::GladWrapper
+namespace Pengine::GladWrapper
 {
 	#pragma region Create
 	void createBasicBuffer(unsigned int* id)
@@ -201,6 +201,16 @@ namespace Pengine::Buffer::GladWrapper
 	void setPixelStorageModeUnpack()
 	{
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	}
+
+	void activateDrawLine()
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
+
+	void drawElements(int count)
+	{
+		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
 	}
 
 	void readPixelColor(const PenMath::Vector2& mousePos, std::array<unsigned char, 4>& data)

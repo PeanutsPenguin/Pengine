@@ -1,11 +1,11 @@
-#include "PenResources/OpenGl/Private_PenGLMesh.h"
+#include "PenResources/PenMesh.h"
 
 #include "PenStructsAndEnum/PenVertex.h"	//PenVertex
 #include "PenDefine/PengineDefine.h"		//PengineDefine
+#include "Wrapper/Private_GladWrapper.h"
 
 //Lib
 #include <assimp/mesh.h>
-#include <glad/glad.h>
 
 //std
 #include <iostream>
@@ -13,38 +13,38 @@
 using namespace Pengine::Resources;
 
 #pragma region Getter
-Pengine::Buffer::PenVertexBuffer& PenGLMesh::vertexBuffer() noexcept
+Pengine::Buffer::PenVertexBuffer& PenMesh::vertexBuffer() noexcept
 {
 	return m_vertexBuffer;
 }
 
-const Pengine::Buffer::PenVertexBuffer& PenGLMesh::vertexBuffer() const noexcept
+const Pengine::Buffer::PenVertexBuffer& PenMesh::vertexBuffer() const noexcept
 {
 	return m_vertexBuffer;
 }
 
-Pengine::Buffer::PenVertexAttributeBuffer& PenGLMesh::vertexAttributeBuffer() noexcept
+Pengine::Buffer::PenVertexAttributeBuffer& PenMesh::vertexAttributeBuffer() noexcept
 {
 	return m_vertexAttributeBuffer;
 }
 
-const Pengine::Buffer::PenVertexAttributeBuffer& PenGLMesh::vertexAttributeBuffer() const noexcept
+const Pengine::Buffer::PenVertexAttributeBuffer& PenMesh::vertexAttributeBuffer() const noexcept
 {
 	return m_vertexAttributeBuffer;
 }
 
-Pengine::Buffer::PenElementBuffer& PenGLMesh::elementBuffer() noexcept
+Pengine::Buffer::PenElementBuffer& PenMesh::elementBuffer() noexcept
 {
 	return m_elementBuffer;
 }
 
-const Pengine::Buffer::PenElementBuffer& PenGLMesh::elementBuffer() const noexcept
+const Pengine::Buffer::PenElementBuffer& PenMesh::elementBuffer() const noexcept
 {
 	return m_elementBuffer;
 }
 #pragma endregion
 
-bool PenGLMesh::initMesh(const aiMesh& assimpMesh)
+bool PenMesh::initMesh(const aiMesh& assimpMesh)
 {
 	std::vector<Pengine::PenVertex> vertices;
 	std::vector<unsigned int> indices;
@@ -52,7 +52,7 @@ bool PenGLMesh::initMesh(const aiMesh& assimpMesh)
 	vertices.reserve(assimpMesh.mNumVertices);
 	indices.reserve(static_cast<size_t>(assimpMesh.mNumFaces) * 3);
 
-	bool hasTangent = assimpMesh.HasTangentsAndBitangents();	
+	bool hasTangent = assimpMesh.HasTangentsAndBitangents();
 
 	for (size_t i = 0; i < assimpMesh.mNumVertices; ++i)
 	{
@@ -65,8 +65,8 @@ bool PenGLMesh::initMesh(const aiMesh& assimpMesh)
 
 		vertices.push_back(Pengine::PenVertex
 			{
-				.position = { pos.x, pos.y, pos.z }, 
-				.normal = { normal.x, normal.y, normal.z }, 
+				.position = { pos.x, pos.y, pos.z },
+				.normal = { normal.x, normal.y, normal.z },
 				.uv = { uv.x, uv.y },
 				.tangent = { tangent.x, tangent.y, tangent.z }
 			});
@@ -91,16 +91,16 @@ bool PenGLMesh::initMesh(const aiMesh& assimpMesh)
 	m_vertexAttributeBuffer.create();
 	m_vertexBuffer.create(vertices.data(), vertices.size() * sizeof(Pengine::PenVertex));
 	m_elementBuffer.create(indices);
-	
-	m_vertexAttributeBuffer.bind();   
-	m_vertexBuffer.bind();           
+
+	m_vertexAttributeBuffer.bind();
+	m_vertexBuffer.bind();
 	m_elementBuffer.bind();
 
 	m_vertexAttributeBuffer.defineAttribute(0, 3);	//define position
 	m_vertexAttributeBuffer.defineAttribute(1, 3);	//define normal
 	m_vertexAttributeBuffer.defineAttribute(2, 2);	//define uv
 	m_vertexAttributeBuffer.defineAttribute(3, 3);	//define tangent
-	
+
 	m_vertexAttributeBuffer.unbind();
 	m_vertexBuffer.unbind();
 	m_elementBuffer.unbind();
@@ -108,7 +108,7 @@ bool PenGLMesh::initMesh(const aiMesh& assimpMesh)
 	return true;
 }
 
-void PenGLMesh::render()
+void PenMesh::render()
 {
 	if (!m_vertexBuffer.isValid())
 		return;
@@ -117,8 +117,8 @@ void PenGLMesh::render()
 	m_vertexBuffer.bind();
 	m_elementBuffer.bind();
 
-	if(DRAW_LINE)
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	if (DRAW_LINE)
+		GladWrapper::activateDrawLine();
 
-	glDrawElements(GL_TRIANGLES, m_elementBuffer.count(), GL_UNSIGNED_INT, nullptr);
+	GladWrapper::drawElements(m_elementBuffer.count());
 }

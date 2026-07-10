@@ -4,7 +4,7 @@
 #include <span>
 #include <array>
 
-namespace Pengine::Buffer::GladWrapper
+namespace Pengine::GladWrapper
 {
 	#pragma region Create
 	void createBasicBuffer(unsigned int* id);
@@ -64,6 +64,10 @@ namespace Pengine::Buffer::GladWrapper
 
 	#pragma region Func
 	void setPixelStorageModeUnpack();
+
+	void activateDrawLine();
+
+	void drawElements(int count);
 
 	void readPixelColor(const PenMath::Vector2& mousePos, std::array<unsigned char, 4>& data);
 	#pragma endregion

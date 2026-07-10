@@ -2,7 +2,7 @@
 
 //Resources
 #include "PenResources/PenResourcesManager.h"
-#include "PenResources/OpenGl/Private_PenGLMesh.h"
+#include "PenResources/PenMesh.h"
 #include "PenResources/OpenGl/Private_PenGLShaderProgram.h"
 
 #include "PenCore/PenCore.h"					//PenCore
@@ -70,10 +70,9 @@ bool PenModel::generateResource(const char* path)
 }
 #pragma endregion
 
-#pragma region OpenGl
-bool PenModel::GLloadMesh(const aiMesh& mesh)
+bool PenModel::loadMesh(const aiMesh& mesh)
 {
-	std::shared_ptr<PenGLMesh> ptr = std::make_shared<PenGLMesh>();
+	std::shared_ptr<PenMesh> ptr = std::make_shared<PenMesh>();
 
 	if (!ptr->initMesh(mesh))
 		return false;
@@ -83,24 +82,17 @@ bool PenModel::GLloadMesh(const aiMesh& mesh)
 	return true;
 }
 
-void PenModel::GLRender()
+void PenModel::render()
 {
-	for (const std::shared_ptr<PenMeshBase> obj : m_meshes)
+	for (const std::shared_ptr<PenMesh> obj : m_meshes)
 	{
-		std::shared_ptr<PenGLMesh> objPtr = std::dynamic_pointer_cast<PenGLMesh>(obj);
+		std::shared_ptr<PenMesh> objPtr = std::dynamic_pointer_cast<PenMesh>(obj);
 
 		if (objPtr)
 			objPtr->render();
 		else
 			std::cerr << __FUNCTION__ "\t Dynamic pointer cast failed\n";
 	}
-}
-#pragma endregion
-
-void PenModel::render()
-{
-	if(PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
-		this->GLRender();
 }
 
 bool PenModel::processNode(aiNode* node, const aiScene* scene)
@@ -109,11 +101,8 @@ bool PenModel::processNode(aiNode* node, const aiScene* scene)
 	{
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 
-		if (PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
-		{
-			if (!GLloadMesh(*mesh))
-				std::cerr << __FUNCTION__ ": Failed to load mesh : " << i << " in the model resource.\n";
-		}
+		if (!loadMesh(*mesh))
+			std::cerr << __FUNCTION__ ": Failed to load mesh : " << i << " in the model resource.\n";
 		
 	}
 	
