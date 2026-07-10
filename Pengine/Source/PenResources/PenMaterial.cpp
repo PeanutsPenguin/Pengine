@@ -1,8 +1,8 @@
 #include "PenResources/PenMaterial/PenMaterial.h"
 
 #include "PenResources/PenResourcesManager.h"                       //PenResourceManager
-#include "PenResources/OpenGl/Private_PenGLTextures.h"              //PenTexture
-#include "PenResources/PenShaderProgram.h"         //PenShaderProgram
+#include "PenResources/PenTexture.h"                                //PenTexture
+#include "PenResources/PenShaderProgram.h"                          //PenShaderProgram
 
 #include "PenBuffer/PenTextureBuffer.h"
 
@@ -80,7 +80,7 @@ bool PenMaterial::createResource(const std::string penfilePath, std::shared_ptr<
     return this->createResource(penfilePath, prog, nullptr);
 }
 
-bool PenMaterial::createResource(const std::string penfilePath, std::shared_ptr<PenShaderProgram> prog, std::shared_ptr<PenTextureBase> tex)
+bool PenMaterial::createResource(const std::string penfilePath, std::shared_ptr<PenShaderProgram> prog, std::shared_ptr<PenTexture> tex)
 {
     std::ofstream outfile(penfilePath, std::ios::binary);
 
@@ -148,13 +148,13 @@ const std::shared_ptr<PenShaderProgram>& PenMaterial::getShaderProg()
 #pragma endregion
 
 #pragma region Normal
-void PenMaterial::setNormal(std::shared_ptr<Pengine::Resources::PenTextureBase> ptr)
+void PenMaterial::setNormal(std::shared_ptr<Pengine::Resources::PenTexture> ptr)
 {
     if (ptr)
         this->m_normal = ptr;
 }
 
-const std::shared_ptr<PenTextureBase>& PenMaterial::getNormal()
+const std::shared_ptr<PenTexture>& PenMaterial::getNormal()
 {
     if (!this->m_normal)
     {
@@ -174,7 +174,7 @@ void PenMaterial::loadNormal(std::ifstream& infile)
     if (!tempPath.empty())
     {
         if (PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
-            this->m_normal = PenCore::ResourcesManager()->loadResourceFromFile<PenGLTexture>(tempPath.c_str());
+            this->m_normal = PenCore::ResourcesManager()->loadResourceFromFile<PenTexture>(tempPath.c_str());
     }
 }
 
@@ -182,11 +182,11 @@ void PenMaterial::activateNormal()
 {
 	if (this->m_normal)
 	{
-		std::shared_ptr<PenGLTexture> ptr = std::dynamic_pointer_cast<PenGLTexture>(this->m_normal);
+		std::shared_ptr<PenTexture> ptr = std::dynamic_pointer_cast<PenTexture>(this->m_normal);
 		ptr->dataPtr()->activate(3);
 	}
 	else
-        PenGLTexture::noTexture()->dataPtr()->activate(3);
+        PenTexture::noTexture()->dataPtr()->activate(3);
 
 	this->m_shader->setUniform("mat.normalMap", 3);
 }
@@ -206,7 +206,7 @@ void PenMaterial::setAlbedo(const PenMath::Vector3f& albedo)
     this->m_albedo.defaultValue = albedo;
 }
 
-void PenMaterial::setAlbedo(std::shared_ptr<PenTextureBase> ptr)
+void PenMaterial::setAlbedo(std::shared_ptr<PenTexture> ptr)
 {
     this->m_albedo.texture = ptr;
 }
@@ -230,7 +230,7 @@ void PenMaterial::loadAlbedo(std::ifstream& infile)
     if (!tempPath.empty())
     {
         if (PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
-            this->m_albedo.texture = PenCore::ResourcesManager()->loadResourceFromFile<PenGLTexture>(tempPath.c_str());
+            this->m_albedo.texture = PenCore::ResourcesManager()->loadResourceFromFile<PenTexture>(tempPath.c_str());
     }
 
     PenCore::Serializer()->read(infile, this->m_albedo.defaultValue);
@@ -240,12 +240,12 @@ void PenMaterial::activateAlbedo()
 {
     if (this->m_albedo.texture)
     {
-        std::shared_ptr<PenGLTexture> ptr = std::dynamic_pointer_cast<PenGLTexture>(this->m_albedo.texture);
+        std::shared_ptr<PenTexture> ptr = std::dynamic_pointer_cast<PenTexture>(this->m_albedo.texture);
         ptr->dataPtr()->activate(0);
     }
     else
     {
-        PenGLTexture::defaultTexture()->dataPtr()->activate(0);
+        PenTexture::defaultTexture()->dataPtr()->activate(0);
     }
 
     this->m_shader->setUniform("mat.albedoMap", 0);
@@ -259,7 +259,7 @@ void PenMaterial::setMetallic(const float metallic)
     this->m_metallic.defaultValue = metallic;
 }
 
-void PenMaterial::setMetallic(std::shared_ptr<PenTextureBase> ptr)
+void PenMaterial::setMetallic(std::shared_ptr<PenTexture> ptr)
 {
     this->m_metallic.texture = ptr;
 }
@@ -283,7 +283,7 @@ void PenMaterial::loadMetallic(std::ifstream& infile)
     if (!tempPath.empty())
     {
         if (PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
-            this->m_metallic.texture = PenCore::ResourcesManager()->loadResourceFromFile<PenGLTexture>(tempPath.c_str());
+            this->m_metallic.texture = PenCore::ResourcesManager()->loadResourceFromFile<PenTexture>(tempPath.c_str());
     }
 
     PenCore::Serializer()->read(infile, this->m_metallic.defaultValue);
@@ -293,12 +293,12 @@ void PenMaterial::activateMetallic()
 {
     if (this->m_metallic.texture)
     {
-        std::shared_ptr<PenGLTexture> ptr = std::dynamic_pointer_cast<PenGLTexture>(this->m_metallic.texture);
+        std::shared_ptr<PenTexture> ptr = std::dynamic_pointer_cast<PenTexture>(this->m_metallic.texture);
         ptr->dataPtr()->activate(1);
     }
     else
     {
-        PenGLTexture::defaultTexture()->dataPtr()->activate(1);
+        PenTexture::defaultTexture()->dataPtr()->activate(1);
     }
 
     this->m_shader->setUniform("mat.metallicMap", 1);
@@ -313,7 +313,7 @@ void PenMaterial::setRoughness(const float rough)
     this->m_roughness.defaultValue = rough;
 }
 
-void PenMaterial::setRoughness(std::shared_ptr<PenTextureBase> ptr)
+void PenMaterial::setRoughness(std::shared_ptr<PenTexture> ptr)
 {
     this->m_roughness.texture = ptr;
 }
@@ -337,7 +337,7 @@ void PenMaterial::loadRoughness(std::ifstream& infile)
     if (!tempPath.empty())
     {
         if (PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
-            this->m_roughness.texture = PenCore::ResourcesManager()->loadResourceFromFile<PenGLTexture>(tempPath.c_str());
+            this->m_roughness.texture = PenCore::ResourcesManager()->loadResourceFromFile<PenTexture>(tempPath.c_str());
     }
 
     PenCore::Serializer()->read(infile, this->m_roughness.defaultValue);
@@ -347,12 +347,12 @@ void PenMaterial::activateRoughness()
 {
     if (this->m_roughness.texture)
     {
-        std::shared_ptr<PenGLTexture> ptr = std::dynamic_pointer_cast<PenGLTexture>(this->m_roughness.texture);
+        std::shared_ptr<PenTexture> ptr = std::dynamic_pointer_cast<PenTexture>(this->m_roughness.texture);
         ptr->dataPtr()->activate(2);
     }
     else
     {
-        PenGLTexture::defaultTexture()->dataPtr()->activate(2);
+        PenTexture::defaultTexture()->dataPtr()->activate(2);
     }
 
     this->m_shader->setUniform("mat.roughnessMap", 2);
@@ -366,7 +366,7 @@ void PenMaterial::setAmbientOcclusion(const float ao)
     this->m_ambientOcclusion.defaultValue = ao;
 }
 
-void PenMaterial::setAmbientOcclusion(std::shared_ptr<PenTextureBase> ptr)
+void PenMaterial::setAmbientOcclusion(std::shared_ptr<PenTexture> ptr)
 {
     this->m_ambientOcclusion.texture = ptr;
 }
@@ -390,7 +390,7 @@ void PenMaterial::loadAmbientOcclusion(std::ifstream& infile)
     if (!tempPath.empty())
     {
         if (PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
-            this->m_ambientOcclusion.texture = PenCore::ResourcesManager()->loadResourceFromFile<PenGLTexture>(tempPath.c_str());
+            this->m_ambientOcclusion.texture = PenCore::ResourcesManager()->loadResourceFromFile<PenTexture>(tempPath.c_str());
     }
 
     PenCore::Serializer()->read(infile, this->m_ambientOcclusion.defaultValue);
@@ -400,12 +400,12 @@ void PenMaterial::activateAmbientOcclusion()
 {
     if (this->m_ambientOcclusion.texture)
     {
-        std::shared_ptr<PenGLTexture> ptr = std::dynamic_pointer_cast<PenGLTexture>(this->m_ambientOcclusion.texture);
+        std::shared_ptr<PenTexture> ptr = std::dynamic_pointer_cast<PenTexture>(this->m_ambientOcclusion.texture);
         ptr->dataPtr()->activate(3);
     }
     else
     {
-        PenGLTexture::defaultTexture()->dataPtr()->activate(3);
+        PenTexture::defaultTexture()->dataPtr()->activate(3);
     }
 
     this->m_shader->setUniform("mat.aoMap", 3);

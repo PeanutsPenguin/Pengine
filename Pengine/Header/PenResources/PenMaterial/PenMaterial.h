@@ -13,7 +13,7 @@
 
 namespace Pengine::Resources
 {
-	class PenTextureBase;
+	class PenTexture;
 	class PenShaderProgram;
 
 	class PenMaterial final: public PenResourcesBase
@@ -34,7 +34,7 @@ namespace Pengine::Resources
 		bool	loadResource(const std::string path) final;
 		bool	createResource(const std::string penfilePath, const std::string sourcePath) final;
 		bool	createResource(const std::string penfilePath, std::shared_ptr<PenShaderProgram> prog);
-		bool	createResource(const std::string penfilePath, std::shared_ptr<PenShaderProgram> prog, std::shared_ptr<PenTextureBase> tex);
+		bool	createResource(const std::string penfilePath, std::shared_ptr<PenShaderProgram> prog, std::shared_ptr<PenTexture> tex);
 
 		void shaderActivation();
 		void GLShaderActivation();
@@ -45,42 +45,42 @@ namespace Pengine::Resources
 		void	setShaderProgram(std::shared_ptr<PenShaderProgram> prog);
 
 		//Normal
-		void	setNormal(std::shared_ptr<PenTextureBase> ptr);
+		void	setNormal(std::shared_ptr<PenTexture> ptr);
 		void	saveNormal(std::ofstream& outfile);
 		void	loadNormal(std::ifstream& infile);
 		void	activateNormal();
 
 		//Albedo
 		void	setAlbedo(const PenMath::Vector3f& spec);
-		void	setAlbedo(std::shared_ptr<PenTextureBase> ptr);
+		void	setAlbedo(std::shared_ptr<PenTexture> ptr);
 		void    setAlbedo(const PenMaterialProperty<PenMath::Vector3f>& prop);
 		void	loadAlbedo(std::ifstream& infile);
 		void	activateAlbedo();
 
 		//Metallic
 		void	setMetallic(const float shininess);
-		void	setMetallic(std::shared_ptr<PenTextureBase> ptr);
+		void	setMetallic(std::shared_ptr<PenTexture> ptr);
 		void	setMetallic(const PenMaterialProperty<float>& prop);
 		void	loadMetallic(std::ifstream& infile);
 		void	activateMetallic();
 
 		//Roughness
 		void	setRoughness(const float roughness);
-		void	setRoughness(std::shared_ptr<PenTextureBase> ptr);
+		void	setRoughness(std::shared_ptr<PenTexture> ptr);
 		void	setRoughness(const PenMaterialProperty<float>& prop);
 		void	loadRoughness(std::ifstream& infile);
 		void	activateRoughness();
 
 		//AmbientOclusion
 		void	setAmbientOcclusion(const float ao);
-		void	setAmbientOcclusion(std::shared_ptr<PenTextureBase> ptr);
+		void	setAmbientOcclusion(std::shared_ptr<PenTexture> ptr);
 		void	setAmbientOcclusion(const PenMaterialProperty<float>& prop);
 		void	loadAmbientOcclusion(std::ifstream& infile);
 		void	activateAmbientOcclusion();
 
 		//Getter
 		const std::shared_ptr<PenShaderProgram>&					getShaderProg();
-		const std::shared_ptr<PenTextureBase>&							getNormal();
+		const std::shared_ptr<PenTexture>&							getNormal();
 		const PenMaterialProperty<PenMath::Vector3f>&					getAlbedo() const;
 		const PenMaterialProperty<float>&								getMetallic() const;
 		const PenMaterialProperty<float>&								getRoughness() const;
@@ -93,6 +93,6 @@ namespace Pengine::Resources
 		PenMaterialProperty<float>								m_ambientOcclusion;
 
 		std::shared_ptr<PenShaderProgram>					m_shader;
-		std::shared_ptr<PenTextureBase>							m_normal;
+		std::shared_ptr<PenTexture>							m_normal;
 	};
 }

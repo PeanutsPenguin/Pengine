@@ -1,7 +1,7 @@
-#include "PenResources/OpenGl/Private_PenGLTextures.h"
+#include "PenResources/PenTexture.h"
 
 #include "PenCore/PenCore.h"							//PenCore
-#include "PenResources/PenResourcesManager.h"			//PenResourceManager
+#include "PenResources/PenResourcesManager.h"			//PenResourcesManager
 #include "PenBuffer/PenTextureBuffer.h"					//PenTextureBuffer
 #include "PenSerializer/PenSerializer.h"				//PenSerializer
 
@@ -18,33 +18,33 @@
 
 using namespace Pengine::Resources;
 
-PenGLTexture::PenGLTexture()
+std::shared_ptr<PenTexture> PenTexture::defaultTexture()
+{
+	return PenCore::ResourcesManager()->loadResourceFromFile<PenTexture>("Textures/defaultTex.penfile", true);
+}
+
+std::shared_ptr<PenTexture> PenTexture::noTexture()
+{
+	return PenCore::ResourcesManager()->loadResourceFromFile<PenTexture>("Textures/NoTexture.penfile", true);
+}
+
+const std::string PenTexture::getTexturePath() const
+{
+	return PenCore::ResourcesManager()->getResourcePathById(getId());
+}
+
+PenTexture::PenTexture()
 {
 	this->m_texBuffer = std::make_unique<Pengine::Buffer::PenTextureBuffer>();
 }
 
-PenGLTexture::PenGLTexture(const PenObjectId& id) : PenTextureBase(id)
+PenTexture::PenTexture(const PenObjectId& id) : PenResourcesBase(id)
 {
 	this->m_texBuffer = std::make_unique<Pengine::Buffer::PenTextureBuffer>();
-}
-
-PenGLTexture::~PenGLTexture()
-{
-	std::cout << __FUNCTION__ << ": Erase texture with id : " << this->getId() << std::endl;
-}
-
-std::shared_ptr<PenGLTexture> PenGLTexture::defaultTexture()
-{
-	return PenCore::ResourcesManager()->loadResourceFromFile<PenGLTexture>("Textures/defaultTex.penfile", true);
-}
-
-std::shared_ptr<PenGLTexture> PenGLTexture::noTexture()
-{
-	return PenCore::ResourcesManager()->loadResourceFromFile<PenGLTexture>("Textures/NoTexture.penfile", true);
 }
 
 #pragma region Resource
-bool PenGLTexture::loadResource(const std::string path)
+bool PenTexture::loadResource(const std::string path)
 {
 	std::cout << __FUNCTION__ << "\tLoading texture : " << path << std::endl;
 
@@ -60,7 +60,7 @@ bool PenGLTexture::loadResource(const std::string path)
 	return this->initializeTextureBuffer(sourcePath.c_str());
 }
 
-bool PenGLTexture::createResource(const std::string PenfilePath, const std::string sourcePath)
+bool PenTexture::createResource(const std::string PenfilePath, const std::string sourcePath)
 {
 	std::cout << __FUNCTION__ "\t Creating texture : " << sourcePath << std::endl;
 
@@ -78,12 +78,12 @@ bool PenGLTexture::createResource(const std::string PenfilePath, const std::stri
 }
 #pragma endregion
 
-const Pengine::Buffer::PenTextureBuffer* PenGLTexture::dataPtr() const noexcept
+const Pengine::Buffer::PenTextureBuffer* PenTexture::dataPtr() const noexcept
 {
 	return m_texBuffer.get();
 }
 
-bool PenGLTexture::initializeTextureBuffer(const char* sourcePath)
+bool PenTexture::initializeTextureBuffer(const char* sourcePath)
 {
 	stbi_set_flip_vertically_on_load(true);
 

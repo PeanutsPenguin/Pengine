@@ -3,7 +3,7 @@
 
 namespace Pengine::Resources
 {
-    class PenTextureBase;
+    class PenTexture;
 
     template <typename T>
     class PenMaterialProperty
@@ -17,7 +17,7 @@ namespace Pengine::Resources
         PenMaterialProperty& operator=(const PenMaterialProperty& rhs) = default;
         PenMaterialProperty& operator=(PenMaterialProperty&& rhs) = default;
 
-        PenMaterialProperty(std::shared_ptr<PenTextureBase> ptr, T value)
+        PenMaterialProperty(std::shared_ptr<PenTexture> ptr, T value)
         {
             this->defaultValue = value;
             this->texture = ptr;
@@ -38,7 +38,7 @@ namespace Pengine::Resources
             PenCore::Serializer()->write(outfile, defaultValue);
         }
 
-        std::shared_ptr<PenTextureBase> texture = nullptr;      //Value of the texture
+        std::shared_ptr<PenTexture> texture = nullptr;      //Value of the texture
         T defaultValue;                                         //Fallback value                
     };
 }

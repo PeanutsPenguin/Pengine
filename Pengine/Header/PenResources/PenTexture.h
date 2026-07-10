@@ -1,41 +1,41 @@
 #pragma once 
 
-#include "PenResources/PenTextureBase.h"
+#include "PenResources/PenResourcesBase.h"
 
-#pragma region Forward Declarations
 namespace Pengine::Buffer
 {
 	class PenTextureBuffer;
 }
-#pragma endregion
 
 namespace Pengine::Resources
 {
-	class PenGLTexture : public PenTextureBase
+	class PenTexture : public PenResourcesBase
 	{
 	public:
-		PenGLTexture();
-		PenGLTexture(const PenObjectId& id);
-		PenGLTexture(const PenGLTexture& other) = default;
-		PenGLTexture(PenGLTexture&& other) = default;
-		~PenGLTexture() final;
+		PenTexture();
+		PenTexture(const PenObjectId& id);
+		PenTexture(const PenTexture& other) = default;
+		PenTexture(PenTexture&& other) = default;
+		~PenTexture() final = default;
 
-		PenGLTexture& operator=(const PenGLTexture& rhs) = default;
-		PenGLTexture& operator=(PenGLTexture&& rhs) = default;
+		PenTexture& operator=(const PenTexture& rhs) = default;
+		PenTexture& operator=(PenTexture&& rhs) = default;
+
+		static std::shared_ptr<PenTexture> defaultTexture();
+
+		static std::shared_ptr<PenTexture> noTexture();
 
 		bool	loadResource(const std::string path) final;
 		bool	createResource(const std::string PenfilePath, const std::string sourcePath) final;
 
-		static std::shared_ptr<PenGLTexture> defaultTexture();
-
-		static std::shared_ptr<PenGLTexture> noTexture();
+		_NODISCARD const std::string getTexturePath() const;
 
 		/// <summary>
 		/// Return a const pointer to the Texture buffer so the value can't be changed but can be used
 		/// </summary>
 		_NODISCARD const Pengine::Buffer::PenTextureBuffer* dataPtr() const noexcept;
-
-	private :
+	
+	private:
 		bool initializeTextureBuffer(const char* sourcePath);
 
 		std::unique_ptr<Pengine::Buffer::PenTextureBuffer> m_texBuffer = nullptr;
