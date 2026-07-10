@@ -14,7 +14,6 @@ namespace Pengine
 	template<typename T>
 	inline void PenOctopus::addComponent(PenObjectId obj, T component)
 	{
-		//TODO: check if the object pass by is a component
 		T& newComp = this->m_PenComponentManager->addComponent<T>(obj, component);
 
 		newComp.setPenObjectId(obj);

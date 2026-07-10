@@ -21,8 +21,6 @@ namespace Pengine::Resources
 		_NODISCARD virtual bool		loadResource(const std::string path) = 0;
 		_NODISCARD virtual bool		createResource(const std::string PenfilePath, const std::string sourcePath) = 0;
 
-		//TODO: Save function here
-
 	protected:
 		std::string m_penfilePath = "path";
 

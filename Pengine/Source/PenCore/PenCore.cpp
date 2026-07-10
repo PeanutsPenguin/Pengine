@@ -206,8 +206,7 @@ void PenCore::renderUpdate()
 	//TODO: Create an "Editor" flag to decide if we want to dock the viewport or not
     m_PenUIManager->newFrame(false);
 
-	//TODO: just pass the bg color instead of the whole scene
-    m_window->preRender(*m_PenOctopus->getMainScene());
+    m_window->preRender(m_PenOctopus->getMainScene()->getBackgroundColor());
 
     m_window->render();
 

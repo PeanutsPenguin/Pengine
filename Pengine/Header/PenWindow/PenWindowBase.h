@@ -3,8 +3,9 @@
 #include "PenStructsAndEnum/PenCursorState.h"
 #include "PenDefine/PengineDefine.h"
 
-#include <memory>
+#include "PenColor/PenColor.h"
 
+#include <memory>
 #include <Vector/Vector2/Vector2.h>
 
 #pragma region Forward declarations
@@ -39,7 +40,7 @@ namespace Pengine::Window
 
 		bool init(const char* name, const PenMath::Vector2& size);
 
-		void preRender(const PenScene& mainScene);
+		void preRender(const PenColor& bgColor);
 		void render(const PenObjectId cam = g_PenObjectInvalidId);
 		void postRender();
 		void switchFrame();
