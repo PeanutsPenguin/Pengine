@@ -131,6 +131,16 @@ namespace Pengine::ui::ImGuiWrapper
 		ImGui::SetActiveID(0, ImGui::GetCurrentWindow());
 	}
 
+	void pushStyleColor(const PenColor& col)
+	{
+		ImGui::PushStyleColor(ImGuiCol_Header, { col.x, col.y, col.z, col.a });
+	}
+
+	void popStyleColor()
+	{
+		ImGui::PopStyleColor(1);
+	}
+
 	#pragma region Render Calls
 	void renderOnSameLine(float spacing)
 	{
@@ -159,7 +169,6 @@ namespace Pengine::ui::ImGuiWrapper
 
 	bool renderVector3(PenMath::Vector3& vec, const char* name)
 	{
-
 		return ImGui::InputInt3(name, &vec[0]);
 	}
 

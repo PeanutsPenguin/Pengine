@@ -1,7 +1,10 @@
 #pragma once 
 
 #include "PenVirtualWindow/PenVirtualWindow.h"
+#include "PenditorStructAndEnum/PenFileData.h"
 
+#include <vector>
+#include <filesystem>
 
 namespace Penditor::Window
 {
@@ -18,5 +21,11 @@ namespace Penditor::Window
 		PenFileExplorerWindow& operator=(PenFileExplorerWindow&& rhs) = default;
 
 		void renderCalls() final;
+
+	private:
+		void loadCurrentDirectory();
+
+		std::filesystem::path m_currentPath;
+		std::vector<PenFileData> m_cachedFile;
 	};
 }

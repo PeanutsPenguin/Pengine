@@ -3,6 +3,8 @@
 #include "Vector/Vector2/Vector2.h"
 #include "Vector/Vector3/Vector3.h"
 
+#include "PenColor/PenColor.h"
+
 namespace Pengine::Window
 {
 	class WindowWrapper;
@@ -35,6 +37,8 @@ namespace Pengine::ui::ImGuiWrapper
 
 	bool isMouseOverWindow();
 	void removeInputFocus();
+	void pushStyleColor(const PenColor& col);
+	void popStyleColor();
 
 	void	renderOnSameLine(float spacing = 0);
 	void	renderImage(int textureID, const PenMath::Vector2& size);

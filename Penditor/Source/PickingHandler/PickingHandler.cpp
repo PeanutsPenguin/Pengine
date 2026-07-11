@@ -62,8 +62,6 @@ namespace Penditor
 		col.readPixelColor(relativeMousePos);
 
 		Pengine::PenObjectId newObj = this->colorToId(col.getColor());
-
-		std::cout << newObj << std::endl;
 		
 		if (newObj == this->m_selectedObject)
 			return;
