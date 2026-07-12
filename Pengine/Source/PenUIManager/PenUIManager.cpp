@@ -97,9 +97,19 @@ bool PenUIManager::isWindowHovered()
 	return ImGuiWrapper::isMouseOverWindow();
 }
 
+bool PenUIManager::isItemClicked()
+{
+	return ImGuiWrapper::isItemClicked();
+}
+
 void PenUIManager::removeInputFocus()
 {
 	ImGuiWrapper::removeInputFocus();
+}
+
+void PenUIManager::popTree()
+{
+	ImGuiWrapper::popTree();
 }
 
 bool PenUIManager::renderVector3(PenMath::Vector3& vec, const char* name)
@@ -111,3 +121,12 @@ bool PenUIManager::renderVector3(PenMath::Vector3f& vec, const char* name)
 {
 	return ImGuiWrapper::renderVector3(vec, name);
 }
+
+bool PenUIManager::renderTreeNode(const char* name, PenTreeNodeFlags flags)
+{
+	return ImGuiWrapper::renderTreeNode(name, flags);
+}
+
+
+
+

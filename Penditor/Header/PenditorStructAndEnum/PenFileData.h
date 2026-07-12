@@ -1,6 +1,8 @@
 #pragma once 
 
 #include <memory>
+#include <vector>
+#include <string>
 
 namespace Pengine::Resources
 {
@@ -11,9 +13,10 @@ namespace Penditor
 {
 	struct PenFileData
 	{
+		std::vector<PenFileData> children;
 		std::shared_ptr<Pengine::Resources::PenTexture> icon;
-		const char* pathFile;
-		const char* fileName;
-		bool isDirectory;
+		std::string pathFile;
+		std::string fileName;
+		bool isDirectory = false;
 	};
 }

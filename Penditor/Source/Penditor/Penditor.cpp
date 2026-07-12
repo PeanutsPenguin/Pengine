@@ -113,6 +113,12 @@ void PenditorCore::destroy()
 		m_pickingHandler.reset();
 		m_pickingHandler = nullptr;
 	}
+
+	if (m_PenFileExplorerWindow)
+	{
+		m_PenFileExplorerWindow.reset();
+		m_PenFileExplorerWindow = nullptr;
+	}
 }
 
 std::unique_ptr<Window::PenGameWindow>& PenditorCore::GameWindow()

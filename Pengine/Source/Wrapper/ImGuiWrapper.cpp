@@ -126,6 +126,11 @@ namespace Pengine::ui::ImGuiWrapper
 		return ImGui::IsWindowHovered();
 	}
 
+	bool isItemClicked()
+	{
+		return ImGui::IsItemClicked();
+	}
+
 	void removeInputFocus()
 	{
 		ImGui::SetActiveID(0, ImGui::GetCurrentWindow());
@@ -139,6 +144,11 @@ namespace Pengine::ui::ImGuiWrapper
 	void popStyleColor()
 	{
 		ImGui::PopStyleColor(1);
+	}
+
+	void popTree()
+	{
+		ImGui::TreePop();
 	}
 
 	#pragma region Render Calls
@@ -185,6 +195,11 @@ namespace Pengine::ui::ImGuiWrapper
 		}
 
 		return false;
+	}
+
+	bool renderTreeNode(const char* name, PenTreeNodeFlags flags)
+	{
+		return ImGui::TreeNodeEx(name, flags);
 	}
 	#pragma endregion
 }

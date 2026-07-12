@@ -3,7 +3,6 @@
 #include "PenVirtualWindow/PenVirtualWindow.h"
 #include "PenditorStructAndEnum/PenFileData.h"
 
-#include <vector>
 #include <filesystem>
 
 namespace Penditor::Window
@@ -23,9 +22,13 @@ namespace Penditor::Window
 		void renderCalls() final;
 
 	private:
-		void loadCurrentDirectory();
+		void loadDirectory(PenFileData& node, const std::filesystem::path currenPath);
 
-		std::filesystem::path m_currentPath;
-		std::vector<PenFileData> m_cachedFile;
+		void initCachedFile();
+
+		void renderNode(const PenFileData& node);
+
+		PenFileData m_cachedFiles;
+		std::filesystem::path m_selectedPath;
 	};
 }

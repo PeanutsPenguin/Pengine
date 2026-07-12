@@ -3,6 +3,8 @@
 #include "Vector/Vector2/Vector2.h"
 #include "Vector/Vector3/Vector3.h"
 
+#include "PenStructsAndEnum/PenTreeNodeFlags.h"
+
 namespace Pengine::Window
 {
 	class WindowWrapper;
@@ -37,9 +39,12 @@ namespace Pengine::ui
 		void				setUICursorPosX(float x);
 		void				setUICursorPosY(float y);
 		void				setNextItemWidth(float width);
+		
 
 		bool				isWindowHovered();
+		bool				isItemClicked();
 		void				removeInputFocus();
+		void				popTree();
 		
 		void				renderOnSameLine(float spacing = 0);
 		void				renderImage(int textureID, const PenMath::Vector2& size);
@@ -49,5 +54,6 @@ namespace Pengine::ui
 
 		bool				renderVector3(PenMath::Vector3& vec, const char* name);		//Vec3 int
 		bool				renderVector3(PenMath::Vector3f& vec, const char* name);	//Vec3 float
+		bool				renderTreeNode(const char* name, PenTreeNodeFlags flags);
 	};
 }
