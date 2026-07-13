@@ -16,14 +16,14 @@ namespace Pengine::Resources
 	{
 	public:
 		PenShaderProgram() = default;
-		PenShaderProgram(const PenObjectId& id) : PenResourcesBase(id) {};
+		PenShaderProgram(const PenObjectId& id);
 		PenShaderProgram(const PenShaderProgram& other) = default;
 		PenShaderProgram(PenShaderProgram&& other) = default;
 		~PenShaderProgram() override;
 
 		PenShaderProgram& operator=(const PenShaderProgram& rhs) = default;
 		PenShaderProgram& operator=(PenShaderProgram&& rhs) = default;
-
+		 
 		static std::shared_ptr<PenShaderProgram> defaultShaderProgram();
 
 		void destroy();

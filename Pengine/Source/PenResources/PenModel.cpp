@@ -20,6 +20,11 @@
 
 using namespace Pengine::Resources;
 
+PenModel::PenModel(const PenObjectId& id) : PenResourcesBase(id)
+{
+	this->p_type = E_MODEL;
+}
+
 PenModel::~PenModel()
 {
 	std::cout << __FUNCTION__ ": Destryoing with id : " << this->getId() << std::endl;
@@ -29,10 +34,12 @@ PenModel::~PenModel()
 bool PenModel::loadResource(const std::string path)
 {
 	//Create variables 
+	int type = 0;
 	std::string sourcePath;
 
 	//Read in file
 	std::ifstream infile(path, std::ios::binary);
+	PenCore::Serializer()->read(infile, type);
 	PenCore::Serializer()->read(infile, sourcePath);
 
 	//Generate the mesh
@@ -43,6 +50,7 @@ bool PenModel::createResource(const std::string PenfilePath, const std::string s
 {
 	std::ofstream outfile(PenfilePath, std::ios::binary);
 
+	PenCore::Serializer()->write(outfile, (int)p_type);
 	PenCore::Serializer()->write(outfile, sourcePath);
 
 	return generateResource(sourcePath.c_str());

@@ -49,17 +49,17 @@ int main()
 		std::unique_ptr<Pengine::Resources::PenResourcesManager>& resourceManager = Pengine::PenCore::ResourcesManager();
 
 		#pragma region Create Material
-		// Create ShaderProgram
-		std::shared_ptr<Pengine::Resources::PenShaderProgram> progPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenShaderProgram>("Shaders/PBRProg.penfile");
+		std::shared_ptr<Pengine::Resources::PenShaderProgram> progPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenShaderProgram>("Shaders/PBR/ShaderProgPBR.penfile");
 		#pragma endregion
 		   
 		#pragma region Create First Object
-		std::shared_ptr<Pengine::Resources::PenMaterial> basketMat = resourceManager->loadResourceFromFile<Pengine::Resources::PenMaterial>("Material/BasketBallMat.penfile");
+
+		std::shared_ptr<Pengine::Resources::PenMaterial> basketMat = resourceManager->loadResourceFromFile<Pengine::Resources::PenMaterial>("Material/BackpackMat.penfile");
 
 		Pengine::PenObjectId newObj = Pengine::PenCore::PenOctopus()->createPenObject();
 		Pengine::Components::PenRenderer renderComp;
 
-		std::shared_ptr<Pengine::Resources::PenModel> modelPtr = resourceManager->createResourceFromFile<Pengine::Resources::PenModel>("backpack.fbx", "Mesh/");
+		std::shared_ptr<Pengine::Resources::PenModel> modelPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenModel>("Mesh/backpack.penfile");
 		renderComp.setModel(modelPtr);
 		renderComp.setMaterial(basketMat);
 
@@ -115,6 +115,7 @@ int main()
 
 		Penditor::PenditorCore::init();
 		Penditor::PenditorCore::runEditor();
+		Penditor::PenditorCore::destroy();
 
 #if CHECK_MEMORY_LEAKS
 	}

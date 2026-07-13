@@ -12,6 +12,7 @@ using namespace Pengine::Resources;
 #pragma region Constructors and destructor
 PenMaterial::PenMaterial(const PenObjectId id) : PenResourcesBase(id)
 {
+    this->p_type = E_MATERIAL;
     this->m_albedo = PenMaterialProperty<PenMath::Vector3f>(nullptr, { 1, 1, 1 });
     this->m_metallic = PenMaterialProperty<float>(nullptr, 0);
     this->m_roughness = PenMaterialProperty<float>(nullptr, .6f);
@@ -34,10 +35,14 @@ bool PenMaterial::loadResource(const std::string path)
 {
     std::cout << __FUNCTION__ "\tLoading Material :" << path << std::endl;
 
+    std::ifstream infile(path, std::ios::binary);
+
+    int type = 0;
+    PenCore::Serializer()->read(infile, type);
+
     //Create variables 
     std::string shaderPath;
 
-    std::ifstream infile(path, std::ios::binary);
     PenCore::Serializer()->read(infile, shaderPath);
 
     std::string tempPath;
@@ -97,6 +102,7 @@ bool PenMaterial::createResource(const std::string penfilePath, std::shared_ptr<
     else
         this->m_albedo.texture = tex;
 
+    PenCore::Serializer()->write(outfile, (int)this->p_type);
     PenCore::Serializer()->write(outfile, this->m_shader->getResourcePath());
 
     this->m_albedo.serializeProperty(outfile);
@@ -115,8 +121,8 @@ void PenMaterial::quickSave()
 {
     std::ofstream outfile(this->m_penfilePath, std::ios::binary);
 
+    PenCore::Serializer()->write(outfile, (int)this->p_type);
     PenCore::Serializer()->write(outfile, this->m_shader->getResourcePath());
-
     this->m_albedo.serializeProperty(outfile);
     this->m_metallic.serializeProperty(outfile);
     this->m_roughness.serializeProperty(outfile);
@@ -245,7 +251,7 @@ void PenMaterial::activateAlbedo()
     }
     else
     {
-        PenTexture::defaultTexture()->dataPtr()->activate(0);
+        PenTexture::noTexture()->dataPtr()->activate(0);
     }
 
     this->m_shader->setUniform("mat.albedoMap", 0);
@@ -298,7 +304,7 @@ void PenMaterial::activateMetallic()
     }
     else
     {
-        PenTexture::defaultTexture()->dataPtr()->activate(1);
+        PenTexture::noTexture()->dataPtr()->activate(1);
     }
 
     this->m_shader->setUniform("mat.metallicMap", 1);
@@ -352,7 +358,7 @@ void PenMaterial::activateRoughness()
     }
     else
     {
-        PenTexture::defaultTexture()->dataPtr()->activate(2);
+        PenTexture::noTexture()->dataPtr()->activate(2);
     }
 
     this->m_shader->setUniform("mat.roughnessMap", 2);
@@ -405,7 +411,7 @@ void PenMaterial::activateAmbientOcclusion()
     }
     else
     {
-        PenTexture::defaultTexture()->dataPtr()->activate(3);
+        PenTexture::noTexture()->dataPtr()->activate(3);
     }
 
     this->m_shader->setUniform("mat.aoMap", 3);

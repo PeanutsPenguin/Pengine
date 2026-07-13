@@ -11,6 +11,11 @@
 
 using namespace Pengine::Resources;
 
+PenShader::PenShader(const PenObjectId& id) : PenResourcesBase(id)
+{
+	this->p_type = E_SHADER;
+}
+
 PenShader::~PenShader()
 {
 	std::cout << __FUNCTION__ "\tDestroying Shader : " << getId() << std::endl;
@@ -23,10 +28,13 @@ bool PenShader::loadResource(const std::string path)
 	std::cout << __FUNCTION__ "\tLoading Shader :" << path << std::endl;
 
 	//Create variables 
+	int type = 0;
 	std::string sourcePath;
 	int shaderType = 0;
 
+
 	std::ifstream infile(path, std::ios::binary);
+	PenCore::Serializer()->read(infile, type);
 	PenCore::Serializer()->read(infile, sourcePath);
 	PenCore::Serializer()->read(infile, shaderType);
 	infile.close();
@@ -48,6 +56,8 @@ bool Pengine::Resources::PenShader::createResource(const std::string PenfilePath
 
 	//Serialize source file
 	std::ofstream outfile(PenfilePath, std::ios::binary);
+	PenCore::Serializer()->write(outfile, (int)this->p_type);
+
 	PenCore::Serializer()->write(outfile, (std::string)sourcePath);
 
 	//Serialize shader type

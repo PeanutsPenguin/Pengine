@@ -157,6 +157,7 @@ void PenCore::destroy()
 
     if (m_resourcesManager)
     {
+        m_resourcesManager->destroy();
         m_resourcesManager.reset();
         m_resourcesManager = nullptr;
     }

@@ -1,6 +1,7 @@
 #pragma once 
 
 #include "PenDefine/PengineDefine.h"		//PengineDefine
+#include "PenStructsAndEnum/PenResourcesType.h"
 
 #include <filesystem>
 
@@ -23,6 +24,7 @@ namespace Pengine::Resources
 
 	protected:
 		std::string m_penfilePath = "path";
+		PenResourceType p_type = E_MATERIAL;
 
 	private:
 		PenResourcesId m_id = 0;

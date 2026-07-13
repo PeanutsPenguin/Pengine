@@ -11,6 +11,11 @@
 
 using namespace Pengine::Resources;
 
+PenShaderProgram::PenShaderProgram(const PenObjectId& id) : PenResourcesBase(id) 
+{
+	this->p_type = E_SHADER_PROGRAM;
+}
+
 std::shared_ptr<PenShaderProgram> PenShaderProgram::defaultShaderProgram()
 {
 	if (PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
@@ -29,10 +34,12 @@ PenShaderProgram::~PenShaderProgram()
 bool Pengine::Resources::PenShaderProgram::loadResource(const std::string path)
 {
 	//Create variables 
+	int type = 0;
 	std::string vert;
 	std::string frag;
 
 	std::ifstream infile(path, std::ios::binary);
+	PenCore::Serializer()->read(infile, type);
 	PenCore::Serializer()->read(infile, vert);
 	PenCore::Serializer()->read(infile, frag);
 
@@ -74,6 +81,7 @@ bool PenShaderProgram::createResource(const std::string PenfilePath, std::shared
 		return false;
 	}
 
+	PenCore::Serializer()->write(outfile, (int)this->p_type);
 	PenCore::Serializer()->write(outfile, vertexShader->getResourcePath());
 	PenCore::Serializer()->write(outfile, fragmentShader->getResourcePath());
 

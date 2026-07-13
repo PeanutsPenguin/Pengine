@@ -9,7 +9,7 @@ namespace Pengine::Resources
 	{
 	public:
 		PenShader() = default;
-		PenShader(const PenObjectId& id) : PenResourcesBase(id) {};
+		PenShader(const PenObjectId& id);
 		PenShader(const PenShader& other) = default;
 		PenShader(PenShader&& other) = default;
 		~PenShader() override;

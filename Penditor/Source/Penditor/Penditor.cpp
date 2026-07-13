@@ -46,9 +46,10 @@ void PenditorCore::runEditor()
 		render();
 
 		Pengine::PenCore::switchFrame();
+
+
 	}
 
-	Pengine::PenCore::destroy();
 	destroy();
 }
 
@@ -119,6 +120,8 @@ void PenditorCore::destroy()
 		m_PenFileExplorerWindow.reset();
 		m_PenFileExplorerWindow = nullptr;
 	}
+
+	Pengine::PenCore::destroy();
 }
 
 std::unique_ptr<Window::PenGameWindow>& PenditorCore::GameWindow()

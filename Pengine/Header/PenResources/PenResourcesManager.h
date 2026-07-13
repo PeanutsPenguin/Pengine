@@ -45,6 +45,8 @@ namespace Pengine::Resources
 		/// Call this at the end of every frame to clear unused resoruces
 		/// </summary>
 		void clearUnused();
+
+		void destroy();
 	
 	private:
 		std::unordered_map<PenResourcesId, std::string>							m_idToPathfile;
