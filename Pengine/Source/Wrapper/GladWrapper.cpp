@@ -135,6 +135,9 @@ namespace Pengine::GladWrapper
 		case 1:
 			type = GL_RED;
 			break;
+		case 2:
+			type = GL_RG;
+			break;
 		case 3:
 			type = GL_RGB;
 			break;
@@ -145,6 +148,12 @@ namespace Pengine::GladWrapper
 			type = GL_INVALID_ENUM;
 		}
 
+		if (format < 4)
+		{
+			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		}
+
+
 		bindTextureBuffer(id);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -153,6 +162,11 @@ namespace Pengine::GladWrapper
 		glTexImage2D(GL_TEXTURE_2D, 0, type, size.x, size.y, 0, type, GL_UNSIGNED_BYTE, data);
 
 		bindTextureBuffer(0);
+
+		if (format < 4)
+		{
+			glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+		}
 	}
 
 	void fillRenderbuffer(int width, int height, unsigned int id)

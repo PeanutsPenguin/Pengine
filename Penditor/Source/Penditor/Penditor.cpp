@@ -35,6 +35,7 @@ void PenditorCore::init()
 	Pengine::PenCore::MainPenWindow()->setWindowSize(Pengine::PenCore::MainPenWindow()->getWindowSize());
 	m_PenGameWindow->init();
 	m_pickingHandler->init();
+	m_PenFileExplorerWindow->init();
 }
 
 void PenditorCore::runEditor()

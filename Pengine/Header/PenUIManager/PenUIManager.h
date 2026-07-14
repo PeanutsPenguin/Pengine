@@ -35,14 +35,16 @@ namespace Pengine::ui
 		PenMath::Vector2	getUICursorPos();
 		float				getFrameHeight();
 
-		void				setUICursorPos(const PenMath::Vector2f& pos);
+		void				setUICursorPos(const PenMath::Vector2& pos);
 		void				setUICursorPosX(float x);
 		void				setUICursorPosY(float y);
 		void				setNextItemWidth(float width);
 		
+		void				addImageToDrawList(unsigned int id, const PenMath::Vector2& topLeft, const PenMath::Vector2& bottomRight);
 
 		bool				isWindowHovered();
 		bool				isItemClicked();
+
 		void				removeInputFocus();
 		void				popTree();
 		
@@ -50,10 +52,10 @@ namespace Pengine::ui
 		void				renderImage(int textureID, const PenMath::Vector2& size);
 		void				renderBool(bool* value, const char* name);
 		void				renderText(const char* value);
-		bool				renderCollapsingHeader(const char* name);
 
 		bool				renderVector3(PenMath::Vector3& vec, const char* name);		//Vec3 int
 		bool				renderVector3(PenMath::Vector3f& vec, const char* name);	//Vec3 float
 		bool				renderTreeNode(const char* name, PenTreeNodeFlags flags);
+		bool				renderCollapsingHeader(const char* name);
 	};
 }

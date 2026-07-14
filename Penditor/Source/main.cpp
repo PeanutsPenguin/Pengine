@@ -48,6 +48,8 @@ int main()
 		//PenResorucesManager
 		std::unique_ptr<Pengine::Resources::PenResourcesManager>& resourceManager = Pengine::PenCore::ResourcesManager();
 
+
+
 		#pragma region Create Material
 		std::shared_ptr<Pengine::Resources::PenShaderProgram> progPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenShaderProgram>("Shaders/PBR/ShaderProgPBR.penfile");
 		#pragma endregion

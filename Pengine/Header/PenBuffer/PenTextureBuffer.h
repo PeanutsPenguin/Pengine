@@ -29,6 +29,8 @@ namespace Pengine::Buffer
 
 		void create(const PenMath::Vector2& size, const void* data, int format);
 
+		unsigned int getTextID() const;
+
 	private:
 		unsigned int m_id;
 	};

@@ -31,7 +31,7 @@ namespace Pengine::ui::ImGuiWrapper
 	PenMath::Vector2	getCursorPos();
 	float				getFrameHeight();
 
-	void				setCursorPos(const PenMath::Vector2f& pos);
+	void				setCursorPos(const PenMath::Vector2& pos);
 	void				setCursorPosX(float x);
 	void				setCursorPosY(float y);
 	void				setNextItemWidth(float width);
@@ -42,6 +42,8 @@ namespace Pengine::ui::ImGuiWrapper
 	void pushStyleColor(const PenColor& col);
 	void popStyleColor();
 	void popTree();
+
+	void addImageToDrawList(unsigned int id, const PenMath::Vector2& topLeft, const PenMath::Vector2& bottomRight);
 
 	void	renderOnSameLine(float spacing = 0);
 	void	renderImage(int textureID, const PenMath::Vector2& size);

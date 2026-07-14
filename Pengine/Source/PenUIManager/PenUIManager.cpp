@@ -47,7 +47,7 @@ float PenUIManager::getFrameHeight()
 	return ImGuiWrapper::getFrameHeight();
 }
 
-void PenUIManager::setUICursorPos(const PenMath::Vector2f& pos)
+void PenUIManager::setUICursorPos(const PenMath::Vector2& pos)
 {
 	ImGuiWrapper::setCursorPos(pos);
 }
@@ -66,6 +66,12 @@ void PenUIManager::setNextItemWidth(float width)
 {
 	ImGuiWrapper::setNextItemWidth(width);
 }
+
+void PenUIManager::addImageToDrawList(unsigned int id, const PenMath::Vector2& topLeft, const PenMath::Vector2& bottomRight)
+{
+	ImGuiWrapper::addImageToDrawList(id, topLeft, bottomRight);
+}
+
 
 void PenUIManager::renderOnSameLine(float spacing)
 {

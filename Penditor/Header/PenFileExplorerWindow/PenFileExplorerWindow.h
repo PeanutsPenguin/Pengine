@@ -19,6 +19,8 @@ namespace Penditor::Window
 		PenFileExplorerWindow& operator=(const PenFileExplorerWindow& rhs) = default;
 		PenFileExplorerWindow& operator=(PenFileExplorerWindow&& rhs) = default;
 
+		void init();
+
 		void renderCalls() final;
 
 	private:
@@ -27,6 +29,8 @@ namespace Penditor::Window
 		void initCachedFile();
 
 		void renderNode(const PenFileData& node);
+
+		void setRightLogo(PenFileData& node, const std::filesystem::path& currenPath);
 
 		PenFileData m_cachedFiles;
 		std::filesystem::path m_selectedPath;
