@@ -39,7 +39,7 @@ namespace Penditor::Window
 
 		if (opened)
 		{
-			this->renderNode(this->m_cachedFiles);
+			this->renderChildsNode(this->m_cachedFiles);
 			manager->popTree();
 		}
 	}
@@ -83,7 +83,7 @@ namespace Penditor::Window
 		this->m_cachedFiles = root;
 	}
 
-	void PenFileExplorerWindow::renderNode(const PenFileData& node)
+	void PenFileExplorerWindow::renderChildsNode(const PenFileData& node)
 	{
 		std::unique_ptr<Pengine::ui::PenUIManager>& manager = Pengine::PenCore::UIManager();
 		bool opened = false;
@@ -97,48 +97,82 @@ namespace Penditor::Window
 
 			if (child.isDirectory)
 			{
-				std::string name = "##" + child.pathFile;
-				opened = manager->renderTreeNode(name.c_str(), (Pengine::ui::PenTreeNodeFlags)flags);
-
-				if (manager->isItemClicked()) 
-					this->m_selectedPath = child.pathFile;
-
-				manager->renderOnSameLine();
-
-				if (child.icon != nullptr)
-				{
-					PenMath::Vector2 curCursorPos = manager->getUICursorPos();
-					manager->setUICursorPosY(curCursorPos.y - 2.0f);
-					manager->setUICursorPosX(curCursorPos.x - 10);
-					manager->renderImage(child.icon->dataPtr()->getTextID(), { 16, 16 });
-					manager->renderOnSameLine();
-				}
-
-				PenMath::Vector2 curCursorPos = manager->getUICursorPos();
-				manager->setUICursorPosX(curCursorPos.x - 8.0f);
-				manager->renderText(child.fileName.c_str());
-
-				if (opened)
-				{
-					renderNode(child);
-					manager->popTree();
-				}
+				this->renderDirectory(child);
 			}
 			else 
 			{
-				flags |= (Pengine::ui::PenTreeNodeFlags::E_LEAF | Pengine::ui::PenTreeNodeFlags::E_NO_TREE_PUSH);
-				std::string name = "##" + child.pathFile;
-				opened = manager->renderTreeNode(name.c_str(), (Pengine::ui::PenTreeNodeFlags)flags);
-
-				if (manager->isItemClicked())
-					this->m_selectedPath = child.pathFile;
-
-				manager->renderOnSameLine();
-				manager->renderImage(child.icon->dataPtr()->getTextID(), { 16, 16 });
-				manager->renderOnSameLine();
-				manager->renderText(child.fileName.c_str());
+				this->renderFile(child);
 			}
 		}
+	}
+
+	void PenFileExplorerWindow::renderDirectory(const PenFileData& node)
+	{
+		std::unique_ptr<Pengine::ui::PenUIManager>& manager = Pengine::PenCore::UIManager();
+
+		int flags = Pengine::ui::PenTreeNodeFlags::E_OPEN_ON_ARROW | Pengine::ui::PenTreeNodeFlags::E_SPAN_FULL_WIDTH;
+
+		if (m_selectedPath == node.pathFile)
+			flags |= Pengine::ui::PenTreeNodeFlags::E_SELECTED;
+
+		std::string name = "##" + node.pathFile;
+		bool opened = manager->renderTreeNode(name.c_str(), (Pengine::ui::PenTreeNodeFlags)flags);
+
+		if (manager->isItemClicked())
+			this->m_selectedPath = node.pathFile;
+
+		manager->renderOnSameLine();
+
+		if (node.icon != nullptr)
+		{
+			PenMath::Vector2 curCursorPos = manager->getUICursorPos();
+			manager->setUICursorPosY(curCursorPos.y - 4.0f);
+			manager->setUICursorPosX(curCursorPos.x - 10);
+			manager->renderImage(node.icon->dataPtr()->getTextID(), { 20, 20 });
+			manager->renderOnSameLine();
+		}
+
+		PenMath::Vector2 curCursorPos = manager->getUICursorPos();
+		manager->setUICursorPosX(curCursorPos.x - 6.0f);
+		manager->renderText(node.fileName.c_str());
+
+		if (opened)
+		{
+			renderChildsNode(node);
+			manager->popTree();
+		}
+	}
+
+	void PenFileExplorerWindow::renderFile(const PenFileData& node)
+	{
+		std::unique_ptr<Pengine::ui::PenUIManager>& manager = Pengine::PenCore::UIManager();
+
+		int flags = Pengine::ui::PenTreeNodeFlags::E_OPEN_ON_ARROW | Pengine::ui::PenTreeNodeFlags::E_SPAN_FULL_WIDTH 
+				  | Pengine::ui::PenTreeNodeFlags::E_LEAF | Pengine::ui::PenTreeNodeFlags::E_NO_TREE_PUSH;
+
+		if (m_selectedPath == node.pathFile)
+			flags |= Pengine::ui::PenTreeNodeFlags::E_SELECTED;
+
+		std::string name = "##" + node.pathFile;
+		manager->renderTreeNode(name.c_str(), (Pengine::ui::PenTreeNodeFlags)flags);
+
+		if (manager->isItemClicked())
+			this->m_selectedPath = node.pathFile;
+
+		manager->renderOnSameLine();
+
+		if (node.icon != nullptr)
+		{
+			PenMath::Vector2 curCursorPos = manager->getUICursorPos();
+			manager->setUICursorPosY(curCursorPos.y - 4.0f);
+			manager->setUICursorPosX(curCursorPos.x - 10);
+			manager->renderImage(node.icon->dataPtr()->getTextID(), { 20, 20 });
+			manager->renderOnSameLine();
+		}
+
+		PenMath::Vector2 curCursorPos = manager->getUICursorPos();
+		manager->setUICursorPosX(curCursorPos.x - 6.0f);
+		manager->renderText(node.fileName.c_str());
 	}
 
 	void PenFileExplorerWindow::setRightLogo(PenFileData& node, const std::filesystem::path& currentPath)
@@ -153,28 +187,23 @@ namespace Penditor::Window
 		switch (type)
 		{
 		case Pengine::Resources::E_MATERIAL:
-			node.icon = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenTexture>("Textures/FolderIcon.penfile");
-			break;
-		case Pengine::Resources::E_MESH:
-			node.icon = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenTexture>("Textures/FolderIcon.penfile");
+			node.icon = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenTexture>("Textures/Icons/MaterialIcon.penfile");
 			break;
 		case Pengine::Resources::E_MODEL:
-			node.icon = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenTexture>("Textures/FolderIcon.penfile");
+			node.icon = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenTexture>("Textures/Icons/ModelIcon.penfile");
 			break;
 		case Pengine::Resources::E_SHADER:
-			node.icon = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenTexture>("Textures/FolderIcon.penfile");
+			node.icon = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenTexture>("Textures/Icons/ShaderIcon.penfile");
 			break;
 		case Pengine::Resources::E_SHADER_PROGRAM:
-			node.icon = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenTexture>("Textures/FolderIcon.penfile");
+			node.icon = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenTexture>("Textures/Icons/ShaderProgramIcon.penfile");
 			break;
 		case Pengine::Resources::E_TEXTURE:
-			node.icon = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenTexture>("Textures/FolderIcon.penfile");
+			node.icon = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenTexture>("Textures/Icons/TextureIcon.penfile");
 			break;
 		default:
 			node.icon = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenTexture>("Textures/FolderIcon.penfile");
 			break;
 		}
-
-		node.icon = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenTexture>("Textures/FolderIcon.penfile");
 	}
 }

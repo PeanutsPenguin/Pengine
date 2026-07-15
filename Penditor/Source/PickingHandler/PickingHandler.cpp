@@ -28,8 +28,6 @@ namespace Penditor
 
 	void PickingHandler::init()
 	{
-
-
 		this->m_pickingShader = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenShaderProgram>("Shaders/Picking/PickingProg.penfile");
 	}
 

@@ -6,8 +6,7 @@ namespace Pengine::Resources
 	enum PenResourceType : int
 	{
 		E_MATERIAL = 0, 
-		E_MESH,
-		E_MODEL, 
+		E_MODEL = 2, 
 		E_SHADER, 
 		E_SHADER_PROGRAM, 
 		E_TEXTURE

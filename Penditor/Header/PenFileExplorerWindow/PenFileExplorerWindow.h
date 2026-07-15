@@ -28,9 +28,13 @@ namespace Penditor::Window
 
 		void initCachedFile();
 
-		void renderNode(const PenFileData& node);
+		void renderChildsNode(const PenFileData& node);
 
 		void setRightLogo(PenFileData& node, const std::filesystem::path& currenPath);
+
+		void renderDirectory(const PenFileData& node);
+
+		void renderFile(const PenFileData& node);
 
 		PenFileData m_cachedFiles;
 		std::filesystem::path m_selectedPath;

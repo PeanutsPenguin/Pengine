@@ -48,7 +48,7 @@ int main()
 		//PenResorucesManager
 		std::unique_ptr<Pengine::Resources::PenResourcesManager>& resourceManager = Pengine::PenCore::ResourcesManager();
 
-
+		//resourceManager->createResourceFromFile<Pengine::Resources::PenTexture>("MaterialIcon.png", "Textures/Icons/");
 
 		#pragma region Create Material
 		std::shared_ptr<Pengine::Resources::PenShaderProgram> progPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenShaderProgram>("Shaders/PBR/ShaderProgPBR.penfile");
