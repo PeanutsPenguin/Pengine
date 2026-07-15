@@ -44,6 +44,11 @@ namespace Penditor::Window
 		}
 	}
 
+	const char* PenFileExplorerWindow::getSelectedResourcesPath()
+	{
+		return this->m_selectedPath.string().c_str();
+	}
+
 	void PenFileExplorerWindow::loadDirectory(PenFileData& node, const std::filesystem::path currentPath)
 	{
 		for (auto& directoryEntry : std::filesystem::directory_iterator(currentPath))
@@ -183,25 +188,27 @@ namespace Penditor::Window
 		Pengine::PenCore::Serializer()->read(infile, value);
 
 		Pengine::Resources::PenResourceType type = (Pengine::Resources::PenResourceType)value;
+		node.type = type;
 
 		switch (type)
 		{
-		case Pengine::Resources::E_MATERIAL:
+		case Pengine::Resources::PenResourceType::E_MATERIAL:
 			node.icon = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenTexture>("Textures/Icons/MaterialIcon.penfile");
 			break;
-		case Pengine::Resources::E_MODEL:
+		case Pengine::Resources::PenResourceType::E_MODEL:
 			node.icon = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenTexture>("Textures/Icons/ModelIcon.penfile");
 			break;
-		case Pengine::Resources::E_SHADER:
+		case Pengine::Resources::PenResourceType::E_SHADER:
 			node.icon = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenTexture>("Textures/Icons/ShaderIcon.penfile");
 			break;
-		case Pengine::Resources::E_SHADER_PROGRAM:
+		case Pengine::Resources::PenResourceType::E_SHADER_PROGRAM:
 			node.icon = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenTexture>("Textures/Icons/ShaderProgramIcon.penfile");
 			break;
-		case Pengine::Resources::E_TEXTURE:
+		case Pengine::Resources::PenResourceType::E_TEXTURE:
 			node.icon = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenTexture>("Textures/Icons/TextureIcon.penfile");
 			break;
 		default:
+			node.type = Pengine::Resources::PenResourceType::E_NONE;
 			node.icon = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenTexture>("Textures/FolderIcon.penfile");
 			break;
 		}

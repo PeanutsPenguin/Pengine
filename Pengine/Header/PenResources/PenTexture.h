@@ -9,7 +9,7 @@ namespace Pengine::Buffer
 
 namespace Pengine::Resources
 {
-	class PenTexture : public PenResourcesBase
+	class PenTexture : public PenResourceBase
 	{
 	public:
 		PenTexture();

@@ -2,6 +2,7 @@
 
 #include "Penditor/Penditor.h"
 #include "PenGameWindow/PenGameWindow.h"
+#include "PenPropertyWindow/PenPropertyWindow.h"
 #include "PenFreeCam/PenFreeCam.h"
 
 #include "PenComponents/PenCamera/PenCamera.h"
@@ -36,18 +37,8 @@ namespace Penditor
 		if (!renderer)
 			return;
 
-		if (this->m_selectedObjectChanged)
-			this->m_selectedObjectChanged = false;
-
 		if(Pengine::PenCore::InputManager()->isKeyPressed(Pengine::PenInput::key_MOUSE_LEFT) && Pengine::PenCore::UIManager()->isWindowHovered())
-		{
 			this->updateSelectedObject(Pengine::PenCore::InputManager()->getMousePosition(), renderer);
-		}
-	}
-
-	bool PickingHandler::hasSelectedObjectChanged()
-	{
-		return this->m_selectedObjectChanged;
 	}
 
 	void PickingHandler::updateSelectedObject(const PenMath::Vector2& mousPos, std::shared_ptr<Pengine::System::PenRendererSystem> renderer)
@@ -65,10 +56,11 @@ namespace Penditor
 		
 		if (newObj == this->m_selectedObject)
 			return;
-
-		this->m_selectedObject = newObj;
-
-		this->m_selectedObjectChanged = true;
+		else 
+		{
+			this->m_selectedObject = newObj;
+			Penditor::PenditorCore::PropertyWindow()->changeRenderType(Penditor::PropertiesRenderingType::E_PENOBJECT);
+		}
 	}
 
 	void PickingHandler::renderPicking(std::shared_ptr<Pengine::System::PenRendererSystem> renderer)

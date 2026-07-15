@@ -4,6 +4,8 @@
 #include <vector>
 #include <string>
 
+#include "PenStructsAndEnum/PenResourcesType.h"
+
 namespace Pengine::Resources
 {
 	class PenTexture;
@@ -17,6 +19,7 @@ namespace Penditor
 		std::shared_ptr<Pengine::Resources::PenTexture> icon;
 		std::string pathFile;
 		std::string fileName;
+		Pengine::Resources::PenResourceType type = Pengine::Resources::PenResourceType::E_NONE;
 		bool isDirectory = false;
 	};
 }

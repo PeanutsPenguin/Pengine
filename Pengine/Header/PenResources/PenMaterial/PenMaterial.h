@@ -17,7 +17,7 @@ namespace Pengine::Resources
 	class PenTexture;
 	class PenShaderProgram;
 
-	class PenMaterial final: public PenResourcesBase
+	class PenMaterial final: public PenResourceBase
 	{
 	public:
 		PenMaterial() = default;

@@ -23,20 +23,20 @@ namespace Pengine::Resources
 		PenResourcesManager& operator=(PenResourcesManager&& rhs) = default;
 
 		template<typename _ResourceType, typename... Args>
-			requires std::derived_from<_ResourceType, PenResourcesBase>
+			requires std::derived_from<_ResourceType, PenResourceBase>
 		_NODISCARD std::shared_ptr<_ResourceType> createResourceFromFile(const char* sourcePath, const char* destinationPath, Args... data);
 
 		template<typename _ResourceType, typename... Args>
-			requires std::derived_from<_ResourceType, PenResourcesBase>
+			requires std::derived_from<_ResourceType, PenResourceBase>
 		_NODISCARD std::shared_ptr<_ResourceType> createResource(const char* filename, const char* destinationPath, Args... data);
 
 		template<typename _ResourceType, typename... Args>
-			requires std::derived_from<_ResourceType, PenResourcesBase>
+			requires std::derived_from<_ResourceType, PenResourceBase>
 		_NODISCARD std::shared_ptr<_ResourceType> loadResourceFromFile(const char* path, Args... data);
 
 		/// Function to load a resource from file and stock it as persistent, so it won't be cleared by the clearUnused function
 		template<typename _ResourceType, typename... Args>
-			requires std::derived_from<_ResourceType, PenResourcesBase>
+			requires std::derived_from<_ResourceType, PenResourceBase>
 		_NODISCARD std::shared_ptr<_ResourceType> loadResourceFromFile(const char* path, bool persistent, Args... data);
 
 		_NODISCARD const char* getResourcePathById(const PenResourcesId id) const;
@@ -51,8 +51,8 @@ namespace Pengine::Resources
 	private:
 		std::unordered_map<PenResourcesId, std::string>							m_idToPathfile;
 		std::unordered_map<std::string, PenResourcesId>							m_pathfileToId;
-		std::unordered_map<PenResourcesId, std::weak_ptr<PenResourcesBase>>		m_resourceStocker;
-		std::unordered_map<PenResourcesId, std::shared_ptr<PenResourcesBase>>	m_persistentResourcestocker;
+		std::unordered_map<PenResourcesId, std::weak_ptr<PenResourceBase>>		m_resourceStocker;
+		std::unordered_map<PenResourcesId, std::shared_ptr<PenResourceBase>>	m_persistentResourcestocker;
 
 		PenResourcesId m_currentId;
 	};

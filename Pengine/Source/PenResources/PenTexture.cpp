@@ -34,7 +34,7 @@ PenTexture::PenTexture()
 	this->m_texBuffer = std::make_unique<Pengine::Buffer::PenTextureBuffer>();
 }
 
-PenTexture::PenTexture(const PenObjectId& id) : PenResourcesBase(id)
+PenTexture::PenTexture(const PenObjectId& id) : PenResourceBase(id)
 {
 	this->p_type = E_TEXTURE;
 	this->m_texBuffer = std::make_unique<Pengine::Buffer::PenTextureBuffer>();

@@ -48,14 +48,11 @@ int main()
 		//PenResorucesManager
 		std::unique_ptr<Pengine::Resources::PenResourcesManager>& resourceManager = Pengine::PenCore::ResourcesManager();
 
-		//resourceManager->createResourceFromFile<Pengine::Resources::PenTexture>("MaterialIcon.png", "Textures/Icons/");
-
 		#pragma region Create Material
 		std::shared_ptr<Pengine::Resources::PenShaderProgram> progPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenShaderProgram>("Shaders/PBR/ShaderProgPBR.penfile");
 		#pragma endregion
 		   
 		#pragma region Create First Object
-
 		std::shared_ptr<Pengine::Resources::PenMaterial> basketMat = resourceManager->loadResourceFromFile<Pengine::Resources::PenMaterial>("Material/BackpackMat.penfile");
 
 		Pengine::PenObjectId newObj = Pengine::PenCore::PenOctopus()->createPenObject();

@@ -3,6 +3,9 @@
 #include "PenVirtualWindow/PenVirtualWindow.h"
 #include "Vector/Vector3/Vector3.h"
 
+#include "PenditorStructAndEnum/PenPropertiesObjectType.h"
+#include "PenditorStructAndEnum/PenFileData.h"
+
 namespace Pengine
 {
 	class IPenProperty;
@@ -15,6 +18,11 @@ namespace Pengine
 	namespace ui
 	{
 		class PenUIManager;
+	}
+
+	namespace Resources
+	{
+		class PenResourceBase;
 	}
 }
 
@@ -35,14 +43,23 @@ namespace Penditor::Window
 
 		void renderCalls() final;
 
+		void changeRenderType(PropertiesRenderingType type);
+
 	private:
+		void	renderSelectedObject();
+		
+		void	changeRenderTypeToObject();
+		void	changeRenderTypeToResource();
+
 		void	renderProperty			(Pengine::IPenProperty* prop, Pengine::ui::PenUIManager* manager);
 		void	renderComponentProp		(Pengine::IPenProperty* prop, Pengine::ui::PenUIManager* manager);
 		void	renderVector3Prop		(Pengine::IPenProperty* prop, Pengine::ui::PenUIManager* manager);
 		void	renderQuaternionProp	(Pengine::IPenProperty* prop, Pengine::ui::PenUIManager* manager);
 
-		bool									m_headerOpen		= true;
-		Pengine::Components::PenComponentBase*	m_currentComponent	= nullptr;
-		PenMath::Vector3f						m_objectEuler		= PenMath::Vector3f::Zero();
+		PenMath::Vector3f										m_objectEuler		= PenMath::Vector3f::Zero();
+		PropertiesRenderingType									m_renderingType		= PropertiesRenderingType::E_NONE;
+		Pengine::Components::PenComponentBase*					m_currentComponent	= nullptr;
+		std::shared_ptr<Pengine::Resources::PenResourceBase>	m_currentResource	= nullptr;
+		bool													m_headerOpen		= true;
 	};
 }

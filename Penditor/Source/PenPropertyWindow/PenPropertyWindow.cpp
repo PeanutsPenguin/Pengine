@@ -11,6 +11,7 @@
 
 #include "PickingHandler/PickingHandler.h"
 #include "Penditor/Penditor.h"
+#include "PenFileExplorerWindow/PenFileExplorerWindow.h"
 
 namespace Penditor::Window
 {
@@ -28,21 +29,60 @@ namespace Penditor::Window
 
 	void PenPropertyWindow::renderCalls()
 	{
+		switch (this->m_renderingType)
+		{
+		case E_PENOBJECT:
+			this->renderSelectedObject();
+			break;
+		case E_PENRESOURCES:
+			break;
+		case E_NONE:
+		default:
+			break;
+		}
+	}
+
+	void PenPropertyWindow::changeRenderType(PropertiesRenderingType type)
+	{
+		switch (type)
+		{
+		case Penditor::E_NONE:
+			this->m_renderingType = PropertiesRenderingType::E_NONE;
+			break;
+		case Penditor::E_PENOBJECT:
+			this->changeRenderTypeToObject();
+			break;
+		case Penditor::E_PENRESOURCES:
+			this->changeRenderTypeToResource();
+			break;
+		default:
+			break;
+		}
+	}
+
+	void PenPropertyWindow::changeRenderTypeToObject()
+	{
+		this->m_renderingType = PropertiesRenderingType::E_PENOBJECT;
+		const Pengine::PenObjectId selectedObject = PenditorCore::PickingHandler()->getSelectedObject();
+
+		m_objectEuler = Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenTransform>(selectedObject).getGlobalTransform().rotation.getRotationEuler();
+		Pengine::PenCore::UIManager()->removeInputFocus();
+	}
+
+	void PenPropertyWindow::changeRenderTypeToResource()
+	{
+		const char* resourcePath = Penditor::PenditorCore::FileExplorerWindow()->getSelectedResourcesPath();
+	}
+
+	void PenPropertyWindow::renderSelectedObject()
+	{
 		const Pengine::PenObjectId selectedObject = PenditorCore::PickingHandler()->getSelectedObject();
 
 		if (selectedObject == Pengine::g_PenObjectInvalidId)
 			return;
 
-		Pengine::ui::PenUIManager* manager = Pengine::PenCore::UIManager().get();
-
-		if(PenditorCore::PickingHandler()->hasSelectedObjectChanged())
-		{
-			m_objectEuler = Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenTransform>(selectedObject).getGlobalTransform().rotation.getRotationEuler();
-			manager->removeInputFocus();
-		}
-
-		std::vector<Pengine::IPenProperty*> prop = Pengine::PenCore::PenOctopus()->PropertyManager()->getProperties(selectedObject);
-
+		Pengine::ui::PenUIManager*			manager = Pengine::PenCore::UIManager().get();
+		std::vector<Pengine::IPenProperty*> prop	= Pengine::PenCore::PenOctopus()->PropertyManager()->getProperties(selectedObject);
 
 		for (int i = 0; i < prop.size(); ++i)
 			this->renderProperty(prop[i], manager);

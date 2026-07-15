@@ -12,7 +12,7 @@ namespace Pengine::Resources
 {
 	class PenShader;
 
-	class PenShaderProgram : public PenResourcesBase
+	class PenShaderProgram : public PenResourceBase
 	{
 	public:
 		PenShaderProgram() = default;

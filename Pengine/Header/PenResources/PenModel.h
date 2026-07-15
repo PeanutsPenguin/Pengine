@@ -11,7 +11,7 @@ namespace Pengine::Resources
 {
 	class PenMesh;
 
-	class PenModel final : public PenResourcesBase
+	class PenModel final : public PenResourceBase
 	{
 	public:
 		PenModel() = default;

@@ -10,7 +10,7 @@
 using namespace Pengine::Resources;
 
 #pragma region Constructors and destructor
-PenMaterial::PenMaterial(const PenObjectId id) : PenResourcesBase(id)
+PenMaterial::PenMaterial(const PenObjectId id) : PenResourceBase(id)
 {
     this->p_type = E_MATERIAL;
     this->m_albedo = PenMaterialProperty<PenMath::Vector3f>(nullptr, { 1, 1, 1 });

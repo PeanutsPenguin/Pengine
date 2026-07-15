@@ -9,6 +9,7 @@ namespace Pengine::Resources
 		E_MODEL = 2, 
 		E_SHADER, 
 		E_SHADER_PROGRAM, 
-		E_TEXTURE
+		E_TEXTURE, 
+		E_NONE
 	};
 }
