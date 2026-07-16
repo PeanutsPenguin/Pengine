@@ -10,6 +10,9 @@
 #include "PenStructsAndEnum/PenTreeNodeFlags.h"
 #include "PenStructsAndEnum/PenResourcesType.h"
 
+#include "Penditor/Penditor.h"
+#include "PenPropertyWindow/PenPropertyWindow.h"
+
 
 #include <fstream>
 
@@ -42,11 +45,6 @@ namespace Penditor::Window
 			this->renderChildsNode(this->m_cachedFiles);
 			manager->popTree();
 		}
-	}
-
-	const char* PenFileExplorerWindow::getSelectedResourcesPath()
-	{
-		return this->m_selectedPath.string().c_str();
 	}
 
 	void PenFileExplorerWindow::loadDirectory(PenFileData& node, const std::filesystem::path currentPath)
@@ -124,7 +122,10 @@ namespace Penditor::Window
 		bool opened = manager->renderTreeNode(name.c_str(), (Pengine::ui::PenTreeNodeFlags)flags);
 
 		if (manager->isItemClicked())
+		{
 			this->m_selectedPath = node.pathFile;
+			PenditorCore::PropertyWindow()->changeRenderTypeToResource(node);
+		}
 
 		manager->renderOnSameLine();
 
@@ -162,7 +163,10 @@ namespace Penditor::Window
 		manager->renderTreeNode(name.c_str(), (Pengine::ui::PenTreeNodeFlags)flags);
 
 		if (manager->isItemClicked())
+		{
 			this->m_selectedPath = node.pathFile;
+			PenditorCore::PropertyWindow()->changeRenderTypeToResource(node);
+		}
 
 		manager->renderOnSameLine();
 

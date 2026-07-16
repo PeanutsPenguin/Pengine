@@ -59,7 +59,7 @@ namespace Penditor
 		else 
 		{
 			this->m_selectedObject = newObj;
-			Penditor::PenditorCore::PropertyWindow()->changeRenderType(Penditor::PropertiesRenderingType::E_PENOBJECT);
+			Penditor::PenditorCore::PropertyWindow()->changeRenderTypeToObject();
 		}
 	}
 

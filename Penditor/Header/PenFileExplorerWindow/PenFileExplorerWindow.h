@@ -23,8 +23,6 @@ namespace Penditor::Window
 
 		void renderCalls() final;
 
-		const char* getSelectedResourcesPath();
-
 	private:
 		void loadDirectory(PenFileData& node, const std::filesystem::path currenPath);
 

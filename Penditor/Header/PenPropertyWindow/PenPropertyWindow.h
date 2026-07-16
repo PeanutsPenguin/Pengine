@@ -43,14 +43,14 @@ namespace Penditor::Window
 
 		void renderCalls() final;
 
-		void changeRenderType(PropertiesRenderingType type);
+		void	changeRenderTypeToObject();
+		void	changeRenderTypeToResource(const PenFileData& data);
+		void	changeRenderTypeToNone();
 
 	private:
 		void	renderSelectedObject();
+		void	renderSelectedResource();
 		
-		void	changeRenderTypeToObject();
-		void	changeRenderTypeToResource();
-
 		void	renderProperty			(Pengine::IPenProperty* prop, Pengine::ui::PenUIManager* manager);
 		void	renderComponentProp		(Pengine::IPenProperty* prop, Pengine::ui::PenUIManager* manager);
 		void	renderVector3Prop		(Pengine::IPenProperty* prop, Pengine::ui::PenUIManager* manager);
@@ -60,6 +60,7 @@ namespace Penditor::Window
 		PropertiesRenderingType									m_renderingType		= PropertiesRenderingType::E_NONE;
 		Pengine::Components::PenComponentBase*					m_currentComponent	= nullptr;
 		std::shared_ptr<Pengine::Resources::PenResourceBase>	m_currentResource	= nullptr;
+		PenFileData												m_currentData;
 		bool													m_headerOpen		= true;
 	};
 }
