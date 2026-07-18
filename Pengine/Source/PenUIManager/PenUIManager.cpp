@@ -98,6 +98,21 @@ void PenUIManager::renderCenterText(const char* value)
 	ImGuiWrapper::renderCenterText(value);
 }
 
+void PenUIManager::fillDragAndDropData(DragAndDropData* data)
+{
+	ImGuiWrapper::fillDragAndDropData(data);
+}
+
+void PenUIManager::endDragAndDropSource()
+{
+	ImGuiWrapper::endDragAndDropSource();
+}
+
+void PenUIManager::endDragAndDropTarget()
+{
+	ImGuiWrapper::endDragAndDropTarget();
+}
+
 bool PenUIManager::renderCollapsingHeader(const char* name)
 {
 	return ImGuiWrapper::renderCollapsingHeader(name);
@@ -156,6 +171,16 @@ bool PenUIManager::renderTreeNode(const char* name, PenTreeNodeFlags flags)
 bool PenUIManager::renderSliderFloat(const char* label, float min, float max, float* value)
 {
 	return ImGuiWrapper::renderSliderFloat(label, min, max, value);
+}
+
+bool PenUIManager::beginDragAndDropSource()
+{
+	return ImGuiWrapper::beginDragAndDropSource();
+}
+
+bool PenUIManager::beginDragAndDropTarget()
+{
+	return ImGuiWrapper::beginDragAndDropTarget();
 }
 
 

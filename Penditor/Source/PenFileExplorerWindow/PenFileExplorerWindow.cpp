@@ -13,6 +13,8 @@
 #include "Penditor/Penditor.h"
 #include "PenPropertyWindow/PenPropertyWindow.h"
 
+#include "PenStructsAndEnum/PenDragAndDropData.h"
+
 
 #include <fstream>
 
@@ -162,6 +164,17 @@ namespace Penditor::Window
 
 		std::string name = "##" + node.pathFile;
 		manager->renderTreeNode(name.c_str(), (Pengine::ui::PenTreeNodeFlags)flags);
+
+		if (manager->beginDragAndDropSource()) 
+		{
+			Pengine::DragAndDropData dragData;
+			dragData.type = node.type;
+			strncpy(dragData.filePath, node.pathFile.c_str(), strlen(node.pathFile.c_str()) + 1);
+
+			manager->fillDragAndDropData(&dragData);
+			manager->renderText(node.fileName.c_str());
+			manager->endDragAndDropSource();
+		}
 
 		if (manager->isItemClicked())
 		{

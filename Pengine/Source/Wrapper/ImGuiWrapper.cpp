@@ -198,6 +198,42 @@ namespace Pengine::ui::ImGuiWrapper
 		ImGui::SetCursorPosX((windowWidth - textWidth) * 0.5f);
 		ImGui::Text(value);
 	}
+	
+	void fillDragAndDropData(Pengine::DragAndDropData* data)
+	{
+		const char* payload = "NONE";
+
+		switch(data->type)
+		{
+		case Resources::PenResourceType::E_MATERIAL:
+			payload = "MATERIAL";
+			break;
+		case Resources::PenResourceType::E_MODEL:
+			payload = "MODEL";
+			break;
+		case Resources::PenResourceType::E_SHADER:
+			payload = "SHADER";
+			break;
+		case Resources::PenResourceType::E_SHADER_PROGRAM:
+			payload = "SHADER_PROGRAM";
+			break;
+		case Resources::PenResourceType::E_TEXTURE:
+			payload = "TEXTURE";
+			break;
+		}
+
+		ImGui::SetDragDropPayload(payload, data, sizeof(DragAndDropData));
+	}
+
+	void endDragAndDropSource()
+	{
+		ImGui::EndDragDropSource();
+	}
+
+	void endDragAndDropTarget()
+	{
+		ImGui::EndDragDropTarget();
+	}
 
 	bool renderColorPicker(const char* label, PenColor& col)
 	{
@@ -247,6 +283,16 @@ namespace Pengine::ui::ImGuiWrapper
 	bool renderSliderFloat(const char* label, float min, float max, float* value)
 	{
 		return ImGui::SliderFloat(label, value, min, max);
+	}
+
+	bool beginDragAndDropSource()
+	{
+		return ImGui::BeginDragDropSource();
+	}
+
+	bool beginDragAndDropTarget()
+	{
+		return ImGui::BeginDragDropTarget();
 	}
 	#pragma endregion
 }

@@ -4,7 +4,9 @@
 #include "Vector/Vector3/Vector3.h"
 
 #include "PenColor/PenColor.h"
+
 #include "PenStructsAndEnum/PenTreeNodeFlags.h"
+#include "PenStructsAndEnum/PenDragAndDropData.h"
 
 namespace Pengine::Window
 {
@@ -50,6 +52,9 @@ namespace Pengine::ui::ImGuiWrapper
 	void	renderBool(bool* value, const char* name);
 	void	renderText(const char* value);
 	void	renderCenterText(const char* value);
+	void	fillDragAndDropData(Pengine::DragAndDropData* data);
+	void	endDragAndDropSource();
+	void	endDragAndDropTarget();
 
 
 	bool	renderVector3(PenMath::Vector3& vec, const char* name);		//Vec3 int
@@ -59,4 +64,6 @@ namespace Pengine::ui::ImGuiWrapper
 	bool	renderColorPicker(const char* label, PenColor& col);
 	bool	renderColorPickerVec3(const char* label, PenMath::Vector3f& col);
 	bool	renderSliderFloat(const char* label, float min, float max, float* value);
+	bool	beginDragAndDropSource();
+	bool	beginDragAndDropTarget();
 }
