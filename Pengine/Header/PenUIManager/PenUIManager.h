@@ -2,6 +2,7 @@
 
 #include "Vector/Vector2/Vector2.h"
 #include "Vector/Vector3/Vector3.h"
+#include "PenColor/PenColor.h"
 
 #include "PenStructsAndEnum/PenTreeNodeFlags.h"
 
@@ -52,10 +53,16 @@ namespace Pengine::ui
 		void				renderImage(int textureID, const PenMath::Vector2& size);
 		void				renderBool(bool* value, const char* name);
 		void				renderText(const char* value);
+		void				renderCenterText(const char* value);
+
 
 		bool				renderVector3(PenMath::Vector3& vec, const char* name);		//Vec3 int
 		bool				renderVector3(PenMath::Vector3f& vec, const char* name);	//Vec3 float
 		bool				renderTreeNode(const char* name, PenTreeNodeFlags flags);
 		bool				renderCollapsingHeader(const char* name);
+		bool				renderColorPicker(const char* label, PenColor& col);
+		bool				renderColorPicker3(const char* label, PenColor& col);
+		bool				renderColorPickerVec3(const char* label, PenMath::Vector3f& col);
+		bool				renderSliderFloat(const char* label, float min, float max, float* value);
 	};
 }

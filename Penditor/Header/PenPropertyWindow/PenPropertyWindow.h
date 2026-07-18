@@ -6,6 +6,9 @@
 #include "PenditorStructAndEnum/PenPropertiesObjectType.h"
 #include "PenditorStructAndEnum/PenFileData.h"
 
+#define ICON_SIZE 100
+#define HALF_ICON_SIZE 50
+
 namespace Pengine
 {
 	class IPenProperty;
@@ -50,6 +53,8 @@ namespace Penditor::Window
 	private:
 		void	renderSelectedObject();
 		void	renderSelectedResource();
+
+		void	renderMaterialResource();
 		
 		void	renderProperty			(Pengine::IPenProperty* prop, Pengine::ui::PenUIManager* manager);
 		void	renderComponentProp		(Pengine::IPenProperty* prop, Pengine::ui::PenUIManager* manager);

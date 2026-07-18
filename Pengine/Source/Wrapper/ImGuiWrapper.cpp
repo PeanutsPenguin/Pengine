@@ -190,6 +190,30 @@ namespace Pengine::ui::ImGuiWrapper
 		ImGui::Text(value);
 	}
 
+	void renderCenterText(const char* value)
+	{
+		float textWidth = ImGui::CalcTextSize(value).x;
+		float windowWidth = ImGui::GetContentRegionAvail().x;
+
+		ImGui::SetCursorPosX((windowWidth - textWidth) * 0.5f);
+		ImGui::Text(value);
+	}
+
+	bool renderColorPicker(const char* label, PenColor& col)
+	{
+		return ImGui::ColorEdit4(label, &col.x);
+	}
+
+	bool renderColorPicker3(const char* label, PenColor& col)
+	{
+		return ImGui::ColorEdit3(label, &col.x);
+	}
+
+	bool renderColorPickerVec3(const char* label, PenMath::Vector3f& col)
+	{
+		return ImGui::ColorEdit3(label, &col.x);
+	}
+
 	bool renderCollapsingHeader(const char* name)
 	{
 		return ImGui::CollapsingHeader(name, ImGuiTreeNodeFlags_DefaultOpen);
@@ -218,6 +242,11 @@ namespace Pengine::ui::ImGuiWrapper
 	bool renderTreeNode(const char* name, PenTreeNodeFlags flags)
 	{
 		return ImGui::TreeNodeEx(name, flags);
+	}
+
+	bool renderSliderFloat(const char* label, float min, float max, float* value)
+	{
+		return ImGui::SliderFloat(label, value, min, max);
 	}
 	#pragma endregion
 }

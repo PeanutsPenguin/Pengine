@@ -54,13 +54,8 @@ namespace Penditor
 
 		Pengine::PenObjectId newObj = this->colorToId(col.getColor());
 		
-		if (newObj == this->m_selectedObject)
-			return;
-		else 
-		{
-			this->m_selectedObject = newObj;
-			Penditor::PenditorCore::PropertyWindow()->changeRenderTypeToObject();
-		}
+		this->m_selectedObject = newObj;
+		Penditor::PenditorCore::PropertyWindow()->changeRenderTypeToObject();
 	}
 
 	void PickingHandler::renderPicking(std::shared_ptr<Pengine::System::PenRendererSystem> renderer)

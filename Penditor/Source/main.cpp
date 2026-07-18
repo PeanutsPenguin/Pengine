@@ -97,8 +97,13 @@ int main()
 		Pengine::PenObjectId thirdObj = Pengine::PenCore::PenOctopus()->createPenObject();
 		Pengine::Components::PenRenderer thirdRenderComp;
 
+		std::shared_ptr<Pengine::Resources::PenMaterial> sphereMat = resourceManager->loadResourceFromFile<Pengine::Resources::PenMaterial>("Material/SphereMat.penfile");
+		sphereMat->setAlbedo(Pengine::PenColor::Red);
+
 		std::shared_ptr<Pengine::Resources::PenModel> thirdModel = resourceManager->loadResourceFromFile<Pengine::Resources::PenModel>("Mesh/sphere.penfile");
 		thirdRenderComp.setModel(thirdModel);
+		thirdRenderComp.setMaterial(sphereMat);
+
 
 		Pengine::Components::PenTransform thirdTransComp = Pengine::Components::PenTransform();
 		PenMath::Transform thirdTrans;

@@ -212,6 +212,13 @@ void PenMaterial::setAlbedo(const PenMath::Vector3f& albedo)
     this->m_albedo.defaultValue = albedo;
 }
 
+void PenMaterial::setAlbedo(const PenColor& albedo)
+{
+    this->m_albedo.defaultValue.x = albedo.x;
+    this->m_albedo.defaultValue.y = albedo.y;
+    this->m_albedo.defaultValue.z = albedo.z;
+}
+
 void PenMaterial::setAlbedo(std::shared_ptr<PenTexture> ptr)
 {
     this->m_albedo.texture = ptr;
@@ -222,7 +229,7 @@ void PenMaterial::setAlbedo(const PenMaterialProperty<PenMath::Vector3f>& prop)
     this->m_albedo = prop;
 }
 
-const PenMaterialProperty<PenMath::Vector3f>& PenMaterial::getAlbedo() const
+PenMaterialProperty<PenMath::Vector3f>& PenMaterial::getAlbedo()
 {
     return this->m_albedo;
 }
@@ -275,7 +282,7 @@ void PenMaterial::setMetallic(const PenMaterialProperty<float>& prop)
     this->m_metallic = prop;
 }
 
-const PenMaterialProperty<float>& PenMaterial::getMetallic() const
+PenMaterialProperty<float>& PenMaterial::getMetallic()
 {
     return this->m_metallic;
 }
@@ -329,7 +336,7 @@ void PenMaterial::setRoughness(const PenMaterialProperty<float>& prop)
     this->m_roughness = prop;
 }
 
-const PenMaterialProperty<float>& PenMaterial::getRoughness() const
+PenMaterialProperty<float>& PenMaterial::getRoughness()
 {
     return this->m_roughness;
 }
@@ -382,7 +389,7 @@ void PenMaterial::setAmbientOcclusion(const PenMaterialProperty<float>& prop)
     this->m_ambientOcclusion = prop;
 }
 
-const PenMaterialProperty<float>& PenMaterial::getAmbientOcclusion() const
+PenMaterialProperty<float>& PenMaterial::getAmbientOcclusion()
 {
     return this->m_ambientOcclusion;
 }

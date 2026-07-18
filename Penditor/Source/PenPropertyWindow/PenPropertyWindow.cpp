@@ -9,6 +9,7 @@
 #include "PenPropertyWindow/PenPropertySettings.h"
 #include "PenComponents/PenTransform/PenTransform.h"
 #include "PenResources/AllPenResources.h"
+#include "PenBuffer/PenTextureBuffer.h"
 
 #include "PickingHandler/PickingHandler.h"
 #include "Penditor/Penditor.h"
@@ -107,7 +108,29 @@ namespace Penditor::Window
 	void PenPropertyWindow::renderSelectedResource()
 	{
 		Pengine::ui::PenUIManager* manager = Pengine::PenCore::UIManager().get();
-		manager->renderText(this->m_currentData.pathFile.c_str());
+		PenMath::Vector2 windowSize = manager->getContentSize();
+
+		manager->setUICursorPosX((windowSize.x / 2) - HALF_ICON_SIZE);
+		manager->renderImage(this->m_currentData.icon->dataPtr()->getTextID(), { ICON_SIZE, ICON_SIZE });
+
+		switch(this->m_currentData.type)
+		{
+			case Pengine::Resources::PenResourceType::E_MATERIAL:
+				this->renderMaterialResource();
+				break;
+		}
+	}	
+
+	void PenPropertyWindow::renderMaterialResource()
+	{
+		Pengine::ui::PenUIManager* manager = Pengine::PenCore::UIManager().get();
+		std::shared_ptr<Pengine::Resources::PenMaterial> mat = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenMaterial>(this->m_currentData.pathFile.c_str());
+
+		manager->renderCenterText("PenMaterial");
+		manager->renderColorPickerVec3("Albedo" ,mat->getAlbedo().defaultValue);
+		manager->renderSliderFloat("Roughness", 0, 1, &mat->getRoughness().defaultValue);
+		manager->renderSliderFloat("Mettalic", 0, 1, &mat->getMetallic().defaultValue);
+		manager->renderSliderFloat("Ambient Occlusion", 0, 1, &mat->getAmbientOcclusion().defaultValue);
 	}
 
 	void PenPropertyWindow::renderProperty(Pengine::IPenProperty* prop, Pengine::ui::PenUIManager* manager)

@@ -52,14 +52,15 @@ namespace Penditor::Window
 		for (auto& directoryEntry : std::filesystem::directory_iterator(currentPath))
 		{
 			PenFileData newData;
-			newData.pathFile = directoryEntry.path().string();
-			newData.fileName = directoryEntry.path().filename().string();
+			std::filesystem::path rel = std::filesystem::relative(directoryEntry.path(), std::filesystem::current_path());
+			newData.pathFile = rel.generic_string();
+			newData.fileName = directoryEntry.path().filename().generic_string();
 			newData.isDirectory = directoryEntry.is_directory();
 
 			if (newData.isDirectory)
 			{
 				newData.icon = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenTexture>("Textures/FolderIcon.penfile");
-				this->loadDirectory(newData, newData.pathFile);
+				this->loadDirectory(newData, directoryEntry.path());
 			}
 			else if (!newData.isDirectory && directoryEntry.path().filename().extension() != ".penfile")
 				continue;
@@ -93,7 +94,7 @@ namespace Penditor::Window
 
 		for (const PenFileData& child : node.children)
 		{
-			int flags = Pengine::ui::PenTreeNodeFlags::E_OPEN_ON_ARROW | Pengine::ui::PenTreeNodeFlags::E_SPAN_FULL_WIDTH;
+			int flags = Pengine::ui::PenTreeNodeFlags::E_OPEN_ON_ARROW | Pengine::ui::PenTreeNodeFlags::E_SPAN_RIGHT_WIDTH;
 			
 			if (m_selectedPath == child.pathFile) 
 				flags |= Pengine::ui::PenTreeNodeFlags::E_SELECTED;
@@ -113,7 +114,7 @@ namespace Penditor::Window
 	{
 		std::unique_ptr<Pengine::ui::PenUIManager>& manager = Pengine::PenCore::UIManager();
 
-		int flags = Pengine::ui::PenTreeNodeFlags::E_OPEN_ON_ARROW | Pengine::ui::PenTreeNodeFlags::E_SPAN_FULL_WIDTH;
+		int flags = Pengine::ui::PenTreeNodeFlags::E_OPEN_ON_ARROW | Pengine::ui::PenTreeNodeFlags::E_SPAN_RIGHT_WIDTH;
 
 		if (m_selectedPath == node.pathFile)
 			flags |= Pengine::ui::PenTreeNodeFlags::E_SELECTED;
@@ -121,7 +122,7 @@ namespace Penditor::Window
 		std::string name = "##" + node.pathFile;
 		bool opened = manager->renderTreeNode(name.c_str(), (Pengine::ui::PenTreeNodeFlags)flags);
 
-		if (manager->isItemClicked())
+		if (manager->isItemClicked() && opened)
 		{
 			this->m_selectedPath = node.pathFile;
 			PenditorCore::PropertyWindow()->changeRenderTypeToResource(node);

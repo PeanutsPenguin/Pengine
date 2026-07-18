@@ -93,6 +93,11 @@ void PenUIManager::renderText(const char* value)
 	ImGuiWrapper::renderText(value);
 }
 
+void PenUIManager::renderCenterText(const char* value)
+{
+	ImGuiWrapper::renderCenterText(value);
+}
+
 bool PenUIManager::renderCollapsingHeader(const char* name)
 {
 	return ImGuiWrapper::renderCollapsingHeader(name);
@@ -118,6 +123,21 @@ void PenUIManager::popTree()
 	ImGuiWrapper::popTree();
 }
 
+bool PenUIManager::renderColorPicker(const char* label, PenColor& col)
+{
+	return ImGuiWrapper::renderColorPicker(label, col);
+}
+
+bool PenUIManager::renderColorPicker3(const char* label, PenColor& col)
+{
+	return ImGuiWrapper::renderColorPicker(label, col);
+}
+
+bool PenUIManager::renderColorPickerVec3(const char* label, PenMath::Vector3f& col)
+{
+	return ImGuiWrapper::renderColorPickerVec3(label, col);
+}
+
 bool PenUIManager::renderVector3(PenMath::Vector3& vec, const char* name)
 {
 	return ImGuiWrapper::renderVector3(vec, name);
@@ -133,6 +153,9 @@ bool PenUIManager::renderTreeNode(const char* name, PenTreeNodeFlags flags)
 	return ImGuiWrapper::renderTreeNode(name, flags);
 }
 
-
+bool PenUIManager::renderSliderFloat(const char* label, float min, float max, float* value)
+{
+	return ImGuiWrapper::renderSliderFloat(label, min, max, value);
+}
 
 
