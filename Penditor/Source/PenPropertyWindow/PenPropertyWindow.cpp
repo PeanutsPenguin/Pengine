@@ -24,11 +24,6 @@ namespace Penditor::Window
 
 	}
 
-	PenPropertyWindow::~PenPropertyWindow()
-	{
-
-	}
-
 	void PenPropertyWindow::renderCalls()
 	{
 		switch (this->m_renderingType)
@@ -47,7 +42,6 @@ namespace Penditor::Window
 
 	void PenPropertyWindow::changeRenderTypeToObject()
 	{
-		this->m_currentResource = nullptr;
 		this->m_renderingType = PropertiesRenderingType::E_PENOBJECT;
 		const Pengine::PenObjectId selectedObject = PenditorCore::PickingHandler()->getSelectedObject();
 
@@ -57,37 +51,12 @@ namespace Penditor::Window
 
 	void PenPropertyWindow::changeRenderTypeToResource(const PenFileData& data)
 	{
-		switch (data.type)
-		{
-		case Pengine::Resources::PenResourceType::E_MATERIAL:
-			this->m_currentResource = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenMaterial>(data.pathFile.c_str());
-			break;
-		case Pengine::Resources::PenResourceType::E_MODEL:
-			this->m_currentResource = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenModel>(data.pathFile.c_str());
-			break;
-		case Pengine::Resources::PenResourceType::E_SHADER:
-			this->m_currentResource = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenShader>(data.pathFile.c_str());
-			break;
-		case Pengine::Resources::PenResourceType::E_SHADER_PROGRAM:
-			this->m_currentResource = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenShaderProgram>(data.pathFile.c_str());
-			break;
-		case Pengine::Resources::PenResourceType::E_TEXTURE:
-			this->m_currentResource = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenTexture>(data.pathFile.c_str());
-			break;
-		default:
-			this->m_currentResource = nullptr;
-			break;
-		}
-
-		//if Null dispaly folder
-
 		this->m_renderingType = E_PENRESOURCES;
 		this->m_currentData = data;
 	}
 
 	void PenPropertyWindow::changeRenderTypeToNone()
 	{
-		this->m_currentResource = nullptr;
 		this->m_renderingType = E_NONE;
 	}
 
@@ -110,10 +79,9 @@ namespace Penditor::Window
 		Pengine::ui::PenUIManager* manager = Pengine::PenCore::UIManager().get();
 		PenMath::Vector2 windowSize = manager->getContentSize();
 
-		manager->setUICursorPosX((windowSize.x / 2) - HALF_ICON_SIZE);
-		manager->renderImage(this->m_currentData.icon->dataPtr()->getTextID(), { ICON_SIZE, ICON_SIZE });
+		manager->setUICursorPosX((windowSize.x * 0.5f) - PROP_HALF_ICON_SIZE);
+		manager->renderImage(this->m_currentData.icon->dataPtr()->getTextID(), { PROP_ICON_SIZE, PROP_ICON_SIZE });
 		manager->renderCenterText(this->m_currentData.fileName.c_str());
-
 
 		switch(this->m_currentData.type)
 		{
@@ -138,6 +106,8 @@ namespace Penditor::Window
 				manager->renderSeperator();
 				break;
 		}
+
+		//Render preview window
 	}	
 
 	void PenPropertyWindow::renderMaterialResource()
@@ -386,8 +356,6 @@ namespace Penditor::Window
 		manager->renderCenterText("PenShaderProgram");
 		manager->renderSeperator();
 	}
-
-
 
 	void PenPropertyWindow::renderProperty(Pengine::IPenProperty* prop, Pengine::ui::PenUIManager* manager)
 	{

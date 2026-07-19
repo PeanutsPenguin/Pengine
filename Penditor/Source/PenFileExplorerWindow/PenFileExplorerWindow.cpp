@@ -103,13 +103,9 @@ namespace Penditor::Window
 				flags |= Pengine::ui::PenTreeNodeFlags::E_SELECTED;
 
 			if (child.isDirectory)
-			{
 				this->renderDirectory(child);
-			}
 			else 
-			{
 				this->renderFile(child);
-			}
 		}
 	}
 
@@ -136,14 +132,14 @@ namespace Penditor::Window
 		if (node.icon != nullptr)
 		{
 			PenMath::Vector2 curCursorPos = manager->getUICursorPos();
-			manager->setUICursorPosY(curCursorPos.y - 4.0f);
-			manager->setUICursorPosX(curCursorPos.x - 10);
-			manager->renderImage(node.icon->dataPtr()->getTextID(), { 20, 20 });
+			manager->setUICursorPosY(curCursorPos.y - ICON_Y_OFFSET);
+			manager->setUICursorPosX(curCursorPos.x - ICON_X_OFFSET);
+			manager->renderImage(node.icon->dataPtr()->getTextID(), { ICON_SIZE, ICON_SIZE });
 			manager->renderOnSameLine();
 		}
 
 		PenMath::Vector2 curCursorPos = manager->getUICursorPos();
-		manager->setUICursorPosX(curCursorPos.x - 6.0f);
+		manager->setUICursorPosX(curCursorPos.x - FILENAME_X_OFFSET);
 		manager->renderText(node.fileName.c_str());
 
 		if (opened)
@@ -190,14 +186,14 @@ namespace Penditor::Window
 		if (node.icon != nullptr)
 		{
 			PenMath::Vector2 curCursorPos = manager->getUICursorPos();
-			manager->setUICursorPosY(curCursorPos.y - 4.0f);
-			manager->setUICursorPosX(curCursorPos.x - 10);
-			manager->renderImage(node.icon->dataPtr()->getTextID(), { 20, 20 });
+			manager->setUICursorPosY(curCursorPos.y - ICON_Y_OFFSET);
+			manager->setUICursorPosX(curCursorPos.x - ICON_X_OFFSET);
+			manager->renderImage(node.icon->dataPtr()->getTextID(), { ICON_SIZE, ICON_SIZE });
 			manager->renderOnSameLine();
 		}
 
 		PenMath::Vector2 curCursorPos = manager->getUICursorPos();
-		manager->setUICursorPosX(curCursorPos.x - 6.0f);
+		manager->setUICursorPosX(curCursorPos.x - FILENAME_X_OFFSET);
 		manager->renderText(node.fileName.c_str());
 	}
 

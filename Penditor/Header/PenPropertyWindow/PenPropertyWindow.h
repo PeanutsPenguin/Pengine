@@ -6,8 +6,8 @@
 #include "PenditorStructAndEnum/PenPropertiesObjectType.h"
 #include "PenditorStructAndEnum/PenFileData.h"
 
-#define ICON_SIZE 100
-#define HALF_ICON_SIZE 50
+#define PROP_ICON_SIZE 100
+#define PROP_HALF_ICON_SIZE 50
 
 #define TEX_SIZE 50
 #define HALF_TEX_SIZE 25
@@ -44,7 +44,7 @@ namespace Penditor::Window
 		PenPropertyWindow(const char* title, int flags = 0);
 		PenPropertyWindow(const PenPropertyWindow& other) = default;
 		PenPropertyWindow(PenPropertyWindow&& other) = default;
-		~PenPropertyWindow() final;
+		~PenPropertyWindow() final = default;
 
 		PenPropertyWindow& operator=(const PenPropertyWindow& rhs) = default;
 		PenPropertyWindow& operator=(PenPropertyWindow&& rhs) = default;
@@ -79,7 +79,6 @@ namespace Penditor::Window
 		PenMath::Vector3f										m_objectEuler		= PenMath::Vector3f::Zero();
 		PropertiesRenderingType									m_renderingType		= PropertiesRenderingType::E_NONE;
 		Pengine::Components::PenComponentBase*					m_currentComponent	= nullptr;
-		std::shared_ptr<Pengine::Resources::PenResourceBase>	m_currentResource	= nullptr;
 		PenFileData												m_currentData;
 		bool													m_headerOpen		= true;
 	};

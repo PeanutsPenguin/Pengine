@@ -10,11 +10,11 @@ namespace Pengine::Buffer
 	{
 	public:
 		PenTextureBuffer() = default;
-		PenTextureBuffer(const PenTextureBuffer& other) = default;
+		PenTextureBuffer(const PenTextureBuffer& other) = delete;
 		PenTextureBuffer(PenTextureBuffer&& other) = default;
 		~PenTextureBuffer();
 
-		PenTextureBuffer& operator=(const PenTextureBuffer& rhs) = default;
+		PenTextureBuffer& operator=(const PenTextureBuffer& rhs) = delete;
 		PenTextureBuffer& operator=(PenTextureBuffer&& rhs) = default;
 
 		void destroy();

@@ -5,7 +5,6 @@
 #include <imgui/imgui_internal.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
-#include "IconsFontAwesome7.h"
 
 #include <iostream>
 
@@ -24,20 +23,6 @@ namespace Pengine::ui::ImGuiWrapper
 
 		// Set UI theme
 		ImGui::StyleColorsDark();
-
-		io.Fonts->AddFontDefault();
-		ImFontConfig config;
-		config.MergeMode = true;
-		config.PixelSnapH = true;
-
-		config.GlyphMinAdvanceX = 16.0f;
-
-		// 4. Define the glyph ranges to load
-		// CRITICAL: This array must remain in memory until the font atlas is built!
-		// Marking it 'static' prevents it from being destroyed when the function ends.
-		static const ImWchar icon_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
-		io.Fonts->AddFontFromFileTTF("Fonts/font900.otf", 14.0f, &config, icon_ranges);
-		io.Fonts->Build();
 
 		// Init
 		ImGui_ImplGlfw_InitForOpenGL(*window, true);

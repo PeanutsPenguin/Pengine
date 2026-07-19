@@ -5,6 +5,12 @@
 
 #include <filesystem>
 
+#define ICON_Y_OFFSET 4
+#define ICON_X_OFFSET 10
+#define ICON_SIZE 20
+
+#define FILENAME_X_OFFSET 6
+
 namespace Penditor::Window
 {
 	class PenFileExplorerWindow : public Pengine::ui::PenVirtualWindow
