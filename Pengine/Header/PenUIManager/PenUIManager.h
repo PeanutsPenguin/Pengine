@@ -36,6 +36,7 @@ namespace Pengine::ui
 		PenMath::Vector2	getContentSize();
 		PenMath::Vector2	getUICursorPos();
 		float				getFrameHeight();
+		float				getTextWidth(const char* text);
 
 		void				setUICursorPos(const PenMath::Vector2& pos);
 		void				setUICursorPosX(float x);

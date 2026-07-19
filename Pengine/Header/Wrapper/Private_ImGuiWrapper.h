@@ -32,6 +32,7 @@ namespace Pengine::ui::ImGuiWrapper
 	PenMath::Vector2	getWindowPos();
 	PenMath::Vector2	getCursorPos();
 	float				getFrameHeight();
+	float				getTextWidth(const char* text);
 
 	void				setCursorPos(const PenMath::Vector2& pos);
 	void				setCursorPosX(float x);
