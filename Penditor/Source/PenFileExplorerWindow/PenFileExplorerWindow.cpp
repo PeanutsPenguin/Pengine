@@ -6,6 +6,7 @@
 #include "PenResources/PenResourceManager.hpp"
 #include "PenResources/PenTexture.h"
 #include "PenBuffer/PenTextureBuffer.h"
+#include "PenInput/PenInput.h"
 
 #include "PenStructsAndEnum/PenTreeNodeFlags.h"
 #include "PenStructsAndEnum/PenResourcesType.h"
@@ -124,7 +125,7 @@ namespace Penditor::Window
 		std::string name = "##" + node.pathFile;
 		bool opened = manager->renderTreeNode(name.c_str(), (Pengine::ui::PenTreeNodeFlags)flags);
 
-		if (manager->isItemClicked() && opened)
+		if (manager->isItemClicked())
 		{
 			this->m_selectedPath = node.pathFile;
 			PenditorCore::PropertyWindow()->changeRenderTypeToResource(node);
@@ -175,11 +176,13 @@ namespace Penditor::Window
 			manager->renderText(node.fileName.c_str());
 			manager->endDragAndDropSource();
 		}
-
-		if (manager->isItemClicked())
+		else if (manager->isItemHovered() && Pengine::PenCore::InputManager()->isKeyReleased(Pengine::PenInput::key_MOUSE_LEFT))
 		{
-			this->m_selectedPath = node.pathFile;
-			PenditorCore::PropertyWindow()->changeRenderTypeToResource(node);
+			if(!manager->isMouseDragPastTreshold())
+			{
+				this->m_selectedPath = node.pathFile;
+				PenditorCore::PropertyWindow()->changeRenderTypeToResource(node);
+			}
 		}
 
 		manager->renderOnSameLine();

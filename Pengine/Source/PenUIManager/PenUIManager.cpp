@@ -83,6 +83,11 @@ void PenUIManager::renderImage(int textureID, const PenMath::Vector2& size)
 	ImGuiWrapper::renderImage(textureID, size);
 }
 
+void PenUIManager::renderCenterImage(int textureID, const PenMath::Vector2& size)
+{
+	ImGuiWrapper::renderCenterImage(textureID, size);
+}
+
 void PenUIManager::renderBool(bool* value, const char* name)
 {
 	ImGuiWrapper::renderBool(value, name);
@@ -96,6 +101,11 @@ void PenUIManager::renderText(const char* value)
 void PenUIManager::renderCenterText(const char* value)
 {
 	ImGuiWrapper::renderCenterText(value);
+}
+
+void PenUIManager::renderSeperator()
+{
+	ImGuiWrapper::renderSeperator();
 }
 
 void PenUIManager::fillDragAndDropData(DragAndDropData* data)
@@ -118,6 +128,11 @@ bool PenUIManager::renderCollapsingHeader(const char* name)
 	return ImGuiWrapper::renderCollapsingHeader(name);
 }
 
+bool PenUIManager::isMouseDragPastTreshold()
+{
+	return ImGuiWrapper::isMousePastDragTreshold();
+}
+
 bool PenUIManager::isWindowHovered()
 {
 	return ImGuiWrapper::isMouseOverWindow();
@@ -126,6 +141,11 @@ bool PenUIManager::isWindowHovered()
 bool PenUIManager::isItemClicked()
 {
 	return ImGuiWrapper::isItemClicked();
+}
+
+bool PenUIManager::isItemHovered()
+{
+	return ImGuiWrapper::isItemHovered();
 }
 
 void PenUIManager::removeInputFocus()
@@ -183,4 +203,8 @@ bool PenUIManager::beginDragAndDropTarget()
 	return ImGuiWrapper::beginDragAndDropTarget();
 }
 
+const Pengine::DragAndDropData* PenUIManager::getDroppedData(const char* type)
+{
+	return ImGuiWrapper::getDroppedData(type);
+}
 

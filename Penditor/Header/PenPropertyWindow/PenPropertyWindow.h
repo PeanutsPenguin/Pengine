@@ -9,6 +9,10 @@
 #define ICON_SIZE 100
 #define HALF_ICON_SIZE 50
 
+#define TEX_SIZE 50
+#define HALF_TEX_SIZE 25
+#define QUARTER_TEX_SIZE 12
+
 namespace Pengine
 {
 	class IPenProperty;
@@ -26,6 +30,7 @@ namespace Pengine
 	namespace Resources
 	{
 		class PenResourceBase;
+		class PenMaterial;
 	}
 }
 
@@ -55,7 +60,17 @@ namespace Penditor::Window
 		void	renderSelectedResource();
 
 		void	renderMaterialResource();
-		
+		void	renderAlbedo(std::shared_ptr<Pengine::Resources::PenMaterial> mat);
+		void	renderRoughness(std::shared_ptr<Pengine::Resources::PenMaterial> mat);
+		void	renderMettallic(std::shared_ptr<Pengine::Resources::PenMaterial> mat);
+		void	renderAmbientOccluion(std::shared_ptr<Pengine::Resources::PenMaterial> mat);
+		void	renderNormal(std::shared_ptr<Pengine::Resources::PenMaterial> mat);
+
+		void	renderTextureResource();
+		void	renderModelResource();
+		void	renderShaderResource();
+		void	renderShaderProgramResource();
+
 		void	renderProperty			(Pengine::IPenProperty* prop, Pengine::ui::PenUIManager* manager);
 		void	renderComponentProp		(Pengine::IPenProperty* prop, Pengine::ui::PenUIManager* manager);
 		void	renderVector3Prop		(Pengine::IPenProperty* prop, Pengine::ui::PenUIManager* manager);

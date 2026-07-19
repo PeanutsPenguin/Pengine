@@ -112,11 +112,30 @@ namespace Penditor::Window
 
 		manager->setUICursorPosX((windowSize.x / 2) - HALF_ICON_SIZE);
 		manager->renderImage(this->m_currentData.icon->dataPtr()->getTextID(), { ICON_SIZE, ICON_SIZE });
+		manager->renderCenterText(this->m_currentData.fileName.c_str());
+
 
 		switch(this->m_currentData.type)
 		{
 			case Pengine::Resources::PenResourceType::E_MATERIAL:
 				this->renderMaterialResource();
+			break;
+			case Pengine::Resources::PenResourceType::E_MODEL:
+				this->renderModelResource();
+			break;
+			case Pengine::Resources::PenResourceType::E_SHADER:
+				this->renderShaderResource();
+			break;
+			case Pengine::Resources::PenResourceType::E_SHADER_PROGRAM:
+				this->renderShaderProgramResource();
+			break;
+			case Pengine::Resources::PenResourceType::E_TEXTURE:
+				this->renderTextureResource();
+			break;
+			case Pengine::Resources::PenResourceType::E_NONE:
+			default:
+				manager->renderCenterText("Folder");
+				manager->renderSeperator();
 				break;
 		}
 	}	
@@ -127,11 +146,248 @@ namespace Penditor::Window
 		std::shared_ptr<Pengine::Resources::PenMaterial> mat = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenMaterial>(this->m_currentData.pathFile.c_str());
 
 		manager->renderCenterText("PenMaterial");
-		manager->renderColorPickerVec3("Albedo" ,mat->getAlbedo().defaultValue);
-		manager->renderSliderFloat("Roughness", 0, 1, &mat->getRoughness().defaultValue);
-		manager->renderSliderFloat("Mettalic", 0, 1, &mat->getMetallic().defaultValue);
-		manager->renderSliderFloat("Ambient Occlusion", 0, 1, &mat->getAmbientOcclusion().defaultValue);
+		manager->renderSeperator();
+
+		this->renderAlbedo(mat);
+		this->renderRoughness(mat);
+		this->renderMettallic(mat);
+		this->renderAmbientOccluion(mat);
+		this->renderNormal(mat);
 	}
+
+	void PenPropertyWindow::renderAlbedo(std::shared_ptr<Pengine::Resources::PenMaterial> mat)
+	{
+		Pengine::ui::PenUIManager* manager = Pengine::PenCore::UIManager().get();
+		manager->setUICursorPosY(manager->getUICursorPos().y + 10.f);
+		manager->renderText("Albedo");
+
+		PenMath::Vector2 curPos = manager->getUICursorPos();
+
+		manager->setUICursorPosY(curPos.y + HALF_TEX_SIZE);
+		manager->renderText("Texture : ");
+		manager->renderOnSameLine();
+		manager->setUICursorPosY(curPos.y + QUARTER_TEX_SIZE);
+
+		if (mat->getAlbedo().isPropertyValid())
+			manager->renderImage(mat->getAlbedo().texture->dataPtr()->getTextID(), { TEX_SIZE, TEX_SIZE });
+		else
+			manager->renderImage(0, { TEX_SIZE, TEX_SIZE });
+
+		if(manager->beginDragAndDropTarget())
+		{
+			const Pengine::DragAndDropData* droppedData = manager->getDroppedData(TEXTURE_ID);
+
+			if(droppedData != nullptr)
+			{
+				std::shared_ptr<Pengine::Resources::PenTexture> texture = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenTexture>(droppedData->filePath);
+
+				if(texture)
+					mat->setAlbedo(texture);
+			}
+		}
+
+
+		manager->renderOnSameLine(150);
+
+		manager->renderText("Raw Value : ");
+		manager->renderOnSameLine();
+		manager->renderColorPickerVec3("##AlbedoRawValue", mat->getAlbedo().defaultValue);
+
+		manager->renderSeperator();
+	}
+
+	void PenPropertyWindow::renderRoughness(std::shared_ptr<Pengine::Resources::PenMaterial> mat)
+	{
+		Pengine::ui::PenUIManager* manager = Pengine::PenCore::UIManager().get();
+		manager->setUICursorPosY(manager->getUICursorPos().y + 10.f);
+		manager->renderText("Roughness");
+
+		PenMath::Vector2 curPos = manager->getUICursorPos();
+
+		manager->setUICursorPosY(curPos.y + HALF_TEX_SIZE);
+		manager->renderText("Texture : ");
+		manager->renderOnSameLine();
+		manager->setUICursorPosY(curPos.y + QUARTER_TEX_SIZE);
+
+		if (mat->getRoughness().isPropertyValid())
+			manager->renderImage(mat->getRoughness().texture->dataPtr()->getTextID(), { TEX_SIZE, TEX_SIZE });
+		else
+			manager->renderImage(0, { TEX_SIZE, TEX_SIZE });
+
+		if (manager->beginDragAndDropTarget())
+		{
+			const Pengine::DragAndDropData* droppedData = manager->getDroppedData(TEXTURE_ID);
+
+			if (droppedData != nullptr)
+			{
+				std::shared_ptr<Pengine::Resources::PenTexture> texture = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenTexture>(droppedData->filePath);
+
+				if (texture)
+					mat->setAlbedo(texture);
+			}
+		}
+
+		manager->renderOnSameLine(150);
+
+		manager->renderText("Raw Value : ");
+		manager->renderOnSameLine();
+
+		manager->setNextItemWidth(Setting::sPropertySettings::s_sliderMinWidth);
+
+		manager->renderSliderFloat("##RoughnessRawValue", 0, 1, &mat->getRoughness().defaultValue);
+
+		manager->renderSeperator();
+	}
+
+	void PenPropertyWindow::renderMettallic(std::shared_ptr<Pengine::Resources::PenMaterial> mat)
+	{
+		Pengine::ui::PenUIManager* manager = Pengine::PenCore::UIManager().get();
+		manager->setUICursorPosY(manager->getUICursorPos().y + 10.f);
+		manager->renderText("Metallic");
+
+		PenMath::Vector2 curPos = manager->getUICursorPos();
+
+		manager->setUICursorPosY(curPos.y + HALF_TEX_SIZE);
+		manager->renderText("Texture : ");
+		manager->renderOnSameLine();
+		manager->setUICursorPosY(curPos.y + QUARTER_TEX_SIZE);
+
+		if (mat->getMetallic().isPropertyValid())
+			manager->renderImage(mat->getMetallic().texture->dataPtr()->getTextID(), { TEX_SIZE, TEX_SIZE });
+		else
+			manager->renderImage(0, { TEX_SIZE, TEX_SIZE });
+
+		if (manager->beginDragAndDropTarget())
+		{
+			const Pengine::DragAndDropData* droppedData = manager->getDroppedData(TEXTURE_ID);
+
+			if (droppedData != nullptr)
+			{
+				std::shared_ptr<Pengine::Resources::PenTexture> texture = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenTexture>(droppedData->filePath);
+
+				if (texture)
+					mat->setAlbedo(texture);
+			}
+		}
+
+		manager->renderOnSameLine(150);
+
+		manager->renderText("Raw Value : ");
+		manager->renderOnSameLine();
+
+		manager->setNextItemWidth(Setting::sPropertySettings::s_sliderMinWidth);
+
+		manager->renderSliderFloat("##MetallicRawValue", 0, 1, &mat->getMetallic().defaultValue);
+
+		manager->renderSeperator();
+	}
+
+	void PenPropertyWindow::renderAmbientOccluion(std::shared_ptr<Pengine::Resources::PenMaterial> mat)
+	{
+		Pengine::ui::PenUIManager* manager = Pengine::PenCore::UIManager().get();
+		manager->setUICursorPosY(manager->getUICursorPos().y + 10.f);
+		manager->renderText("Ambient Occlusion");
+
+		PenMath::Vector2 curPos = manager->getUICursorPos();
+
+		manager->setUICursorPosY(curPos.y + HALF_TEX_SIZE);
+		manager->renderText("Texture : ");
+		manager->renderOnSameLine();
+		manager->setUICursorPosY(curPos.y + QUARTER_TEX_SIZE);
+
+		if (mat->getAmbientOcclusion().isPropertyValid())
+			manager->renderImage(mat->getAmbientOcclusion().texture->dataPtr()->getTextID(), { TEX_SIZE, TEX_SIZE });
+		else
+			manager->renderImage(0, { TEX_SIZE, TEX_SIZE });
+
+		if (manager->beginDragAndDropTarget())
+		{
+			const Pengine::DragAndDropData* droppedData = manager->getDroppedData(TEXTURE_ID);
+
+			if (droppedData != nullptr)
+			{
+				std::shared_ptr<Pengine::Resources::PenTexture> texture = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenTexture>(droppedData->filePath);
+
+				if (texture)
+					mat->setAlbedo(texture);
+			}
+		}
+
+		manager->renderOnSameLine(150);
+
+		manager->renderText("Raw Value : ");
+		manager->renderOnSameLine();
+
+		manager->setNextItemWidth(Setting::sPropertySettings::s_sliderMinWidth);
+
+		manager->renderSliderFloat("##AORawValue", 0, 1, &mat->getAmbientOcclusion().defaultValue);
+
+		manager->renderSeperator();
+	}
+
+	void PenPropertyWindow::renderNormal(std::shared_ptr<Pengine::Resources::PenMaterial> mat)
+	{
+		Pengine::ui::PenUIManager* manager = Pengine::PenCore::UIManager().get();
+		manager->setUICursorPosY(manager->getUICursorPos().y + 10.f);
+		manager->renderText("Normal");
+
+		PenMath::Vector2 curPos = manager->getUICursorPos();
+
+		manager->setUICursorPosY(curPos.y + HALF_TEX_SIZE);
+		manager->renderText("Texture : ");
+		manager->renderOnSameLine();
+		manager->setUICursorPosY(curPos.y + QUARTER_TEX_SIZE);
+
+		if (mat->getAmbientOcclusion().isPropertyValid())
+			manager->renderImage(mat->getNormal()->dataPtr()->getTextID(), { TEX_SIZE, TEX_SIZE });
+		else
+			manager->renderImage(0, { TEX_SIZE, TEX_SIZE });
+
+		if (manager->beginDragAndDropTarget())
+		{
+			const Pengine::DragAndDropData* droppedData = manager->getDroppedData(TEXTURE_ID);
+
+			if (droppedData != nullptr)
+			{
+				std::shared_ptr<Pengine::Resources::PenTexture> texture = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenTexture>(droppedData->filePath);
+
+				if (texture)
+					mat->setAlbedo(texture);
+			}
+		}
+
+		manager->renderSeperator();
+	}
+
+	void PenPropertyWindow::renderTextureResource()
+	{
+		Pengine::ui::PenUIManager* manager = Pengine::PenCore::UIManager().get();
+		manager->renderCenterText("PenTexture");
+		manager->renderSeperator();
+	}
+
+	void PenPropertyWindow::renderModelResource()
+	{
+		Pengine::ui::PenUIManager* manager = Pengine::PenCore::UIManager().get();
+		manager->renderCenterText("PenModel");
+		manager->renderSeperator();
+	}
+
+	void PenPropertyWindow::renderShaderResource()
+	{
+		Pengine::ui::PenUIManager* manager = Pengine::PenCore::UIManager().get();
+		manager->renderCenterText("PenShader");
+		manager->renderSeperator();
+	}
+
+	void PenPropertyWindow::renderShaderProgramResource()
+	{
+		Pengine::ui::PenUIManager* manager = Pengine::PenCore::UIManager().get();
+		manager->renderCenterText("PenShaderProgram");
+		manager->renderSeperator();
+	}
+
+
 
 	void PenPropertyWindow::renderProperty(Pengine::IPenProperty* prop, Pengine::ui::PenUIManager* manager)
 	{

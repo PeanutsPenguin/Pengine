@@ -139,9 +139,19 @@ namespace Pengine::ui::ImGuiWrapper
 		return ImGui::IsWindowHovered();
 	}
 
+	bool isMousePastDragTreshold()
+	{
+		return ImGui::IsMouseDragPastThreshold(0);
+	}
+
 	bool isItemClicked()
 	{
 		return ImGui::IsItemClicked();
+	}
+
+	bool isItemHovered()
+	{
+		return ImGui::IsItemHovered();
 	}
 
 	void removeInputFocus()
@@ -180,6 +190,17 @@ namespace Pengine::ui::ImGuiWrapper
 		ImGui::Image(textureID, { (float)size.x, (float)size.y }, { 0, 1 }, { 1, 0 });
 	}
 
+	void renderCenterImage(int textureID, const PenMath::Vector2& size)
+	{
+		float availWidth = ImGui::GetContentRegionAvail().x;
+
+		float offsetX = (availWidth - size.x) * 0.5f;
+
+		ImGui::SetCursorPosX(offsetX);
+
+		ImGui::Image(textureID, { (float)size.x, (float)size.y }, { 0, 1 }, { 1, 0 });
+	}
+
 	void renderBool(bool* value, const char* name)
 	{
 		ImGui::Checkbox(name, value);
@@ -198,6 +219,11 @@ namespace Pengine::ui::ImGuiWrapper
 		ImGui::SetCursorPosX((windowWidth - textWidth) * 0.5f);
 		ImGui::Text(value);
 	}
+
+	void renderSeperator()
+	{
+		ImGui::Separator();
+	}
 	
 	void fillDragAndDropData(Pengine::DragAndDropData* data)
 	{
@@ -206,19 +232,19 @@ namespace Pengine::ui::ImGuiWrapper
 		switch(data->type)
 		{
 		case Resources::PenResourceType::E_MATERIAL:
-			payload = "MATERIAL";
+			payload = MAT_ID;
 			break;
 		case Resources::PenResourceType::E_MODEL:
-			payload = "MODEL";
+			payload = MODEL_ID;
 			break;
 		case Resources::PenResourceType::E_SHADER:
-			payload = "SHADER";
+			payload = SHADER_ID;
 			break;
 		case Resources::PenResourceType::E_SHADER_PROGRAM:
-			payload = "SHADER_PROGRAM";
+			payload = SHADER_PROG_ID;
 			break;
 		case Resources::PenResourceType::E_TEXTURE:
-			payload = "TEXTURE";
+			payload = TEXTURE_ID;
 			break;
 		}
 
@@ -237,17 +263,17 @@ namespace Pengine::ui::ImGuiWrapper
 
 	bool renderColorPicker(const char* label, PenColor& col)
 	{
-		return ImGui::ColorEdit4(label, &col.x);
+		return ImGui::ColorEdit4(label, &col.x, ImGuiColorEditFlags_NoInputs);
 	}
 
 	bool renderColorPicker3(const char* label, PenColor& col)
 	{
-		return ImGui::ColorEdit3(label, &col.x);
+		return ImGui::ColorEdit3(label, &col.x, ImGuiColorEditFlags_NoInputs);
 	}
 
 	bool renderColorPickerVec3(const char* label, PenMath::Vector3f& col)
 	{
-		return ImGui::ColorEdit3(label, &col.x);
+		return ImGui::ColorEdit3(label, &col.x, ImGuiColorEditFlags_NoInputs);
 	}
 
 	bool renderCollapsingHeader(const char* name)
@@ -293,6 +319,16 @@ namespace Pengine::ui::ImGuiWrapper
 	bool beginDragAndDropTarget()
 	{
 		return ImGui::BeginDragDropTarget();
+	}
+
+	const Pengine::DragAndDropData* getDroppedData(const char* type)
+	{
+		const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(type);
+
+		if (payload == nullptr)
+			return nullptr;
+
+		return (const Pengine::DragAndDropData*)payload->Data;
 	}
 	#pragma endregion
 }

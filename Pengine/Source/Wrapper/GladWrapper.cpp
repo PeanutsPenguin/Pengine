@@ -125,47 +125,64 @@ namespace Pengine::GladWrapper
 
 		bindFrameBuffer(0);
 	}
-
 	void fillTextureBuffer(const PenMath::Vector2& size, const void* data, int format, unsigned int id)
 	{
-		GLint type;
+		GLint dataFormat;
+		GLint internalFormat;
 
 		switch (format)
 		{
 		case 1:
-			type = GL_RED;
+			dataFormat = GL_RED;
+			internalFormat = GL_R8;
 			break;
 		case 2:
-			type = GL_RG;
+			dataFormat = GL_RG;
+			internalFormat = GL_RG8;
 			break;
 		case 3:
-			type = GL_RGB;
+			dataFormat = GL_RGB;
+			internalFormat = GL_RGB8;
 			break;
 		case 4:
-			type = GL_RGBA;
+			dataFormat = GL_RGBA;
+			internalFormat = GL_RGBA8;
 			break;
 		default:
-			type = GL_INVALID_ENUM;
+			return;
 		}
+
+		GLint prevAlignment;
+		glGetIntegerv(GL_UNPACK_ALIGNMENT, &prevAlignment);
 
 		if (format < 4)
 		{
 			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 		}
 
-
 		bindTextureBuffer(id);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, type, size.x, size.y, 0, type, GL_UNSIGNED_BYTE, data);
+		if (format == 1)
+		{
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_G, GL_RED);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_B, GL_RED);
+		}
+		else
+		{
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_G, GL_GREEN);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_SWIZZLE_B, GL_BLUE);
+		}
+
+		glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, static_cast<GLsizei>(size.x), static_cast<GLsizei>(size.y), 0, dataFormat, GL_UNSIGNED_BYTE, data);
 
 		bindTextureBuffer(0);
 
 		if (format < 4)
 		{
-			glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+			glPixelStorei(GL_UNPACK_ALIGNMENT, prevAlignment);
 		}
 	}
 

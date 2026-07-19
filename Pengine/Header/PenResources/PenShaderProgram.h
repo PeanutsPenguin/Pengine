@@ -32,7 +32,7 @@ namespace Pengine::Resources
 		_NODISCARD bool		createResource(const std::string PenfilePath, const std::string sourcePath);
 		_NODISCARD bool		createResource(const std::string PenfilePath, std::shared_ptr<PenShader> vertexShader, std::shared_ptr<PenShader> fragmentShader);
 
-		_NODISCARD bool createShaderProgram(std::shared_ptr<PenShader> vertPtr, std::shared_ptr<PenShader> fragPtr);
+		_NODISCARD bool		createShaderProgram(std::shared_ptr<PenShader> vertPtr, std::shared_ptr<PenShader> fragPtr);
 
 		bool use() const;
 		void unuse() const;

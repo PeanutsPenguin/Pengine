@@ -44,17 +44,21 @@ namespace Pengine::ui
 		
 		void				addImageToDrawList(unsigned int id, const PenMath::Vector2& topLeft, const PenMath::Vector2& bottomRight);
 
+		bool				isMouseDragPastTreshold();
 		bool				isWindowHovered();
 		bool				isItemClicked();
+		bool				isItemHovered();
 
 		void				removeInputFocus();
 		void				popTree();
 		
 		void				renderOnSameLine(float spacing = 0);
 		void				renderImage(int textureID, const PenMath::Vector2& size);
+		void				renderCenterImage(int textureID, const PenMath::Vector2& size);
 		void				renderBool(bool* value, const char* name);
 		void				renderText(const char* value);
 		void				renderCenterText(const char* value);
+		void				renderSeperator();
 		void				fillDragAndDropData(Pengine::DragAndDropData* data);
 		void				endDragAndDropSource();
 		void				endDragAndDropTarget();
@@ -69,5 +73,7 @@ namespace Pengine::ui
 		bool				renderSliderFloat(const char* label, float min, float max, float* value);
 		bool				beginDragAndDropSource();
 		bool				beginDragAndDropTarget();
+
+		const Pengine::DragAndDropData* getDroppedData(const char* type);
 	};
 }
