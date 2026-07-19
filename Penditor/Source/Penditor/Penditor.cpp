@@ -18,7 +18,7 @@
 using namespace Penditor;
 
 bool PenditorCore::m_shouldStop = true;
-std::unique_ptr<Window::PenGameWindow>			PenditorCore::m_PenGameWindow				= std::make_unique<Window::PenGameWindow>("PenGame");
+std::unique_ptr<Window::PenGameWindow>			PenditorCore::m_PenGameWindow				= std::make_unique<Window::PenGameWindow>("PenGame", Pengine::ui::PenVirtualWidnowFlags::NO_SCROLL_BAR);
 std::unique_ptr<Window::PenPropertyWindow>		PenditorCore::m_PenPropertyWindow			= std::make_unique<Window::PenPropertyWindow>("PenProperty");
 std::unique_ptr<Window::PenFileExplorerWindow>	PenditorCore::m_PenFileExplorerWindow		= std::make_unique<Window::PenFileExplorerWindow>("PenFileExplorer");
 std::unique_ptr<Penditor::PickingHandler>		PenditorCore::m_pickingHandler				= std::make_unique<Penditor::PickingHandler>();

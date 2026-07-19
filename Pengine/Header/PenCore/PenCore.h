@@ -2,7 +2,7 @@
 
 #include "PenDefine/PenLibDefine.h"         //PenLibDefine
 
-#include "Vector/Vector2/Vector2.h"					//Vector 2
+#include <Vector/Vector2/Vector2.h>			//Vector 2
 
 #include <memory>
 
@@ -56,7 +56,8 @@ namespace Pengine
 		static InputLib			inputLib();
 		static RenderLib		renderLib();
 
-		static double getDeltaTime();
+		static double	getDeltaTime();
+		static int		getFPS();
 
 		static void startPengine();
 
@@ -75,6 +76,7 @@ namespace Pengine
 	private:
 		static void		updateDeltaTime();
 		static void		updateInputs();
+		static void		updateFPS();
 
 		static void		registerDefaultType();
 		static void		registerComponents();
@@ -95,6 +97,12 @@ namespace Pengine
 
 		static double	m_deltaTime;
 		static double	m_lastFrame;
+
+		static float	s_FPSAccumulator;
+		static float	s_updateInterval;
+		static int		s_frameCount;
+		static int		s_currentFps;
+
 		static bool		m_shouldStop;
 #pragma endregion
 

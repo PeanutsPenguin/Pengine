@@ -14,6 +14,8 @@
 #include "PickingHandler/PickingHandler.h"
 #include "Penditor/Penditor.h"
 
+#include <string>
+
 namespace Penditor::Window
 {
 	PenGameWindow::PenGameWindow(const char* title, int flags)
@@ -64,7 +66,16 @@ namespace Penditor::Window
 		this->checkWindowSize();
 		this->renderScene();
 
-		Pengine::PenCore::UIManager()->renderImage(this->m_frameBuffer->getFrameTexture(), this->m_size);
+		Pengine::ui::PenUIManager* manager = Pengine::PenCore::UIManager().get();
+
+		manager->renderImage(this->m_frameBuffer->getFrameTexture(), this->m_size);
+
+		std::string fps_str = std::to_string(Pengine::PenCore::getFPS());
+
+		float width = manager->getTextWidth(fps_str.c_str());
+
+		manager->setUICursorPos({ (int)(this->m_size.x - width), 25 });
+		manager->renderText(fps_str.c_str());
 
 		this->m_prevSize = this->m_size;
 	}

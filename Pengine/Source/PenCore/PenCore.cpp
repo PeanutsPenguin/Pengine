@@ -7,7 +7,7 @@
 #include "PenOctopus/PenOctopus.h"                          //PenOctopus
 #include "PenSerializer/PenSerializer.h"                    //PenSerializer
 #include "PenWindow/PenWindowBase.h"                        //Penwindow
-#include "PenUIManager/PenUIManager.h"                             //PenUIManager
+#include "PenUIManager/PenUIManager.h"                      //PenUIManager
 
 //Components
 #include "PenComponents/PenRenderer/PenRenderer.h"
@@ -38,7 +38,14 @@ PenLibDefine PenCore::m_libs = PenLibDefine();
 
 double PenCore::m_deltaTime     = 0;
 double PenCore::m_lastFrame     = glfwGetTime();
-bool PenCore::m_shouldStop      = 0;
+
+float	PenCore::s_FPSAccumulator   = 0;
+float	PenCore::s_updateInterval   = 0.5f;
+
+int		PenCore::s_frameCount       = 0;
+int		PenCore::s_currentFps       = 0;
+
+bool PenCore::m_shouldStop      = false;
 #pragma endregion
 
 bool PenCore::init(const char* name, const PenMath::Vector2& windowSize)
@@ -109,6 +116,11 @@ RenderLib PenCore::renderLib()
 double PenCore::getDeltaTime()
 {
     return m_deltaTime;
+}
+
+int PenCore::getFPS()
+{
+    return s_currentFps;
 }
 #pragma endregion
 
@@ -194,10 +206,25 @@ void PenCore::updateInputs()
     m_PenInputManager->update();
 }
 
+void PenCore::updateFPS()
+{
+    s_FPSAccumulator += m_deltaTime;
+    s_frameCount++;
+
+    if (s_FPSAccumulator >= s_updateInterval)
+    {
+        s_currentFps = static_cast<int>(s_frameCount / s_FPSAccumulator);
+
+        s_FPSAccumulator = 0.0f;
+        s_frameCount = 0;
+    }
+}
+
 void PenCore::frameUpdate()
 {
     updateDeltaTime();
     updateInputs();
+    updateFPS();
 
     m_PenOctopus->updateAllSystem(m_deltaTime);
 }

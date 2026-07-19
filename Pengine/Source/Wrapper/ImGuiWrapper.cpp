@@ -99,6 +99,11 @@ namespace Pengine::ui::ImGuiWrapper
 		return ImGui::GetFrameHeight();
 	}
 
+	float getTextWidth(const char* text)
+	{
+		return ImGui::CalcTextSize(text).x;;
+	}
+
 	void setCursorPos(const PenMath::Vector2& pos)
 	{
 		ImGui::SetCursorPos({ (float)pos.x, (float)pos.y });

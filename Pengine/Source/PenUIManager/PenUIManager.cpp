@@ -47,6 +47,11 @@ float PenUIManager::getFrameHeight()
 	return ImGuiWrapper::getFrameHeight();
 }
 
+float PenUIManager::getTextWidth(const char* text)
+{
+	return ImGuiWrapper::getTextWidth(text);
+}
+
 void PenUIManager::setUICursorPos(const PenMath::Vector2& pos)
 {
 	ImGuiWrapper::setCursorPos(pos);
