@@ -9,19 +9,17 @@ namespace Pengine::Buffer
 
 namespace Pengine::Resources
 {
-	class PenTexture : public PenResourcesBase
+	class PenTexture : public PenResourceBase
 	{
 	public:
 		PenTexture();
 		PenTexture(const PenObjectId& id);
 		PenTexture(const PenTexture& other) = default;
 		PenTexture(PenTexture&& other) = default;
-		~PenTexture() final = default;
+		~PenTexture() final;
 
 		PenTexture& operator=(const PenTexture& rhs) = default;
 		PenTexture& operator=(PenTexture&& rhs) = default;
-
-		static std::shared_ptr<PenTexture> defaultTexture();
 
 		static std::shared_ptr<PenTexture> noTexture();
 

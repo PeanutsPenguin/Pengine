@@ -11,7 +11,7 @@
 namespace Pengine::Resources
 {
 	RESOURCE_TEMPLATE
-		requires std::derived_from<_ResourceType, PenResourcesBase>
+		requires std::derived_from<_ResourceType, PenResourceBase>
 	inline std::shared_ptr<_ResourceType> PenResourcesManager::createResourceFromFile(const char* sourcePath, const char* destinationPath, Args ...data)
 	{
 		///Create the name and Emplacement of the .penfile
@@ -51,7 +51,7 @@ namespace Pengine::Resources
 	}
 
 	RESOURCE_TEMPLATE
-		requires std::derived_from<_ResourceType, PenResourcesBase>
+		requires std::derived_from<_ResourceType, PenResourceBase>
 	inline std::shared_ptr<_ResourceType> PenResourcesManager::createResource(const char* fileName, const char* destinationPath, Args ...data)
 	{
 		///Create the name and Emplacement of the .penfile
@@ -82,7 +82,7 @@ namespace Pengine::Resources
 	}
 
 	RESOURCE_TEMPLATE
-		requires std::derived_from<_ResourceType, PenResourcesBase>
+		requires std::derived_from<_ResourceType, PenResourceBase>
 	inline std::shared_ptr<_ResourceType> PenResourcesManager::loadResourceFromFile(const char* path, Args... data)
 	{
 		//Check if it doesn't already exist
@@ -109,7 +109,7 @@ namespace Pengine::Resources
 	}
 
 	RESOURCE_TEMPLATE
-		requires std::derived_from<_ResourceType, PenResourcesBase>
+		requires std::derived_from<_ResourceType, PenResourceBase>
 	inline std::shared_ptr<_ResourceType> PenResourcesManager::loadResourceFromFile(const char* path, bool persistent, Args... data)
 	{
 		//Check if it doesn't already exist

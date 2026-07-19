@@ -4,6 +4,7 @@
 #include "PenCore/PenCore.h"                                        //PenCore
 #include "PenSerializer/PenSerializer.h"                            //PenSerializer
 #include "PenMaterialProperty.h"
+#include "PenColor/PenColor.h"
 
 #include <Vector/Vector3/Vector3.h>
 
@@ -14,9 +15,10 @@
 namespace Pengine::Resources
 {
 	class PenTexture;
+	class PenTexture;
 	class PenShaderProgram;
 
-	class PenMaterial final: public PenResourcesBase
+	class PenMaterial final: public PenResourceBase
 	{
 	public:
 		PenMaterial() = default;
@@ -52,6 +54,7 @@ namespace Pengine::Resources
 
 		//Albedo
 		void	setAlbedo(const PenMath::Vector3f& spec);
+		void	setAlbedo(const PenColor& albedo);
 		void	setAlbedo(std::shared_ptr<PenTexture> ptr);
 		void    setAlbedo(const PenMaterialProperty<PenMath::Vector3f>& prop);
 		void	loadAlbedo(std::ifstream& infile);
@@ -79,12 +82,12 @@ namespace Pengine::Resources
 		void	activateAmbientOcclusion();
 
 		//Getter
-		const std::shared_ptr<PenShaderProgram>&					getShaderProg();
-		const std::shared_ptr<PenTexture>&							getNormal();
-		const PenMaterialProperty<PenMath::Vector3f>&					getAlbedo() const;
-		const PenMaterialProperty<float>&								getMetallic() const;
-		const PenMaterialProperty<float>&								getRoughness() const;
-		const PenMaterialProperty<float>& 								getAmbientOcclusion() const;
+		const std::shared_ptr<PenShaderProgram>&				getShaderProg();
+		const std::shared_ptr<PenTexture>&						getNormal();
+		PenMaterialProperty<PenMath::Vector3f>&					getAlbedo();
+		PenMaterialProperty<float>&								getMetallic();
+		PenMaterialProperty<float>&								getRoughness();
+		PenMaterialProperty<float>& 							getAmbientOcclusion();
 
 	private:
 		PenMaterialProperty<PenMath::Vector3f>					m_albedo;

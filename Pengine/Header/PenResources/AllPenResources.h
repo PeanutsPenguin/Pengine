@@ -2,7 +2,8 @@
 
 //Include this file to have access to all resources currently existing
 
-#include "PenResources/PenTextureBase.h"
+#include "PenResources/PenTexture.h"
 #include "PenResources/PenModel.h"
-#include "PenResources/PenShaderBase.h"
-#include "PenResources/PenShaderProgramBase.h"
+#include "PenResources/PenShader.h"
+#include "PenResources/PenShaderProgram.h"
+#include "PenResources/PenMaterial/PenMaterial.h"

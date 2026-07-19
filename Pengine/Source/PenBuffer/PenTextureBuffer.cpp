@@ -41,4 +41,9 @@ namespace Pengine::Buffer
 		GladWrapper::generateMipMap();
 		unbind();
 	}
+
+	unsigned int PenTextureBuffer::getTextID() const 
+	{
+		return this->m_id;
+	}
 }

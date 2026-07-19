@@ -11,11 +11,11 @@ namespace Pengine::Resources
 {
 	class PenMesh;
 
-	class PenModel final : public PenResourcesBase
+	class PenModel final : public PenResourceBase
 	{
 	public:
 		PenModel() = default;
-		PenModel(const PenObjectId& id) : PenResourcesBase(id) {};
+		PenModel(const PenObjectId& id);
 		PenModel(const PenModel& other) = default;
 		PenModel(PenModel&& other) = default;
 		~PenModel() final;

@@ -12,18 +12,18 @@ namespace Pengine::Resources
 {
 	class PenShader;
 
-	class PenShaderProgram : public PenResourcesBase
+	class PenShaderProgram : public PenResourceBase
 	{
 	public:
 		PenShaderProgram() = default;
-		PenShaderProgram(const PenObjectId& id) : PenResourcesBase(id) {};
+		PenShaderProgram(const PenObjectId& id);
 		PenShaderProgram(const PenShaderProgram& other) = default;
 		PenShaderProgram(PenShaderProgram&& other) = default;
 		~PenShaderProgram() override;
 
 		PenShaderProgram& operator=(const PenShaderProgram& rhs) = default;
 		PenShaderProgram& operator=(PenShaderProgram&& rhs) = default;
-
+		 
 		static std::shared_ptr<PenShaderProgram> defaultShaderProgram();
 
 		void destroy();
@@ -32,7 +32,7 @@ namespace Pengine::Resources
 		_NODISCARD bool		createResource(const std::string PenfilePath, const std::string sourcePath);
 		_NODISCARD bool		createResource(const std::string PenfilePath, std::shared_ptr<PenShader> vertexShader, std::shared_ptr<PenShader> fragmentShader);
 
-		_NODISCARD bool createShaderProgram(std::shared_ptr<PenShader> vertPtr, std::shared_ptr<PenShader> fragPtr);
+		_NODISCARD bool		createShaderProgram(std::shared_ptr<PenShader> vertPtr, std::shared_ptr<PenShader> fragPtr);
 
 		bool use() const;
 		void unuse() const;

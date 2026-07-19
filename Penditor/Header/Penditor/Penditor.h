@@ -11,6 +11,7 @@ namespace Penditor
 	{
 		class PenGameWindow;
 		class PenPropertyWindow;
+		class PenFileExplorerWindow;
 	}
 }
 
@@ -31,11 +32,11 @@ namespace Penditor
 
 		static void destroy();
 
-		static std::unique_ptr<Window::PenGameWindow>&		GameWindow();
+		static std::unique_ptr<Window::PenGameWindow>&			GameWindow();
+		static std::unique_ptr<Window::PenPropertyWindow>&		PropertyWindow();
+		static std::unique_ptr<Window::PenFileExplorerWindow>&	FileExplorerWindow();
+		static std::unique_ptr<PickingHandler>&					PickingHandler();
 
-		static std::unique_ptr<Window::PenPropertyWindow>&	PropertyWindow();
-
-		static std::unique_ptr<PickingHandler>&				PickingHandler();
 	private:
 		static void update();
 
@@ -43,9 +44,10 @@ namespace Penditor
 
 		static void handleInputs();
 
-		static std::unique_ptr<Window::PenGameWindow>		m_PenGameWindow;
-		static std::unique_ptr<Window::PenPropertyWindow>	m_PenPropertyWindow;
-		static std::unique_ptr<Penditor::PickingHandler>	m_pickingHandler;
+		static std::unique_ptr<Window::PenGameWindow>			m_PenGameWindow;
+		static std::unique_ptr<Window::PenPropertyWindow>		m_PenPropertyWindow;
+		static std::unique_ptr<Window::PenFileExplorerWindow>	m_PenFileExplorerWindow;
+		static std::unique_ptr<Penditor::PickingHandler>		m_pickingHandler;
 		static bool m_shouldStop;
 	};
 }

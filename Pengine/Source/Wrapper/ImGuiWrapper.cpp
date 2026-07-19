@@ -6,7 +6,6 @@
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 
-
 #include <iostream>
 
 namespace Pengine::ui::ImGuiWrapper
@@ -24,7 +23,6 @@ namespace Pengine::ui::ImGuiWrapper
 
 		// Set UI theme
 		ImGui::StyleColorsDark();
-
 
 		// Init
 		ImGui_ImplGlfw_InitForOpenGL(*window, true);
@@ -101,9 +99,9 @@ namespace Pengine::ui::ImGuiWrapper
 		return ImGui::GetFrameHeight();
 	}
 
-	void setCursorPos(const PenMath::Vector2f& pos)
+	void setCursorPos(const PenMath::Vector2& pos)
 	{
-		ImGui::SetCursorPos({ pos.x, pos.y });
+		ImGui::SetCursorPos({ (float)pos.x, (float)pos.y });
 	}
 
 	void setCursorPosX(float x)
@@ -126,9 +124,44 @@ namespace Pengine::ui::ImGuiWrapper
 		return ImGui::IsWindowHovered();
 	}
 
+	bool isMousePastDragTreshold()
+	{
+		return ImGui::IsMouseDragPastThreshold(0);
+	}
+
+	bool isItemClicked()
+	{
+		return ImGui::IsItemClicked();
+	}
+
+	bool isItemHovered()
+	{
+		return ImGui::IsItemHovered();
+	}
+
 	void removeInputFocus()
 	{
 		ImGui::SetActiveID(0, ImGui::GetCurrentWindow());
+	}
+
+	void pushStyleColor(const PenColor& col)
+	{
+		ImGui::PushStyleColor(ImGuiCol_Header, { col.x, col.y, col.z, col.a });
+	}
+
+	void popStyleColor()
+	{
+		ImGui::PopStyleColor(1);
+	}
+
+	void popTree()
+	{
+		ImGui::TreePop();
+	}
+
+	void addImageToDrawList(unsigned int id, const PenMath::Vector2& topLeft, const PenMath::Vector2& bottomRight)
+	{
+		ImGui::GetWindowDrawList()->AddImage(id, ImVec2(topLeft.x, topLeft.y), ImVec2(bottomRight.x, bottomRight.y));
 	}
 
 	#pragma region Render Calls
@@ -142,6 +175,17 @@ namespace Pengine::ui::ImGuiWrapper
 		ImGui::Image(textureID, { (float)size.x, (float)size.y }, { 0, 1 }, { 1, 0 });
 	}
 
+	void renderCenterImage(int textureID, const PenMath::Vector2& size)
+	{
+		float availWidth = ImGui::GetContentRegionAvail().x;
+
+		float offsetX = (availWidth - size.x) * 0.5f;
+
+		ImGui::SetCursorPosX(offsetX);
+
+		ImGui::Image(textureID, { (float)size.x, (float)size.y }, { 0, 1 }, { 1, 0 });
+	}
+
 	void renderBool(bool* value, const char* name)
 	{
 		ImGui::Checkbox(name, value);
@@ -152,6 +196,71 @@ namespace Pengine::ui::ImGuiWrapper
 		ImGui::Text(value);
 	}
 
+	void renderCenterText(const char* value)
+	{
+		float textWidth = ImGui::CalcTextSize(value).x;
+		float windowWidth = ImGui::GetContentRegionAvail().x;
+
+		ImGui::SetCursorPosX((windowWidth - textWidth) * 0.5f);
+		ImGui::Text(value);
+	}
+
+	void renderSeperator()
+	{
+		ImGui::Separator();
+	}
+	
+	void fillDragAndDropData(Pengine::DragAndDropData* data)
+	{
+		const char* payload = "NONE";
+
+		switch(data->type)
+		{
+		case Resources::PenResourceType::E_MATERIAL:
+			payload = MAT_ID;
+			break;
+		case Resources::PenResourceType::E_MODEL:
+			payload = MODEL_ID;
+			break;
+		case Resources::PenResourceType::E_SHADER:
+			payload = SHADER_ID;
+			break;
+		case Resources::PenResourceType::E_SHADER_PROGRAM:
+			payload = SHADER_PROG_ID;
+			break;
+		case Resources::PenResourceType::E_TEXTURE:
+			payload = TEXTURE_ID;
+			break;
+		}
+
+		ImGui::SetDragDropPayload(payload, data, sizeof(DragAndDropData));
+	}
+
+	void endDragAndDropSource()
+	{
+		ImGui::EndDragDropSource();
+	}
+
+	void endDragAndDropTarget()
+	{
+		ImGui::EndDragDropTarget();
+	}
+
+	bool renderColorPicker(const char* label, PenColor& col)
+	{
+		return ImGui::ColorEdit4(label, &col.x, ImGuiColorEditFlags_NoInputs);
+	}
+
+	bool renderColorPicker3(const char* label, PenColor& col)
+	{
+		return ImGui::ColorEdit3(label, &col.x, ImGuiColorEditFlags_NoInputs);
+	}
+
+	bool renderColorPickerVec3(const char* label, PenMath::Vector3f& col)
+	{
+		return ImGui::ColorEdit3(label, &col.x, ImGuiColorEditFlags_NoInputs);
+	}
+
 	bool renderCollapsingHeader(const char* name)
 	{
 		return ImGui::CollapsingHeader(name, ImGuiTreeNodeFlags_DefaultOpen);
@@ -159,7 +268,6 @@ namespace Pengine::ui::ImGuiWrapper
 
 	bool renderVector3(PenMath::Vector3& vec, const char* name)
 	{
-
 		return ImGui::InputInt3(name, &vec[0]);
 	}
 
@@ -176,6 +284,36 @@ namespace Pengine::ui::ImGuiWrapper
 		}
 
 		return false;
+	}
+
+	bool renderTreeNode(const char* name, PenTreeNodeFlags flags)
+	{
+		return ImGui::TreeNodeEx(name, flags);
+	}
+
+	bool renderSliderFloat(const char* label, float min, float max, float* value)
+	{
+		return ImGui::SliderFloat(label, value, min, max);
+	}
+
+	bool beginDragAndDropSource()
+	{
+		return ImGui::BeginDragDropSource();
+	}
+
+	bool beginDragAndDropTarget()
+	{
+		return ImGui::BeginDragDropTarget();
+	}
+
+	const Pengine::DragAndDropData* getDroppedData(const char* type)
+	{
+		const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(type);
+
+		if (payload == nullptr)
+			return nullptr;
+
+		return (const Pengine::DragAndDropData*)payload->Data;
 	}
 	#pragma endregion
 }

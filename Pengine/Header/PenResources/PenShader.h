@@ -5,11 +5,11 @@
 
 namespace Pengine::Resources
 {
-	class PenShader : public PenResourcesBase
+	class PenShader : public PenResourceBase
 	{
 	public:
 		PenShader() = default;
-		PenShader(const PenObjectId& id) : PenResourcesBase(id) {};
+		PenShader(const PenObjectId& id);
 		PenShader(const PenShader& other) = default;
 		PenShader(PenShader&& other) = default;
 		~PenShader() override;

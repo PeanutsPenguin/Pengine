@@ -10,8 +10,9 @@
 using namespace Pengine::Resources;
 
 #pragma region Constructors and destructor
-PenMaterial::PenMaterial(const PenObjectId id) : PenResourcesBase(id)
+PenMaterial::PenMaterial(const PenObjectId id) : PenResourceBase(id)
 {
+    this->p_type = E_MATERIAL;
     this->m_albedo = PenMaterialProperty<PenMath::Vector3f>(nullptr, { 1, 1, 1 });
     this->m_metallic = PenMaterialProperty<float>(nullptr, 0);
     this->m_roughness = PenMaterialProperty<float>(nullptr, .6f);
@@ -34,10 +35,14 @@ bool PenMaterial::loadResource(const std::string path)
 {
     std::cout << __FUNCTION__ "\tLoading Material :" << path << std::endl;
 
+    std::ifstream infile(path, std::ios::binary);
+
+    int type = 0;
+    PenCore::Serializer()->read(infile, type);
+
     //Create variables 
     std::string shaderPath;
 
-    std::ifstream infile(path, std::ios::binary);
     PenCore::Serializer()->read(infile, shaderPath);
 
     std::string tempPath;
@@ -97,6 +102,7 @@ bool PenMaterial::createResource(const std::string penfilePath, std::shared_ptr<
     else
         this->m_albedo.texture = tex;
 
+    PenCore::Serializer()->write(outfile, (int)this->p_type);
     PenCore::Serializer()->write(outfile, this->m_shader->getResourcePath());
 
     this->m_albedo.serializeProperty(outfile);
@@ -115,8 +121,8 @@ void PenMaterial::quickSave()
 {
     std::ofstream outfile(this->m_penfilePath, std::ios::binary);
 
+    PenCore::Serializer()->write(outfile, (int)this->p_type);
     PenCore::Serializer()->write(outfile, this->m_shader->getResourcePath());
-
     this->m_albedo.serializeProperty(outfile);
     this->m_metallic.serializeProperty(outfile);
     this->m_roughness.serializeProperty(outfile);
@@ -206,6 +212,13 @@ void PenMaterial::setAlbedo(const PenMath::Vector3f& albedo)
     this->m_albedo.defaultValue = albedo;
 }
 
+void PenMaterial::setAlbedo(const PenColor& albedo)
+{
+    this->m_albedo.defaultValue.x = albedo.x;
+    this->m_albedo.defaultValue.y = albedo.y;
+    this->m_albedo.defaultValue.z = albedo.z;
+}
+
 void PenMaterial::setAlbedo(std::shared_ptr<PenTexture> ptr)
 {
     this->m_albedo.texture = ptr;
@@ -216,7 +229,7 @@ void PenMaterial::setAlbedo(const PenMaterialProperty<PenMath::Vector3f>& prop)
     this->m_albedo = prop;
 }
 
-const PenMaterialProperty<PenMath::Vector3f>& PenMaterial::getAlbedo() const
+PenMaterialProperty<PenMath::Vector3f>& PenMaterial::getAlbedo()
 {
     return this->m_albedo;
 }
@@ -245,7 +258,7 @@ void PenMaterial::activateAlbedo()
     }
     else
     {
-        PenTexture::defaultTexture()->dataPtr()->activate(0);
+        PenTexture::noTexture()->dataPtr()->activate(0);
     }
 
     this->m_shader->setUniform("mat.albedoMap", 0);
@@ -269,7 +282,7 @@ void PenMaterial::setMetallic(const PenMaterialProperty<float>& prop)
     this->m_metallic = prop;
 }
 
-const PenMaterialProperty<float>& PenMaterial::getMetallic() const
+PenMaterialProperty<float>& PenMaterial::getMetallic()
 {
     return this->m_metallic;
 }
@@ -298,7 +311,7 @@ void PenMaterial::activateMetallic()
     }
     else
     {
-        PenTexture::defaultTexture()->dataPtr()->activate(1);
+        PenTexture::noTexture()->dataPtr()->activate(1);
     }
 
     this->m_shader->setUniform("mat.metallicMap", 1);
@@ -323,7 +336,7 @@ void PenMaterial::setRoughness(const PenMaterialProperty<float>& prop)
     this->m_roughness = prop;
 }
 
-const PenMaterialProperty<float>& PenMaterial::getRoughness() const
+PenMaterialProperty<float>& PenMaterial::getRoughness()
 {
     return this->m_roughness;
 }
@@ -352,7 +365,7 @@ void PenMaterial::activateRoughness()
     }
     else
     {
-        PenTexture::defaultTexture()->dataPtr()->activate(2);
+        PenTexture::noTexture()->dataPtr()->activate(2);
     }
 
     this->m_shader->setUniform("mat.roughnessMap", 2);
@@ -376,7 +389,7 @@ void PenMaterial::setAmbientOcclusion(const PenMaterialProperty<float>& prop)
     this->m_ambientOcclusion = prop;
 }
 
-const PenMaterialProperty<float>& PenMaterial::getAmbientOcclusion() const
+PenMaterialProperty<float>& PenMaterial::getAmbientOcclusion()
 {
     return this->m_ambientOcclusion;
 }
@@ -405,7 +418,7 @@ void PenMaterial::activateAmbientOcclusion()
     }
     else
     {
-        PenTexture::defaultTexture()->dataPtr()->activate(3);
+        PenTexture::noTexture()->dataPtr()->activate(3);
     }
 
     this->m_shader->setUniform("mat.aoMap", 3);

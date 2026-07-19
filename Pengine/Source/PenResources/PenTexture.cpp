@@ -18,11 +18,6 @@
 
 using namespace Pengine::Resources;
 
-std::shared_ptr<PenTexture> PenTexture::defaultTexture()
-{
-	return PenCore::ResourcesManager()->loadResourceFromFile<PenTexture>("Textures/defaultTex.penfile", true);
-}
-
 std::shared_ptr<PenTexture> PenTexture::noTexture()
 {
 	return PenCore::ResourcesManager()->loadResourceFromFile<PenTexture>("Textures/NoTexture.penfile", true);
@@ -35,12 +30,23 @@ const std::string PenTexture::getTexturePath() const
 
 PenTexture::PenTexture()
 {
+	this->p_type = E_TEXTURE;
 	this->m_texBuffer = std::make_unique<Pengine::Buffer::PenTextureBuffer>();
 }
 
-PenTexture::PenTexture(const PenObjectId& id) : PenResourcesBase(id)
+PenTexture::PenTexture(const PenObjectId& id) : PenResourceBase(id)
 {
+	this->p_type = E_TEXTURE;
 	this->m_texBuffer = std::make_unique<Pengine::Buffer::PenTextureBuffer>();
+}
+
+PenTexture::~PenTexture()
+{
+	if (this->m_texBuffer)
+	{
+		this->m_texBuffer.reset();
+		this->m_texBuffer = nullptr;
+	}
 }
 
 #pragma region Resource
@@ -49,9 +55,11 @@ bool PenTexture::loadResource(const std::string path)
 	std::cout << __FUNCTION__ << "\tLoading texture : " << path << std::endl;
 
 	//Create variables 
+	int type = 0;
 	std::string sourcePath;
 
 	std::ifstream infile(path, std::ios::binary);
+	PenCore::Serializer()->read(infile, type);
 	PenCore::Serializer()->read(infile, sourcePath);
 	infile.close();
 
@@ -69,6 +77,7 @@ bool PenTexture::createResource(const std::string PenfilePath, const std::string
 
 	//Serialize source file
 	std::ofstream outfile(PenfilePath, std::ios::binary);
+	PenCore::Serializer()->write(outfile, (int)this->p_type);
 	PenCore::Serializer()->write(outfile, sourcePath);
 	outfile.close();
 

@@ -40,8 +40,6 @@ namespace Penditor
 
 		void update(std::shared_ptr<Pengine::System::PenRendererSystem> renderer);
 
-		bool hasSelectedObjectChanged();
-
 	private:
 		void updateSelectedObject(const PenMath::Vector2& mousPos, std::shared_ptr<Pengine::System::PenRendererSystem> renderer);
 
@@ -55,6 +53,5 @@ namespace Penditor
 
 		std::shared_ptr<Pengine::Resources::PenShaderProgram> m_pickingShader;
 		Pengine::PenObjectId m_selectedObject = Pengine::g_PenObjectInvalidId;
-		bool m_selectedObjectChanged = false;
 	};
 }
