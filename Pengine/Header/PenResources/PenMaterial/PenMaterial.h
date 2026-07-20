@@ -37,6 +37,7 @@ namespace Pengine::Resources
 		bool	createResource(const std::string penfilePath, const std::string sourcePath) final;
 		bool	createResource(const std::string penfilePath, std::shared_ptr<PenShaderProgram> prog);
 		bool	createResource(const std::string penfilePath, std::shared_ptr<PenShaderProgram> prog, std::shared_ptr<PenTexture> tex);
+		bool	save() override;
 
 		void shaderActivation();
 		void GLShaderActivation();

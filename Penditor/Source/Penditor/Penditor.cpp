@@ -14,6 +14,7 @@
 #include "PenPropertyWindow/PenPropertyWindow.h"	//Penditor::Window::PenPropertyWindow
 #include "PenFileExplorerWindow/PenFileExplorerWindow.h"
 #include "PickingHandler/PickingHandler.h"
+#include "PenSaveSystem/PenSaveSystem.h"
 
 using namespace Penditor;
 
@@ -22,6 +23,7 @@ std::unique_ptr<Window::PenGameWindow>			PenditorCore::m_PenGameWindow				= std:
 std::unique_ptr<Window::PenPropertyWindow>		PenditorCore::m_PenPropertyWindow			= std::make_unique<Window::PenPropertyWindow>("PenProperty");
 std::unique_ptr<Window::PenFileExplorerWindow>	PenditorCore::m_PenFileExplorerWindow		= std::make_unique<Window::PenFileExplorerWindow>("PenFileExplorer");
 std::unique_ptr<Penditor::PickingHandler>		PenditorCore::m_pickingHandler				= std::make_unique<Penditor::PickingHandler>();
+std::unique_ptr<Penditor::PenSavior>			PenditorCore::m_PenSavior					= std::make_unique<Penditor::PenSavior>();
 
 void PenditorCore::init()
 {
@@ -87,13 +89,7 @@ void PenditorCore::handleInputs()
 	if (ptr->isKeyPressed(Pengine::key_ESCAPE))
 		stopEditor();
 
-	if (ptr->isKeyPressed(Pengine::key_C))
-	{
-		if (Pengine::PenCore::MainPenWindow()->getCursorState() == Pengine::CursorState::E_DISABLED)
-			Pengine::PenCore::MainPenWindow()->setCursorState(Pengine::CursorState::E_NORMAL);
-		else
-			Pengine::PenCore::MainPenWindow()->setCursorState(Pengine::CursorState::E_DISABLED);
-	}
+	m_PenSavior->checkSaveInputs();
 }
 
 void PenditorCore::destroy()
@@ -122,6 +118,13 @@ void PenditorCore::destroy()
 		m_PenFileExplorerWindow = nullptr;
 	}
 
+	if (m_PenSavior)
+	{
+		m_PenSavior.reset();
+		m_PenSavior = nullptr;
+	}
+
+
 	Pengine::PenCore::destroy();
 }
 
@@ -138,6 +141,11 @@ std::unique_ptr<Window::PenPropertyWindow>& PenditorCore::PropertyWindow()
 std::unique_ptr<PickingHandler>& PenditorCore::PickingHandler()
 {
 	return m_pickingHandler;
+}
+
+std::unique_ptr<PenSavior>& PenditorCore::SaveSystem()
+{
+	return m_PenSavior;
 }
 
 std::unique_ptr<Window::PenFileExplorerWindow>& PenditorCore::FileExplorerWindow()

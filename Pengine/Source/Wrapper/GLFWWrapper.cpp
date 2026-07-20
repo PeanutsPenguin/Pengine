@@ -151,7 +151,7 @@ namespace Pengine
 	{
 		int glfwKey = 0;
 
-		if (input >= 39 && input <= 41)
+		if (input == key_MOUSE_LEFT || input == key_MOUSE_RIGHT || input == key_MOUSE_WHEEL)
 			return convertToGLFWMouseInput(input);
 		else if (input == PenInput::key_ESCAPE)
 			glfwKey = GLFW_KEY_ESCAPE;
@@ -159,6 +159,8 @@ namespace Pengine
 			glfwKey = GLFW_KEY_SPACE;
 		else if (input == PenInput::key_ENTER)
 			glfwKey = GLFW_KEY_ENTER;
+		else if (input == PenInput::key_LEFT_CONTROL)
+			glfwKey = GLFW_KEY_LEFT_CONTROL;
 		else if (input <= 9)
 			glfwKey = input + 48;
 		else if (input > 9 && input <= 35)

@@ -1,5 +1,6 @@
 #include "PenResources/PenResourcesManager.h"
 
+
 #include <iostream>
 
 using namespace Pengine::Resources;
@@ -8,7 +9,7 @@ void PenResourcesManager::clearUnused()
 {
     for (auto it = m_resourceStocker.begin(); it != m_resourceStocker.end();)
     {
-        if (it->second.expired())
+        if (!it->second.lock())
         {
             it = m_resourceStocker.erase(it);
 
@@ -36,6 +37,38 @@ void PenResourcesManager::destroy()
             m_idToPathfile.erase(it->first);
             m_pathfileToId.erase(path);
         }
+    }
+}
+
+void PenResourcesManager::makeDirty(PenResourcesId id)
+{
+    if (auto it = m_resourceStocker.find(id); it != m_resourceStocker.end())
+    {
+        if (auto dirtyResource = it->second.lock()) 
+            m_persistentResourcestocker[id] = dirtyResource;
+    }
+}
+
+void PenResourcesManager::removeDirty(PenResourcesId id)
+{
+    if (auto it = m_persistentResourcestocker.find(id); it != m_persistentResourcestocker.end())
+        it = m_persistentResourcestocker.erase(it);
+}
+
+void PenResourcesManager::saveAllDirty()
+{
+    auto it = m_persistentResourcestocker.begin();
+
+    while (it != m_persistentResourcestocker.end())
+    {
+        if (it->second && it->second->isDirty())
+        {
+            std::shared_ptr<PenResourceBase> resource = it->second;
+            it = m_persistentResourcestocker.erase(it);
+            resource->save();
+        }
+        else
+            ++it;
     }
 }
 

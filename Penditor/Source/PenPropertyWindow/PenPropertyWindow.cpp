@@ -161,7 +161,10 @@ namespace Penditor::Window
 
 		manager->renderText("Raw Value : ");
 		manager->renderOnSameLine();
-		manager->renderColorPickerVec3("##AlbedoRawValue", mat->getAlbedo().defaultValue);
+		PenMath::Vector3f albedoCpy = mat->getAlbedo().defaultValue;
+
+		if (manager->renderColorPickerVec3("##AlbedoRawValue", albedoCpy))
+			mat->setAlbedo(albedoCpy);
 
 		manager->renderSeperator();
 	}
@@ -204,7 +207,10 @@ namespace Penditor::Window
 
 		manager->setNextItemWidth(Setting::sPropertySettings::s_sliderMinWidth);
 
-		manager->renderSliderFloat("##RoughnessRawValue", 0, 1, &mat->getRoughness().defaultValue);
+		float roughCpy = mat->getRoughness().defaultValue;
+
+		if (manager->renderSliderFloat("##RoughnessRawValue", 0, 1, &roughCpy))
+			mat->setRoughness(roughCpy);
 
 		manager->renderSeperator();
 	}
@@ -247,7 +253,10 @@ namespace Penditor::Window
 
 		manager->setNextItemWidth(Setting::sPropertySettings::s_sliderMinWidth);
 
-		manager->renderSliderFloat("##MetallicRawValue", 0, 1, &mat->getMetallic().defaultValue);
+		float metCpy = mat->getRoughness().defaultValue;
+
+		if (manager->renderSliderFloat("##MettallicRawValue", 0, 1, &metCpy))
+			mat->setMetallic(metCpy);
 
 		manager->renderSeperator();
 	}
@@ -290,7 +299,10 @@ namespace Penditor::Window
 
 		manager->setNextItemWidth(Setting::sPropertySettings::s_sliderMinWidth);
 
-		manager->renderSliderFloat("##AORawValue", 0, 1, &mat->getAmbientOcclusion().defaultValue);
+		float aoCpy = mat->getRoughness().defaultValue;
+
+		if (manager->renderSliderFloat("##AORawValue", 0, 1, &aoCpy))
+			mat->setAmbientOcclusion(aoCpy);
 
 		manager->renderSeperator();
 	}

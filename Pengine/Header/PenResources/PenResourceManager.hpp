@@ -88,7 +88,7 @@ namespace Pengine::Resources
 		//Check if it doesn't already exist
 		auto it = m_pathfileToId.find(path);
 		if (it != m_pathfileToId.end())
-			return std::dynamic_pointer_cast<_ResourceType>(m_resourceStocker[it->second].lock());
+			return std::dynamic_pointer_cast<_ResourceType>(m_resourceStocker[it->second].lock());	
 
 		std::cout << __FUNCTION__ << "\tResources : " << path << " doesn't exist, loading it" << std::endl;
 

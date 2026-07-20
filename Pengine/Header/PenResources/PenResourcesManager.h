@@ -47,6 +47,12 @@ namespace Pengine::Resources
 		void clearUnused();
 
 		void destroy();
+
+		void makeDirty(PenResourcesId id);
+
+		void removeDirty(PenResourcesId id);
+
+		void saveAllDirty();
 	
 	private:
 		std::unordered_map<PenResourcesId, std::string>							m_idToPathfile;

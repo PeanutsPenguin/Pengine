@@ -19,7 +19,7 @@ PenShaderProgram::PenShaderProgram(const PenObjectId& id) : PenResourceBase(id)
 std::shared_ptr<PenShaderProgram> PenShaderProgram::defaultShaderProgram()
 {
 	if (PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
-		return PenCore::ResourcesManager()->loadResourceFromFile<PenShaderProgram>("Shaders/DefaultShaderProgram.penfile");
+		return PenCore::ResourcesManager()->loadResourceFromFile<PenShaderProgram>("Shaders/PBR/ShaderProgPBR.penfile");
 
 	return nullptr;
 }
