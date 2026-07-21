@@ -42,6 +42,8 @@ bool PenModel::loadResource(const std::string path)
 	PenCore::Serializer()->read(infile, type);
 	PenCore::Serializer()->read(infile, sourcePath);
 
+	this->m_penfilePath = path;
+
 	//Generate the mesh
 	return generateResource(sourcePath.c_str());
 }
@@ -52,6 +54,8 @@ bool PenModel::createResource(const std::string PenfilePath, const std::string s
 
 	PenCore::Serializer()->write(outfile, (int)p_type);
 	PenCore::Serializer()->write(outfile, sourcePath);
+
+	this->m_penfilePath = PenfilePath;
 
 	return generateResource(sourcePath.c_str());
 }

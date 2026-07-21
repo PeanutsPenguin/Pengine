@@ -32,6 +32,8 @@ namespace Pengine::Resources
 		/// Return a const pointer to the Texture buffer so the value can't be changed but can be used
 		/// </summary>
 		_NODISCARD const Pengine::Buffer::PenTextureBuffer* dataPtr() const noexcept;
+
+
 	
 	private:
 		bool initializeTextureBuffer(const char* sourcePath);

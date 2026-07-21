@@ -6,6 +6,7 @@ namespace Penditor
 {
 	class PenFreeCam;
 	class PickingHandler;
+	class PenSavior;
 
 	namespace Window
 	{
@@ -36,6 +37,7 @@ namespace Penditor
 		static std::unique_ptr<Window::PenPropertyWindow>&		PropertyWindow();
 		static std::unique_ptr<Window::PenFileExplorerWindow>&	FileExplorerWindow();
 		static std::unique_ptr<PickingHandler>&					PickingHandler();
+		static std::unique_ptr<Penditor::PenSavior>&			SaveSystem();
 
 	private:
 		static void update();
@@ -48,6 +50,7 @@ namespace Penditor
 		static std::unique_ptr<Window::PenPropertyWindow>		m_PenPropertyWindow;
 		static std::unique_ptr<Window::PenFileExplorerWindow>	m_PenFileExplorerWindow;
 		static std::unique_ptr<Penditor::PickingHandler>		m_pickingHandler;
+		static std::unique_ptr<Penditor::PenSavior>				m_PenSavior;
 		static bool m_shouldStop;
 	};
 }

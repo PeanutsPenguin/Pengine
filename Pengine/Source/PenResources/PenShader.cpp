@@ -154,8 +154,10 @@ const char* PenShader::getSourcePath()
 {
 	//Create variables 
 	std::string sourcePath;
+	int type = 0;
 
 	std::ifstream infile(this->m_penfilePath, std::ios::binary);
+	PenCore::Serializer()->read(infile, type);
 	PenCore::Serializer()->read(infile, sourcePath);
 	infile.close();
 

@@ -24,9 +24,8 @@ namespace Pengine::Resources
 
 		bool changeShaderType(const PenShaderType type, const char* PenfilePath);
 
-		_NODISCARD const unsigned int getShaderId() const noexcept;
-
-		unsigned int* getShaderIdPtr();
+		_NODISCARD const unsigned int	getShaderId() const noexcept;
+		_NODISCARD unsigned int*		getShaderIdPtr();
 
 	protected:
 		Pengine::PenShaderType m_type = Pengine::PenShaderType::INVALID_SHADER;

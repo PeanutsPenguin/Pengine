@@ -69,6 +69,7 @@ bool PenMaterial::loadResource(const std::string path)
         this->m_shader = shader;
 
     this->m_penfilePath = path;
+    p_isDirty = false;
 
     return true;
 }
@@ -113,11 +114,12 @@ bool PenMaterial::createResource(const std::string penfilePath, std::shared_ptr<
     this->saveNormal(outfile);
 
     this->m_penfilePath = penfilePath;
+    p_isDirty = false;
 
     return true;
 }
 
-void PenMaterial::quickSave()
+bool PenMaterial::save()
 {
     std::ofstream outfile(this->m_penfilePath, std::ios::binary);
 
@@ -129,6 +131,8 @@ void PenMaterial::quickSave()
     this->m_ambientOcclusion.serializeProperty(outfile);
 
     this->saveNormal(outfile);
+
+    return PenResourceBase::save();
 }
 #pragma endregion
 
@@ -139,6 +143,8 @@ void PenMaterial::setShaderProgram(std::shared_ptr<Pengine::Resources::PenShader
         this->m_shader = prog;
     else
         this->m_shader = PenShaderProgram::defaultShaderProgram();
+
+    setDirty();
 }
 
 const std::shared_ptr<PenShaderProgram>& PenMaterial::getShaderProg()
@@ -157,7 +163,10 @@ const std::shared_ptr<PenShaderProgram>& PenMaterial::getShaderProg()
 void PenMaterial::setNormal(std::shared_ptr<Pengine::Resources::PenTexture> ptr)
 {
     if (ptr)
+    {
         this->m_normal = ptr;
+        setDirty();
+    }
 }
 
 const std::shared_ptr<PenTexture>& PenMaterial::getNormal()
@@ -210,6 +219,7 @@ void PenMaterial::saveNormal(std::ofstream& outfile)
 void PenMaterial::setAlbedo(const PenMath::Vector3f& albedo)
 {
     this->m_albedo.defaultValue = albedo;
+    setDirty();
 }
 
 void PenMaterial::setAlbedo(const PenColor& albedo)
@@ -217,16 +227,19 @@ void PenMaterial::setAlbedo(const PenColor& albedo)
     this->m_albedo.defaultValue.x = albedo.x;
     this->m_albedo.defaultValue.y = albedo.y;
     this->m_albedo.defaultValue.z = albedo.z;
+    setDirty();
 }
 
 void PenMaterial::setAlbedo(std::shared_ptr<PenTexture> ptr)
 {
     this->m_albedo.texture = ptr;
+    setDirty();
 }
 
 void PenMaterial::setAlbedo(const PenMaterialProperty<PenMath::Vector3f>& prop)
 {
     this->m_albedo = prop;
+    setDirty();
 }
 
 PenMaterialProperty<PenMath::Vector3f>& PenMaterial::getAlbedo()
@@ -270,16 +283,19 @@ void PenMaterial::activateAlbedo()
 void PenMaterial::setMetallic(const float metallic)
 {
     this->m_metallic.defaultValue = metallic;
+    setDirty();
 }
 
 void PenMaterial::setMetallic(std::shared_ptr<PenTexture> ptr)
 {
     this->m_metallic.texture = ptr;
+    setDirty();
 }
 
 void PenMaterial::setMetallic(const PenMaterialProperty<float>& prop)
 {
     this->m_metallic = prop;
+    setDirty();
 }
 
 PenMaterialProperty<float>& PenMaterial::getMetallic()
@@ -324,16 +340,19 @@ void PenMaterial::activateMetallic()
 void PenMaterial::setRoughness(const float rough)
 {
     this->m_roughness.defaultValue = rough;
+    setDirty();
 }
 
 void PenMaterial::setRoughness(std::shared_ptr<PenTexture> ptr)
 {
     this->m_roughness.texture = ptr;
+    setDirty();
 }
 
 void PenMaterial::setRoughness(const PenMaterialProperty<float>& prop)
 {
     this->m_roughness = prop;
+    setDirty();
 }
 
 PenMaterialProperty<float>& PenMaterial::getRoughness()

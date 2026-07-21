@@ -98,7 +98,6 @@ int main()
 		Pengine::Components::PenRenderer thirdRenderComp;
 
 		std::shared_ptr<Pengine::Resources::PenMaterial> sphereMat = resourceManager->loadResourceFromFile<Pengine::Resources::PenMaterial>("Material/SphereMat.penfile");
-		sphereMat->setAlbedo(Pengine::PenColor::Red);
 
 		std::shared_ptr<Pengine::Resources::PenModel> thirdModel = resourceManager->loadResourceFromFile<Pengine::Resources::PenModel>("Mesh/sphere.penfile");
 		thirdRenderComp.setModel(thirdModel);
