@@ -38,11 +38,15 @@ namespace Pengine::ui::ImGuiWrapper
 	void				setCursorPosX(float x);
 	void				setCursorPosY(float y);
 	void				setNextItemWidth(float width);
+	void				setNextItemOpen(bool value);
 
 	bool isMouseOverWindow();
 	bool isMousePastDragTreshold();
 	bool isItemClicked();
 	bool isItemHovered();
+	bool beginDragAndDropSource();
+	bool beginDragAndDropTarget();
+
 	void removeInputFocus();
 	void pushStyleColor(const PenColor& col);
 	void popStyleColor();
@@ -69,8 +73,7 @@ namespace Pengine::ui::ImGuiWrapper
 	bool	renderColorPicker(const char* label, PenColor& col);
 	bool	renderColorPickerVec3(const char* label, PenMath::Vector3f& col);
 	bool	renderSliderFloat(const char* label, float min, float max, float* value);
-	bool	beginDragAndDropSource();
-	bool	beginDragAndDropTarget();
+	bool	renderButton(const char* name, const PenMath::Vector2& size);
 
 	const Pengine::DragAndDropData* getDroppedData(const char* type);
 }

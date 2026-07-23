@@ -1,19 +1,24 @@
 #include "PenPropertyWindow/PenPropertyWindow.h"
+#include "PenPropertyWindow/PenPropertySettings.h"
 
 #include "PenCore/PenCore.h"
 #include "PenOctopus/PenOctopus.hpp"
 #include "PenUIManager/PenUIManager.h"
 #include "PenProperty/PenPropertyManager.h"
-#include "PenResources/PenResourceManager.hpp"
 #include "PenComponents/PenComponentBase.h"
-#include "PenPropertyWindow/PenPropertySettings.h"
-#include "PenComponents/PenTransform/PenTransform.h"
-#include "PenResources/AllPenResources.h"
+
 #include "PenBuffer/PenTextureBuffer.h"
+
+#include "PenResources/PenResourceManager.hpp"
+#include "PenResources/AllPenResources.h"
+
+#include "PenComponents/PenTransform/PenTransform.h"
+#include "PenComponents/PenRenderer/PenRenderer.h"
 
 #include "PickingHandler/PickingHandler.h"
 #include "Penditor/Penditor.h"
 #include "PenFileExplorerWindow/PenFileExplorerWindow.h"
+
 
 namespace Penditor::Window
 {
@@ -382,6 +387,12 @@ namespace Penditor::Window
 			case Pengine::PenPropertyType::E_QUATERNION:
 				this->renderQuaternionProp(prop, manager);
 				break;
+			case Pengine::PenPropertyType::E_MODEL:
+				this->renderModelProp(prop, manager);
+				break;
+			case Pengine::PenPropertyType::E_MATERIAL:
+				this->renderMaterialProp(prop, manager);
+				break;
 		}
 	}
 
@@ -408,20 +419,20 @@ namespace Penditor::Window
 		std::string name = prop->getName();
 		name += " :";
 		
+		PenMath::Vector2 windowSize = manager->getContentSize();
+
 		std::string id = "##";
 		id += prop->getName();
 
 		manager->renderText(name.c_str());
 		manager->renderOnSameLine();
 
-		PenMath::Vector2 windowSize		= manager->getContentSize();
-		float fluid_width				= windowSize.x * Setting::sPropertySettings::s_vec3Width;
+		float fluid_width = windowSize.x * Setting::sPropertySettings::s_vec3Width;
 
 		if (fluid_width < Setting::sPropertySettings::s_vec3MinWidth)
 			fluid_width = Setting::sPropertySettings::s_vec3MinWidth;
 		
-
-		float posX	= manager->getUICursorPos().x + windowSize.x - fluid_width;
+		float posX	= 10.f + windowSize.x - fluid_width;
 
 		manager->setUICursorPosX(posX);
 		manager->setNextItemWidth(fluid_width);
@@ -437,6 +448,8 @@ namespace Penditor::Window
 		if (!m_headerOpen)
 			return;
 
+		PenMath::Vector2 windowSize = manager->getContentSize();
+
 		std::string name = prop->getName();
 		name += " :";
 
@@ -446,13 +459,12 @@ namespace Penditor::Window
 		manager->renderText(name.c_str());
 		manager->renderOnSameLine();
 
-		PenMath::Vector2 windowSize = manager->getContentSize();
 		float fluid_width = windowSize.x * Setting::sPropertySettings::s_vec3Width;
 
 		if (fluid_width < Setting::sPropertySettings::s_vec3MinWidth)
 			fluid_width = Setting::sPropertySettings::s_vec3MinWidth;
 
-		float posX = manager->getUICursorPos().x + windowSize.x - fluid_width;
+		float posX = 10.f + windowSize.x - fluid_width;
 
 		manager->setUICursorPosX(posX);
 		manager->setNextItemWidth(fluid_width);
@@ -462,6 +474,83 @@ namespace Penditor::Window
 			PenMath::Quaternion* quat = static_cast<PenMath::Quaternion*>(prop->getData());
 			quat->setRotationEuler(m_objectEuler);
 			m_currentComponent->SetState(Pengine::Components::PenComponentState::DIRTY);
+		}
+	}
+
+	void PenPropertyWindow::renderMaterialProp(Pengine::IPenProperty* prop, Pengine::ui::PenUIManager* manager)
+	{
+		if (!m_headerOpen)
+			return;
+
+		std::string name = prop->getName();
+		name += " :";
+
+		PenMath::Vector2 curPos = manager->getUICursorPos();
+		manager->setUICursorPosY(curPos.y + 15);
+		manager->renderText(name.c_str());
+		manager->renderOnSameLine();
+
+		Pengine::Resources::PenMaterial* mat = static_cast<Pengine::Resources::PenMaterial*>(prop->getData());
+
+		manager->renderOnSameLine();
+		manager->setUICursorPosY(curPos.y + 7.5f);
+
+		if (manager->renderButton(mat->getResourcePath().c_str(), { 0, 30 }))
+			Penditor::PenditorCore::FileExplorerWindow()->selectPath(mat->getResourcePath().c_str());
+
+		if (manager->beginDragAndDropTarget())
+		{
+			const Pengine::DragAndDropData* droppedData = manager->getDroppedData(MAT_ID);
+
+			if (droppedData != nullptr)
+			{
+				std::shared_ptr<Pengine::Resources::PenMaterial> mat = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenMaterial>(droppedData->filePath);
+
+				if (mat)
+				{
+					Pengine::Components::PenRenderer* comp = static_cast<Pengine::Components::PenRenderer*>(this->m_currentComponent);
+					comp->setMaterial(mat);
+				}
+			}
+		}
+
+	}
+
+	void PenPropertyWindow::renderModelProp(Pengine::IPenProperty* prop, Pengine::ui::PenUIManager* manager)
+	{
+		if (!m_headerOpen)
+			return;
+
+		std::string name = prop->getName();
+		name += " :";
+
+		PenMath::Vector2 curPos = manager->getUICursorPos();
+		manager->setUICursorPosY(curPos.y + 15);
+		manager->renderText(name.c_str());
+		manager->renderOnSameLine();
+
+		Pengine::Resources::PenModel* model = static_cast<Pengine::Resources::PenModel*>(prop->getData());
+
+		manager->renderOnSameLine();
+		manager->setUICursorPosY(curPos.y + 7.5f);
+
+		if(manager->renderButton(model->getResourcePath().c_str(), {0, 30}))
+			Penditor::PenditorCore::FileExplorerWindow()->selectPath(model->getResourcePath().c_str());
+
+		if (manager->beginDragAndDropTarget())
+		{
+			const Pengine::DragAndDropData* droppedData = manager->getDroppedData(MODEL_ID);
+
+			if (droppedData != nullptr)
+			{
+				std::shared_ptr<Pengine::Resources::PenModel> model = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenModel>(droppedData->filePath);
+
+				if (model)
+				{
+					Pengine::Components::PenRenderer* comp = static_cast<Pengine::Components::PenRenderer*>(this->m_currentComponent);
+					comp->setModel(model);
+				}
+			}
 		}
 	}
 }
