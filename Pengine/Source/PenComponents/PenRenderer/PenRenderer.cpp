@@ -1,4 +1,5 @@
 #include "PenComponents/PenRenderer/PenRenderer.h"
+#include "PenProperty/PenPropertyManager.h"
 
 #include <iostream>
 
@@ -25,6 +26,14 @@ void PenRenderer::setMaterial(std::shared_ptr<Pengine::Resources::PenMaterial> m
 void PenRenderer::render()
 {
 	m_model->render();
+}
+
+void PenRenderer::registerProperty(PenPropertyManager* manager)
+{
+	PenObjectId id = this->getPenObjectId();
+	manager->addProperty(id, "Renderer Component", E_COMPONENT, this);
+	manager->addProperty(id, "Model", E_MODEL, &this->m_model);
+	manager->addProperty(id, "Material", E_MATERIAL, &this->m_material);
 }
 
 std::shared_ptr<Pengine::Resources::PenMaterial> PenRenderer::getMaterial()

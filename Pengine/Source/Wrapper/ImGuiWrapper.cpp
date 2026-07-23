@@ -124,6 +124,11 @@ namespace Pengine::ui::ImGuiWrapper
 		ImGui::SetNextItemWidth(width);
 	}
 
+	void setNextItemOpen(bool value)
+	{
+		ImGui::SetNextItemOpen(value);
+	}
+
 	bool isMouseOverWindow()
 	{
 		return ImGui::IsWindowHovered();
@@ -299,6 +304,11 @@ namespace Pengine::ui::ImGuiWrapper
 	bool renderSliderFloat(const char* label, float min, float max, float* value)
 	{
 		return ImGui::SliderFloat(label, value, min, max);
+	}
+
+	bool renderButton(const char* label, const PenMath::Vector2& size)
+	{
+		return ImGui::Button(label, { (float)size.x, (float)size.y });
 	}
 
 	bool beginDragAndDropSource()

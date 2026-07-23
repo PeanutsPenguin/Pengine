@@ -26,6 +26,8 @@ namespace Pengine::Components
 		
 		void render();
 
+		void registerProperty(PenPropertyManager* manager) override;
+
 	private:
 		std::shared_ptr<Pengine::Resources::PenModel> m_model;
 		std::shared_ptr<Pengine::Resources::PenMaterial> m_material;

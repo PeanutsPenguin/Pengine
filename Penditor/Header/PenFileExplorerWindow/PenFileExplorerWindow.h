@@ -29,6 +29,8 @@ namespace Penditor::Window
 
 		void renderCalls() final;
 
+		void selectPath(const char* path);
+
 	private:
 		void loadDirectory(PenFileData& node, const std::filesystem::path currenPath);
 
@@ -42,7 +44,10 @@ namespace Penditor::Window
 
 		void renderFile(const PenFileData& node);
 
+		bool isParentFolder(const char* folderPath);
+
 		PenFileData m_cachedFiles;
 		std::filesystem::path m_selectedPath;
+		bool m_focusPath = false;
 	};
 }

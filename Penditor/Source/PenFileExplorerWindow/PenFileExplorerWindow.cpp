@@ -41,6 +41,10 @@ namespace Penditor::Window
 
 		std::unique_ptr<Pengine::ui::PenUIManager>& manager = Pengine::PenCore::UIManager();
 		Pengine::ui::PenTreeNodeFlags flags = Pengine::ui::PenTreeNodeFlags::E_OPEN_ON_ARROW;
+
+		if (this->m_focusPath)
+			manager->setNextItemOpen(true);
+
 		opened = manager->renderTreeNode(this->m_cachedFiles.fileName.c_str(), flags);
 
 		if (opened)
@@ -48,6 +52,21 @@ namespace Penditor::Window
 			this->renderChildsNode(this->m_cachedFiles);
 			manager->popTree();
 		}
+	}
+
+	void PenFileExplorerWindow::selectPath(const char* path)
+	{
+		this->m_focusPath = true;
+		this->m_selectedPath = path;
+	}
+
+	bool PenFileExplorerWindow::isParentFolder(const char* folderPath)
+	{
+		std::filesystem::path folder = folderPath;
+
+		auto [folder_it, asset_it] = std::mismatch(folder.begin(), folder.end(), this->m_selectedPath.begin(), this->m_selectedPath.end());
+
+		return folder_it == folder.end();
 	}
 
 	void PenFileExplorerWindow::loadDirectory(PenFileData& node, const std::filesystem::path currentPath)
@@ -72,7 +91,6 @@ namespace Penditor::Window
 
 			node.children.push_back(newData);
 		}
-
 	}
 
 	void PenFileExplorerWindow::initCachedFile()
@@ -118,6 +136,9 @@ namespace Penditor::Window
 		if (m_selectedPath == node.pathFile)
 			flags |= Pengine::ui::PenTreeNodeFlags::E_SELECTED;
 
+		if(this->isParentFolder(node.pathFile.c_str()))
+			manager->setNextItemOpen(true);
+
 		std::string name = "##" + node.pathFile;
 		bool opened = manager->renderTreeNode(name.c_str(), (Pengine::ui::PenTreeNodeFlags)flags);
 
@@ -157,7 +178,12 @@ namespace Penditor::Window
 				  | Pengine::ui::PenTreeNodeFlags::E_LEAF | Pengine::ui::PenTreeNodeFlags::E_NO_TREE_PUSH;
 
 		if (m_selectedPath == node.pathFile)
+		{
 			flags |= Pengine::ui::PenTreeNodeFlags::E_SELECTED;
+			
+			if (this->m_focusPath)
+				this->m_focusPath = false;
+		}
 
 		std::string name = "##" + node.pathFile;
 		manager->renderTreeNode(name.c_str(), (Pengine::ui::PenTreeNodeFlags)flags);

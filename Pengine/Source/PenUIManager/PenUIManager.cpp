@@ -72,6 +72,11 @@ void PenUIManager::setNextItemWidth(float width)
 	ImGuiWrapper::setNextItemWidth(width);
 }
 
+void PenUIManager::setNextItemOpen(bool value)
+{
+	ImGuiWrapper::setNextItemOpen(value);
+}
+
 void PenUIManager::addImageToDrawList(unsigned int id, const PenMath::Vector2& topLeft, const PenMath::Vector2& bottomRight)
 {
 	ImGuiWrapper::addImageToDrawList(id, topLeft, bottomRight);
@@ -207,6 +212,12 @@ bool PenUIManager::beginDragAndDropTarget()
 {
 	return ImGuiWrapper::beginDragAndDropTarget();
 }
+
+bool PenUIManager::renderButton(const char* name, const PenMath::Vector2& size)
+{
+	return ImGuiWrapper::renderButton(name, size);
+}
+
 
 const Pengine::DragAndDropData* PenUIManager::getDroppedData(const char* type)
 {

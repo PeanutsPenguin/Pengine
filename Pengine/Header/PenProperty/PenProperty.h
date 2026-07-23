@@ -20,7 +20,7 @@ namespace Pengine
 		virtual void*		getData() = 0;
 	protected:
 		PenPropertyType m_type;
-		const char* m_name;
+		const char* m_name = "Property";
 	};
 
 
