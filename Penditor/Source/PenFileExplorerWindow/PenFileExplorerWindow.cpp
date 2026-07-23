@@ -64,11 +64,7 @@ namespace Penditor::Window
 	{
 		std::filesystem::path folder = folderPath;
 
-		auto [folder_it, asset_it] =
-		std::mismatch(
-			folder.begin(), folder.end(),
-			this->m_selectedPath.begin(), this->m_selectedPath.end()
-		);
+		auto [folder_it, asset_it] = std::mismatch(folder.begin(), folder.end(), this->m_selectedPath.begin(), this->m_selectedPath.end());
 
 		return folder_it == folder.end();
 	}
@@ -95,7 +91,6 @@ namespace Penditor::Window
 
 			node.children.push_back(newData);
 		}
-
 	}
 
 	void PenFileExplorerWindow::initCachedFile()

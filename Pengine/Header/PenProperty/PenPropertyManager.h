@@ -26,12 +26,6 @@ namespace Pengine
 			this->m_propertyArray[id].push_back(new PenProperty<T>(name, type, data));
 		}
 
-		template<typename T>
-		void removeProperty(PenObjectId id, PenProperty<T>* prop)
-		{
-			this->m_propertyArray[id].erase(prop);
-		}
-
 		std::vector<IPenProperty*>& getProperties(const PenObjectId id);
 
 	private:
