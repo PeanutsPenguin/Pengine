@@ -51,7 +51,6 @@ namespace Penditor::Window
 		const Pengine::PenObjectId selectedObject = PenditorCore::PickingHandler()->getSelectedObject();
 
 		m_objectEuler = Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenTransform>(selectedObject).getGlobalTransform().rotation.getRotationEuler();
-		Pengine::PenCore::UIManager()->removeInputFocus();
 	}
 
 	void PenPropertyWindow::changeRenderTypeToResource(const PenFileData& data)
@@ -422,7 +421,7 @@ namespace Penditor::Window
 		PenMath::Vector2 windowSize = manager->getContentSize();
 
 		std::string id = "##";
-		id += prop->getName();
+		id += prop->getName() + std::to_string(PenditorCore::PickingHandler()->getSelectedObject());
 
 		manager->renderText(name.c_str());
 		manager->renderOnSameLine();
@@ -454,7 +453,7 @@ namespace Penditor::Window
 		name += " :";
 
 		std::string id = "##";
-		id += prop->getName();
+		id += prop->getName() + std::to_string(PenditorCore::PickingHandler()->getSelectedObject());
 
 		manager->renderText(name.c_str());
 		manager->renderOnSameLine();
@@ -490,13 +489,23 @@ namespace Penditor::Window
 		manager->renderText(name.c_str());
 		manager->renderOnSameLine();
 
-		Pengine::Resources::PenMaterial* mat = static_cast<Pengine::Resources::PenMaterial*>(prop->getData());
+		std::shared_ptr<Pengine::Resources::PenMaterial>* mat = static_cast<std::shared_ptr<Pengine::Resources::PenMaterial>*>(prop->getData());
+
+		Pengine::Resources::PenMaterial* matPtr = nullptr;
+		if (mat != nullptr)
+			matPtr = mat->get();
+
+		if (!mat || !matPtr)
+		{
+			std::cout << __FUNCTION__ "Failed to get the model pointer\n";
+			return;
+		}
 
 		manager->renderOnSameLine();
 		manager->setUICursorPosY(curPos.y + 7.5f);
 
-		if (manager->renderButton(mat->getResourcePath().c_str(), { 0, 30 }))
-			Penditor::PenditorCore::FileExplorerWindow()->selectPath(mat->getResourcePath().c_str());
+		if (manager->renderButton(matPtr->getResourcePath().c_str(), { 0, 30 }))
+			Penditor::PenditorCore::FileExplorerWindow()->selectPath(matPtr->getResourcePath().c_str());
 
 		if (manager->beginDragAndDropTarget())
 		{
@@ -529,13 +538,23 @@ namespace Penditor::Window
 		manager->renderText(name.c_str());
 		manager->renderOnSameLine();
 
-		Pengine::Resources::PenModel* model = static_cast<Pengine::Resources::PenModel*>(prop->getData());
+		std::shared_ptr<Pengine::Resources::PenModel>* model = static_cast<std::shared_ptr<Pengine::Resources::PenModel>*>(prop->getData());
+
+		Pengine::Resources::PenModel* modelPtr = nullptr;
+		if (model != nullptr)
+			modelPtr = model->get();
+		
+		if(!model || !modelPtr)
+		{
+			std::cout << __FUNCTION__ "Failed to get the model pointer\n";
+			return;
+		}
 
 		manager->renderOnSameLine();
 		manager->setUICursorPosY(curPos.y + 7.5f);
 
-		if(manager->renderButton(model->getResourcePath().c_str(), {0, 30}))
-			Penditor::PenditorCore::FileExplorerWindow()->selectPath(model->getResourcePath().c_str());
+		if(manager->renderButton(modelPtr->getResourcePath().c_str(), {0, 30}))
+			Penditor::PenditorCore::FileExplorerWindow()->selectPath(modelPtr->getResourcePath().c_str());
 
 		if (manager->beginDragAndDropTarget())
 		{
