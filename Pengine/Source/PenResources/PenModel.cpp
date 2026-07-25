@@ -48,6 +48,11 @@ bool PenModel::loadResource(const std::string path)
 	return generateResource(sourcePath.c_str());
 }
 
+std::shared_ptr<PenModel> PenModel::defaultModel()
+{
+	return PenCore::ResourcesManager()->loadResourceFromFile<PenModel>("Mesh/DefaultModel.penfile", true);
+}
+
 bool PenModel::createResource(const std::string PenfilePath, const std::string sourcePath)
 {
 	std::ofstream outfile(PenfilePath, std::ios::binary);

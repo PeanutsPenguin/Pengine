@@ -401,10 +401,11 @@ namespace Penditor::Window
 		
 		bool enabled = m_currentComponent->IsState(Pengine::Components::PenComponentState::ENABLE);
 		
-		manager->renderBool(&enabled, "##Enabled");
+		std::string id = "##" + std::to_string(m_currentComponent->getPenObjectId()) + prop->getName();
+
+		manager->renderBool(&enabled, id.c_str());
 		manager->renderOnSameLine();
 		m_headerOpen = manager->renderCollapsingHeader(prop->getName());
-
 
 		if (enabled != m_currentComponent->IsState(Pengine::Components::PenComponentState::ENABLE))
 			m_currentComponent->SetState(Pengine::Components::PenComponentState::ENABLE, enabled);

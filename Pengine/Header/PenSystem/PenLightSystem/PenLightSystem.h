@@ -31,6 +31,10 @@ namespace Pengine::System
 
 		void update(double dt) final {};
 
+		/// <summary>
+		/// Call this function AFTER the call of shader->use()
+		/// </summary>
+		/// <param name="shader"></param>
 		void renderUpdate(const std::shared_ptr<Resources::PenShaderProgram> shader);
 	private:
 

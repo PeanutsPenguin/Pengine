@@ -27,7 +27,7 @@ namespace Pengine::System
 
 		virtual void update(double dt) = 0;
 
-		const std::set<PenObjectId>& getRegisteredObject() { return this->m_PenObject; }
+		const std::set<PenObjectId>& getRegisteredObject() const { return this->m_PenObject; }
 
 	protected:
 		std::set<PenObjectId> m_PenObject;

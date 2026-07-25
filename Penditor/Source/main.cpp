@@ -100,6 +100,9 @@ int main()
 		std::shared_ptr<Pengine::Resources::PenMaterial> sphereMat = resourceManager->loadResourceFromFile<Pengine::Resources::PenMaterial>("Material/SphereMat.penfile");
 
 		std::shared_ptr<Pengine::Resources::PenModel> thirdModel = resourceManager->loadResourceFromFile<Pengine::Resources::PenModel>("Mesh/sphere.penfile");
+
+		//std::shared_ptr<Pengine::Resources::PenModel> thirdModel = resourceManager->createResourceFromFile<Pengine::Resources::PenModel>("DefaultModel.fbx");
+
 		thirdRenderComp.setModel(thirdModel);
 		thirdRenderComp.setMaterial(sphereMat);
 
@@ -111,7 +114,7 @@ int main()
 		thirdTransComp.setGlobalTransform(thirdTrans);
 
 		Pengine::PenCore::PenOctopus()->addComponent(thirdObj, thirdTransComp);
-		Pengine::PenCore::PenOctopus()->addComponent(thirdObj, thirdRenderComp);
+		//Pengine::PenCore::PenOctopus()->addComponent(thirdObj, thirdRenderComp);
 
 		Pengine::PenCore::PenOctopus()->addToScene(thirdObj);
 		#pragma endregion

@@ -19,6 +19,11 @@ namespace Pengine
 	{
 		class PenRendererSystem;
 	}
+
+	namespace Resources
+	{
+		class PenShaderProgram;
+	}
 }
 
 namespace Penditor
@@ -52,13 +57,17 @@ namespace Penditor::Window
 
 	private:
 		void renderScene();
+		void customRenderObject();
+		bool activateShaderAndLight(std::shared_ptr<Pengine::Resources::PenShaderProgram> prog);
+		bool activateCamera(std::shared_ptr<Pengine::Resources::PenShaderProgram> prog);
+
+		void renderFPS();
 
 		void checkWindowSize();
 
 		void updateCursorStatus();
-
 		void updateCamera();
-
+		
 
 		std::shared_ptr<Pengine::System::PenRendererSystem> m_renderSystem;
 		PenFreeCam* m_camera;
