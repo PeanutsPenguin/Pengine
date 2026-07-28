@@ -84,6 +84,13 @@ namespace Penditor::Window
 
 		Pengine::Components::PenCamera& cam = Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenCamera>(this->m_camera);
 
+		if (!cam.IsState(Pengine::Components::PenComponentState::ENABLE))
+		{
+			Pengine::PenCore::UIManager()->popStyle();
+			return;
+		}
+
+
 		this->checkWindowSize(cam);
 		this->renderScene();
 

@@ -336,6 +336,11 @@ namespace Pengine::ui::ImGuiWrapper
 		return ImGui::Button(label, { (float)size.x, (float)size.y });
 	}
 
+	bool renderFloat(const char* label, float* value)
+	{
+		return ImGui::InputFloat(label, value);
+	}
+
 	bool beginDragAndDropSource()
 	{
 		return ImGui::BeginDragDropSource();

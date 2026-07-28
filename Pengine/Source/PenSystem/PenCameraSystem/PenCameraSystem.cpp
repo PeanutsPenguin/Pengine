@@ -17,7 +17,7 @@ void PenCameraSystem::update(double dt)
 		Components::PenCamera& cam = PenCore::PenOctopus()->getComponent<Components::PenCamera>(obj);
 		Components::PenTransform& transform = PenCore::PenOctopus()->getComponent<Components::PenTransform>(obj);
 
-		if(/*cam.IsState(Components::PenComponentState::DIRTY) && */cam.IsState(Components::PenComponentState::ENABLE))
+		if(cam.IsState(Components::PenComponentState::DIRTY) && cam.IsState(Components::PenComponentState::ENABLE))
 		{
 			cam.updateProjectionMatrix();
 			cam.updateViewMatrix(transform.getGlobalTransform());

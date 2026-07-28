@@ -77,6 +77,7 @@ namespace Penditor::Window
 		void	renderQuaternionProp	(Pengine::IPenProperty* prop, Pengine::ui::PenUIManager* manager);
 		void	renderModelProp			(Pengine::IPenProperty* prop, Pengine::ui::PenUIManager* manager);
 		void	renderMaterialProp		(Pengine::IPenProperty* prop, Pengine::ui::PenUIManager* manager);
+		void	renderFloatProp			(Pengine::IPenProperty* prop, Pengine::ui::PenUIManager* manager);
 
 		PenMath::Vector3f										m_objectEuler		= PenMath::Vector3f::Zero();
 		PropertiesRenderingType									m_renderingType		= PropertiesRenderingType::E_NONE;

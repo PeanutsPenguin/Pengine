@@ -247,6 +247,11 @@ bool PenUIManager::renderButton(const char* name, const PenMath::Vector2& size)
 	return ImGuiWrapper::renderButton(name, size);
 }
 
+bool PenUIManager::renderFloat(const char* name, float* value)
+{
+	return ImGuiWrapper::renderFloat(name, value);
+}
+
 
 const Pengine::DragAndDropData* PenUIManager::getDroppedData(const char* type)
 {

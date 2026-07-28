@@ -83,6 +83,7 @@ namespace Pengine::ui::ImGuiWrapper
 	bool	renderColorPickerVec3(const char* label, PenMath::Vector3f& col);
 	bool	renderSliderFloat(const char* label, float min, float max, float* value);
 	bool	renderButton(const char* name, const PenMath::Vector2& size);
+	bool	renderFloat(const char* label, float* value);
 
 	const Pengine::DragAndDropData* getDroppedData(const char* type);
 }
