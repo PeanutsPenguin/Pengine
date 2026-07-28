@@ -11,7 +11,6 @@ namespace Pengine::System
 	class PenSystemBase
 	{
 	public:
-
 		friend class PenSystemManager;
 
 		PenSystemBase() = default;

@@ -5,7 +5,7 @@ using namespace Pengine;
 
 #pragma region Getter and Setter
 
-const PenMath::Vector3f PenLightBase::getLightColor()
+const PenMath::Vector3f& PenLightBase::getLightColor()
 {
 	return this->m_lightColor;
 }

@@ -19,6 +19,8 @@ namespace Pengine::Components
 
 		std::shared_ptr<PenLightBase> getLight();
 
+		void registerProperty(PenPropertyManager* manager) final;
+
 	private:
 		std::shared_ptr<PenLightBase> m_light = nullptr;
 	};
