@@ -10,5 +10,8 @@ namespace Penditor::Setting
 
 		constexpr static float s_sliderWidth = 0.40f;
 		constexpr static float s_sliderMinWidth = 150.f;
+
+		constexpr static float s_floatWidth = 0.40f;
+		constexpr static float s_floatMinWidth = 150.f;
 	};
 }

@@ -6,13 +6,23 @@
 #include "PenOctopus/PenOctopus.hpp"	
 #include "PenUIManager/PenUIManager.h"	
 #include "PenInput/PenInput.h"
-#include "PenSystem/PenRenderSystem/PenRenderSystem.h"
 #include "PenBuffer/PenFrameBuffer.h"
+
+#include "PenComponents/PenRenderer/PenRenderer.h"
+#include "PenComponents/PenTransform/PenTransform.h"
+#include "PenComponents/PenCamera/PenCamera.h"
+
+#include "PenResources/PenShaderProgram.h"
+#include "PenResources/PenModel.h"
+
+#include "PenSystem/PenTransformSystem/PenTransformSystem.h"
+#include "PenSystem/PenRenderSystem/PenRenderSystem.h"
 
 //Penditor include
 #include "PenFreeCam/PenFreeCam.h"		
 #include "PickingHandler/PickingHandler.h"
 #include "Penditor/Penditor.h"
+#include "PenCameraPreviewWindow/PenCameraPreviewWindow.h"
 
 #include <string>
 
@@ -41,6 +51,31 @@ namespace Penditor::Window
 	{
 		this->m_frameBuffer->create(800, 600);
 		this->m_renderSystem = Pengine::PenCore::PenOctopus()->getSystem<Pengine::System::PenRendererSystem>();
+
+		int windowFlags = 
+			Pengine::ui::PenVirtualWidnowFlags::NO_TITLE_BAR |
+			Pengine::ui::PenVirtualWidnowFlags::NO_SCROLL_BAR |
+			Pengine::ui::PenVirtualWidnowFlags::NO_COLLAPSE |
+			Pengine::ui::PenVirtualWidnowFlags::NO_META_DATA |
+			Pengine::ui::PenVirtualWidnowFlags::NO_FOCUS_ON_APPEARING; // Prevents it from stealing focus
+
+		this->m_cameraPreview = std::make_unique<PenCameraPreviewWindow>("CameraPreview", windowFlags);
+		this->m_cameraPreview->init();
+	}
+
+	void PenGameWindow::setRenderingSceneCamera(Pengine::PenObjectId camID)
+	{
+		if (camID == Pengine::g_PenObjectInvalidId)
+			return;
+
+		this->m_renderingSceneCamera = true;
+		this->m_cameraPreview->setCamera(camID);
+	}
+
+	void PenGameWindow::stopRenderingSceneCamera()
+	{
+		this->m_renderingSceneCamera = false;
+		this->m_cameraPreview->setCamera(Pengine::g_PenObjectInvalidId);
 	}
 
 	void PenGameWindow::setCamera(const Pengine::PenObjectId id)
@@ -58,7 +93,6 @@ namespace Penditor::Window
 		return this->m_renderSystem;
 	}
 
-
 	void PenGameWindow::renderCalls()
 	{
 		this->updateCursorStatus();
@@ -66,18 +100,27 @@ namespace Penditor::Window
 		this->checkWindowSize();
 		this->renderScene();
 
-		Pengine::ui::PenUIManager* manager = Pengine::PenCore::UIManager().get();
-
-		manager->renderImage(this->m_frameBuffer->getFrameTexture(), this->m_size);
-
-		std::string fps_str = std::to_string(Pengine::PenCore::getFPS());
-
-		float width = manager->getTextWidth(fps_str.c_str());
-
-		manager->setUICursorPos({ (int)(this->m_size.x - width), 25 });
-		manager->renderText(fps_str.c_str());
+		Pengine::PenCore::UIManager()->renderImage(this->m_frameBuffer->getFrameTexture(), this->m_size);
+		this->renderFPS();
 
 		this->m_prevSize = this->m_size;
+
+		if(this->m_renderingSceneCamera)
+		{
+			this->m_cameraPreview->preRender();
+			this->m_cameraPreview->render();
+		}
+
+	}
+
+	void PenGameWindow::renderFPS()
+	{
+		std::string fps_str = std::to_string(Pengine::PenCore::getFPS());
+
+		float width = Pengine::PenCore::UIManager()->getTextWidth(fps_str.c_str());
+
+		Pengine::PenCore::UIManager()->setUICursorPos({ (int)(this->m_size.x - width), 25 });
+		Pengine::PenCore::UIManager()->renderText(fps_str.c_str());
 	}
 
 	void PenGameWindow::updateCursorStatus()
@@ -128,10 +171,97 @@ namespace Penditor::Window
 		if(this->m_renderSystem)
 		{
 			this->m_renderSystem->preRender(Pengine::PenCore::PenOctopus()->getMainScene()->getBackgroundColor());
-			this->m_renderSystem->render(m_camera->getCamera());
+			this->customRenderObject();
 			this->m_renderSystem->postRender();
 		}
 
 		this->m_frameBuffer->unbind();
+	}
+
+	void PenGameWindow::customRenderObject()
+	{
+		const std::set<Pengine::PenObjectId>& renderObject = Pengine::PenCore::PenOctopus()->getSystem<Pengine::System::PenTransformSystem>()->getRegisteredObject();
+
+		for (Pengine::PenObjectId objId : renderObject)
+		{
+			if (objId == this->m_camera->getCamera())
+				continue;
+
+
+			Pengine::Components::PenTransform& transComp = Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenTransform>(objId);
+			std::shared_ptr<Pengine::Resources::PenShaderProgram>	prog = nullptr;
+			std::shared_ptr<Pengine::Resources::PenMaterial>		mat = nullptr;
+			bool hasRenderComponent = Pengine::PenCore::PenOctopus()->containsComponent<Pengine::Components::PenRenderer>(objId);
+			
+			if (hasRenderComponent)
+			{
+				Pengine::Components::PenRenderer& renderComp = Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenRenderer>(objId);
+
+				if (!renderComp.IsState(Pengine::Components::PenComponentState::ENABLE))
+					continue;
+
+				mat  = renderComp.getMaterial();
+				prog = mat->getShaderProg();
+			}
+			else
+			{
+				mat  = Pengine::Resources::PenMaterial::defaultMaterial();
+				prog = Pengine::Resources::PenShaderProgram::defaultShaderProgram();
+			}
+				
+			if (!this->activateShaderAndLight(prog))
+				continue;
+
+			if (!this->activateCamera(prog))
+				continue;
+
+			PenMath::Mat4 model = transComp.getGlobalTransform().toMatrix();
+			prog->setUniform("model", model);
+
+			mat->shaderActivation();
+
+			if (hasRenderComponent)
+				Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenRenderer>(objId).render();
+			else
+				Pengine::Resources::PenModel::defaultModel()->render();
+		}
+	}
+
+	bool PenGameWindow::activateShaderAndLight(std::shared_ptr<Pengine::Resources::PenShaderProgram> prog)
+	{
+		if (!prog->use())
+		{
+			std::cout << __FUNCTION__ ": Shader program failed to use\n";
+			return false;
+		}
+
+		std::shared_ptr<Pengine::System::PenLightSystem> lightSystem = Pengine::PenCore::PenOctopus()->getSystem<Pengine::System::PenLightSystem>();
+
+		if (lightSystem)
+			lightSystem->renderUpdate(prog);
+		else
+		{
+			std::cout << __FUNCTION__ ": Light system failed to get\n";
+			return false;
+		}
+
+		return true;
+	}
+
+	bool PenGameWindow::activateCamera(std::shared_ptr<Pengine::Resources::PenShaderProgram> prog)
+	{
+		Pengine::PenObjectId renderCam = m_camera->getCamera();
+
+		if (renderCam == Pengine::g_PenObjectInvalidId)
+		{
+			std::cout << __FUNCTION__ " : Editor's camera is invalid problem somwhere\n";
+			return false;
+		}
+
+		Pengine::Components::PenCamera& camComp			= Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenCamera>(renderCam);
+		Pengine::Components::PenTransform& transCamComp = Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenTransform>(renderCam);
+
+		camComp.shaderActivation(prog, transCamComp);
+		return true;
 	}
 }

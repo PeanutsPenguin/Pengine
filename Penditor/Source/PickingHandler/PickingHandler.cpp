@@ -15,6 +15,7 @@
 #include "PenUIManager/PenUIManager.h"
 
 #include "PenSystem/PenRenderSystem/PenRenderSystem.h"
+#include "PenSystem/PenTransformSystem/PenTransformSystem.h"
 
 #include "PenResources/PenShaderProgram.h"
 
@@ -74,8 +75,13 @@ namespace Penditor
 
 		const PenMath::Mat4& projview = mainCam.getViewProjMatrix();
 
-		for (Pengine::PenObjectId objId : Penditor::PenditorCore::GameWindow()->getRenderSystem()->getRegisteredObject())
+		for (Pengine::PenObjectId objId : Pengine::PenCore::PenOctopus()->getSystem<Pengine::System::PenTransformSystem>()->getRegisteredObject())
+		{
+			if (objId == PenditorCore::GameWindow()->getCamera())
+				continue;
+
 			renderObject(objId, renderer, projview);
+		}
 	}
 
 	void PickingHandler::renderObject(const Pengine::PenObjectId obj, std::shared_ptr<Pengine::System::PenRendererSystem> renderer, const PenMath::Mat4& viewProj)
@@ -90,9 +96,9 @@ namespace Penditor
 		this->m_pickingShader->setUniform("PickingColor", col);
 
 		if (!Pengine::PenCore::PenOctopus()->containsComponent<Pengine::Components::PenRenderer>(obj))
-			return;		//TODO: should use a default mesh here (same as in the scene renderer)
-
-		Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenRenderer>(obj).render();
+			Pengine::Resources::PenModel::defaultModel()->render();
+		else
+			Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenRenderer>(obj).render();
 	}
 
 	const Pengine::PenColor PickingHandler::idToColor(const Pengine::PenObjectId obj)

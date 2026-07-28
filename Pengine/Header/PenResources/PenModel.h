@@ -26,6 +26,8 @@ namespace Pengine::Resources
 		bool	loadResource(const std::string path) override;
 		bool	createResource(const std::string PenfilePath, const std::string sourcePath) override;
 
+		static std::shared_ptr<PenModel> defaultModel();
+
 		void render();
 
 	private:

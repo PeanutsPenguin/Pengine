@@ -33,6 +33,7 @@
 	#include "Memory/MemoryLeakChecker.h"
 #endif
 
+
 #include <iostream>
 int main()
 {
@@ -100,18 +101,22 @@ int main()
 		std::shared_ptr<Pengine::Resources::PenMaterial> sphereMat = resourceManager->loadResourceFromFile<Pengine::Resources::PenMaterial>("Material/SphereMat.penfile");
 
 		std::shared_ptr<Pengine::Resources::PenModel> thirdModel = resourceManager->loadResourceFromFile<Pengine::Resources::PenModel>("Mesh/sphere.penfile");
+
+		//std::shared_ptr<Pengine::Resources::PenModel> thirdModel = resourceManager->createResourceFromFile<Pengine::Resources::PenModel>("DefaultModel.fbx");
+
 		thirdRenderComp.setModel(thirdModel);
 		thirdRenderComp.setMaterial(sphereMat);
 
 
 		Pengine::Components::PenTransform thirdTransComp = Pengine::Components::PenTransform();
 		PenMath::Transform thirdTrans;
-		thirdTrans.position = { -20, 0, 0 };
+		thirdTrans.position = { 0, 0, 100 };
 		thirdTrans.scale = { 10, 10, 10 };
 		thirdTransComp.setGlobalTransform(thirdTrans);
 
 		Pengine::PenCore::PenOctopus()->addComponent(thirdObj, thirdTransComp);
-		Pengine::PenCore::PenOctopus()->addComponent(thirdObj, thirdRenderComp);
+		Pengine::PenCore::PenOctopus()->addComponent(thirdObj, Pengine::Components::PenCamera());
+		//Pengine::PenCore::PenOctopus()->addComponent(thirdObj, thirdRenderComp);
 
 		Pengine::PenCore::PenOctopus()->addToScene(thirdObj);
 		#pragma endregion

@@ -27,7 +27,7 @@ PenMaterial::~PenMaterial()
 
 std::shared_ptr<PenMaterial> PenMaterial::defaultMaterial()
 {
-    return PenCore::ResourcesManager()->loadResourceFromFile<PenMaterial>("Material/DefaultMaterial.penfile");
+    return PenCore::ResourcesManager()->loadResourceFromFile<PenMaterial>("Material/DefaultMaterial.penfile", true);
 }
 
 #pragma region Resource

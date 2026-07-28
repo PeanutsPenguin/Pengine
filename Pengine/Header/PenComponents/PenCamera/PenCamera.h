@@ -8,9 +8,14 @@
 #include <Matrix/Mat4.h>
 #include <Transform.h>
 
-namespace Pengine::Resources 
+namespace Pengine
 {
-	class PenShaderProgram;
+	class PenPropertyManager;
+
+	namespace Resources
+	{
+		class PenShaderProgram;
+	}
 }
 
 
@@ -29,6 +34,8 @@ namespace Pengine::Components
 		PenCamera& operator=(const PenCamera& rhs) = default;
 		PenCamera& operator=(PenCamera&& rhs) = default;
 
+		void registerProperty(PenPropertyManager* manager) final;
+
 #pragma region Getter and Setter
 		PenMath::Mat4		getProjectionMatrix()	const;
 		PenMath::Mat4		getViewMatrix()			const;
@@ -39,6 +46,9 @@ namespace Pengine::Components
 		PenMath::Vector3f	getUp()					const;
 		float				getYaw()				const;
 		float				getPitch()				const;
+		float				getNear()				const;
+		float				getFar()				const;
+		float				getFOV()				const;
 
 		void				setProjectionMatrix(const PenMath::Mat4& mat);
 		void				setViewMatrix(const PenMath::Mat4& mat);
@@ -49,6 +59,9 @@ namespace Pengine::Components
 		void				setYaw(const float yaw);
 		void				setPitch(const float pitch);
 		void				setAspect(const float aspect);
+		void				setNear(const float near);
+		void				setFar(const float far);
+		void				setFOV(const float fov);
 #pragma endregion
 
 		void updateProjectionMatrix();

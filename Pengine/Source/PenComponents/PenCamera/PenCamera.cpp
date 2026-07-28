@@ -3,6 +3,8 @@
 
 #include "PenResources/PenShaderProgram.h"
 
+#include "PenProperty/PenPropertyManager.h"
+
 #include "Matrix/Mat4.h"
 
 using namespace Pengine::Components;
@@ -11,6 +13,15 @@ PenCamera::PenCamera()
 {
 	this->SetState(PenComponentState::ENABLE);
 	this->SetState(PenComponentState::DIRTY);
+}
+
+void PenCamera::registerProperty(PenPropertyManager* manager)
+{
+	PenObjectId id = this->getPenObjectId();
+	manager->addProperty(id, "Camera Component", E_COMPONENT, this);
+	manager->addProperty(id, "FOV", E_FLOAT, &this->m_values.fov);
+	manager->addProperty(id, "Near", E_FLOAT, &this->m_values.near);
+	manager->addProperty(id, "Far", E_FLOAT, &this->m_values.far);
 }
 
 #pragma region Getter and Setter
@@ -58,6 +69,21 @@ float Pengine::Components::PenCamera::getYaw() const
 float Pengine::Components::PenCamera::getPitch() const
 {
 	return this->m_pitch;
+}
+
+float Pengine::Components::PenCamera::getNear() const
+{
+	return this->m_values.near;
+}
+
+float Pengine::Components::PenCamera::getFar() const
+{
+	return this->m_values.far;
+}
+
+float Pengine::Components::PenCamera::getFOV() const
+{
+	return this->m_values.fov;
 }
 
 void PenCamera::setProjectionMatrix(const PenMath::Mat4& mat)
@@ -118,11 +144,29 @@ void PenCamera::setAspect(const float aspect)
 	this->m_values.aspectRatio = aspect;
 	this->SetState(PenComponentState::DIRTY, true);
 }
+
+void PenCamera::setNear(const float near)
+{
+	this->m_values.near = near;
+	this->SetState(PenComponentState::DIRTY, true);
+}
+
+void PenCamera::setFar(const float far)
+{
+	this->m_values.far = far;
+	this->SetState(PenComponentState::DIRTY, true);
+}
+
+void PenCamera::setFOV(const float fov)
+{
+	this->m_values.fov = fov;
+	this->SetState(PenComponentState::DIRTY, true);
+}
 #pragma endregion
 
 void PenCamera::updateProjectionMatrix()
 {
-	this->m_projectionMatrix = PenMath::Mat4::Perspective(this->m_values.fov, this->m_values.aspectRatio, 
+	this->m_projectionMatrix = PenMath::Mat4::Perspective((this->m_values.fov * (PenMath::c_pi / 180.f)), this->m_values.aspectRatio,
 															this->m_values.near, this->m_values.far);
 
 	this->SetState(PenComponentState::DIRTY, true);
