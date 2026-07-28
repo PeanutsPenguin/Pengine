@@ -55,10 +55,8 @@ namespace Penditor::Window
 		PenCameraPreviewWindow& operator=(PenCameraPreviewWindow&& rhs) = default;
 
 		void init();
-
 		void preRender();
 		void renderCalls() final;
-
 
 		void												setCamera(const Pengine::PenObjectId id);
 		const Pengine::PenObjectId							getCamera();
