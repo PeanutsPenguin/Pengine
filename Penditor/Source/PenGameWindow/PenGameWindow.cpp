@@ -22,6 +22,7 @@
 #include "PenFreeCam/PenFreeCam.h"		
 #include "PickingHandler/PickingHandler.h"
 #include "Penditor/Penditor.h"
+#include "PenCameraPreviewWindow/PenCameraPreviewWindow.h"
 
 #include <string>
 
@@ -50,6 +51,31 @@ namespace Penditor::Window
 	{
 		this->m_frameBuffer->create(800, 600);
 		this->m_renderSystem = Pengine::PenCore::PenOctopus()->getSystem<Pengine::System::PenRendererSystem>();
+
+		int windowFlags = 
+			Pengine::ui::PenVirtualWidnowFlags::NO_TITLE_BAR |
+			Pengine::ui::PenVirtualWidnowFlags::NO_SCROLL_BAR |
+			Pengine::ui::PenVirtualWidnowFlags::NO_COLLAPSE |
+			Pengine::ui::PenVirtualWidnowFlags::NO_META_DATA |
+			Pengine::ui::PenVirtualWidnowFlags::NO_FOCUS_ON_APPEARING; // Prevents it from stealing focus
+
+		this->m_cameraPreview = std::make_unique<PenCameraPreviewWindow>("CameraPreview", windowFlags);
+		this->m_cameraPreview->init();
+	}
+
+	void PenGameWindow::setRenderingSceneCamera(Pengine::PenObjectId camID)
+	{
+		if (camID == Pengine::g_PenObjectInvalidId)
+			return;
+
+		this->m_renderingSceneCamera = true;
+		this->m_cameraPreview->setCamera(camID);
+	}
+
+	void PenGameWindow::stopRenderingSceneCamera()
+	{
+		this->m_renderingSceneCamera = false;
+		this->m_cameraPreview->setCamera(Pengine::g_PenObjectInvalidId);
 	}
 
 	void PenGameWindow::setCamera(const Pengine::PenObjectId id)
@@ -78,6 +104,13 @@ namespace Penditor::Window
 		this->renderFPS();
 
 		this->m_prevSize = this->m_size;
+
+		if(this->m_renderingSceneCamera)
+		{
+			this->m_cameraPreview->preRender();
+			this->m_cameraPreview->render();
+		}
+
 	}
 
 	void PenGameWindow::renderFPS()

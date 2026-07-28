@@ -30,6 +30,11 @@ namespace Penditor
 {
 	class PenFreeCam;
 	class PickingHandler;
+
+	namespace Window
+	{
+		class PenCameraPreviewWindow;
+	}
 }
 
 
@@ -48,8 +53,10 @@ namespace Penditor::Window
 		PenGameWindow& operator=(PenGameWindow&& rhs) = default;
 
 		void renderCalls() final;
-
 		void init();
+
+		void setRenderingSceneCamera(Pengine::PenObjectId camId);
+		void stopRenderingSceneCamera();
 
 		void												setCamera(const Pengine::PenObjectId id);
 		const Pengine::PenObjectId							getCamera();
@@ -70,11 +77,13 @@ namespace Penditor::Window
 		
 
 		std::shared_ptr<Pengine::System::PenRendererSystem> m_renderSystem;
+		std::unique_ptr<PenCameraPreviewWindow> m_cameraPreview;
 		PenFreeCam* m_camera;
 		PenMath::Vector2 m_size;
 		PenMath::Vector2 m_prevSize;
 		Pengine::Buffer::PenFrameBuffer* m_frameBuffer;
 		bool m_hasResized;
 		bool m_navigating = false;
+		bool m_renderingSceneCamera = false;
 	};
 }

@@ -14,10 +14,12 @@
 
 #include "PenComponents/PenTransform/PenTransform.h"
 #include "PenComponents/PenRenderer/PenRenderer.h"
+#include "PenComponents/PenCamera/PenCamera.h"
 
 #include "PickingHandler/PickingHandler.h"
 #include "Penditor/Penditor.h"
 #include "PenFileExplorerWindow/PenFileExplorerWindow.h"
+#include "PenGameWindow/PenGameWindow.h"
 
 
 namespace Penditor::Window
@@ -51,6 +53,11 @@ namespace Penditor::Window
 		const Pengine::PenObjectId selectedObject = PenditorCore::PickingHandler()->getSelectedObject();
 
 		m_objectEuler = Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenTransform>(selectedObject).getGlobalTransform().rotation.getRotationEuler();
+
+		if (Pengine::PenCore::PenOctopus()->containsComponent<Pengine::Components::PenCamera>(selectedObject))
+			PenditorCore::GameWindow()->setRenderingSceneCamera(selectedObject);
+		else 
+			PenditorCore::GameWindow()->stopRenderingSceneCamera();
 	}
 
 	void PenPropertyWindow::changeRenderTypeToResource(const PenFileData& data)

@@ -42,6 +42,11 @@ PenMath::Vector2 PenUIManager::getUICursorPos()
 	return ImGuiWrapper::getCursorPos();
 }
 
+PenMath::Vector2 PenUIManager::getWindowPos()
+{
+	return ImGuiWrapper::getWindowPos();
+}
+
 float PenUIManager::getFrameHeight()
 {
 	return ImGuiWrapper::getFrameHeight();
@@ -77,11 +82,20 @@ void PenUIManager::setNextItemOpen(bool value)
 	ImGuiWrapper::setNextItemOpen(value);
 }
 
+void PenUIManager::setNextWindowPos(const PenMath::Vector2& pos)
+{
+	ImGuiWrapper::setNextWindowPos(pos);
+}
+
+void PenUIManager::setNextWindowSize(const PenMath::Vector2& size)
+{
+	ImGuiWrapper::setNextWindowSize(size);
+}
+
 void PenUIManager::addImageToDrawList(unsigned int id, const PenMath::Vector2& topLeft, const PenMath::Vector2& bottomRight)
 {
 	ImGuiWrapper::addImageToDrawList(id, topLeft, bottomRight);
 }
-
 
 void PenUIManager::renderOnSameLine(float spacing)
 {
@@ -163,9 +177,24 @@ void PenUIManager::removeInputFocus()
 	ImGuiWrapper::removeInputFocus();
 }
 
+void PenUIManager::pushStyle(PenStyleFlag flags, const PenMath::Vector2& vec)
+{
+	ImGuiWrapper::pushStyle(flags, vec);
+}
+
+void PenUIManager::pushStyle(PenStyleFlag flags, float value)
+{
+	ImGuiWrapper::pushStyle(flags, value);
+}
+
 void PenUIManager::popTree()
 {
 	ImGuiWrapper::popTree();
+}
+
+void PenUIManager::popStyle()
+{
+	ImGuiWrapper::popStyle();
 }
 
 bool PenUIManager::renderColorPicker(const char* label, PenColor& col)

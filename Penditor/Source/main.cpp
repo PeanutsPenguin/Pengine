@@ -109,11 +109,12 @@ int main()
 
 		Pengine::Components::PenTransform thirdTransComp = Pengine::Components::PenTransform();
 		PenMath::Transform thirdTrans;
-		thirdTrans.position = { -20, 0, 0 };
+		thirdTrans.position = { 0, 0, 100 };
 		thirdTrans.scale = { 10, 10, 10 };
 		thirdTransComp.setGlobalTransform(thirdTrans);
 
 		Pengine::PenCore::PenOctopus()->addComponent(thirdObj, thirdTransComp);
+		Pengine::PenCore::PenOctopus()->addComponent(thirdObj, Pengine::Components::PenCamera());
 		//Pengine::PenCore::PenOctopus()->addComponent(thirdObj, thirdRenderComp);
 
 		Pengine::PenCore::PenOctopus()->addToScene(thirdObj);

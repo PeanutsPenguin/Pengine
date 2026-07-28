@@ -82,15 +82,15 @@ namespace Pengine::ui::ImGuiWrapper
 		return { (int)pad.x, (int)pad.y };
 	}
 
-	PenMath::Vector2 getWindowPos()
-	{
-		ImRect windowRect = ImGui::GetCurrentWindow()->InnerRect;
-		return { (int)windowRect.Min.x, (int)windowRect.Min.y };
-	}
-
 	PenMath::Vector2 getCursorPos()
 	{
 		ImVec2 pos = ImGui::GetCursorPos();
+		return { (int)pos.x, (int)pos.y };
+	}
+
+	PenMath::Vector2 getWindowPos()
+	{
+		ImVec2 pos = ImGui::GetWindowPos();
 		return { (int)pos.x, (int)pos.y };
 	}
 
@@ -129,6 +129,16 @@ namespace Pengine::ui::ImGuiWrapper
 		ImGui::SetNextItemOpen(value);
 	}
 
+	void setNextWindowPos(const PenMath::Vector2& pos)
+	{
+		ImGui::SetNextWindowPos({ (float)pos.x, (float)pos.y });
+	}
+
+	void setNextWindowSize(const PenMath::Vector2& size)
+	{
+		ImGui::SetNextWindowSize({ (float)size.x, (float)size.y });
+	}
+
 	bool isMouseOverWindow()
 	{
 		return ImGui::IsWindowHovered();
@@ -159,6 +169,16 @@ namespace Pengine::ui::ImGuiWrapper
 		ImGui::PushStyleColor(ImGuiCol_Header, { col.x, col.y, col.z, col.a });
 	}
 
+	void pushStyle(PenStyleFlag flags, const PenMath::Vector2& vec)
+	{
+		ImGui::PushStyleVar(flags, ImVec2((float)vec.x, (float)vec.y));
+	}
+
+	void pushStyle(PenStyleFlag flags, float value)
+	{
+		ImGui::PushStyleVar(flags, value);
+	}
+
 	void popStyleColor()
 	{
 		ImGui::PopStyleColor(1);
@@ -167,6 +187,11 @@ namespace Pengine::ui::ImGuiWrapper
 	void popTree()
 	{
 		ImGui::TreePop();
+	}
+
+	void popStyle()
+	{
+		ImGui::PopStyleVar();
 	}
 
 	void addImageToDrawList(unsigned int id, const PenMath::Vector2& topLeft, const PenMath::Vector2& bottomRight)

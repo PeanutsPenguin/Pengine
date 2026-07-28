@@ -6,6 +6,7 @@
 
 #include "PenStructsAndEnum/PenTreeNodeFlags.h"
 #include "PenStructsAndEnum/PenDragAndDropData.h"
+#include "PenStructsAndEnum/PenStyleFlag.h"
 
 namespace Pengine::Window
 {
@@ -35,6 +36,8 @@ namespace Pengine::ui
 
 		PenMath::Vector2	getContentSize();
 		PenMath::Vector2	getUICursorPos();
+		PenMath::Vector2	getWindowPos();
+
 		float				getFrameHeight();
 		float				getTextWidth(const char* text);
 
@@ -43,7 +46,9 @@ namespace Pengine::ui
 		void				setUICursorPosY(float y);
 		void				setNextItemWidth(float width);
 		void				setNextItemOpen(bool value);
-		
+		void				setNextWindowPos(const PenMath::Vector2& pos);
+		void				setNextWindowSize(const PenMath::Vector2& pos);
+
 		void				addImageToDrawList(unsigned int id, const PenMath::Vector2& topLeft, const PenMath::Vector2& bottomRight);
 
 		bool				isMouseDragPastTreshold();
@@ -54,6 +59,11 @@ namespace Pengine::ui
 		bool				beginDragAndDropTarget();
 
 		void				removeInputFocus();
+
+		void				pushStyle(PenStyleFlag flags, const PenMath::Vector2& vec);
+		void				pushStyle(PenStyleFlag flags, float value);
+
+		void				popStyle();
 		void				popTree();
 
 		

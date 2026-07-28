@@ -14,7 +14,7 @@ namespace Pengine::ui
         E_OPEN_ON_ARROW = 1 << 7,           // Open when clicking on the arrow part (default for multi-select unless any _OpenOnXXX behavior is set explicitly). Both behaviors may be combined.
         E_LEAF = 1 << 8,                    // No collapsing, no arrow (use as a convenience for leaf nodes).
         E_BULLET = 1 << 9,                  // Display a bullet instead of arrow. IMPORTANT: node can still be marked open/close if you don't set the _Leaf flag!
-        E_FRAME_PADDING = 1 << 10,          // Use FramePadding (even for an unframed text node) to vertically align text baseline to regular widget height. Equivalent to calling AlignTextToFramePadding() before the node.
+        E_FRAME_PADDING_ALIGN = 1 << 10,          // Use FramePadding (even for an unframed text node) to vertically align text baseline to regular widget height. Equivalent to calling AlignTextToFramePadding() before the node.
         E_SPAN_RIGHT_WIDTH = 1 << 11,  // Extend hit box to the right-most edge, even if not framed. This is not the default in order to allow adding other items on the same line without using AllowOverlap mode.
         E_SPAN_FULL_WIDTH = 1 << 12,  // Extend hit box to the left-most and right-most edges (cover the indent area).
     };
