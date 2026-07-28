@@ -6,6 +6,8 @@ namespace Pengine
 {
 	class PenPointLight final : public PenLightBase
 	{
+		friend class Components::PenLight;
+
 	public:
 		PenPointLight() = default;
 		PenPointLight(const PenPointLight& other) = default;

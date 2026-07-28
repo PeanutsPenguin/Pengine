@@ -16,11 +16,6 @@ const PenLightType PenSpotLight::getType() const
 	return this->m_type;
 }
 
-const PenMath::Vector3f& PenSpotLight::getWorldDirection() const
-{
-	return this->m_worldDirection;
-}
-
 const float PenSpotLight::getCutoff() const
 {
 	return m_cutOff;
@@ -40,11 +35,6 @@ void PenSpotLight::setOuterCutoff(float outerCutoff)
 {
 	this->m_outerCutOff = outerCutoff;
 }
-
-void PenSpotLight::setWorldDirection(const PenMath::Vector3f& dir)
-{
-	this->m_worldDirection = dir;
-}
 #pragma endregion
 
 void PenSpotLight::useValues(std::shared_ptr<Resources::PenShaderProgram> prog, const PenMath::Transform& position, int index, bool enabled)
@@ -53,9 +43,9 @@ void PenSpotLight::useValues(std::shared_ptr<Resources::PenShaderProgram> prog, 
 
 	prog->setUniform(("spotLights[" + indexString + "].enabled").c_str(), enabled);
 	prog->setUniform(("spotLights[" + indexString + "].position").c_str(), position.position);
-	prog->setUniform(("spotLights[" + indexString + "].direction").c_str(), this->m_worldDirection);
+	prog->setUniform(("spotLights[" + indexString + "].direction").c_str(), position.getForward());
 	prog->setUniform(("spotLights[" + indexString + "].color").c_str(), this->m_lightColor);
 	prog->setUniform(("spotLights[" + indexString + "].intensity").c_str(), this->m_intensity);
-	prog->setUniform(("spotLights[" + indexString + "].cutOff").c_str(), PenMath::cos(PenMath::Degree(this->m_cutOff).radian()));
-	prog->setUniform(("spotLights[" + indexString + "].outerCutOff").c_str(), PenMath::cos(PenMath::Degree(this->m_outerCutOff).radian()));
+	prog->setUniform(("spotLights[" + indexString + "].cutOff").c_str(), PenMath::cos(this->m_cutOff * (PenMath::c_pi / 180.f)));
+	prog->setUniform(("spotLights[" + indexString + "].outerCutOff").c_str(), PenMath::cos(this->m_outerCutOff * (PenMath::c_pi / 180.f)));
 }

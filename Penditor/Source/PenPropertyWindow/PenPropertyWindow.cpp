@@ -407,6 +407,9 @@ namespace Penditor::Window
 			case Pengine::PenPropertyType::E_FLOAT:
 				this->renderFloatProp(prop, manager);
 				break;
+			case Pengine::PenPropertyType::E_COLOR:
+				this->renderColorProp(prop, manager);
+				break;
 		}
 	}
 
@@ -615,6 +618,28 @@ namespace Penditor::Window
 
 		if (manager->renderFloat(id.c_str(), static_cast<float*>(prop->getData())))
 			m_currentComponent->SetState(Pengine::Components::PenComponentState::DIRTY);
+	}
+
+	void PenPropertyWindow::renderColorProp(Pengine::IPenProperty* prop, Pengine::ui::PenUIManager* manager)
+	{
+		if (!m_headerOpen)
+			return;
+
+		std::string name = prop->getName();
+		name += " :";
+
+		PenMath::Vector2 windowSize = manager->getContentSize();
+
+		std::string id = "##";
+		id += prop->getName() + std::to_string(PenditorCore::PickingHandler()->getSelectedObject());
+
+		manager->renderText(name.c_str());
+		manager->renderOnSameLine();
+
+		float posX = windowSize.x * 0.25f;
+
+		manager->setUICursorPosX(posX);
+		manager->renderColorPickerVec3(id.c_str(), *static_cast<PenMath::Vector3f*>(prop->getData()));
 	}
 #pragma endregion
 }

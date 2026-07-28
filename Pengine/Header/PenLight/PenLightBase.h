@@ -6,10 +6,17 @@
 
 #include <Transform.h>
 
+namespace Pengine::Components
+{
+	class PenLight;
+}
+
 namespace Pengine
 {
 	class PenLightBase
 	{
+		friend class Components::PenLight;
+
 	public:
 		PenLightBase() = default;
 		PenLightBase(const PenLightBase& other) = default;
@@ -21,7 +28,7 @@ namespace Pengine
 
 		virtual const PenLightType		getType() const = 0;
 		const float						getIntensity();
-		const PenMath::Vector3f			getLightColor();
+		const PenMath::Vector3f&		getLightColor();
 ;
 		void				setIntensity(float intensity);
 		void				setLightColor(const PenMath::Vector3f& color);
@@ -29,7 +36,10 @@ namespace Pengine
 
 		virtual void useValues(std::shared_ptr<Resources::PenShaderProgram> prog, const PenMath::Transform& position, int index, bool enabled) = 0;
 
+		friend class Components::PenLight;
+
 	protected:
+
 		PenLightType m_type	= PenLightType::E_INVALID;
 
 		PenMath::Vector3f m_lightColor = { 1, 0, 0 };

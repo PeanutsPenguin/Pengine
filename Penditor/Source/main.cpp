@@ -84,7 +84,7 @@ int main()
 		Pengine::PenCore::PenOctopus()->addComponent(seconNewObj, trans);
 
 		//Light
-		Pengine::Components::PenLight lightData(Pengine::PenLightType::E_DIRECTIONNAL);
+		Pengine::Components::PenLight lightData(Pengine::PenLightType::E_POINT);
 		lightData.getLight()->setLightColor({ 1, 1, 1 });	
 		lightData.getLight()->setIntensity(2);
 		//lightData.SetState(Pengine::Components::PenComponentState::ENABLE, false);

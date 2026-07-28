@@ -159,7 +159,7 @@ void main()
         float windowing = clamp(1.0 - pow(distance / pointLights[i].radius, 4.0), 0.0, 1.0);
         windowing *= windowing;
 
-        vec3 radiance = pointLights[i].color * pointLights[i].intensity * attenuation;
+        vec3 radiance = pointLights[i].color * pointLights[i].intensity * attenuation * windowing;
         TotalLo += ComputePBR(L, V, N, radiance, albedo, metallic, roughness, F0);
     }
 
