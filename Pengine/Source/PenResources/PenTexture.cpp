@@ -20,7 +20,12 @@ using namespace Pengine::Resources;
 
 std::shared_ptr<PenTexture> PenTexture::noTexture()
 {
-	return PenCore::ResourcesManager()->loadResourceFromFile<PenTexture>("Textures/NoTexture.penfile", true);
+	std::shared_ptr<PenTexture> ptr = PenCore::ResourcesManager()->loadResourceFromFile<PenTexture>("Textures/NoTexture.penfile", true);
+
+	if (ptr && !ptr->isLoaded())
+		std::cout << "Default Texture is not loaded yet\n";
+
+	return ptr;
 }
 
 const std::string PenTexture::getTexturePath() const
@@ -85,6 +90,14 @@ bool PenTexture::createResource(const std::string PenfilePath, const std::string
 
 	return true;
 }
+
+bool PenTexture::GPULoad()
+{
+	m_texBuffer->create({ this->m_size.x, this->m_size.y }, this->m_imageData, this->m_size.z);
+	//stbi_image_free(this->m_imageData);
+	return true;
+}
+
 #pragma endregion
 
 const Pengine::Buffer::PenTextureBuffer* PenTexture::dataPtr() const noexcept
@@ -96,17 +109,13 @@ bool PenTexture::initializeTextureBuffer(const char* sourcePath)
 {
 	stbi_set_flip_vertically_on_load(true);
 
-	PenMath::Vector3 size;
-	uint8_t* imageData = stbi_load(sourcePath, &size.x, &size.y, &size.z, 0);
+	this->m_imageData = stbi_load(sourcePath, &this->m_size.x, &this->m_size.y, &this->m_size.z, 0);
 
-	if (!imageData)
+	if (!this->m_imageData)
 	{
 		std::cerr << __FUNCTION__ << ": Failed to load texture image file " << sourcePath << ".\n";
 		return false;
 	}
-
-	m_texBuffer->create({ size.x, size.y }, imageData, size.z);
-	stbi_image_free(imageData);
 
 	return true;
 }

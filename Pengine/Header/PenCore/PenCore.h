@@ -11,6 +11,7 @@ namespace Pengine
 {
 	class PenOctopus;
 	class PenInputManager;
+	class PenThreadPool;
 	
 	namespace Window
 	{
@@ -51,6 +52,7 @@ namespace Pengine
 		static std::unique_ptr<Resources::PenResourcesManager>&		ResourcesManager();
 		static std::unique_ptr<Serialize::PenSerializer>&			Serializer();
 		static std::unique_ptr<Pengine::ui::PenUIManager>&			UIManager();
+		static std::unique_ptr<Pengine::PenThreadPool>&				ThreadPool();
 
 		static PenLibDefine&	libDefine();
 		static InputLib			inputLib();
@@ -92,6 +94,7 @@ namespace Pengine
 		static std::unique_ptr<Resources::PenResourcesManager>	m_resourcesManager;
 		static std::unique_ptr<Serialize::PenSerializer>		m_PenSerializer;
 		static std::unique_ptr<Pengine::ui::PenUIManager>		m_PenUIManager;
+		static std::unique_ptr<Pengine::PenThreadPool>			m_PenThreadPool;
 
 		static PenLibDefine m_libs;
 

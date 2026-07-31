@@ -6,6 +6,9 @@
 #include <iostream>
 #include <fstream>
 
+#include "PenThreadPool/PenThreadPool.h"
+#include "PenCore/PenCore.h"
+
 #define RESOURCE_TEMPLATE template<typename _ResourceType, typename ...Args>
 
 namespace Pengine::Resources
@@ -85,25 +88,55 @@ namespace Pengine::Resources
 		requires std::derived_from<_ResourceType, PenResourceBase>
 	inline std::shared_ptr<_ResourceType> PenResourcesManager::loadResourceFromFile(const char* path, Args... data)
 	{
+		std::string safePath = path;
+
+		std::unique_lock<std::mutex> lock(m_resourceMutex);
+
 		//Check if it doesn't already exist
-		auto it = m_pathfileToId.find(path);
+		auto it = m_pathfileToId.find(safePath);
 		if (it != m_pathfileToId.end())
-			return std::dynamic_pointer_cast<_ResourceType>(m_resourceStocker[it->second].lock());	
+		{
+			std::shared_ptr<_ResourceType> ptr = std::dynamic_pointer_cast<_ResourceType>(m_resourceStocker[it->second].lock());
+			
+			if (!ptr)
+				ptr = std::dynamic_pointer_cast<_ResourceType>(m_persistentResourcestocker[it->second]);
 
-		std::cout << __FUNCTION__ << "\tResources : " << path << " doesn't exist, loading it" << std::endl;
+			return ptr;
+		}
 
-		PenResourcesId curId = m_currentId++;
+		std::cout << __FUNCTION__ << "\tResources : " << safePath << " doesn't exist, loading it" << std::endl;
+
+		PenResourcesId curId = ++m_currentId;
 
 		std::shared_ptr<_ResourceType> ptr = std::make_shared<_ResourceType>(curId);
 
-		if(!ptr->loadResource(path, data...))
-		{
-			return nullptr;
-		}
 
-		m_idToPathfile[curId] = path;
+		m_idToPathfile[curId] = safePath;
 		m_resourceStocker[curId] = ptr;
-		m_pathfileToId[path] = curId;
+		m_pathfileToId[safePath] = curId;
+
+		lock.unlock();
+
+		PenThreadPool* threadPool = Pengine::PenCore::ThreadPool().get();
+
+		threadPool->enqueueTask([ptr, safePath, data...](PenThreadPool* pool) mutable
+			{
+				bool success = ptr->loadResource(safePath.c_str(), data...);
+
+				if (success)
+				{
+					pool->enqueueMainTask([ptr]()
+						{
+							if(ptr->GPULoad())
+								ptr->setLoaded();
+							else 
+								std::cout << "GPU LOAD FAILED" << std::endl;
+						});
+				}
+				else
+					std::cout << "Async load failed for: " << safePath << std::endl;
+
+			}, threadPool);
 
 		return ptr;
 	}
@@ -112,30 +145,57 @@ namespace Pengine::Resources
 		requires std::derived_from<_ResourceType, PenResourceBase>
 	inline std::shared_ptr<_ResourceType> PenResourcesManager::loadResourceFromFile(const char* path, bool persistent, Args... data)
 	{
+		std::string safePath = path;
+
+		std::unique_lock<std::mutex> lock(m_resourceMutex);
+
 		//Check if it doesn't already exist
-		auto it = m_pathfileToId.find(path);
-
+		auto it = m_pathfileToId.find(safePath);
 		if (it != m_pathfileToId.end())
-			return std::dynamic_pointer_cast<_ResourceType>(m_persistentResourcestocker[it->second]);
+		{
+			if(persistent)
+				return std::dynamic_pointer_cast<_ResourceType>(m_persistentResourcestocker[it->second]);
+			else
+				return std::dynamic_pointer_cast<_ResourceType>(m_resourceStocker[it->second].lock());
+		}
 
-		std::cout << __FUNCTION__ << "\tResources : " << path << " doesn't exist, loading it" << std::endl;
+		std::cout << __FUNCTION__ << "\tResources : " << safePath << " doesn't exist, loading it" << std::endl;
 
-		PenResourcesId curId = m_currentId++;
+		PenResourcesId curId = ++m_currentId;
 
 		std::shared_ptr<_ResourceType> ptr = std::make_shared<_ResourceType>(curId);
 
-		if (!ptr->loadResource(path, data...))
-		{
-			return nullptr;
-		}
+		m_idToPathfile[curId] = safePath;
+		m_pathfileToId[safePath] = curId;
 
-		m_idToPathfile[curId] = path;
-		m_pathfileToId[path] = curId;
-
-		if(persistent)
+		if (persistent)
 			m_persistentResourcestocker[curId] = ptr;
-		else 
+		else
 			m_resourceStocker[curId] = ptr;
+
+		lock.unlock();
+
+		PenThreadPool* threadPool = Pengine::PenCore::ThreadPool().get();
+
+		threadPool->enqueueTask([ptr, safePath, data...](PenThreadPool* pool) mutable
+		{
+			bool success = ptr->loadResource(safePath.c_str(), data...);
+
+			if (success)
+			{
+				pool->enqueueMainTask([ptr]()
+					{
+						if (ptr->GPULoad())
+							ptr->setLoaded();
+						else
+							std::cout << "GPU LOAD FAILED" << std::endl;
+					});
+			}
+			else
+				std::cout << "Async load failed for: " << safePath << std::endl;
+
+		}, threadPool);
+
 
 		return ptr;
 	}

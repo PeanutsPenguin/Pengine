@@ -8,6 +8,8 @@
 #include <unordered_map>
 #include <string_view>
 #include <memory>
+#include <mutex>
+#include <atomic>
 
 namespace Pengine::Resources
 {
@@ -60,7 +62,8 @@ namespace Pengine::Resources
 		std::unordered_map<PenResourcesId, std::weak_ptr<PenResourceBase>>		m_resourceStocker;
 		std::unordered_map<PenResourcesId, std::shared_ptr<PenResourceBase>>	m_persistentResourcestocker;
 
-		PenResourcesId m_currentId;
+		std::mutex m_resourceMutex;
+		std::atomic<PenResourcesId> m_currentId = 0;
 	};
 }
 #include "PenResources/PenResourceManager.hpp"

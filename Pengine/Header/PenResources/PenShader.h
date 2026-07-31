@@ -21,13 +21,15 @@ namespace Pengine::Resources
 
 		_NODISCARD bool		loadResource(const std::string path) override;
 		bool				createResource(const std::string PenfilePath, const std::string sourcePath) override;
+		bool				GPULoad() override;
 
 		bool changeShaderType(const PenShaderType type, const char* PenfilePath);
 
 		_NODISCARD const unsigned int	getShaderId() const noexcept;
 		_NODISCARD unsigned int*		getShaderIdPtr();
 
-	protected:
+	private:
+		std::string m_shaderData;
 		Pengine::PenShaderType m_type = Pengine::PenShaderType::INVALID_SHADER;
 
 		unsigned int m_shaderId = 0;

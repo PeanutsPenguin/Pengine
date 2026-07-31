@@ -115,6 +115,9 @@ namespace Penditor::Window
 		Pengine::ui::PenUIManager* manager = Pengine::PenCore::UIManager().get();
 		std::shared_ptr<Pengine::Resources::PenMaterial> mat = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenMaterial>(this->m_currentData.pathFile.c_str());
 
+		if (!mat || !mat->isLoaded())
+			return;
+
 		manager->renderCenterText("PenMaterial");
 		manager->renderSeperator();
 

@@ -27,6 +27,9 @@ PenModel::PenModel(const PenObjectId& id) : PenResourceBase(id)
 
 PenModel::~PenModel()
 {
+	if (this->m_importer)
+		delete this->m_importer;
+
 	std::cout << __FUNCTION__ ": Destryoing with id : " << this->getId() << std::endl;
 }
 
@@ -50,7 +53,12 @@ bool PenModel::loadResource(const std::string path)
 
 std::shared_ptr<PenModel> PenModel::defaultModel()
 {
-	return PenCore::ResourcesManager()->loadResourceFromFile<PenModel>("Mesh/DefaultModel.penfile", true);
+	std::shared_ptr<PenModel> ptr = PenCore::ResourcesManager()->loadResourceFromFile<PenModel>("Mesh/DefaultModel.penfile", true);
+
+	if (ptr && !ptr->isLoaded())
+		std::cout << "Default Model is not loaded yet\n";
+
+	return ptr;
 }
 
 bool PenModel::createResource(const std::string PenfilePath, const std::string sourcePath)
@@ -65,25 +73,33 @@ bool PenModel::createResource(const std::string PenfilePath, const std::string s
 	return generateResource(sourcePath.c_str());
 }
 
+bool PenModel::GPULoad()
+{
+	if (!this->m_scene)
+		return false;
+	else 
+		return processNode(this->m_scene->mRootNode, this->m_scene);
+}
+
 bool PenModel::generateResource(const char* path)
 {
 	std::cout << __FUNCTION__ ": Loading model from file " << path << std::endl;
 
-	Assimp::Importer importer;
+	this->m_importer = new Assimp::Importer();
 
 	//Open the model file
-	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace);
+	this->m_scene = this->m_importer->ReadFile(path, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace);
 
 	//if error during loading 
-	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+	if (!this->m_scene || this->m_scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !this->m_scene->mRootNode)
 	{
-		std::cerr << __FUNCTION__ ": Failed to load Model resource :" << importer.GetErrorString() << std::endl;
+		std::cerr << __FUNCTION__ ": Failed to load Model resource :" << this->m_importer->GetErrorString() << std::endl;
 		return false;
 	}
 
-	m_meshes.reserve(scene->mNumMeshes);
+	m_meshes.reserve(this->m_scene->mNumMeshes);
 	
-	return processNode(scene->mRootNode, scene);
+	return true;
 }
 #pragma endregion
 

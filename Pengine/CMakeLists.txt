@@ -3,7 +3,7 @@
 get_filename_component(TARGET_NAME ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 
 set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 message("[${TARGET_NAME}] Starting source file fetching in [${CMAKE_CURRENT_SOURCE_DIR}]")
 

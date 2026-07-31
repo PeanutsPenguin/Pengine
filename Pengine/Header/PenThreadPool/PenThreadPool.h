@@ -38,7 +38,7 @@ namespace Pengine
 		std::mutex m_mainMutex;												//<-Mutex to avoid mutliple call on the main queue at the same time
 
 		std::condition_variable_any m_condition;							//<-Awake condition for the threads
-		std::vector<std::jthread> m_workers;									//Vector of threads
+		std::vector<std::jthread> m_workers;								//<-Vector of threads
 	};
 }
 #include "PenThreadPool.hpp"

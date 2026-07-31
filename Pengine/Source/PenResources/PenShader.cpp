@@ -71,6 +71,31 @@ bool Pengine::Resources::PenShader::createResource(const std::string PenfilePath
 
 	return this->reloadShaderContent(sourcePath.c_str());
 }
+
+bool PenShader::GPULoad()
+{
+	switch (this->m_type)
+	{
+	case PenShaderType::VERTEX_SHADER:
+		GladWrapper::createVertexShader(&this->m_shaderId);
+		break;
+	case PenShaderType::FRAGMENT_SHADER:
+		GladWrapper::createFragmentShader(&this->m_shaderId);
+		break;
+	default:
+		break;
+	}
+
+	GladWrapper::fillShader(&this->m_shaderId, this->m_shaderData);
+
+	if (!GladWrapper::debugShader(&this->m_shaderId))
+	{
+		destroy();
+		return false;
+	}
+
+	return true;
+}
 #pragma endregion
 
 bool PenShader::changeShaderType(const PenShaderType type, const char* PenfilePath)
@@ -111,13 +136,11 @@ bool PenShader::setType(const char* sourcePath)
 
 	if (fileExtension == ".vert" || fileExtension == ".vertexshader")
 	{
-		GladWrapper::createVertexShader(&this->m_shaderId);
 		this->m_type = PenShaderType::VERTEX_SHADER;
 		return true;
 	}
 	else if (fileExtension == ".frag" || fileExtension == ".fragmentshader")
 	{
-		GladWrapper::createFragmentShader(&this->m_shaderId);
 		this->m_type = PenShaderType::FRAGMENT_SHADER;
 		return true;
 	}
@@ -132,13 +155,11 @@ bool PenShader::setType(Pengine::PenShaderType type)
 {
 	if (type == PenShaderType::VERTEX_SHADER)
 	{
-		GladWrapper::createVertexShader(&this->m_shaderId);
 		this->m_type = PenShaderType::VERTEX_SHADER;
 		return true;
 	}
 	else if (type == PenShaderType::FRAGMENT_SHADER)
 	{
-		GladWrapper::createFragmentShader(&this->m_shaderId);
 		this->m_type = PenShaderType::FRAGMENT_SHADER;
 		return true;
 	}
@@ -177,13 +198,7 @@ bool Pengine::Resources::PenShader::reloadShaderContent(const char* path)
 	std::string data(std::filesystem::file_size(path), '\0');
 	file.read(data.data(), data.size());
 
-	GladWrapper::fillShader(&this->m_shaderId, data);
-
-	if(!GladWrapper::debugShader(&this->m_shaderId))
-	{
-		destroy();
-		return false;
-	}
+	this->m_shaderData = data;
 
 	return true;
 }

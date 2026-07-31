@@ -3,6 +3,8 @@
 #include "PenCore/PenCore.h"
 #include "PenResourceManager.hpp"
 
+#include "PenThreadPool/PenThreadPool.h"
+
 namespace Pengine::Resources
 {
 	_NODISCARD PenResourcesId PenResourceBase::getId() const noexcept 
@@ -31,5 +33,40 @@ namespace Pengine::Resources
 	bool PenResourceBase::isDirty()
 	{
 		return p_isDirty;
+	}
+
+	void PenResourceBase::setLoaded()
+	{
+		p_loadingStatus = E_LOADED;
+	}
+
+	void PenResourceBase::setLoading()
+	{
+		p_loadingStatus = E_LOADING;
+	}
+
+	PenLoadingStatus PenResourceBase::loadStatus()
+	{
+		return this->p_loadingStatus;
+	}
+
+	bool PenResourceBase::isLoaded() 
+	{
+		if (this->p_loadingStatus == E_LOADED)
+			return true;
+		else if (this->p_loadingStatus == E_NOT_LOADED)
+		{
+			Pengine::PenCore::ThreadPool()->enqueueMainTask([this]()
+				{
+					if (this->GPULoad())
+						this->setLoaded();
+					else
+						std::cout << "GPU LOAD FAILED" << std::endl;
+				});
+
+			return false;
+		}
+		else if (this->p_loadingStatus == E_LOADING)
+			return false;
 	}
 }

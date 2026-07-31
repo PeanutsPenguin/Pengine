@@ -18,10 +18,12 @@ PenShaderProgram::PenShaderProgram(const PenObjectId& id) : PenResourceBase(id)
 
 std::shared_ptr<PenShaderProgram> PenShaderProgram::defaultShaderProgram()
 {
-	if (PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
-		return PenCore::ResourcesManager()->loadResourceFromFile<PenShaderProgram>("Shaders/PBR/ShaderProgPBR.penfile");
+	std::shared_ptr<PenShaderProgram> ptr = PenCore::ResourcesManager()->loadResourceFromFile<PenShaderProgram>("Shaders/PBR/ShaderProgPBR.penfile");
 
-	return nullptr;
+	if (ptr && !ptr->isLoaded())
+		std::cout << "Default shader Program is not loaded yet\n";
+
+	return ptr;
 }
 
 PenShaderProgram::~PenShaderProgram()
@@ -45,18 +47,12 @@ bool Pengine::Resources::PenShaderProgram::loadResource(const std::string path)
 
 	infile.close();
 
-	std::shared_ptr<PenShader> vertPtr = PenCore::ResourcesManager()->loadResourceFromFile<PenShader>(vert.c_str());;
-	std::shared_ptr<PenShader> fragPtr = PenCore::ResourcesManager()->loadResourceFromFile<PenShader>(frag.c_str());;
-
-	if (!vertPtr || !fragPtr)
-	{
-		std::cout << __FUNCTION__ "\t Failed to finc vertex or fragment shader resource\n";
-		return false;
-	}
+	this->m_shaders.push_back(PenCore::ResourcesManager()->loadResourceFromFile<PenShader>(vert.c_str()));
+	this->m_shaders.push_back(PenCore::ResourcesManager()->loadResourceFromFile<PenShader>(frag.c_str()));
 
 	this->m_penfilePath = path;
 
-	return this->createShaderProgram(vertPtr, fragPtr);
+	return true;
 }
 
 bool PenShaderProgram::createResource(const std::string PenfilePath, const std::string sourcePath)
@@ -87,19 +83,19 @@ bool PenShaderProgram::createResource(const std::string PenfilePath, std::shared
 
 	outfile.close();
 
-	std::shared_ptr<PenShader> vert = std::dynamic_pointer_cast<PenShader>(vertexShader);
-	std::shared_ptr<PenShader> frag = std::dynamic_pointer_cast<PenShader>(fragmentShader);
+	this->m_shaders.push_back(std::dynamic_pointer_cast<PenShader>(vertexShader));
+	this->m_shaders.push_back(std::dynamic_pointer_cast<PenShader>(fragmentShader));
 
 	this->m_penfilePath = PenfilePath;
 
-	if (!vert || !frag)
-	{
-		std::cout << __FUNCTION__ "\t Dynamic cast to PenGlShader failed\n";
-		return false;
-	}
-
-	return this->createShaderProgram(vert, frag);
+	return true;
 }
+
+bool PenShaderProgram::GPULoad()
+{
+	return this->createShaderProgram();
+}
+
 #pragma endregion
 
 void PenShaderProgram::destroy()
@@ -110,13 +106,22 @@ void PenShaderProgram::destroy()
 	m_shaderProgramId = 0;
 }
 
-bool PenShaderProgram::createShaderProgram(std::shared_ptr<PenShader> vertPtr, std::shared_ptr<PenShader> fragPtr)
+bool PenShaderProgram::createShaderProgram()
 {
-	int shaderIndex = 0;
-
 	GladWrapper::createShaderProgram(&this->m_shaderProgramId);
-	GladWrapper::attachShader(&this->m_shaderProgramId, vertPtr->getShaderIdPtr());
-	GladWrapper::attachShader(&this->m_shaderProgramId, fragPtr->getShaderIdPtr());
+
+	size_t size = this->m_shaders.size();
+	for (int i = 0; i < size; ++i)
+	{
+		if (!this->m_shaders[i]->isLoaded())
+		{
+			destroy();
+			return false;
+		}
+
+		GladWrapper::attachShader(&this->m_shaderProgramId, this->m_shaders[i]->getShaderIdPtr());
+	}
+
 	GladWrapper::linkProgram(&this->m_shaderProgramId);
 
 	if(!GladWrapper::debugShaderProgram(&this->m_shaderProgramId))
