@@ -37,6 +37,7 @@ namespace Pengine::Resources
 		bool	createResource(const std::string penfilePath, const std::string sourcePath) final;
 		bool	createResource(const std::string penfilePath, std::shared_ptr<PenShaderProgram> prog);
 		bool	createResource(const std::string penfilePath, std::shared_ptr<PenShaderProgram> prog, std::shared_ptr<PenTexture> tex);
+		bool	GPULoad() override;
 		bool	save() override;
 
 		void shaderActivation();
@@ -83,8 +84,8 @@ namespace Pengine::Resources
 		void	activateAmbientOcclusion();
 
 		//Getter
-		const std::shared_ptr<PenShaderProgram>&				getShaderProg();
-		const std::shared_ptr<PenTexture>&						getNormal();
+		const std::shared_ptr<PenShaderProgram>					getShaderProg();
+		const std::shared_ptr<PenTexture>						getNormal();
 		PenMaterialProperty<PenMath::Vector3f>&					getAlbedo();
 		PenMaterialProperty<float>&								getMetallic();
 		PenMaterialProperty<float>&								getRoughness();

@@ -1,6 +1,7 @@
 #pragma once 
 
 #include "PenResources/PenResourcesBase.h"
+#include "Vector/Vector3/Vector3.h"
 
 namespace Pengine::Buffer
 {
@@ -25,6 +26,7 @@ namespace Pengine::Resources
 
 		bool	loadResource(const std::string path) final;
 		bool	createResource(const std::string PenfilePath, const std::string sourcePath) final;
+		bool	GPULoad() override;
 
 		_NODISCARD const std::string getTexturePath() const;
 
@@ -33,11 +35,10 @@ namespace Pengine::Resources
 		/// </summary>
 		_NODISCARD const Pengine::Buffer::PenTextureBuffer* dataPtr() const noexcept;
 
-
-	
 	private:
 		bool initializeTextureBuffer(const char* sourcePath);
 
+		std::string sourcePath = "";
 		std::unique_ptr<Pengine::Buffer::PenTextureBuffer> m_texBuffer = nullptr;
 	};
 }

@@ -54,7 +54,8 @@ namespace Penditor
 		col.readPixelColor(relativeMousePos);
 
 		Pengine::PenObjectId newObj = this->colorToId(col.getColor());
-		
+
+	
 		this->m_selectedObject = newObj;
 		Penditor::PenditorCore::PropertyWindow()->changeRenderTypeToObject();
 	}
@@ -63,7 +64,7 @@ namespace Penditor
 	{
 		renderer->preRender(this->idToColor(Pengine::g_PenObjectInvalidId));
 
-		if (!this->m_pickingShader->use())
+		if (!this->m_pickingShader->isLoaded() || !this->m_pickingShader->use())
 			return;
 
 		const Pengine::PenObjectId camId = Penditor::PenditorCore::GameWindow()->getCamera();
@@ -96,7 +97,12 @@ namespace Penditor
 		this->m_pickingShader->setUniform("PickingColor", col);
 
 		if (!Pengine::PenCore::PenOctopus()->containsComponent<Pengine::Components::PenRenderer>(obj))
-			Pengine::Resources::PenModel::defaultModel()->render();
+		{
+			std::shared_ptr<Pengine::Resources::PenModel> ptr = Pengine::Resources::PenModel::defaultModel();
+
+			if (ptr && ptr->isLoaded())
+				ptr->render();
+		}
 		else
 			Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenRenderer>(obj).render();
 	}

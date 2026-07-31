@@ -9,8 +9,6 @@
 #include <Vector/Vector3/Vector3.h>
 
 //Lib
-#define STB_IMAGE_IMPLEMENTATION
-#define STBI_NO_GIF
 #include <stb_image/stb_image.h>
 
 //std
@@ -20,7 +18,12 @@ using namespace Pengine::Resources;
 
 std::shared_ptr<PenTexture> PenTexture::noTexture()
 {
-	return PenCore::ResourcesManager()->loadResourceFromFile<PenTexture>("Textures/NoTexture.penfile", true);
+	std::shared_ptr<PenTexture> ptr = PenCore::ResourcesManager()->loadResourceFromFile<PenTexture>("Textures/NoTexture.penfile", true);
+
+	if (ptr && !ptr->isLoaded())
+		std::cout << "Default Texture is not loaded yet\n";
+
+	return ptr;
 }
 
 const std::string PenTexture::getTexturePath() const
@@ -85,6 +88,26 @@ bool PenTexture::createResource(const std::string PenfilePath, const std::string
 
 	return true;
 }
+
+bool PenTexture::GPULoad()
+{
+	///EVERYTHING IS ON THE MAIN THREAD AND I DON'T CARE I HAD TOO MUCH PROBLEM 
+	PenMath::Vector3 size;
+	stbi_uc* img = stbi_load(this->sourcePath.c_str(), &size.x, &size.y, &size.z, 0);
+
+	if (!img)
+	{
+		std::cerr << __FUNCTION__ << ": Failed to load texture image file " << sourcePath << ".\n";
+		return false;
+	}
+
+	m_texBuffer->create({ size.x, size.y }, img, size.z);
+
+	stbi_image_free(img);
+
+	return true;
+}
+
 #pragma endregion
 
 const Pengine::Buffer::PenTextureBuffer* PenTexture::dataPtr() const noexcept
@@ -94,19 +117,6 @@ const Pengine::Buffer::PenTextureBuffer* PenTexture::dataPtr() const noexcept
 
 bool PenTexture::initializeTextureBuffer(const char* sourcePath)
 {
-	stbi_set_flip_vertically_on_load(true);
-
-	PenMath::Vector3 size;
-	uint8_t* imageData = stbi_load(sourcePath, &size.x, &size.y, &size.z, 0);
-
-	if (!imageData)
-	{
-		std::cerr << __FUNCTION__ << ": Failed to load texture image file " << sourcePath << ".\n";
-		return false;
-	}
-
-	m_texBuffer->create({ size.x, size.y }, imageData, size.z);
-	stbi_image_free(imageData);
-
+	this->sourcePath = sourcePath;
 	return true;
 }

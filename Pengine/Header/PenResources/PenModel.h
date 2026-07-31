@@ -3,6 +3,11 @@
 
 #include <vector>
 
+namespace Assimp
+{
+	class Importer;
+}
+
 class aiNode;
 class aiMesh;
 struct aiScene;
@@ -25,6 +30,7 @@ namespace Pengine::Resources
 
 		bool	loadResource(const std::string path) override;
 		bool	createResource(const std::string PenfilePath, const std::string sourcePath) override;
+		bool	GPULoad() override;
 
 		static std::shared_ptr<PenModel> defaultModel();
 
@@ -36,5 +42,7 @@ namespace Pengine::Resources
 		bool	loadMesh(const aiMesh& mesh);
 
 		std::vector<std::shared_ptr<PenMesh>> m_meshes;
+		Assimp::Importer* m_importer = nullptr;
+		const aiScene* m_scene = nullptr;
 	};
 }

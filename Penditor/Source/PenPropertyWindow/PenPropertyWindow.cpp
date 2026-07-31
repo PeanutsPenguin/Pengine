@@ -53,6 +53,9 @@ namespace Penditor::Window
 		this->m_renderingType = PropertiesRenderingType::E_PENOBJECT;
 		const Pengine::PenObjectId selectedObject = PenditorCore::PickingHandler()->getSelectedObject();
 
+		if (selectedObject == Pengine::g_PenObjectInvalidId)
+			return;
+
 		m_objectEuler = Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenTransform>(selectedObject).getGlobalTransform().rotation.getRotationEuler();
 
 		if (Pengine::PenCore::PenOctopus()->containsComponent<Pengine::Components::PenCamera>(selectedObject))
@@ -114,6 +117,9 @@ namespace Penditor::Window
 	{
 		Pengine::ui::PenUIManager* manager = Pengine::PenCore::UIManager().get();
 		std::shared_ptr<Pengine::Resources::PenMaterial> mat = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenMaterial>(this->m_currentData.pathFile.c_str());
+
+		if (!mat || !mat->isLoaded())
+			return;
 
 		manager->renderCenterText("PenMaterial");
 		manager->renderSeperator();
@@ -253,7 +259,7 @@ namespace Penditor::Window
 
 		manager->setNextItemWidth(Setting::sPropertySettings::s_sliderMinWidth);
 
-		float metCpy = mat->getRoughness().defaultValue;
+		float metCpy = mat->getMetallic().defaultValue;
 
 		if (manager->renderSliderFloat("##MettallicRawValue", 0, 1, &metCpy))
 			mat->setMetallic(metCpy);
@@ -299,7 +305,7 @@ namespace Penditor::Window
 
 		manager->setNextItemWidth(Setting::sPropertySettings::s_sliderMinWidth);
 
-		float aoCpy = mat->getRoughness().defaultValue;
+		float aoCpy = mat->getAmbientOcclusion().defaultValue;
 
 		if (manager->renderSliderFloat("##AORawValue", 0, 1, &aoCpy))
 			mat->setAmbientOcclusion(aoCpy);

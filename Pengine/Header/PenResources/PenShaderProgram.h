@@ -31,8 +31,9 @@ namespace Pengine::Resources
 		_NODISCARD bool		loadResource(const std::string path);
 		_NODISCARD bool		createResource(const std::string PenfilePath, const std::string sourcePath);
 		_NODISCARD bool		createResource(const std::string PenfilePath, std::shared_ptr<PenShader> vertexShader, std::shared_ptr<PenShader> fragmentShader);
+		_NODISCARD bool		GPULoad() override;
 
-		_NODISCARD bool		createShaderProgram(std::shared_ptr<PenShader> vertPtr, std::shared_ptr<PenShader> fragPtr);
+		_NODISCARD bool		createShaderProgram();
 
 		bool use() const;
 		void unuse() const;
@@ -47,6 +48,7 @@ namespace Pengine::Resources
 		void	setUniform(const char* name, const PenMath::Mat4& value);
 
 	private:
+		std::vector<std::shared_ptr<PenShader>> m_shaders;
 		unsigned int m_shaderProgramId = 0;
 	};
 }

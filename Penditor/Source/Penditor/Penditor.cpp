@@ -5,6 +5,7 @@
 #include "PenWindow/PenWindowBase.h"		//Pengine::PenWindow
 #include "PenInput/PenInput.h"				//Pengine::PenInput
 #include "PenUIManager/PenUIManager.h"		//Pengine::ui::PenUIManager
+#include "PenThreadPool/PenThreadPool.h"
 
 //Components
 #include "PenComponents/PenTransform/PenTransform.h"
@@ -45,6 +46,8 @@ void PenditorCore::runEditor()
 	while (!m_shouldStop && !Pengine::PenCore::shouldStop())
 	{
 		update();
+
+		Pengine::PenCore::ThreadPool()->executeMainTask();
 
 		render();
 

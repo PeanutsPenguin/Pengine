@@ -8,6 +8,7 @@
 #include "PenSerializer/PenSerializer.h"                    //PenSerializer
 #include "PenWindow/PenWindowBase.h"                        //Penwindow
 #include "PenUIManager/PenUIManager.h"                      //PenUIManager
+#include "PenThreadPool/PenThreadPool.h"                    //PenThreadPool
 
 //Components
 #include "PenComponents/PenRenderer/PenRenderer.h"
@@ -24,6 +25,10 @@
 //Lib
 #include <GLFW/glfw3.h>
 
+#define STB_IMAGE_IMPLEMENTATION
+#define STBI_NO_GIF
+#include <stb_image/stb_image.h>
+
 using namespace Pengine;
 
 #pragma region Static definiton
@@ -33,6 +38,7 @@ std::unique_ptr<PenInputManager>                    PenCore::m_PenInputManager  
 std::unique_ptr<Resources::PenResourcesManager>     PenCore::m_resourcesManager     = std::make_unique<Resources::PenResourcesManager>();
 std::unique_ptr<Serialize::PenSerializer>           PenCore::m_PenSerializer        = std::make_unique<Serialize::PenSerializer>();
 std::unique_ptr<ui::PenUIManager>                   PenCore::m_PenUIManager         = std::make_unique<ui::PenUIManager>();
+std::unique_ptr<Pengine::PenThreadPool>             PenCore::m_PenThreadPool        = std::make_unique<Pengine::PenThreadPool>();
 
 PenLibDefine PenCore::m_libs = PenLibDefine();
 
@@ -63,6 +69,8 @@ bool PenCore::init(const char* name, const PenMath::Vector2& windowSize)
     m_PenOctopus->init();
 
     registerDefaultType();
+
+    stbi_set_flip_vertically_on_load(true);
 
     return true;
 }
@@ -96,6 +104,11 @@ std::unique_ptr<Serialize::PenSerializer>& PenCore::Serializer()
 std::unique_ptr<ui::PenUIManager>& PenCore::UIManager()
 {
     return m_PenUIManager;
+}
+
+std::unique_ptr<Pengine::PenThreadPool>& PenCore::ThreadPool()
+{
+    return m_PenThreadPool;
 }
 
 PenLibDefine& PenCore::libDefine()
@@ -134,6 +147,8 @@ void PenCore::startPengine()
     while (!m_shouldStop)
     {
         frameUpdate();
+
+        m_PenThreadPool->executeMainTask();
 
         renderUpdate();
 
@@ -191,6 +206,12 @@ void PenCore::destroy()
         m_PenUIManager.reset();
         m_PenUIManager = nullptr;
 	}
+
+    if (m_PenThreadPool)
+    {
+        m_PenThreadPool.reset();
+        m_PenThreadPool = nullptr;
+    }
 }
 
 #pragma region Updates

@@ -218,17 +218,31 @@ namespace Penditor::Window
 			PenMath::Mat4 model = transComp.getGlobalTransform().toMatrix();
 			prog->setUniform("model", model);
 
+			if (!mat || !mat->isLoaded())
+				return;
+
 			mat->shaderActivation();
 
 			if (hasRenderComponent)
 				Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenRenderer>(objId).render();
 			else
-				Pengine::Resources::PenModel::defaultModel()->render();
+			{
+				std::shared_ptr< Pengine::Resources::PenModel> ptr = Pengine::Resources::PenModel::defaultModel();
+
+				if(ptr && ptr->isLoaded())
+					ptr->render();
+			}
 		}
 	}
 
 	bool PenGameWindow::activateShaderAndLight(std::shared_ptr<Pengine::Resources::PenShaderProgram> prog)
 	{
+		if(!prog || !prog->isLoaded())
+		{
+			std::cout << __FUNCTION__ ": Shader program is not loaded\n";
+			return false;
+		}
+
 		if (!prog->use())
 		{
 			std::cout << __FUNCTION__ ": Shader program failed to use\n";

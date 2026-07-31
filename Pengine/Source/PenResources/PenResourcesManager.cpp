@@ -65,7 +65,8 @@ void PenResourcesManager::saveAllDirty()
         {
             std::shared_ptr<PenResourceBase> resource = it->second;
             it = m_persistentResourcestocker.erase(it);
-            resource->save();
+            if (!resource->save())
+                std::cout << "Failed to save a resource /n";
         }
         else
             ++it;
