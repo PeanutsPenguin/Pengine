@@ -158,7 +158,7 @@ void PenMaterial::setShaderProgram(std::shared_ptr<Pengine::Resources::PenShader
     setDirty();
 }
 
-const std::shared_ptr<PenShaderProgram>& PenMaterial::getShaderProg()
+const std::shared_ptr<PenShaderProgram> PenMaterial::getShaderProg()
 {
     if (!this->m_shader)
     {
@@ -180,7 +180,7 @@ void PenMaterial::setNormal(std::shared_ptr<Pengine::Resources::PenTexture> ptr)
     }
 }
 
-const std::shared_ptr<PenTexture>& PenMaterial::getNormal()
+const std::shared_ptr<PenTexture> PenMaterial::getNormal()
 {
     if (!this->m_normal)
     {

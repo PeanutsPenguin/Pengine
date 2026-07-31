@@ -5,7 +5,6 @@
 
 //Lib
 #include <glad/glad.h>
-#include <stb_image/stb_image.h>
 
 namespace Pengine::GladWrapper
 {

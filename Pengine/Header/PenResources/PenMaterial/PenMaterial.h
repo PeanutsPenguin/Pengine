@@ -84,8 +84,8 @@ namespace Pengine::Resources
 		void	activateAmbientOcclusion();
 
 		//Getter
-		const std::shared_ptr<PenShaderProgram>&				getShaderProg();
-		const std::shared_ptr<PenTexture>&						getNormal();
+		const std::shared_ptr<PenShaderProgram>					getShaderProg();
+		const std::shared_ptr<PenTexture>						getNormal();
 		PenMaterialProperty<PenMath::Vector3f>&					getAlbedo();
 		PenMaterialProperty<float>&								getMetallic();
 		PenMaterialProperty<float>&								getRoughness();
