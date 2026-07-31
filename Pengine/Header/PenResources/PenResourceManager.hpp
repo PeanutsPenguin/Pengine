@@ -31,6 +31,8 @@ namespace Pengine::Resources
 			return nullptr;
 		}
 
+		std::unique_lock<std::mutex> lock(m_resourceMutex);
+
 		//Check if ressources doesn't exist
 		auto it = m_pathfileToId.find(destination);
 		if (it != m_pathfileToId.end())
@@ -42,13 +44,33 @@ namespace Pengine::Resources
 
 		std::shared_ptr<_ResourceType> ptr = std::make_shared<_ResourceType>(curId);
 
-		if (!ptr->createResource(destination, copyEmplacement.string(), data...))
-			return nullptr;
-		
-
 		m_idToPathfile[curId] = destination;
 		m_resourceStocker[curId] = ptr;
 		m_pathfileToId[destination] = curId;
+
+		lock.unlock();
+
+		PenThreadPool* threadPool = Pengine::PenCore::ThreadPool().get();
+
+		threadPool->enqueueTask([ptr, destination, copyEmplacement, data...](PenThreadPool* pool) mutable
+			{
+				bool success = ptr->createResource(destination, copyEmplacement.string(), data...);
+
+				if (success)
+				{
+					pool->enqueueMainTask([ptr]()
+						{
+							if (ptr->GPULoad())
+								ptr->setLoaded();
+							else
+								std::cout << "GPU LOAD FAILED" << std::endl;
+						});
+				}
+				else
+					std::cout << "Async load failed for: " << destination << std::endl;
+
+			}, threadPool);
+
 
 		return ptr;
 	}
@@ -62,6 +84,10 @@ namespace Pengine::Resources
 		std::string destination = (std::string)destinationPath + fullname;				//*/xxx.penfile
 
 		//Check if ressources doesn't exist
+
+		std::unique_lock<std::mutex> lock(m_resourceMutex);
+
+		//Check if ressources doesn't exist
 		auto it = m_pathfileToId.find(destination);
 		if (it != m_pathfileToId.end())
 			return std::dynamic_pointer_cast<_ResourceType>(m_resourceStocker[it->second].lock());
@@ -72,14 +98,33 @@ namespace Pengine::Resources
 
 		std::shared_ptr<_ResourceType> ptr = std::make_shared<_ResourceType>(curId);
 
-		if (!ptr->createResource(destination, data...))
-		{
-			return nullptr;
-		}
-
 		m_idToPathfile[curId] = destination;
 		m_resourceStocker[curId] = ptr;
 		m_pathfileToId[destination] = curId;
+
+		lock.unlock();
+
+		PenThreadPool* threadPool = Pengine::PenCore::ThreadPool().get();
+
+		threadPool->enqueueTask([ptr, destination, data...](PenThreadPool* pool) mutable
+			{
+				bool success = ptr->createResource(destination, data...);
+
+				if (success)
+				{
+					pool->enqueueMainTask([ptr]()
+						{
+							if (ptr->GPULoad())
+								ptr->setLoaded();
+							else
+								std::cout << "GPU LOAD FAILED" << std::endl;
+						});
+				}
+				else
+					std::cout << "Async load failed for: " << destination << std::endl;
+
+			}, threadPool);
+
 
 		return ptr;
 	}
