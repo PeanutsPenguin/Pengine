@@ -35,13 +35,10 @@ namespace Pengine::Resources
 		/// </summary>
 		_NODISCARD const Pengine::Buffer::PenTextureBuffer* dataPtr() const noexcept;
 
-
-	
 	private:
 		bool initializeTextureBuffer(const char* sourcePath);
 
-		PenMath::Vector3 m_size = PenMath::Vector3::Zero();
-		uint8_t* m_imageData = nullptr;
+		std::string sourcePath = "";
 		std::unique_ptr<Pengine::Buffer::PenTextureBuffer> m_texBuffer = nullptr;
 	};
 }

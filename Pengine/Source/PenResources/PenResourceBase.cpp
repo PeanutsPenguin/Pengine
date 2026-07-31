@@ -56,6 +56,8 @@ namespace Pengine::Resources
 			return true;
 		else if (this->p_loadingStatus == E_NOT_LOADED)
 		{
+			this->p_loadingStatus = E_LOADING;
+
 			Pengine::PenCore::ThreadPool()->enqueueMainTask([this]()
 				{
 					if (this->GPULoad())
@@ -68,5 +70,7 @@ namespace Pengine::Resources
 		}
 		else if (this->p_loadingStatus == E_LOADING)
 			return false;
+
+		return false;
 	}
 }

@@ -1,8 +1,11 @@
 #include "Wrapper/Private_GladWrapper.h"
 
 #include "PenStructsAndEnum/PenVertex.h"
-#include "glad/glad.h"
 #include <iostream>
+
+//Lib
+#include <glad/glad.h>
+#include <stb_image/stb_image.h>
 
 namespace Pengine::GladWrapper
 {

@@ -209,11 +209,11 @@ void PenMaterial::activateNormal()
     std::shared_ptr<PenTexture> ptr = nullptr;
 
 	if (this->m_normal && this->m_normal->isLoaded())
-	    ptr = std::dynamic_pointer_cast<PenTexture>(this->m_normal);
+	    ptr = this->m_normal;
 	else
         ptr = PenTexture::noTexture();
 
-    if(ptr)
+    if(ptr && ptr->isLoaded())
         ptr->dataPtr()->activate(4);
 
 	this->m_shader->setUniform("mat.normalMap", 4);
@@ -284,7 +284,7 @@ void PenMaterial::activateAlbedo()
     else
         ptr = PenTexture::noTexture();
 
-    if (ptr)
+    if (ptr && ptr->isLoaded())
         ptr->dataPtr()->activate(0);
 
     this->m_shader->setUniform("mat.albedoMap", 0);
@@ -340,7 +340,7 @@ void PenMaterial::activateMetallic()
     else
         ptr = PenTexture::noTexture();
 
-    if (ptr)
+    if (ptr && ptr->isLoaded())
         ptr->dataPtr()->activate(1);
 
     this->m_shader->setUniform("mat.metallicMap", 1);
@@ -397,7 +397,7 @@ void PenMaterial::activateRoughness()
     else
         ptr = PenTexture::noTexture();
 
-    if (ptr)
+    if (ptr && ptr->isLoaded())
         ptr->dataPtr()->activate(2);
 
     this->m_shader->setUniform("mat.roughnessMap", 2);
@@ -450,7 +450,7 @@ void PenMaterial::activateAmbientOcclusion()
     else
         ptr = PenTexture::noTexture();
 
-    if (ptr)
+    if (ptr && ptr->isLoaded())
         ptr->dataPtr()->activate(3);
 
     this->m_shader->setUniform("mat.aoMap", 3);

@@ -54,7 +54,8 @@ namespace Penditor
 		col.readPixelColor(relativeMousePos);
 
 		Pengine::PenObjectId newObj = this->colorToId(col.getColor());
-		
+
+	
 		this->m_selectedObject = newObj;
 		Penditor::PenditorCore::PropertyWindow()->changeRenderTypeToObject();
 	}

@@ -9,8 +9,6 @@
 #include <Vector/Vector3/Vector3.h>
 
 //Lib
-#define STB_IMAGE_IMPLEMENTATION
-#define STBI_NO_GIF
 #include <stb_image/stb_image.h>
 
 //std
@@ -93,8 +91,20 @@ bool PenTexture::createResource(const std::string PenfilePath, const std::string
 
 bool PenTexture::GPULoad()
 {
-	m_texBuffer->create({ this->m_size.x, this->m_size.y }, this->m_imageData, this->m_size.z);
-	//stbi_image_free(this->m_imageData);
+	///EVERYTHING IS ON THE MAIN THREAD AND I DON'T CARE I HAD TOO MUCH PROBLEM 
+	PenMath::Vector3 size;
+	stbi_uc* img = stbi_load(this->sourcePath.c_str(), &size.x, &size.y, &size.z, 0);
+
+	if (!img)
+	{
+		std::cerr << __FUNCTION__ << ": Failed to load texture image file " << sourcePath << ".\n";
+		return false;
+	}
+
+	m_texBuffer->create({ size.x, size.y }, img, size.z);
+
+	stbi_image_free(img);
+
 	return true;
 }
 
@@ -107,15 +117,6 @@ const Pengine::Buffer::PenTextureBuffer* PenTexture::dataPtr() const noexcept
 
 bool PenTexture::initializeTextureBuffer(const char* sourcePath)
 {
-	stbi_set_flip_vertically_on_load(true);
-
-	this->m_imageData = stbi_load(sourcePath, &this->m_size.x, &this->m_size.y, &this->m_size.z, 0);
-
-	if (!this->m_imageData)
-	{
-		std::cerr << __FUNCTION__ << ": Failed to load texture image file " << sourcePath << ".\n";
-		return false;
-	}
-
+	this->sourcePath = sourcePath;
 	return true;
 }

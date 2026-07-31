@@ -25,6 +25,10 @@
 //Lib
 #include <GLFW/glfw3.h>
 
+#define STB_IMAGE_IMPLEMENTATION
+#define STBI_NO_GIF
+#include <stb_image/stb_image.h>
+
 using namespace Pengine;
 
 #pragma region Static definiton
@@ -65,6 +69,8 @@ bool PenCore::init(const char* name, const PenMath::Vector2& windowSize)
     m_PenOctopus->init();
 
     registerDefaultType();
+
+    stbi_set_flip_vertically_on_load(true);
 
     return true;
 }
