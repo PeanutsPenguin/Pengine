@@ -2,8 +2,8 @@
 
 #include "PenCore/PenCore.h"
 #include "PenUIManager/PenUIManager.h"
+#include "PenInput/PenInput.h"
 
-#include "PenCore/PenCore.h"
 #include "PenLogManager/PenLogManager.h"
 
 namespace Penditor::Window
@@ -42,6 +42,11 @@ namespace Penditor::Window
 				std::string displayStr = log.message + " (" + log.file + ":" + std::to_string(log.line) + ")##" + std::to_string(i);
 
 				bool clicked = manager->renderSelectable(displayStr.c_str(), false);
+
+				if(manager->isItemHovered() && Pengine::PenCore::InputManager()->isMouseDoubleClicked())
+				{
+					Pengine::PenCore::LogManager()->Log("DOUBLE CLIKED ON :" + displayStr, __FILE__, __LINE__);
+				}
 			}
 
 			if (m_scrollToBottom)
