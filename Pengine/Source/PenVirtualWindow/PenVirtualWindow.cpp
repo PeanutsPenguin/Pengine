@@ -47,7 +47,7 @@ void PenVirtualWindow::setWindowTitle(const char* name)
 	this->p_title = name;
 }
 
-void PenVirtualWindow::setFlags(PenVirtualWidnowFlags flags)
+void PenVirtualWindow::setFlags(PenVirtualWindowFlags flags)
 {
 	this->p_flags = flags;
 }

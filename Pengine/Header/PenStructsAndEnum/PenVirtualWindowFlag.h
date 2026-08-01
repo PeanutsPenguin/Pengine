@@ -5,7 +5,7 @@
 /// </summary>
 namespace Pengine::ui
 {
-    enum PenVirtualWidnowFlags
+    enum PenVirtualWindowFlags
     {
         NONE = 0,
         NO_TITLE_BAR = 1 << 0,

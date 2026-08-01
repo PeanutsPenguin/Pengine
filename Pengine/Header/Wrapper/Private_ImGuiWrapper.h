@@ -8,6 +8,7 @@
 #include "PenStructsAndEnum/PenTreeNodeFlags.h"
 #include "PenStructsAndEnum/PenDragAndDropData.h"
 #include "PenStructsAndEnum/PenStyleFlag.h"
+#include "PenStructsAndEnum/PenVirtualWindowFlag.h"
 
 namespace Pengine::Window
 {
@@ -43,6 +44,7 @@ namespace Pengine::ui::ImGuiWrapper
 	void				setNextItemOpen(bool value);
 	void				setNextWindowPos(const PenMath::Vector2& pos);
 	void				setNextWindowSize(const PenMath::Vector2& size);
+	void				setScrollCursorY(float y);
 
 	bool isMouseOverWindow();
 	bool isMousePastDragTreshold();
@@ -50,6 +52,7 @@ namespace Pengine::ui::ImGuiWrapper
 	bool isItemHovered();
 	bool beginDragAndDropSource();
 	bool beginDragAndDropTarget();
+	bool beginChildWindow(const char* name, const PenMath::Vector2& size, Pengine::ui::PenVirtualWindowFlags flags);
 
 	void removeInputFocus();
 
@@ -73,6 +76,7 @@ namespace Pengine::ui::ImGuiWrapper
 	void	fillDragAndDropData(Pengine::DragAndDropData* data);
 	void	endDragAndDropSource();
 	void	endDragAndDropTarget();
+	void	endChildWindow();
 
 
 	bool	renderVector3(PenMath::Vector3& vec, const char* name);		//Vec3 int
@@ -84,6 +88,7 @@ namespace Pengine::ui::ImGuiWrapper
 	bool	renderSliderFloat(const char* label, float min, float max, float* value);
 	bool	renderButton(const char* name, const PenMath::Vector2& size);
 	bool	renderFloat(const char* label, float* value);
+	bool	renderSelectable(const char* label, bool selected);
 
 	const Pengine::DragAndDropData* getDroppedData(const char* type);
 }

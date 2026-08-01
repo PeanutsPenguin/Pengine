@@ -139,6 +139,11 @@ namespace Pengine::ui::ImGuiWrapper
 		ImGui::SetNextWindowSize({ (float)size.x, (float)size.y });
 	}
 
+	void setScrollCursorY(float value)
+	{
+		ImGui::SetScrollHereY(value);
+	}
+
 	bool isMouseOverWindow()
 	{
 		return ImGui::IsWindowHovered();
@@ -281,6 +286,11 @@ namespace Pengine::ui::ImGuiWrapper
 		ImGui::EndDragDropTarget();
 	}
 
+	void endChildWindow()
+	{
+		ImGui::EndChild();
+	}
+
 	bool renderColorPicker(const char* label, PenColor& col)
 	{
 		return ImGui::ColorEdit4(label, &col.x, ImGuiColorEditFlags_NoInputs);
@@ -341,6 +351,11 @@ namespace Pengine::ui::ImGuiWrapper
 		return ImGui::InputFloat(label, value);
 	}
 
+	bool renderSelectable(const char* label, bool selected)
+	{
+		return ImGui::Selectable(label, selected);
+	}
+
 	bool beginDragAndDropSource()
 	{
 		return ImGui::BeginDragDropSource();
@@ -349,6 +364,11 @@ namespace Pengine::ui::ImGuiWrapper
 	bool beginDragAndDropTarget()
 	{
 		return ImGui::BeginDragDropTarget();
+	}
+
+	bool beginChildWindow(const char* name, const PenMath::Vector2& size, Pengine::ui::PenVirtualWindowFlags flags)
+	{
+		return ImGui::BeginChild(name, { (float)size.x, (float)size.y }, 0, flags);
 	}
 
 	const Pengine::DragAndDropData* getDroppedData(const char* type)

@@ -13,6 +13,7 @@ namespace Penditor
 		class PenGameWindow;
 		class PenPropertyWindow;
 		class PenFileExplorerWindow;
+		class PenConsoleWindow;
 	}
 }
 
@@ -37,6 +38,7 @@ namespace Penditor
 		static std::unique_ptr<Window::PenPropertyWindow>&		PropertyWindow();
 		static std::unique_ptr<Window::PenFileExplorerWindow>&	FileExplorerWindow();
 		static std::unique_ptr<PickingHandler>&					PickingHandler();
+		static std::unique_ptr<Window::PenConsoleWindow>&		ConsoleWindow();
 		static std::unique_ptr<Penditor::PenSavior>&			SaveSystem();
 
 	private:
@@ -51,6 +53,7 @@ namespace Penditor
 		static std::unique_ptr<Window::PenFileExplorerWindow>	m_PenFileExplorerWindow;
 		static std::unique_ptr<Penditor::PickingHandler>		m_pickingHandler;
 		static std::unique_ptr<Penditor::PenSavior>				m_PenSavior;
+		static std::unique_ptr<Window::PenConsoleWindow>		m_PenConsoleWindow;
 		static bool m_shouldStop;
 	};
 }

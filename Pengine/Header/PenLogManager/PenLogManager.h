@@ -25,6 +25,8 @@ namespace Pengine::Log
 		void DebugLog(const std::string& message, const std::string& file, unsigned int line);
 		void DebugLogWarning(const std::string& message, const std::string& file, unsigned int line);
 
+		const std::vector<PenLog>& getLogs() const;
+
 	private:
 		std::mutex m_mutex;
 		std::vector<PenLog> m_logs;

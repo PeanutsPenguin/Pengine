@@ -29,7 +29,7 @@ namespace Pengine::ui
 		void setViewportBackgroundColor(const PenColor& col);
 		void setViewportTransform(const PenMath::Vector2& pos, const PenMath::Vector2& size);
 		void setWindowTitle(const char* title);
-		void setFlags(PenVirtualWidnowFlags flags);
+		void setFlags(PenVirtualWindowFlags flags);
 
 		const char* p_title = "PenVirtualWindow";
 		int p_flags = 0;

@@ -136,7 +136,7 @@ namespace Penditor::Window
 		if (m_selectedPath == node.pathFile)
 			flags |= Pengine::ui::PenTreeNodeFlags::E_SELECTED;
 
-		if(this->isParentFolder(node.pathFile.c_str()))
+		if(this->isParentFolder(node.pathFile.c_str()) && m_focusPath)
 			manager->setNextItemOpen(true);
 
 		std::string name = "##" + node.pathFile;

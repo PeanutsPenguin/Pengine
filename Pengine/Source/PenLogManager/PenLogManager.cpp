@@ -40,4 +40,9 @@ namespace Pengine::Log
 		m_logs.emplace_back(message, file, E_DEBUG_WARNING, line);
 		this->m_mutex.unlock();
 	}
+
+	const std::vector<PenLog>& PenLogManager::getLogs() const
+	{
+		return m_logs;
+	}
 }

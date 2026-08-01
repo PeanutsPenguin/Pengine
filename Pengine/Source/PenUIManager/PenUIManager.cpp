@@ -92,6 +92,11 @@ void PenUIManager::setNextWindowSize(const PenMath::Vector2& size)
 	ImGuiWrapper::setNextWindowSize(size);
 }
 
+void PenUIManager::setScrollCursorY(float y)
+{
+	ImGuiWrapper::setScrollCursorY(y);
+}
+
 void PenUIManager::addImageToDrawList(unsigned int id, const PenMath::Vector2& topLeft, const PenMath::Vector2& bottomRight)
 {
 	ImGuiWrapper::addImageToDrawList(id, topLeft, bottomRight);
@@ -145,6 +150,11 @@ void PenUIManager::endDragAndDropSource()
 void PenUIManager::endDragAndDropTarget()
 {
 	ImGuiWrapper::endDragAndDropTarget();
+}
+
+void PenUIManager::endChildWindow()
+{
+	ImGuiWrapper::endChildWindow();
 }
 
 bool PenUIManager::renderCollapsingHeader(const char* name)
@@ -242,6 +252,11 @@ bool PenUIManager::beginDragAndDropTarget()
 	return ImGuiWrapper::beginDragAndDropTarget();
 }
 
+bool PenUIManager::beginChildWindow(const char* name, const PenMath::Vector2& size, PenVirtualWindowFlags flags)
+{
+	return ImGuiWrapper::beginChildWindow(name, size, flags);
+}
+
 bool PenUIManager::renderButton(const char* name, const PenMath::Vector2& size)
 {
 	return ImGuiWrapper::renderButton(name, size);
@@ -250,6 +265,11 @@ bool PenUIManager::renderButton(const char* name, const PenMath::Vector2& size)
 bool PenUIManager::renderFloat(const char* name, float* value)
 {
 	return ImGuiWrapper::renderFloat(name, value);
+}
+
+bool PenUIManager::renderSelectable(const char* label, bool selected)
+{
+	return ImGuiWrapper::renderSelectable(label, selected);
 }
 
 

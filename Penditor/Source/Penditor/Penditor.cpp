@@ -16,15 +16,17 @@
 #include "PenFileExplorerWindow/PenFileExplorerWindow.h"
 #include "PickingHandler/PickingHandler.h"
 #include "PenSaveSystem/PenSaveSystem.h"
+#include "PenConsoleWindow/PenConsoleWindow.h"
 
 using namespace Penditor;
 
 bool PenditorCore::m_shouldStop = true;
-std::unique_ptr<Window::PenGameWindow>			PenditorCore::m_PenGameWindow				= std::make_unique<Window::PenGameWindow>("PenGame", Pengine::ui::PenVirtualWidnowFlags::NO_SCROLL_BAR);
+std::unique_ptr<Window::PenGameWindow>			PenditorCore::m_PenGameWindow				= std::make_unique<Window::PenGameWindow>("PenGame", Pengine::ui::PenVirtualWindowFlags::NO_SCROLL_BAR | Pengine::ui::PenVirtualWindowFlags::NO_COLLAPSE);
 std::unique_ptr<Window::PenPropertyWindow>		PenditorCore::m_PenPropertyWindow			= std::make_unique<Window::PenPropertyWindow>("PenProperty");
 std::unique_ptr<Window::PenFileExplorerWindow>	PenditorCore::m_PenFileExplorerWindow		= std::make_unique<Window::PenFileExplorerWindow>("PenFileExplorer");
 std::unique_ptr<Penditor::PickingHandler>		PenditorCore::m_pickingHandler				= std::make_unique<Penditor::PickingHandler>();
 std::unique_ptr<Penditor::PenSavior>			PenditorCore::m_PenSavior					= std::make_unique<Penditor::PenSavior>();
+std::unique_ptr<Window::PenConsoleWindow>		PenditorCore::m_PenConsoleWindow			= std::make_unique<Window::PenConsoleWindow>("PenConsole", Pengine::ui::PenVirtualWindowFlags::NO_COLLAPSE);
 
 void PenditorCore::init()
 {
@@ -52,8 +54,6 @@ void PenditorCore::runEditor()
 		render();
 
 		Pengine::PenCore::switchFrame();
-
-
 	}
 
 	destroy();
@@ -78,6 +78,7 @@ void PenditorCore::render()
 	m_PenFileExplorerWindow->render();
 	m_PenGameWindow->render();
 	m_PenPropertyWindow->render();
+	m_PenConsoleWindow->render();
 
 	Pengine::PenCore::UIManager()->endFrame();
 }
@@ -127,6 +128,12 @@ void PenditorCore::destroy()
 		m_PenSavior = nullptr;
 	}
 
+	if(m_PenConsoleWindow)
+	{
+		m_PenConsoleWindow.reset();
+		m_PenConsoleWindow = nullptr;
+	}
+
 
 	Pengine::PenCore::destroy();
 }
@@ -149,6 +156,11 @@ std::unique_ptr<PickingHandler>& PenditorCore::PickingHandler()
 std::unique_ptr<PenSavior>& PenditorCore::SaveSystem()
 {
 	return m_PenSavior;
+}
+
+std::unique_ptr<Window::PenConsoleWindow>& PenditorCore::ConsoleWindow()
+{
+	return m_PenConsoleWindow;
 }
 
 std::unique_ptr<Window::PenFileExplorerWindow>& PenditorCore::FileExplorerWindow()
