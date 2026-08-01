@@ -8,8 +8,9 @@ namespace Pengine::Components
 	{
 	public:
 		PenComponentsManager() = default;
-
 		~PenComponentsManager() = default;
+
+		void destroy();
 
 		template<typename T>
 		void registerComponent();

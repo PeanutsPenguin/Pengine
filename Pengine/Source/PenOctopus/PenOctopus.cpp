@@ -11,6 +11,17 @@ void PenOctopus::init()
 	this->m_PenPropertyManager = std::make_unique<PenPropertyManager>();
 }
 
+void PenOctopus::destroy()
+{
+	this->m_PenComponentManager->destroy();
+
+	this->m_mainScene.reset();
+	this->m_PenComponentManager.reset();
+	this->m_PenObjectManager.reset();
+	this->m_PenSystemManager.reset();
+	this->m_PenPropertyManager.reset();
+}
+
 #pragma region PenObject
 PenObjectId PenOctopus::createPenObject()
 {

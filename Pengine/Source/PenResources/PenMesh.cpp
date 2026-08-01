@@ -80,7 +80,7 @@ bool PenMesh::initMesh(const aiMesh& assimpMesh)
 
 		if (face.mNumIndices != 3)
 		{
-			PenCore::LogManager()->LogWarning("Mesh has an incorrect number of points in face.");
+			PenCore::LogManager()->LogWarning("Mesh has an incorrect number of points in face.", __FILE__, __LINE__);
 			return false;
 		}
 

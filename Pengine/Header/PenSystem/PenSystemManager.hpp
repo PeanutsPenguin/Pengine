@@ -18,7 +18,7 @@ namespace Pengine::System
 
 		if(m_PenSystems.find(typeName) != m_PenSystems.end())
 		{
-			PenCore::LogManager()->LogWarning("System already registered");
+			PenCore::LogManager()->LogWarning("System already registered", __FILE__, __LINE__);
 			return std::dynamic_pointer_cast<T>(m_PenSystems[typeName]);
 		}
 
@@ -34,7 +34,7 @@ namespace Pengine::System
 
 		if (m_PenSystems.find(typeName) == m_PenSystems.end())
 		{
-			PenCore::LogManager()->LogWarning("System not registered");
+			PenCore::LogManager()->LogWarning("System not registered", __FILE__, __LINE__);
 			return nullptr;	
 		}
 
@@ -48,7 +48,7 @@ namespace Pengine::System
 
 		if(m_PenSystems.find(typeName) == m_PenSystems.end())
 		{
-			PenCore::LogManager()->LogWarning("System not registered yet.");
+			PenCore::LogManager()->LogWarning("System not registered yet.", __FILE__, __LINE__);
 			return;
 		}
 

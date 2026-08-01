@@ -29,7 +29,7 @@ void PenLightSystem::renderUpdate(const std::shared_ptr<Resources::PenShaderProg
 
 			if(this->m_hasDirectionnal)
 			{
-				PenCore::LogManager()->LogWarning("Not allowed to have multiple directionnal light, removing it");
+				PenCore::LogManager()->LogWarning("Not allowed to have multiple directionnal light, removing it", __FILE__, __LINE__);
 				PenCore::PenOctopus()->removeComponent<Components::PenLight>(obj);
 				break;
 			}

@@ -22,7 +22,7 @@ std::shared_ptr<PenTexture> PenTexture::noTexture()
 	std::shared_ptr<PenTexture> ptr = PenCore::ResourcesManager()->loadResourceFromFile<PenTexture>("Textures/NoTexture.penfile", true);
 
 	if (ptr && !ptr->isLoaded())
-		PenCore::LogManager()->LogWarning("Default Texture is not loaded yet");
+		PenCore::LogManager()->LogWarning("Default Texture is not loaded yet", __FILE__, __LINE__);
 
 	return ptr;
 }
@@ -56,7 +56,7 @@ PenTexture::~PenTexture()
 #pragma region Resource
 bool PenTexture::loadResource(const std::string path)
 {
-	PenCore::LogManager()->Log("Loading texture : " + path);
+	PenCore::LogManager()->Log("Loading texture : " + path, __FILE__, __LINE__);
 
 	//Create variables 
 	int type = 0;
@@ -74,7 +74,7 @@ bool PenTexture::loadResource(const std::string path)
 
 bool PenTexture::createResource(const std::string PenfilePath, const std::string sourcePath)
 {
-	PenCore::LogManager()->Log("Creating texture : " + sourcePath);
+	PenCore::LogManager()->Log("Creating texture : " + sourcePath, __FILE__, __LINE__);
 
 	if (!this->initializeTextureBuffer(sourcePath.c_str()))
 		return false;
@@ -98,7 +98,7 @@ bool PenTexture::GPULoad()
 
 	if (!img)
 	{
-		PenCore::LogManager()->LogWarning("Failed to load texture image file " + this->m_sourcePath + ".");
+		PenCore::LogManager()->LogWarning("Failed to load texture image file " + this->m_sourcePath + ".", __FILE__, __LINE__);
 		return false;
 	}
 

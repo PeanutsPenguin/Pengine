@@ -43,7 +43,7 @@ std::shared_ptr<Pengine::Resources::PenMaterial> PenRenderer::getMaterial()
 {
 	if(!this->m_material)
 	{
-		PenCore::LogManager()->LogWarning("Material of object : " + std::to_string(this->getPenObjectId()) + " has not been found, replace it with default material");
+		PenCore::LogManager()->LogWarning("Material of object : " + std::to_string(this->getPenObjectId()) + " has not been found, replace it with default material", __FILE__, __LINE__);
 		this->setMaterial(Resources::PenMaterial::defaultMaterial());
 	}
 

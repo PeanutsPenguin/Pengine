@@ -40,6 +40,18 @@ void PenResourcesManager::destroy()
             m_pathfileToId.erase(path);
         }
     }
+
+    for (auto it = m_persistentResourcestocker.begin(); it != m_persistentResourcestocker.end();)
+    {
+        it = m_persistentResourcestocker.erase(it);
+
+        if (it != m_persistentResourcestocker.end())
+        {
+            std::string path = m_idToPathfile[it->first];
+            m_idToPathfile.erase(it->first);
+            m_pathfileToId.erase(path);
+        }
+    }
 }
 
 void PenResourcesManager::makeDirty(PenResourcesId id)
@@ -69,7 +81,7 @@ void PenResourcesManager::saveAllDirty()
             it = m_persistentResourcestocker.erase(it);
 
             if (!resource->save())
-                PenCore::LogManager()->LogWarning("Failed to save a resource.");
+                PenCore::LogManager()->LogWarning("Failed to save a resource.", __FILE__, __LINE__);
         }
         else
             ++it;

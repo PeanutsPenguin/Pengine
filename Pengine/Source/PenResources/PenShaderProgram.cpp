@@ -22,14 +22,14 @@ std::shared_ptr<PenShaderProgram> PenShaderProgram::defaultShaderProgram()
 	std::shared_ptr<PenShaderProgram> ptr = PenCore::ResourcesManager()->loadResourceFromFile<PenShaderProgram>("Shaders/PBR/ShaderProgPBR.penfile");
 
 	if (ptr && !ptr->isLoaded())
-		PenCore::LogManager()->LogWarning("Default shader Program is not loaded yet");
+		PenCore::LogManager()->LogWarning("Default shader Program is not loaded yet", __FILE__, __LINE__);
 
 	return ptr;
 }
 
 PenShaderProgram::~PenShaderProgram()
 {
-	PenCore::LogManager()->Log("Destroying Shader Program : " + std::to_string(this->getId()));
+	PenCore::LogManager()->Log("Destroying Shader Program : " + std::to_string(this->getId()), __FILE__, __LINE__);
 	destroy();
 }
 
@@ -58,7 +58,7 @@ bool Pengine::Resources::PenShaderProgram::loadResource(const std::string path)
 
 bool PenShaderProgram::createResource(const std::string PenfilePath, const std::string sourcePath)
 {
-	PenCore::LogManager()->LogWarning("Can't specify a shader program for program creation");
+	PenCore::LogManager()->LogWarning("Can't specify a shader program for program creation", __FILE__, __LINE__);
 	return false;
 }
 
@@ -68,13 +68,13 @@ bool PenShaderProgram::createResource(const std::string PenfilePath, std::shared
 
 	if (vertexShader == nullptr)
 	{
-		PenCore::LogManager()->LogWarning("Given vertex shader is null, can't create shader program without it");
+		PenCore::LogManager()->LogWarning("Given vertex shader is null, can't create shader program without it", __FILE__, __LINE__);
 		return false;
 	}
 
 	if (fragmentShader == nullptr)
 	{
-		PenCore::LogManager()->LogWarning("Given fragment shader is null, can't create shader program without it");
+		PenCore::LogManager()->LogWarning("Given fragment shader is null, can't create shader program without it", __FILE__, __LINE__);
 		return false;
 	}
 

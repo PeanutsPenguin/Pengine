@@ -31,7 +31,7 @@ PenModel::~PenModel()
 	if (this->m_importer)
 		delete this->m_importer;
 
-	PenCore::LogManager()->Log("Destroying Model with id : " + this->getId());
+	PenCore::LogManager()->Log("Destroying Model with id : " + this->getId(), __FILE__, __LINE__);
 }
 
 #pragma region Resource
@@ -57,7 +57,7 @@ std::shared_ptr<PenModel> PenModel::defaultModel()
 	std::shared_ptr<PenModel> ptr = PenCore::ResourcesManager()->loadResourceFromFile<PenModel>("Mesh/DefaultModel.penfile", true);
 
 	if (ptr && !ptr->isLoaded())
-		PenCore::LogManager()->Log("Default Model is not loaded yet");
+		PenCore::LogManager()->Log("Default Model is not loaded yet", __FILE__, __LINE__);
 
 	return ptr;
 }
@@ -84,7 +84,7 @@ bool PenModel::GPULoad()
 
 bool PenModel::generateResource(const char* path)
 {
-	PenCore::LogManager()->Log("Loading model from file " + std::string(path));
+	PenCore::LogManager()->Log("Loading model from file " + std::string(path), __FILE__, __LINE__);
 
 	this->m_importer = new Assimp::Importer();
 
@@ -92,7 +92,7 @@ bool PenModel::generateResource(const char* path)
 
 	if (!this->m_scene || this->m_scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !this->m_scene->mRootNode)
 	{
-		PenCore::LogManager()->LogWarning("Failed to load Model resource :" + std::string(this->m_importer->GetErrorString()));
+		PenCore::LogManager()->LogWarning("Failed to load Model resource :" + std::string(this->m_importer->GetErrorString()), __FILE__, __LINE__);
 		return false;
 	}
 
@@ -121,7 +121,7 @@ void PenModel::render()
 		if (obj)
 			obj->render();
 		else
-			PenCore::LogManager()->LogError("Null pointer in PenModel");
+			PenCore::LogManager()->LogError("Null pointer in PenModel", __FILE__, __LINE__);
 	}
 }
 
@@ -132,14 +132,14 @@ bool PenModel::processNode(aiNode* node, const aiScene* scene)
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 
 		if (!loadMesh(*mesh))
-			PenCore::LogManager()->LogWarning("Failed to load mesh : " + std::to_string(i) + " in the model resource.");
+			PenCore::LogManager()->LogWarning("Failed to load mesh : " + std::to_string(i) + " in the model resource.", __FILE__, __LINE__);
 		
 	}
 	
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
 	{
 		if(!processNode(node->mChildren[i], scene))
-			PenCore::LogManager()->LogWarning("Failed to load child mesh : " + std::to_string(i) + " in the model resource.");
+			PenCore::LogManager()->LogWarning("Failed to load child mesh : " + std::to_string(i) + " in the model resource.", __FILE__, __LINE__);
 	}
 
 	return true;

@@ -22,7 +22,7 @@ PenMaterial::PenMaterial(const PenObjectId id) : PenResourceBase(id)
 
 PenMaterial::~PenMaterial()
 {
-    std::cout << __FUNCTION__ ": Destryoing with id : " << this->getId() << std::endl;
+    PenCore::LogManager()->Log("Destryoing with id : " + std::to_string(this->getId()), __FILE__, __LINE__);
 }
 #pragma endregion 
 
@@ -31,7 +31,7 @@ std::shared_ptr<PenMaterial> PenMaterial::defaultMaterial()
     std::shared_ptr<PenMaterial> ptr = PenCore::ResourcesManager()->loadResourceFromFile<PenMaterial>("Material/DefaultMaterial.penfile", true);
 
     if (ptr && !ptr->isLoaded())
-        PenCore::LogManager()->Log("Default material is not loaded yet");
+        PenCore::LogManager()->Log("Default material is not loaded yet", __FILE__, __LINE__);
 
     return ptr;
 
@@ -40,7 +40,7 @@ std::shared_ptr<PenMaterial> PenMaterial::defaultMaterial()
 #pragma region Resource
 bool PenMaterial::loadResource(const std::string path)
 {
-    PenCore::LogManager()->Log("Loading Material : " + path);
+    PenCore::LogManager()->Log("Loading Material : " + path, __FILE__, __LINE__);
 
     std::ifstream infile(path, std::ios::binary);
 
@@ -66,7 +66,7 @@ bool PenMaterial::loadResource(const std::string path)
 
     if (!shader)
     {
-        PenCore::LogManager()->Log("Material loaded with default shader program in it");
+        PenCore::LogManager()->Log("Material loaded with default shader program in it", __FILE__, __LINE__);
         this->m_shader = PenShaderProgram::defaultShaderProgram();
     }
     else
@@ -80,7 +80,7 @@ bool PenMaterial::loadResource(const std::string path)
 
 bool PenMaterial::createResource(const std::string penfilePath, const std::string sourcePath)
 {
-    PenCore::LogManager()->LogWarning("Can't create a material from a source file for now");
+    PenCore::LogManager()->LogWarning("Can't create a material from a source file for now", __FILE__, __LINE__);
 
     return false;
 }
@@ -96,14 +96,14 @@ bool PenMaterial::createResource(const std::string penfilePath, std::shared_ptr<
 
     if (!prog)
     {
-        PenCore::LogManager()->Log("Material created with default shader program in it");
+        PenCore::LogManager()->Log("Material created with default shader program in it", __FILE__, __LINE__);
         this->m_shader = PenShaderProgram::defaultShaderProgram();
     }
     else
         this->m_shader = prog;
 
     if (!tex)
-        PenCore::LogManager()->LogWarning("Given texture for the material creation is null");
+        PenCore::LogManager()->LogWarning("Given texture for the material creation is null", __FILE__, __LINE__);
     else
         this->m_albedo.texture = tex;
 
@@ -160,7 +160,7 @@ const std::shared_ptr<PenShaderProgram> PenMaterial::getShaderProg()
 {
     if (!this->m_shader)
     {
-        PenCore::LogManager()->LogWarning("Shader program of material : " + std::to_string(this->getId()) + " has not been found, replace it with default shader program");
+        PenCore::LogManager()->LogWarning("Shader program of material : " + std::to_string(this->getId()) + " has not been found, replace it with default shader program", __FILE__, __LINE__);
         this->setShaderProgram(nullptr);
     }
 
@@ -182,7 +182,7 @@ const std::shared_ptr<PenTexture> PenMaterial::getNormal()
 {
     if (!this->m_normal)
     {
-        PenCore::LogManager()->LogWarning("Normal map of material : " + std::to_string(this->getId()) + " is null");
+        PenCore::LogManager()->LogWarning("Normal map of material : " + std::to_string(this->getId()) + " is null", __FILE__, __LINE__);
         return nullptr;
     }
 

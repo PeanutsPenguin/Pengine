@@ -185,6 +185,7 @@ void PenCore::destroy()
 
     if (m_PenOctopus)
     {
+		m_PenOctopus->destroy();
         m_PenOctopus.reset();
         m_PenOctopus = nullptr;
     }
@@ -218,6 +219,12 @@ void PenCore::destroy()
     {
         m_PenThreadPool.reset();
         m_PenThreadPool = nullptr;
+    }
+
+    if (m_PenLogManager)
+    {
+        m_PenLogManager.reset();
+        m_PenLogManager = nullptr;
     }
 }
 

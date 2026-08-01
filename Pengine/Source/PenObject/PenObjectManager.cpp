@@ -19,7 +19,7 @@ PenObjectManager::PenObjectManager()
 PenObjectId PenObjectManager::createPenObject()
 {
 	if(m_livingPenObject >= g_maxEntity)
-		PenCore::LogManager()->LogError("Too many entities in existence.");
+		PenCore::LogManager()->	LogError("Too many entities in existence.", __FILE__, __LINE__);
 
 	// Take an ID from the front of the queue
 	PenObjectId id = m_validIds.front();
@@ -32,17 +32,17 @@ PenObjectId PenObjectManager::createPenObject()
 void PenObjectManager::destroyPenObject(PenObjectId id)
 {
 	if (m_livingPenObject >= g_maxEntity)
-		PenCore::LogManager()->LogError("Too many entities in existence.");
+		PenCore::LogManager()->LogError("Too many entities in existence.", __FILE__, __LINE__);
 
 	m_compSig[id].reset();
 	m_validIds.push(id);
 	--m_livingPenObject;
-}
+}	
 
 void PenObjectManager::setSignature(PenObjectId id, PenComponentSignature sig)
 {
 	if (id == g_PenObjectInvalidId)
-		PenCore::LogManager()->LogError("Invalid entity id.");
+		PenCore::LogManager()->LogError("Invalid entity id.", __FILE__, __LINE__);
 
 	m_compSig[id] = sig;
 }
@@ -50,7 +50,7 @@ void PenObjectManager::setSignature(PenObjectId id, PenComponentSignature sig)
 PenComponentSignature PenObjectManager::getSignature(PenObjectId id)
 {
 	if (id == g_PenObjectInvalidId)
-		PenCore::LogManager()->LogError("Invalid entity id.");
+		PenCore::LogManager()->LogError("Invalid entity id.", __FILE__, __LINE__);
 
 	return m_compSig[id];
 }

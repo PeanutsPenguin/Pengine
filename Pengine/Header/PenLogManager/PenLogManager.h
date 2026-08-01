@@ -3,6 +3,7 @@
 #include "PenStructsAndEnum/PenLog.h"
 
 #include <vector>
+#include <mutex>
 
 namespace Pengine::Log
 {
@@ -17,14 +18,15 @@ namespace Pengine::Log
 		PenLogManager& operator=(const PenLogManager& rhs) = default;
 		PenLogManager& operator=(PenLogManager&& rhs) = default;
 		
-		void Log(const std::string& message);
-		void LogWarning(const std::string& message);
-		void LogError(const std::string& message);
+		void Log(const std::string& message, const std::string& file, unsigned int line);
+		void LogWarning(const std::string& message, const std::string& file, unsigned int line);
+		void LogError(const std::string& message, const std::string& file, unsigned int line);
 
-		void DebugLog(const std::string& message);
-		void DebugLogWarning(const std::string& message);
+		void DebugLog(const std::string& message, const std::string& file, unsigned int line);
+		void DebugLogWarning(const std::string& message, const std::string& file, unsigned int line);
 
 	private:
+		std::mutex m_mutex;
 		std::vector<PenLog> m_logs;
 	};
 }

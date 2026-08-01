@@ -21,7 +21,7 @@ namespace Pengine
 		///Window Initiation
 		if (!glfwInit())
 		{
-			PenCore::LogManager()->LogWarning("Failed to initialize GLFW");
+			PenCore::LogManager()->LogWarning("Failed to initialize GLFW", __FILE__, __LINE__);
 			return false;
 		}
 
@@ -53,7 +53,7 @@ namespace Pengine
 	void GLFWWrapper::initAPI(const PenMath::Vector2& size)
 	{
 		if (!gladLoadGL())
-			PenCore::LogManager()->LogWarning("Failed to initialize GLAD");
+			PenCore::LogManager()->LogWarning("Failed to initialize GLAD", __FILE__, __LINE__);
 
 		glViewport(0, 0, size.x, size.y);
 		glEnable(GL_DEPTH_TEST);
@@ -67,7 +67,7 @@ namespace Pengine
 
 	void GLFWWrapper::closeCallBack(GLFWwindow* window)
 	{
-		PenCore::LogManager()->Log("Closing Main Window");
+		PenCore::LogManager()->Log("Closing Main Window", __FILE__, __LINE__);
 		Pengine::PenCore::stopPengine();
 	}
 	#pragma endregion
@@ -129,10 +129,7 @@ namespace Pengine
 		Pengine::Window::WindowWrapper* window = PenCore::MainPenWindow().get()->getWindow();
 
 		if (!window)
-		{
-			PenCore::LogManager()->LogError("Failed to get the pointer to the main window");
-			return;
-		}
+			PenCore::LogManager()->LogError("Failed to get the pointer to the main window", __FILE__, __LINE__);
 
 		int result = 0;
 
@@ -190,10 +187,7 @@ namespace Pengine
 		Pengine::Window::WindowWrapper* window = PenCore::MainPenWindow().get()->getWindow();
 
 		if (!window)
-		{
-			PenCore::LogManager()->LogError("Failed to get the pointer to the main window");
-			return;
-		}
+			PenCore::LogManager()->LogError("Failed to get the pointer to the main window", __FILE__, __LINE__);
 
 		double xpos, ypos;
 		glfwGetCursorPos(*window, &xpos, &ypos);

@@ -48,7 +48,7 @@ void PenRendererSystem::render(const PenObjectId camera)
 
 			if (!prog->use())
 			{
-				PenCore::LogManager()->LogWarning("Shader program failed to use");
+				PenCore::LogManager()->LogWarning("Shader program failed to use", __FILE__, __LINE__);
 				continue;
 			}
 
@@ -56,7 +56,7 @@ void PenRendererSystem::render(const PenObjectId camera)
 
 			if (!lightSystem)
 			{
-				PenCore::LogManager()->LogWarning("Light system failed to get");
+				PenCore::LogManager()->LogWarning("Light system failed to get", __FILE__, __LINE__);
 				continue;
 			}
 
@@ -70,7 +70,7 @@ void PenRendererSystem::render(const PenObjectId camera)
 
 				if (renderCam == g_PenObjectInvalidId)
 				{
-					PenCore::LogManager()->LogWarning("Default camera is invalid, skipping rendering");
+					PenCore::LogManager()->LogWarning("Default camera is invalid, skipping rendering", __FILE__, __LINE__);
 					continue;
 				}
 			}

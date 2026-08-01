@@ -19,14 +19,14 @@ PenShader::PenShader(const PenObjectId& id) : PenResourceBase(id)
 
 PenShader::~PenShader()
 {
-	PenCore::LogManager()->Log("Destroying Shader : " + std::to_string(getId()));
+	PenCore::LogManager()->Log("Destroying Shader : " + std::to_string(getId()), __FILE__, __LINE__);
 	destroy();
 }
 
 #pragma region Resource
 bool PenShader::loadResource(const std::string path)
 {
-	PenCore::LogManager()->Log("Loading Shader : " + path);
+	PenCore::LogManager()->Log("Loading Shader : " + path, __FILE__, __LINE__);
 
 	//Create variables 
 	int type = 0;
@@ -42,7 +42,7 @@ bool PenShader::loadResource(const std::string path)
 
 	if (!this->setType((PenShaderType)shaderType))
 	{
-		PenCore::LogManager()->LogWarning("Failed to set a correct type at load.");
+		PenCore::LogManager()->LogWarning("Failed to set a correct type at load.", __FILE__, __LINE__);
 		return false;
 	}
 
@@ -53,7 +53,7 @@ bool PenShader::loadResource(const std::string path)
 
 bool Pengine::Resources::PenShader::createResource(const std::string PenfilePath, const std::string sourcePath)
 {
-	PenCore::LogManager()->Log("Creating Shader : " + sourcePath);
+	PenCore::LogManager()->Log("Creating Shader : " + sourcePath, __FILE__, __LINE__);
 
 	//Serialize source file
 	std::ofstream outfile(PenfilePath, std::ios::binary);
@@ -117,7 +117,7 @@ bool PenShader::changeShaderType(const PenShaderType type, const char* PenfilePa
 	//Rewrite shader type
 	if (type == PenShaderType::INVALID_SHADER)
 	{
-		PenCore::LogManager()->LogWarning("Shader type set to INVALID (no valid given type)");
+		PenCore::LogManager()->LogWarning("Shader type set to INVALID (no valid given type)", __FILE__, __LINE__);
 		return false;
 	}
 
@@ -147,7 +147,7 @@ bool PenShader::setType(const char* sourcePath)
 	}
 	else
 	{
-		PenCore::LogManager()->LogWarning("Shader type set to INVALID (no valid extensions)");
+		PenCore::LogManager()->LogWarning("Shader type set to INVALID (no valid extensions)", __FILE__, __LINE__);
 		return false;
 	}
 }
@@ -166,7 +166,7 @@ bool PenShader::setType(Pengine::PenShaderType type)
 	}
 	else
 	{
-		PenCore::LogManager()->LogWarning("Shader type set to INVALID (no valid given type)");
+		PenCore::LogManager()->LogWarning("Shader type set to INVALID (no valid given type)", __FILE__, __LINE__);
 		return false;
 	}
 }
@@ -192,7 +192,7 @@ bool Pengine::Resources::PenShader::reloadShaderContent(const char* path)
 
 	if (!file)
 	{
-		PenCore::LogManager()->LogWarning("Error opening file " + std::string(path) + " for reading.");
+		PenCore::LogManager()->LogWarning("Error opening file " + std::string(path) + " for reading.", __FILE__, __LINE__);
 		return false;
 	}
 

@@ -4,30 +4,40 @@
 
 namespace Pengine::Log
 {
-	void PenLogManager::Log(const std::string& message)
+	void PenLogManager::Log(const std::string& message, const std::string& file, unsigned int line)
 	{
-		m_logs.emplace_back(message, E_NORMAl);
+		this->m_mutex.lock();
+		m_logs.emplace_back(message, file, E_NORMAl, line);
+		this->m_mutex.unlock();
 	}
 
-	void PenLogManager::LogWarning(const std::string& message)
+	void PenLogManager::LogWarning(const std::string& message, const std::string& file, unsigned int line)
 	{
-		m_logs.emplace_back(message, E_WARNING);
+		this->m_mutex.lock();
+		m_logs.emplace_back(message, file, E_WARNING, line);
+		this->m_mutex.unlock();
 	}
 
-	void PenLogManager::LogError(const std::string& message)
+	void PenLogManager::LogError(const std::string& message, const std::string& file, unsigned int line)
 	{
-		m_logs.emplace_back(message, E_ERROR);
+		this->m_mutex.lock();
+		m_logs.emplace_back(message, file, E_ERROR, line);
+		this->m_mutex.unlock();
 		
 		std::abort();
 	}
 
-	void PenLogManager::DebugLog(const std::string& message)
+	void PenLogManager::DebugLog(const std::string& message, const std::string& file, unsigned int line)
 	{
-		m_logs.emplace_back(message, E_DEBUG);
+		this->m_mutex.lock();
+		m_logs.emplace_back(message, file, E_DEBUG, line);
+		this->m_mutex.unlock();
 	}
 
-	void PenLogManager::DebugLogWarning(const std::string& message)
+	void PenLogManager::DebugLogWarning(const std::string& message, const std::string& file, unsigned int line)
 	{
-		m_logs.emplace_back(message, E_DEBUG_WARNING);
+		this->m_mutex.lock();
+		m_logs.emplace_back(message, file, E_DEBUG_WARNING, line);
+		this->m_mutex.unlock();
 	}
 }

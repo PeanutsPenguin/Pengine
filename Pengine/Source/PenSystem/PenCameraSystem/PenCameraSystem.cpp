@@ -37,5 +37,5 @@ void PenCameraSystem::setMainCamera(const PenObjectId cam)
 	if (this->m_PenObject.contains(cam))
 		this->m_mainCamera = cam;
 	else
-		PenCore::LogManager()->LogWarning("Object do not have camera component");
+		PenCore::LogManager()->LogWarning("Object do not have camera component", __FILE__, __LINE__);
 }

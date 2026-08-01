@@ -64,7 +64,7 @@ namespace Pengine::Resources
 					if (this->GPULoad())
 						this->setLoaded();
 					else
-						PenCore::LogManager()->LogWarning("GPU LOAD FAILED");
+						PenCore::LogManager()->LogWarning("GPU LOAD FAILED", __FILE__, __LINE__);
 				});
 
 			return false;

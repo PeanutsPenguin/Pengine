@@ -17,7 +17,7 @@ namespace Pengine::Components
 
 		if(m_PenComponentsType.find(typeName) != m_PenComponentsType.end())
 		{
-			PenCore::LogManager()->LogWarning("Registering component type more than once.");
+			PenCore::LogManager()->LogWarning("Registering component type more than once.", __FILE__, __LINE__);
 			return;
 		}
 
@@ -37,7 +37,7 @@ namespace Pengine::Components
 
 		if(m_PenComponentsType.find(typeName) == m_PenComponentsType.end())
 		{
-			PenCore::LogManager()->LogError("Component Type is not registered.");
+			PenCore::LogManager()->LogError("Component Type is not registered.", __FILE__, __LINE__);
 			return 0;
 		}
 
@@ -75,7 +75,7 @@ namespace Pengine::Components
 
 		if (m_PenComponentsType.find(typeName) == m_PenComponentsType.end())
 		{
-			PenCore::LogManager()->LogError("Component Type is not registered");
+			PenCore::LogManager()->LogError("Component Type is not registered", __FILE__, __LINE__);
 			return 0;
 		}
 

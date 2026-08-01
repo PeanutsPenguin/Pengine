@@ -111,7 +111,7 @@ namespace Pengine::GladWrapper
 				(void*)offsetof(Pengine::PenVertex, tangent));
 			break;
 		default:
-			PenCore::LogManager()->LogWarning("Index value :" + std::to_string(index) + " is out of range. Pointer not loaded");
+			PenCore::LogManager()->LogWarning("Index value :" + std::to_string(index) + " is out of range. Pointer not loaded", __FILE__, __LINE__);
 			break;
 		}
 	}
@@ -284,7 +284,7 @@ namespace Pengine::GladWrapper
 		{
 			char infoLog[512];
 			glGetShaderInfoLog(*id, 512, nullptr, infoLog);
-			PenCore::LogManager()->LogWarning("Shader compilation failed. Info : " + std::string(infoLog));
+			PenCore::LogManager()->LogWarning("Shader compilation failed. Info : " + std::string(infoLog), __FILE__, __LINE__);
 			return false;
 		}
 
@@ -300,7 +300,7 @@ namespace Pengine::GladWrapper
 		{
 			char infoLog[512];
 			glGetProgramInfoLog(*id, 512, nullptr, infoLog);
-			PenCore::LogManager()->LogWarning("Shader program linking failed. Info : " + std::string(infoLog));
+			PenCore::LogManager()->LogWarning("Shader program linking failed. Info : " + std::string(infoLog), __FILE__, __LINE__);
 			return false;
 		}
 

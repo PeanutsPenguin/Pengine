@@ -14,7 +14,7 @@ namespace Pengine::Components
 	{
 		if(m_PenObjectToArrayIndex.find(entity) != m_PenObjectToArrayIndex.end())
 		{
-			PenCore::LogManager()->LogWarning("Component added to same PenObject more than once.");
+			PenCore::LogManager()->LogWarning("Component added to same PenObject more than once.", __FILE__, __LINE__);
 			return this->getData(entity);
 		}
 
@@ -33,7 +33,7 @@ namespace Pengine::Components
 	{
 		if (m_PenObjectToArrayIndex.find(entity) == m_PenObjectToArrayIndex.end() || entity == g_PenObjectInvalidId)
 		{
-			PenCore::LogManager()->LogWarning("Removing invalid PenObject.");
+			PenCore::LogManager()->LogWarning("Removing invalid PenObject.", __FILE__, __LINE__);
 			return;
 		}
 
@@ -55,7 +55,7 @@ namespace Pengine::Components
 	inline T& ComponentArray<T>::getData(PenObjectId entity)
 	{
 		if(m_PenObjectToArrayIndex.find(entity) == m_PenObjectToArrayIndex.end())
-			PenCore::LogManager()->LogError("No component found with the specified PenObject (returning last components array)");
+			PenCore::LogManager()->LogError("No component found with the specified PenObject (returning last components array)", __FILE__, __LINE__);
 
 		return m_PenComponentArray[m_PenObjectToArrayIndex[entity]];
 	}
