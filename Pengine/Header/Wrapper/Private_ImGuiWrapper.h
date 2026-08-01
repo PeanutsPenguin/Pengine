@@ -9,6 +9,7 @@
 #include "PenStructsAndEnum/PenDragAndDropData.h"
 #include "PenStructsAndEnum/PenStyleFlag.h"
 #include "PenStructsAndEnum/PenVirtualWindowFlag.h"
+#include "PenStructsAndEnum/PenStyleType.h"
 
 namespace Pengine::Window
 {
@@ -56,7 +57,7 @@ namespace Pengine::ui::ImGuiWrapper
 
 	void removeInputFocus();
 
-	void pushStyleColor(const PenColor& col);
+	void pushStyleColor(PenStyleColorType type, const PenColor& col);
 	void pushStyle(PenStyleFlag flags, const PenMath::Vector2& vec);
 	void pushStyle(PenStyleFlag flags, float value);
 

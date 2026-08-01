@@ -41,11 +41,30 @@ namespace Penditor::Window
 
 				std::string displayStr = log.message + " (" + log.file + ":" + std::to_string(log.line) + ")##" + std::to_string(i);
 
+				switch (log.level)
+				{
+					case Pengine::Log::PenLogLevel::E_NORMAl:
+					case Pengine::Log::PenLogLevel::E_DEBUG:
+						manager->pushStyleColor(Pengine::ui::PenStyleColorType::E_TEXT, Pengine::PenColor::White);
+						break;
+					case Pengine::Log::PenLogLevel::E_WARNING:
+					case Pengine::Log::PenLogLevel::E_DEBUG_WARNING:
+						manager->pushStyleColor(Pengine::ui::PenStyleColorType::E_TEXT, Pengine::PenColor::Yellow);
+						break;
+					case Pengine::Log::PenLogLevel::E_ERROR:
+						manager->pushStyleColor(Pengine::ui::PenStyleColorType::E_TEXT, Pengine::PenColor::Red);
+						break;
+					default:
+						manager->pushStyleColor(Pengine::ui::PenStyleColorType::E_TEXT, Pengine::PenColor::White);
+						break;
+				}
+
 				bool clicked = manager->renderSelectable(displayStr.c_str(), false);
+				manager->popStyleColor();
 
 				if(manager->isItemHovered() && Pengine::PenCore::InputManager()->isMouseDoubleClicked())
 				{
-					Pengine::PenCore::LogManager()->Log("DOUBLE CLIKED ON :" + displayStr, __FILE__, __LINE__);
+					//Well maybe someday it'll do something
 				}
 			}
 

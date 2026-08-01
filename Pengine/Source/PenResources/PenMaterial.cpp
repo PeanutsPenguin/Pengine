@@ -22,7 +22,7 @@ PenMaterial::PenMaterial(const PenObjectId id) : PenResourceBase(id)
 
 PenMaterial::~PenMaterial()
 {
-    PenCore::LogManager()->Log("Destryoing with id : " + std::to_string(this->getId()), __FILE__, __LINE__);
+    PenCore::LogManager()->Log("Destroying with id : " + std::to_string(this->getId()), __FILE__, __LINE__);
 }
 #pragma endregion 
 

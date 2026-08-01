@@ -197,6 +197,11 @@ void PenUIManager::pushStyle(PenStyleFlag flags, float value)
 	ImGuiWrapper::pushStyle(flags, value);
 }
 
+void PenUIManager::pushStyleColor(PenStyleColorType type, const PenColor& col)
+{
+	ImGuiWrapper::pushStyleColor(type, col);
+}
+
 void PenUIManager::popTree()
 {
 	ImGuiWrapper::popTree();
@@ -205,6 +210,11 @@ void PenUIManager::popTree()
 void PenUIManager::popStyle()
 {
 	ImGuiWrapper::popStyle();
+}
+
+void PenUIManager::popStyleColor()
+{
+	ImGuiWrapper::popStyleColor();
 }
 
 bool PenUIManager::renderColorPicker(const char* label, PenColor& col)

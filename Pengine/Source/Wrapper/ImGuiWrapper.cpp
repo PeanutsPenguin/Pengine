@@ -169,9 +169,9 @@ namespace Pengine::ui::ImGuiWrapper
 		ImGui::SetActiveID(0, ImGui::GetCurrentWindow());
 	}
 
-	void pushStyleColor(const PenColor& col)
+	void pushStyleColor(PenStyleColorType type, const PenColor& col)
 	{
-		ImGui::PushStyleColor(ImGuiCol_Header, { col.x, col.y, col.z, col.a });
+		ImGui::PushStyleColor((ImGuiCol)type, { col.x, col.y, col.z, col.a });
 	}
 
 	void pushStyle(PenStyleFlag flags, const PenMath::Vector2& vec)

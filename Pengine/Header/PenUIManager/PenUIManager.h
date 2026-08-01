@@ -8,6 +8,7 @@
 #include "PenStructsAndEnum/PenDragAndDropData.h"
 #include "PenStructsAndEnum/PenStyleFlag.h"
 #include "PenStructsAndEnum/PenVirtualWindowFlag.h"
+#include "PenStructsAndEnum/PenStyleType.h"
 
 namespace Pengine::Window
 {
@@ -65,11 +66,12 @@ namespace Pengine::ui
 
 		void				pushStyle(PenStyleFlag flags, const PenMath::Vector2& vec);
 		void				pushStyle(PenStyleFlag flags, float value);
+		void				pushStyleColor(PenStyleColorType type, const PenColor& col);
 
 		void				popStyle();
 		void				popTree();
+		void				popStyleColor();
 
-		
 		void				renderOnSameLine(float spacing = 0);
 		void				renderImage(int textureID, const PenMath::Vector2& size);
 		void				renderCenterImage(int textureID, const PenMath::Vector2& size);
