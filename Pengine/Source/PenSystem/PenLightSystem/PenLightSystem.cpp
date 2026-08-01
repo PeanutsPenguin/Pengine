@@ -5,6 +5,7 @@
 #include "PenCore/PenCore.h"							//PenCore
 #include "PenOctopus/PenOctopus.h"						//PenOctopus
 #include "PenLight/PenLightBase.h"						//PenLightBase
+#include "PenLogManager/PenLogManager.h"
 
 using namespace Pengine::System;
 
@@ -28,7 +29,7 @@ void PenLightSystem::renderUpdate(const std::shared_ptr<Resources::PenShaderProg
 
 			if(this->m_hasDirectionnal)
 			{
-				std::cout << __FUNCTION__ "\t Not allowed to have multiple directionnal light, removing it\n";
+				PenCore::LogManager()->LogWarning("Not allowed to have multiple directionnal light, removing it");
 				PenCore::PenOctopus()->removeComponent<Components::PenLight>(obj);
 				break;
 			}

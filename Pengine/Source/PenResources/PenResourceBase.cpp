@@ -4,6 +4,7 @@
 #include "PenResourceManager.hpp"
 
 #include "PenThreadPool/PenThreadPool.h"
+#include "PenLogManager/PenLogManager.h"
 
 namespace Pengine::Resources
 {
@@ -63,7 +64,7 @@ namespace Pengine::Resources
 					if (this->GPULoad())
 						this->setLoaded();
 					else
-						std::cout << "GPU LOAD FAILED" << std::endl;
+						PenCore::LogManager()->LogWarning("GPU LOAD FAILED");
 				});
 
 			return false;

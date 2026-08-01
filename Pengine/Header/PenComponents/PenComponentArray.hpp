@@ -2,6 +2,9 @@
 
 #include "PenComponents/PenComponentArray.h"
 
+#include "Pencore/PenCore.h"
+#include "PenLogManager/PenLogManager.h"
+
 #include <iostream>
 
 namespace Pengine::Components
@@ -11,7 +14,7 @@ namespace Pengine::Components
 	{
 		if(m_PenObjectToArrayIndex.find(entity) != m_PenObjectToArrayIndex.end())
 		{
-			std::cout << __FUNCTION__ "Component added to same PenObject more than once.\n";
+			PenCore::LogManager()->LogWarning("Component added to same PenObject more than once.");
 			return this->getData(entity);
 		}
 
@@ -28,9 +31,9 @@ namespace Pengine::Components
 	template<typename T>
 	inline void ComponentArray<T>::removeData(PenObjectId entity)
 	{
-		if (m_PenObjectToArrayIndex.find(entity) == m_PenObjectToArrayIndex.end())
+		if (m_PenObjectToArrayIndex.find(entity) == m_PenObjectToArrayIndex.end() || entity == g_PenObjectInvalidId)
 		{
-			std::cout << __FUNCTION__ "Removing invalid PenObject.\n";
+			PenCore::LogManager()->LogWarning("Removing invalid PenObject.");
 			return;
 		}
 
@@ -52,10 +55,7 @@ namespace Pengine::Components
 	inline T& ComponentArray<T>::getData(PenObjectId entity)
 	{
 		if(m_PenObjectToArrayIndex.find(entity) == m_PenObjectToArrayIndex.end())
-		{
-			std::cout << __FUNCTION__ "No component found with the specified PenObject (returning last components array)\n";
-			return m_PenComponentArray[m_count - 1];
-		}
+			PenCore::LogManager()->LogError("No component found with the specified PenObject (returning last components array)");
 
 		return m_PenComponentArray[m_PenObjectToArrayIndex[entity]];
 	}

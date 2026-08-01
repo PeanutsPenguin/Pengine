@@ -6,6 +6,7 @@
 #include "PenCore/PenCore.h"								//PenCore
 #include "PenSerializer/PenSerializer.h"					//PenSerializer
 #include "PenResources/PenShader.h"							//PenShader
+#include "PenLogManager/PenLogManager.h"
 
 #include "Wrapper/Private_GladWrapper.h"
 
@@ -21,14 +22,14 @@ std::shared_ptr<PenShaderProgram> PenShaderProgram::defaultShaderProgram()
 	std::shared_ptr<PenShaderProgram> ptr = PenCore::ResourcesManager()->loadResourceFromFile<PenShaderProgram>("Shaders/PBR/ShaderProgPBR.penfile");
 
 	if (ptr && !ptr->isLoaded())
-		std::cout << "Default shader Program is not loaded yet\n";
+		PenCore::LogManager()->LogWarning("Default shader Program is not loaded yet");
 
 	return ptr;
 }
 
 PenShaderProgram::~PenShaderProgram()
 {
-	std::cout << __FUNCTION__ ": Destryoing with id : " << this->getId() << std::endl;
+	PenCore::LogManager()->Log("Destroying Shader Program : " + std::to_string(this->getId()));
 	destroy();
 }
 
@@ -57,7 +58,7 @@ bool Pengine::Resources::PenShaderProgram::loadResource(const std::string path)
 
 bool PenShaderProgram::createResource(const std::string PenfilePath, const std::string sourcePath)
 {
-	std::cout << __FUNCTION__ "\t Can't specify a shader program for program creation\n";
+	PenCore::LogManager()->LogWarning("Can't specify a shader program for program creation");
 	return false;
 }
 
@@ -67,13 +68,13 @@ bool PenShaderProgram::createResource(const std::string PenfilePath, std::shared
 
 	if (vertexShader == nullptr)
 	{
-		std::cout << __FUNCTION__ "\t Given vertex shader is null, can't create shader program without it\n";
+		PenCore::LogManager()->LogWarning("Given vertex shader is null, can't create shader program without it");
 		return false;
 	}
 
 	if (fragmentShader == nullptr)
 	{
-		std::cout << __FUNCTION__ "\t Given fragment shader is null, can't create shader program without it\n";
+		PenCore::LogManager()->LogWarning("Given fragment shader is null, can't create shader program without it");
 		return false;
 	}
 

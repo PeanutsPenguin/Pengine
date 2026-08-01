@@ -4,6 +4,9 @@
 
 #include "PenSystem/PenLightSystem/PenLightSystem.h"
 
+#include "PenCore/PenCore.h"
+#include "PenLogManager/PenLogManager.h"
+
 #include <iostream>
 
 namespace Pengine::System
@@ -15,7 +18,7 @@ namespace Pengine::System
 
 		if(m_PenSystems.find(typeName) != m_PenSystems.end())
 		{
-			std::cout << __FUNCTION__ "System already registered\n";
+			PenCore::LogManager()->LogWarning("System already registered");
 			return std::dynamic_pointer_cast<T>(m_PenSystems[typeName]);
 		}
 
@@ -31,7 +34,7 @@ namespace Pengine::System
 
 		if (m_PenSystems.find(typeName) == m_PenSystems.end())
 		{
-			std::cout << __FUNCTION__ "System not registered\n";
+			PenCore::LogManager()->LogWarning("System not registered");
 			return nullptr;	
 		}
 
@@ -45,7 +48,7 @@ namespace Pengine::System
 
 		if(m_PenSystems.find(typeName) == m_PenSystems.end())
 		{
-			std::cout << __FUNCTION__ "System not registered yet.\n";
+			PenCore::LogManager()->LogWarning("System not registered yet.");
 			return;
 		}
 

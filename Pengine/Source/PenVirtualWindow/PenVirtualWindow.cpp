@@ -21,10 +21,10 @@ void PenVirtualWindow::render()
 /// Did this function for the picking not quite sure it'll work for every window
 /// </summary>
 /// <returns></returns>
-const PenMath::Vector2& PenVirtualWindow::getMousePosRelativeToWindow()
+const PenMath::Vector2 PenVirtualWindow::getMousePosRelativeToWindow()
 {
 	PenMath::Vector2	contentSize = ImGuiWrapper::getContentSize(),
-						curorPos = ImGuiWrapper::getCursorPos(),
+						curorPos	= ImGuiWrapper::getCursorPos(),
 						mousePos	= PenCore::InputManager()->getMousePosition();	//glfw mouse pos
 
 	mousePos -= curorPos;

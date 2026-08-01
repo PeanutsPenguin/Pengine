@@ -3,6 +3,8 @@
 #include "PenStructsAndEnum/PenVertex.h"	//PenVertex
 #include "PenDefine/PengineDefine.h"		//PengineDefine
 #include "Wrapper/Private_GladWrapper.h"
+#include "PenCore/PenCore.h"
+#include "PenLogManager/PenLogManager.h"
 
 //Lib
 #include <assimp/mesh.h>
@@ -78,7 +80,7 @@ bool PenMesh::initMesh(const aiMesh& assimpMesh)
 
 		if (face.mNumIndices != 3)
 		{
-			std::cerr << __FUNCTION__  ": Mesh has an incorrect number of points in face.\n";
+			PenCore::LogManager()->LogWarning("Mesh has an incorrect number of points in face.");
 			return false;
 		}
 

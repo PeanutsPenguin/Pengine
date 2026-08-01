@@ -1,8 +1,9 @@
 #include "PenResources/PenMaterial/PenMaterial.h"
-
 #include "PenResources/PenResourcesManager.h"                       //PenResourceManager
 #include "PenResources/PenTexture.h"                                //PenTexture
 #include "PenResources/PenShaderProgram.h"                          //PenShaderProgram
+
+#include "PenLogManager/PenLogManager.h"
 
 #include "PenBuffer/PenTextureBuffer.h"
 
@@ -30,7 +31,7 @@ std::shared_ptr<PenMaterial> PenMaterial::defaultMaterial()
     std::shared_ptr<PenMaterial> ptr = PenCore::ResourcesManager()->loadResourceFromFile<PenMaterial>("Material/DefaultMaterial.penfile", true);
 
     if (ptr && !ptr->isLoaded())
-        std::cout << "Default material is not loaded yet\n";
+        PenCore::LogManager()->Log("Default material is not loaded yet");
 
     return ptr;
 
@@ -39,7 +40,7 @@ std::shared_ptr<PenMaterial> PenMaterial::defaultMaterial()
 #pragma region Resource
 bool PenMaterial::loadResource(const std::string path)
 {
-    std::cout << __FUNCTION__ "\tLoading Material :" << path << std::endl;
+    PenCore::LogManager()->Log("Loading Material : " + path);
 
     std::ifstream infile(path, std::ios::binary);
 
@@ -61,14 +62,11 @@ bool PenMaterial::loadResource(const std::string path)
 
     infile.close();
 
-    std::shared_ptr<PenShaderProgram> shader = nullptr;
-
-    if (PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
-        shader = PenCore::ResourcesManager()->loadResourceFromFile<PenShaderProgram>(shaderPath.c_str());
+    std::shared_ptr<PenShaderProgram> shader = PenCore::ResourcesManager()->loadResourceFromFile<PenShaderProgram>(shaderPath.c_str());
 
     if (!shader)
     {
-        std::cout << __FUNCTION__ "\t Material loaded with default texture in it\n";
+        PenCore::LogManager()->Log("Material loaded with default shader program in it");
         this->m_shader = PenShaderProgram::defaultShaderProgram();
     }
     else
@@ -82,7 +80,7 @@ bool PenMaterial::loadResource(const std::string path)
 
 bool PenMaterial::createResource(const std::string penfilePath, const std::string sourcePath)
 {
-    std::cout << __FUNCTION__ "\t Can't create a material form a source file for now\n";
+    PenCore::LogManager()->LogWarning("Can't create a material from a source file for now");
 
     return false;
 }
@@ -98,14 +96,14 @@ bool PenMaterial::createResource(const std::string penfilePath, std::shared_ptr<
 
     if (!prog)
     {
-        std::cout << __FUNCTION__ "\t Material created with default shader program in it\n";
+        PenCore::LogManager()->Log("Material created with default shader program in it");
         this->m_shader = PenShaderProgram::defaultShaderProgram();
     }
     else
         this->m_shader = prog;
 
     if (!tex)
-        std::cout << __FUNCTION__ "\t Given texture for the material creation is null\n";
+        PenCore::LogManager()->LogWarning("Given texture for the material creation is null");
     else
         this->m_albedo.texture = tex;
 
@@ -162,7 +160,7 @@ const std::shared_ptr<PenShaderProgram> PenMaterial::getShaderProg()
 {
     if (!this->m_shader)
     {
-        std::cout << __FUNCTION__ "\t Shader program of material : " << this->getId() << " has not been found, replace it with default shader program\n";
+        PenCore::LogManager()->LogWarning("Shader program of material : " + std::to_string(this->getId()) + " has not been found, replace it with default shader program");
         this->setShaderProgram(nullptr);
     }
 
@@ -184,7 +182,7 @@ const std::shared_ptr<PenTexture> PenMaterial::getNormal()
 {
     if (!this->m_normal)
     {
-        std::cout << __FUNCTION__ "\t Normal map of material : " << this->getId() << " is null\n";
+        PenCore::LogManager()->LogWarning("Normal map of material : " + std::to_string(this->getId()) + " is null");
         return nullptr;
     }
 
@@ -198,10 +196,7 @@ void PenMaterial::loadNormal(std::ifstream& infile)
     PenCore::Serializer()->read(infile, tempPath);
 
     if (!tempPath.empty())
-    {
-        if (PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
-            this->m_normal = PenCore::ResourcesManager()->loadResourceFromFile<PenTexture>(tempPath.c_str());
-    }
+        this->m_normal = PenCore::ResourcesManager()->loadResourceFromFile<PenTexture>(tempPath.c_str());
 }
 
 void PenMaterial::activateNormal()
@@ -267,10 +262,7 @@ void PenMaterial::loadAlbedo(std::ifstream& infile)
     PenCore::Serializer()->read(infile, tempPath);
 
     if (!tempPath.empty())
-    {
-        if (PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
-            this->m_albedo.texture = PenCore::ResourcesManager()->loadResourceFromFile<PenTexture>(tempPath.c_str());
-    }
+        this->m_albedo.texture = PenCore::ResourcesManager()->loadResourceFromFile<PenTexture>(tempPath.c_str());
 
     PenCore::Serializer()->read(infile, this->m_albedo.defaultValue);
 }
@@ -323,10 +315,7 @@ void PenMaterial::loadMetallic(std::ifstream& infile)
     PenCore::Serializer()->read(infile, tempPath);
 
     if (!tempPath.empty())
-    {
-        if (PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
-            this->m_metallic.texture = PenCore::ResourcesManager()->loadResourceFromFile<PenTexture>(tempPath.c_str());
-    }
+        this->m_metallic.texture = PenCore::ResourcesManager()->loadResourceFromFile<PenTexture>(tempPath.c_str());
 
     PenCore::Serializer()->read(infile, this->m_metallic.defaultValue);
 }
@@ -380,10 +369,7 @@ void PenMaterial::loadRoughness(std::ifstream& infile)
     PenCore::Serializer()->read(infile, tempPath);
 
     if (!tempPath.empty())
-    {
-        if (PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
-            this->m_roughness.texture = PenCore::ResourcesManager()->loadResourceFromFile<PenTexture>(tempPath.c_str());
-    }
+        this->m_roughness.texture = PenCore::ResourcesManager()->loadResourceFromFile<PenTexture>(tempPath.c_str());
 
     PenCore::Serializer()->read(infile, this->m_roughness.defaultValue);
 }
@@ -433,10 +419,8 @@ void PenMaterial::loadAmbientOcclusion(std::ifstream& infile)
     PenCore::Serializer()->read(infile, tempPath);
 
     if (!tempPath.empty())
-    {
-        if (PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
-            this->m_ambientOcclusion.texture = PenCore::ResourcesManager()->loadResourceFromFile<PenTexture>(tempPath.c_str());
-    }
+        this->m_ambientOcclusion.texture = PenCore::ResourcesManager()->loadResourceFromFile<PenTexture>(tempPath.c_str());
+   
 
     PenCore::Serializer()->read(infile, this->m_ambientOcclusion.defaultValue);
 }
@@ -459,12 +443,6 @@ void PenMaterial::activateAmbientOcclusion()
 #pragma endregion
 
 void PenMaterial::shaderActivation()
-{
-    if (PenCore::renderLib() == RenderLib::E_OPENGL_RENDER)
-        GLShaderActivation();
-}
-
-void PenMaterial::GLShaderActivation()
 {
     this->activateAlbedo();
     this->activateMetallic();

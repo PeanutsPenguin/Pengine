@@ -35,7 +35,7 @@ namespace Pengine::Resources
 
 	private:
 		Pengine::Buffer::PenVertexBuffer			m_vertexBuffer;
-		Pengine::Buffer::PenVertexAttributeBuffer	m_vertexAttributeBuffer;
+		Pengine::Buffer::PenVertexAttributeBuffer	m_vertexAttributeBuffer = Pengine::Buffer::PenVertexAttributeBuffer();
 		Pengine::Buffer::PenElementBuffer			m_elementBuffer;
 	};
 }

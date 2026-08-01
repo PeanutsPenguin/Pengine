@@ -19,7 +19,7 @@ namespace Pengine
 		PenPropertyType		getType() { return this->m_type; }
 		virtual void*		getData() = 0;
 	protected:
-		PenPropertyType m_type;
+		PenPropertyType m_type = E_COMPONENT;
 		const char* m_name = "Property";
 	};
 

@@ -40,8 +40,6 @@ namespace Pengine::Resources
 		template<typename _ResourceType, typename... Args>
 			requires std::derived_from<_ResourceType, PenResourceBase>
 		_NODISCARD std::shared_ptr<_ResourceType> loadResourceFromFile(const char* path, bool persistent, Args... data);
-
-		_NODISCARD const char* getResourcePathById(const PenResourcesId id) const;
 		
 		/// <summary>
 		/// Call this at the end of every frame to clear unused resoruces

@@ -21,7 +21,7 @@ namespace Pengine::ui
 
 		void render();
 
-		const PenMath::Vector2& getMousePosRelativeToWindow();
+		const PenMath::Vector2 getMousePosRelativeToWindow();
 
 	protected:
 		virtual void renderCalls() {};

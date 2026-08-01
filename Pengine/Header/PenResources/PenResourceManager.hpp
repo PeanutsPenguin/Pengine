@@ -8,6 +8,7 @@
 
 #include "PenThreadPool/PenThreadPool.h"
 #include "PenCore/PenCore.h"
+#include "PenLogManager/PenLogManager.h"
 
 #define RESOURCE_TEMPLATE template<typename _ResourceType, typename ...Args>
 
@@ -27,7 +28,7 @@ namespace Pengine::Resources
 		std::filesystem::path copyEmplacement = destinationPath / source.filename();
 		if(!std::filesystem::copy_file(source, copyEmplacement, std::filesystem::copy_options::overwrite_existing))
 		{
-			std::cout << __FUNCTION__ << "\tFailed to copy the file : " << sourcePath << std::endl;
+			PenCore::LogManager()->LogError("Failed to copy the file : " + std::string(sourcePath));
 			return nullptr;
 		}
 
@@ -38,7 +39,7 @@ namespace Pengine::Resources
 		if (it != m_pathfileToId.end())
 			return std::dynamic_pointer_cast<_ResourceType>(m_resourceStocker[it->second].lock());
 
-		std::cout << __FUNCTION__ << "\tResources : " << destination << " doesn't exist, creating it" << std::endl;
+		PenCore::LogManager()->Log("Resources : " + destination + " doesn't exist, creating it");
 
 		PenResourcesId curId = m_currentId++;
 
@@ -63,11 +64,11 @@ namespace Pengine::Resources
 							if (ptr->GPULoad())
 								ptr->setLoaded();
 							else
-								std::cout << "GPU LOAD FAILED" << std::endl;
+								PenCore::LogManager()->LogWarning("GPU LOAD FAILED");
 						});
 				}
 				else
-					std::cout << "Async load failed for: " << destination << std::endl;
+					PenCore::LogManager()->LogWarning("Async creation failed for: " + destination);
 
 			}, threadPool);
 
@@ -92,7 +93,7 @@ namespace Pengine::Resources
 		if (it != m_pathfileToId.end())
 			return std::dynamic_pointer_cast<_ResourceType>(m_resourceStocker[it->second].lock());
 
-		std::cout << __FUNCTION__ << "\tResources : " << destination << " doesn't exist, creating it" << std::endl;
+		PenCore::LogManager()->Log("Resources : " + destination + " doesn't exist, creating it");
 
 		PenResourcesId curId = m_currentId++;
 
@@ -117,11 +118,11 @@ namespace Pengine::Resources
 							if (ptr->GPULoad())
 								ptr->setLoaded();
 							else
-								std::cout << "GPU LOAD FAILED" << std::endl;
+								PenCore::LogManager()->LogWarning("GPU LOAD FAILED");
 						});
 				}
 				else
-					std::cout << "Async load failed for: " << destination << std::endl;
+					PenCore::LogManager()->LogWarning("Async creation failed for: " + destination);
 
 			}, threadPool);
 
@@ -149,7 +150,7 @@ namespace Pengine::Resources
 			return ptr;
 		}
 
-		std::cout << __FUNCTION__ << "\tResources : " << safePath << " doesn't exist, loading it" << std::endl;
+		PenCore::LogManager()->Log("Resources : " + safePath + " doesn't exist, loading it");
 
 		PenResourcesId curId = ++m_currentId;
 
@@ -175,11 +176,11 @@ namespace Pengine::Resources
 							if(ptr->GPULoad())
 								ptr->setLoaded();
 							else 
-								std::cout << "GPU LOAD FAILED" << std::endl;
+								PenCore::LogManager()->LogWarning("GPU LOAD FAILED");
 						});
 				}
 				else
-					std::cout << "Async load failed for: " << safePath << std::endl;
+					PenCore::LogManager()->LogWarning("Async load failed for: " + safePath);
 
 			}, threadPool);
 
@@ -204,7 +205,7 @@ namespace Pengine::Resources
 				return std::dynamic_pointer_cast<_ResourceType>(m_resourceStocker[it->second].lock());
 		}
 
-		std::cout << __FUNCTION__ << "\tResources : " << safePath << " doesn't exist, loading it" << std::endl;
+		PenCore::LogManager()->Log("Resources : " + safePath + " doesn't exist, loading it");
 
 		PenResourcesId curId = ++m_currentId;
 
@@ -233,11 +234,11 @@ namespace Pengine::Resources
 						if (ptr->GPULoad())
 							ptr->setLoaded();
 						else
-							std::cout << "GPU LOAD FAILED" << std::endl;
+							PenCore::LogManager()->LogWarning("GPU LOAD FAILED");
 					});
 			}
 			else
-				std::cout << "Async load failed for: " << safePath << std::endl;
+				PenCore::LogManager()->LogWarning("Async load failed for: " + safePath);
 
 		}, threadPool);
 

@@ -3,6 +3,9 @@
 #include "PenWindow/PenWindowBase.h"	//Window
 #include "PenColor/PenColor.h"			//Color
 #include "PenOctopus/PenOctopus.h"		//Octopus
+#include "PenLogManager/PenLogManager.h"
+
+//Editor
 #include "Penditor/Penditor.h"			//Penditor
 #include "PenFreeCam/PenFreeCam.h"
 
@@ -122,6 +125,9 @@ int main()
 		#pragma endregion
 
 		Penditor::PenditorCore::init();
+
+		Pengine::PenCore::LogManager()->LogError("This is an error log");	
+
 		Penditor::PenditorCore::runEditor();
 		Penditor::PenditorCore::destroy();
 

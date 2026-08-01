@@ -4,6 +4,7 @@
 #include "PenResources/PenResourcesManager.h"			//PenResourcesManager
 #include "PenBuffer/PenTextureBuffer.h"					//PenTextureBuffer
 #include "PenSerializer/PenSerializer.h"				//PenSerializer
+#include "PenLogManager/PenLogManager.h"
 
 //PenMAth
 #include <Vector/Vector3/Vector3.h>
@@ -21,14 +22,14 @@ std::shared_ptr<PenTexture> PenTexture::noTexture()
 	std::shared_ptr<PenTexture> ptr = PenCore::ResourcesManager()->loadResourceFromFile<PenTexture>("Textures/NoTexture.penfile", true);
 
 	if (ptr && !ptr->isLoaded())
-		std::cout << "Default Texture is not loaded yet\n";
+		PenCore::LogManager()->LogWarning("Default Texture is not loaded yet");
 
 	return ptr;
 }
 
 const std::string PenTexture::getTexturePath() const
 {
-	return PenCore::ResourcesManager()->getResourcePathById(getId());
+	return this->m_sourcePath;
 }
 
 PenTexture::PenTexture()
@@ -55,7 +56,7 @@ PenTexture::~PenTexture()
 #pragma region Resource
 bool PenTexture::loadResource(const std::string path)
 {
-	std::cout << __FUNCTION__ << "\tLoading texture : " << path << std::endl;
+	PenCore::LogManager()->Log("Loading texture : " + path);
 
 	//Create variables 
 	int type = 0;
@@ -73,7 +74,7 @@ bool PenTexture::loadResource(const std::string path)
 
 bool PenTexture::createResource(const std::string PenfilePath, const std::string sourcePath)
 {
-	std::cout << __FUNCTION__ "\t Creating texture : " << sourcePath << std::endl;
+	PenCore::LogManager()->Log("Creating texture : " + sourcePath);
 
 	if (!this->initializeTextureBuffer(sourcePath.c_str()))
 		return false;
@@ -93,11 +94,11 @@ bool PenTexture::GPULoad()
 {
 	///EVERYTHING IS ON THE MAIN THREAD AND I DON'T CARE I HAD TOO MUCH PROBLEM 
 	PenMath::Vector3 size;
-	stbi_uc* img = stbi_load(this->sourcePath.c_str(), &size.x, &size.y, &size.z, 0);
+	stbi_uc* img = stbi_load(this->m_sourcePath.c_str(), &size.x, &size.y, &size.z, 0);
 
 	if (!img)
 	{
-		std::cerr << __FUNCTION__ << ": Failed to load texture image file " << sourcePath << ".\n";
+		PenCore::LogManager()->LogWarning("Failed to load texture image file " + this->m_sourcePath + ".");
 		return false;
 	}
 
@@ -117,6 +118,6 @@ const Pengine::Buffer::PenTextureBuffer* PenTexture::dataPtr() const noexcept
 
 bool PenTexture::initializeTextureBuffer(const char* sourcePath)
 {
-	this->sourcePath = sourcePath;
+	this->m_sourcePath = sourcePath;
 	return true;
 }

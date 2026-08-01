@@ -41,7 +41,6 @@ namespace Pengine::Resources
 		bool	save() override;
 
 		void shaderActivation();
-		void GLShaderActivation();
 
 		void quickSave();
 

@@ -159,9 +159,6 @@ void PenInputManager::updateMouse()
 	this->m_mousePos = pos;
 
 	if(this->m_offset.x > 100 || this->m_offset.y > 100)
-	{
 		//Clamp the value of the ofset because it has some huge values everytime i release my mouse
 		this->m_offset = 0;
-		std::cout << "Mouse offset : " << this->m_offset.x << ",  " << this->m_offset.y << "\n";
-	}
 }

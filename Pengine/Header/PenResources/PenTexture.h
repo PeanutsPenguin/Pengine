@@ -38,7 +38,7 @@ namespace Pengine::Resources
 	private:
 		bool initializeTextureBuffer(const char* sourcePath);
 
-		std::string sourcePath = "";
+		std::string m_sourcePath = "";
 		std::unique_ptr<Pengine::Buffer::PenTextureBuffer> m_texBuffer = nullptr;
 	};
 }

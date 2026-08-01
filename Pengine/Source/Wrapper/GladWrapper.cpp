@@ -1,10 +1,13 @@
 #include "Wrapper/Private_GladWrapper.h"
 
 #include "PenStructsAndEnum/PenVertex.h"
-#include <iostream>
+
+#include "PenCore/PenCore.h"
+#include "PenLogManager/PenLogManager.h"
 
 //Lib
 #include <glad/glad.h>
+#include <iostream>
 
 namespace Pengine::GladWrapper
 {
@@ -108,7 +111,7 @@ namespace Pengine::GladWrapper
 				(void*)offsetof(Pengine::PenVertex, tangent));
 			break;
 		default:
-			std::cout << __FUNCTION__ " Index value :" << index << " is out of range. Pointer not loaded" << std::endl;
+			PenCore::LogManager()->LogWarning("Index value :" + std::to_string(index) + " is out of range. Pointer not loaded");
 			break;
 		}
 	}
@@ -281,7 +284,7 @@ namespace Pengine::GladWrapper
 		{
 			char infoLog[512];
 			glGetShaderInfoLog(*id, 512, nullptr, infoLog);
-			std::cerr << __FUNCTION__ "\tShader compilation failed. \t" << "Info : " << infoLog << '\n';
+			PenCore::LogManager()->LogWarning("Shader compilation failed. Info : " + std::string(infoLog));
 			return false;
 		}
 
@@ -297,7 +300,7 @@ namespace Pengine::GladWrapper
 		{
 			char infoLog[512];
 			glGetProgramInfoLog(*id, 512, nullptr, infoLog);
-			std::cerr << __FUNCTION__ "\tShader program linking failed. Info : " << infoLog << '\n';
+			PenCore::LogManager()->LogWarning("Shader program linking failed. Info : " + std::string(infoLog));
 			return false;
 		}
 
@@ -311,10 +314,8 @@ namespace Pengine::GladWrapper
 
 	void deleteShaderProgram(unsigned int* id)
 	{
-		glDeleteShader(*id);
+		glDeleteProgram(*id);
 	}
-
-
 
 	#pragma endregion
 

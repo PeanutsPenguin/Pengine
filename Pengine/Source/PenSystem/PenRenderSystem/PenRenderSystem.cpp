@@ -2,6 +2,7 @@
 
 #include "PenOctopus/PenOctopus.h"		//PenOctopus
 #include "PenCore/PenCore.h"			//PenCore
+#include "PenLogManager/PenLogManager.h"
 
 //PenComponents
 #include "PenComponents/PenRenderer/PenRenderer.h"
@@ -47,7 +48,7 @@ void PenRendererSystem::render(const PenObjectId camera)
 
 			if (!prog->use())
 			{
-				std::cout << "__FUNCTION__ : Shader program failed to use\n";
+				PenCore::LogManager()->LogWarning("Shader program failed to use");
 				continue;
 			}
 
@@ -55,7 +56,7 @@ void PenRendererSystem::render(const PenObjectId camera)
 
 			if (!lightSystem)
 			{
-				std::cout << "__FUNCTION__ : Light system failed to get\n";
+				PenCore::LogManager()->LogWarning("Light system failed to get");
 				continue;
 			}
 
@@ -69,7 +70,7 @@ void PenRendererSystem::render(const PenObjectId camera)
 
 				if (renderCam == g_PenObjectInvalidId)
 				{
-					std::cout << __FUNCTION__ " : Default camera is invalid skip rendering\n";
+					PenCore::LogManager()->LogWarning("Default camera is invalid, skipping rendering");
 					continue;
 				}
 			}

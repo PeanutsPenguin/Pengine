@@ -3,6 +3,7 @@
 #include "PenScene/PenScene.h"			//PenScene
 #include "PenWindow/PenWindowBase.h"	//PenWindow
 #include "PenCore/PenCore.h"			//PenCore
+#include "PenLogManager/PenLogManager.h"
 
 //std
 #include <iostream>
@@ -18,10 +19,7 @@ PenObjectManager::PenObjectManager()
 PenObjectId PenObjectManager::createPenObject()
 {
 	if(m_livingPenObject >= g_maxEntity)
-	{
-		std::cout << __FUNCTION__ "Too many entities in existence.\n";
-		return -1;
-	}
+		PenCore::LogManager()->LogError("Too many entities in existence.");
 
 	// Take an ID from the front of the queue
 	PenObjectId id = m_validIds.front();
@@ -34,10 +32,7 @@ PenObjectId PenObjectManager::createPenObject()
 void PenObjectManager::destroyPenObject(PenObjectId id)
 {
 	if (m_livingPenObject >= g_maxEntity)
-	{
-		std::cout << __FUNCTION__ "Invalid entity number.\n";
-		return;
-	}
+		PenCore::LogManager()->LogError("Too many entities in existence.");
 
 	m_compSig[id].reset();
 	m_validIds.push(id);
@@ -46,22 +41,16 @@ void PenObjectManager::destroyPenObject(PenObjectId id)
 
 void PenObjectManager::setSignature(PenObjectId id, PenComponentSignature sig)
 {
-	if (m_livingPenObject >= g_maxEntity)
-	{
-		std::cout << __FUNCTION__ "Invalid entity id.\n";
-		return;
-	}
+	if (id == g_PenObjectInvalidId)
+		PenCore::LogManager()->LogError("Invalid entity id.");
 
 	m_compSig[id] = sig;
 }
 
 PenComponentSignature PenObjectManager::getSignature(PenObjectId id)
 {
-	if (m_livingPenObject >= g_maxEntity)
-	{
-		std::cout << __FUNCTION__ "Invalid entity id. (returning empty)\n";
-		return PenComponentSignature();
-	}
+	if (id == g_PenObjectInvalidId)
+		PenCore::LogManager()->LogError("Invalid entity id.");
 
 	return m_compSig[id];
 }

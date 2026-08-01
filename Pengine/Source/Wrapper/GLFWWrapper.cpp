@@ -1,8 +1,9 @@
 #include "Wrapper/Private_GLFWWrapper.h"
-#include "PenCore/PenCore.h"
 
+#include "PenCore/PenCore.h"
 #include "PenWindow/PenWindowBase.h"
 #include "PenStructsAndEnum/PenCursorState.h"
+#include "PenLogManager/PenLogManager.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -20,7 +21,7 @@ namespace Pengine
 		///Window Initiation
 		if (!glfwInit())
 		{
-			std::cerr << "__FUNCTION__ : Failed to initialize GLFW\n";
+			PenCore::LogManager()->LogWarning("Failed to initialize GLFW");
 			return false;
 		}
 
@@ -52,7 +53,7 @@ namespace Pengine
 	void GLFWWrapper::initAPI(const PenMath::Vector2& size)
 	{
 		if (!gladLoadGL())
-			std::cerr << "__FUNCTION__ : Failed to initialize GLAD\n";
+			PenCore::LogManager()->LogWarning("Failed to initialize GLAD");
 
 		glViewport(0, 0, size.x, size.y);
 		glEnable(GL_DEPTH_TEST);
@@ -66,7 +67,7 @@ namespace Pengine
 
 	void GLFWWrapper::closeCallBack(GLFWwindow* window)
 	{
-		std::cout << "Closing Main Window\n";
+		PenCore::LogManager()->Log("Closing Main Window");
 		Pengine::PenCore::stopPengine();
 	}
 	#pragma endregion
@@ -129,8 +130,8 @@ namespace Pengine
 
 		if (!window)
 		{
-			std::cout << __FUNCTION__ "Failed to cast the PenWindow into GLFWPenWindow (Returning none state)\n";
-			return PenInputState::E_NONE;
+			PenCore::LogManager()->LogError("Failed to get the pointer to the main window");
+			return;
 		}
 
 		int result = 0;
@@ -190,8 +191,8 @@ namespace Pengine
 
 		if (!window)
 		{
-			std::cout << __FUNCTION__ "Failed to cast the PenWindow into GLFWPenWindow (No mouse update)\n";
-			return PenMath::Vector2::Zero();
+			PenCore::LogManager()->LogError("Failed to get the pointer to the main window");
+			return;
 		}
 
 		double xpos, ypos;
