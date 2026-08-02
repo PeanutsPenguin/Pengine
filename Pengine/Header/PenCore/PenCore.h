@@ -32,6 +32,11 @@ namespace Pengine
 	{
 		class PenUIManager;
 	}
+
+	namespace Log
+	{
+		class PenLogManager;
+	}
 }	
 #pragma endregion
 
@@ -53,6 +58,7 @@ namespace Pengine
 		static std::unique_ptr<Serialize::PenSerializer>&			Serializer();
 		static std::unique_ptr<Pengine::ui::PenUIManager>&			UIManager();
 		static std::unique_ptr<Pengine::PenThreadPool>&				ThreadPool();
+		static std::unique_ptr<Pengine::Log::PenLogManager>&		LogManager();
 
 		static PenLibDefine&	libDefine();
 		static InputLib			inputLib();
@@ -95,6 +101,7 @@ namespace Pengine
 		static std::unique_ptr<Serialize::PenSerializer>		m_PenSerializer;
 		static std::unique_ptr<Pengine::ui::PenUIManager>		m_PenUIManager;
 		static std::unique_ptr<Pengine::PenThreadPool>			m_PenThreadPool;
+		static std::unique_ptr<Pengine::Log::PenLogManager>		m_PenLogManager;
 
 		static PenLibDefine m_libs;
 

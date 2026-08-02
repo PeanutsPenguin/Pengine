@@ -3,6 +3,9 @@
 #include "PenWindow/PenWindowBase.h"	//Window
 #include "PenColor/PenColor.h"			//Color
 #include "PenOctopus/PenOctopus.h"		//Octopus
+#include "PenLogManager/PenLogManager.h"
+
+//Editor
 #include "Penditor/Penditor.h"			//Penditor
 #include "PenFreeCam/PenFreeCam.h"
 
@@ -45,84 +48,73 @@ int main()
 
 		if (!engineInit)
 			std::cout << "ho ho.. probem here\n";
+		{
+			//PenResorucesManager
+			std::unique_ptr<Pengine::Resources::PenResourcesManager>& resourceManager = Pengine::PenCore::ResourcesManager();
 
-		//PenResorucesManager
-		std::unique_ptr<Pengine::Resources::PenResourcesManager>& resourceManager = Pengine::PenCore::ResourcesManager();
+	#pragma region Create Material
+			std::shared_ptr<Pengine::Resources::PenShaderProgram> progPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenShaderProgram>("Shaders/PBR/ShaderProgPBR.penfile");
+	#pragma endregion
 
-		#pragma region Create Material
-		std::shared_ptr<Pengine::Resources::PenShaderProgram> progPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenShaderProgram>("Shaders/PBR/ShaderProgPBR.penfile");
-		#pragma endregion
-		   
-		#pragma region Create First Object
-		std::shared_ptr<Pengine::Resources::PenMaterial> basketMat = resourceManager->loadResourceFromFile<Pengine::Resources::PenMaterial>("Material/BackpackMat.penfile");
+	#pragma region Create First Object
+			std::shared_ptr<Pengine::Resources::PenMaterial> basketMat = resourceManager->loadResourceFromFile<Pengine::Resources::PenMaterial>("Material/BackpackMat.penfile");
 
-		Pengine::PenObjectId newObj = Pengine::PenCore::PenOctopus()->createPenObject();
-		Pengine::Components::PenRenderer renderComp;
+			Pengine::PenObjectId newObj = Pengine::PenCore::PenOctopus()->createPenObject();
+			Pengine::Components::PenRenderer renderComp;
 
-		std::shared_ptr<Pengine::Resources::PenModel> modelPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenModel>("Mesh/backpack.penfile");
-		renderComp.setModel(modelPtr);
-		renderComp.setMaterial(basketMat);
+			std::shared_ptr<Pengine::Resources::PenModel> modelPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenModel>("Mesh/backpack.penfile");
+			renderComp.setModel(modelPtr);
+			renderComp.setMaterial(basketMat);
 
-		Pengine::Components::PenTransform sphereTransComp = Pengine::Components::PenTransform();
-		PenMath::Transform sphereTrans;
-		sphereTransComp.setGlobalTransform(sphereTrans);
+			Pengine::Components::PenTransform sphereTransComp = Pengine::Components::PenTransform();
+			PenMath::Transform sphereTrans;
+			sphereTransComp.setGlobalTransform(sphereTrans);
 
-		Pengine::PenCore::PenOctopus()->addComponent(newObj, sphereTransComp);
-		Pengine::PenCore::PenOctopus()->addComponent(newObj, renderComp);
+			Pengine::PenCore::PenOctopus()->addComponent(newObj, sphereTransComp);
+			Pengine::PenCore::PenOctopus()->addComponent(newObj, renderComp);
 
-		Pengine::PenCore::PenOctopus()->addToScene(newObj);
-		#pragma endregion
+			Pengine::PenCore::PenOctopus()->addToScene(newObj);
+	#pragma endregion
 
-		#pragma region Create second object
-		Pengine::PenObjectId seconNewObj = Pengine::PenCore::PenOctopus()->createPenObject();
+	#pragma region Create second object
+			Pengine::PenObjectId seconNewObj = Pengine::PenCore::PenOctopus()->createPenObject();
 
-		//Transform
-		Pengine::Components::PenTransform trans = Pengine::Components::PenTransform();
-		PenMath::Transform newtrans;
-		newtrans.position = { 0, 100, 0 };
-		trans.setGlobalTransform(newtrans);
-		Pengine::PenCore::PenOctopus()->addComponent(seconNewObj, trans);
+			//Transform
+			Pengine::Components::PenTransform trans = Pengine::Components::PenTransform();
+			PenMath::Transform newtrans;
+			newtrans.position = { 0, 100, 0 };
+			trans.setGlobalTransform(newtrans);
+			Pengine::PenCore::PenOctopus()->addComponent(seconNewObj, trans);
 
-		//Light
-		Pengine::Components::PenLight lightData(Pengine::PenLightType::E_POINT);
-		lightData.getLight()->setLightColor({ 1, 1, 1 });	
-		lightData.getLight()->setIntensity(2);
-		//lightData.SetState(Pengine::Components::PenComponentState::ENABLE, false);
+			//Light
+			Pengine::Components::PenLight lightData(Pengine::PenLightType::E_POINT);
+			lightData.getLight()->setLightColor({ 1, 1, 1 });
+			lightData.getLight()->setIntensity(2);
+			//lightData.SetState(Pengine::Components::PenComponentState::ENABLE, false);
 
-		Pengine::PenCore::PenOctopus()->addComponent(seconNewObj, lightData);
+			Pengine::PenCore::PenOctopus()->addComponent(seconNewObj, lightData);
 
-		Pengine::PenCore::PenOctopus()->addToScene(seconNewObj);
-		#pragma endregion
-		
-		#pragma region Create Third Object
-		Pengine::PenObjectId thirdObj = Pengine::PenCore::PenOctopus()->createPenObject();
-		Pengine::Components::PenRenderer thirdRenderComp;
+			Pengine::PenCore::PenOctopus()->addToScene(seconNewObj);
+	#pragma endregion
 
-		std::shared_ptr<Pengine::Resources::PenMaterial> sphereMat = resourceManager->loadResourceFromFile<Pengine::Resources::PenMaterial>("Material/SphereMat.penfile");
+	#pragma region Create Third Object
+			Pengine::PenObjectId thirdObj = Pengine::PenCore::PenOctopus()->createPenObject();
 
-		std::shared_ptr<Pengine::Resources::PenModel> thirdModel = resourceManager->loadResourceFromFile<Pengine::Resources::PenModel>("Mesh/sphere.penfile");
+			Pengine::Components::PenTransform thirdTransComp = Pengine::Components::PenTransform();
+			PenMath::Transform thirdTrans;
+			thirdTrans.position = { 0, 0, 100 };
+			thirdTrans.scale = { 10, 10, 10 };
+			thirdTransComp.setGlobalTransform(thirdTrans);
 
-		//std::shared_ptr<Pengine::Resources::PenModel> thirdModel = resourceManager->createResourceFromFile<Pengine::Resources::PenModel>("DefaultModel.fbx");
+			Pengine::PenCore::PenOctopus()->addComponent(thirdObj, thirdTransComp);
+			Pengine::PenCore::PenOctopus()->addComponent(thirdObj, Pengine::Components::PenCamera());
 
-		thirdRenderComp.setModel(thirdModel);
-		thirdRenderComp.setMaterial(sphereMat);
-
-
-		Pengine::Components::PenTransform thirdTransComp = Pengine::Components::PenTransform();
-		PenMath::Transform thirdTrans;
-		thirdTrans.position = { 0, 0, 100 };
-		thirdTrans.scale = { 10, 10, 10 };
-		thirdTransComp.setGlobalTransform(thirdTrans);
-
-		Pengine::PenCore::PenOctopus()->addComponent(thirdObj, thirdTransComp);
-		Pengine::PenCore::PenOctopus()->addComponent(thirdObj, Pengine::Components::PenCamera());
-		//Pengine::PenCore::PenOctopus()->addComponent(thirdObj, thirdRenderComp);
-
-		Pengine::PenCore::PenOctopus()->addToScene(thirdObj);
-		#pragma endregion
-
+			Pengine::PenCore::PenOctopus()->addToScene(thirdObj);
+	#pragma endregion
+	}
 		Penditor::PenditorCore::init();
 		Penditor::PenditorCore::runEditor();
+
 		Penditor::PenditorCore::destroy();
 
 #if CHECK_MEMORY_LEAKS

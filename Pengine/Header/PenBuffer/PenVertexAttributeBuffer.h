@@ -27,6 +27,6 @@ namespace Pengine::Buffer
         void defineAttribute(size_t index, unsigned int vertSize);
 
     private:
-        unsigned int m_id;
+        unsigned int m_id = 0;
     };
 }

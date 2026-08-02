@@ -1,6 +1,9 @@
 #pragma once 
 
 #include "PenComponentsManager.h"
+#include "PenCore/PenCore.h"
+#include "PenLogManager/PenLogManager.h"
+
 
 //std
 #include <memory>
@@ -14,7 +17,7 @@ namespace Pengine::Components
 
 		if(m_PenComponentsType.find(typeName) != m_PenComponentsType.end())
 		{
-			std::cout << __FUNCTION__ "Registering component type more than once.\n";
+			PenCore::LogManager()->LogWarning("Registering component type more than once.", __FILE__, __LINE__);
 			return;
 		}
 
@@ -34,7 +37,7 @@ namespace Pengine::Components
 
 		if(m_PenComponentsType.find(typeName) == m_PenComponentsType.end())
 		{
-			std::cout << __FUNCTION__ "Component Type is not registered. (Returning 0) \n";
+			PenCore::LogManager()->LogError("Component Type is not registered.", __FILE__, __LINE__);
 			return 0;
 		}
 
@@ -72,7 +75,7 @@ namespace Pengine::Components
 
 		if (m_PenComponentsType.find(typeName) == m_PenComponentsType.end())
 		{
-			std::cout << __FUNCTION__ "Component Type is not registered. (Returning 0)\n";
+			PenCore::LogManager()->LogError("Component Type is not registered", __FILE__, __LINE__);
 			return 0;
 		}
 

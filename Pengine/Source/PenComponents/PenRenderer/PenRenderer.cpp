@@ -1,6 +1,9 @@
 #include "PenComponents/PenRenderer/PenRenderer.h"
 #include "PenProperty/PenPropertyManager.h"
 
+#include "PenCore/PenCore.h"
+#include "PenLogManager/PenLogManager.h"
+
 #include <iostream>
 
 using namespace Pengine::Components;
@@ -40,7 +43,7 @@ std::shared_ptr<Pengine::Resources::PenMaterial> PenRenderer::getMaterial()
 {
 	if(!this->m_material)
 	{
-		std::cout << __FUNCTION__ "\t Material of object : " << this->getPenObjectId() << " has not been found, replace it with default material\n";
+		PenCore::LogManager()->LogWarning("Material of object : " + std::to_string(this->getPenObjectId()) + " has not been found, replace it with default material", __FILE__, __LINE__);
 		this->setMaterial(Resources::PenMaterial::defaultMaterial());
 	}
 

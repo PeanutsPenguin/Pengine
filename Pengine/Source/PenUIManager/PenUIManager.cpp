@@ -92,6 +92,11 @@ void PenUIManager::setNextWindowSize(const PenMath::Vector2& size)
 	ImGuiWrapper::setNextWindowSize(size);
 }
 
+void PenUIManager::setScrollCursorY(float y)
+{
+	ImGuiWrapper::setScrollCursorY(y);
+}
+
 void PenUIManager::addImageToDrawList(unsigned int id, const PenMath::Vector2& topLeft, const PenMath::Vector2& bottomRight)
 {
 	ImGuiWrapper::addImageToDrawList(id, topLeft, bottomRight);
@@ -112,9 +117,9 @@ void PenUIManager::renderCenterImage(int textureID, const PenMath::Vector2& size
 	ImGuiWrapper::renderCenterImage(textureID, size);
 }
 
-void PenUIManager::renderBool(bool* value, const char* name)
+bool PenUIManager::renderBool(bool* value, const char* name)
 {
-	ImGuiWrapper::renderBool(value, name);
+	return ImGuiWrapper::renderBool(value, name);
 }
 
 void PenUIManager::renderText(const char* value)
@@ -145,6 +150,11 @@ void PenUIManager::endDragAndDropSource()
 void PenUIManager::endDragAndDropTarget()
 {
 	ImGuiWrapper::endDragAndDropTarget();
+}
+
+void PenUIManager::endChildWindow()
+{
+	ImGuiWrapper::endChildWindow();
 }
 
 bool PenUIManager::renderCollapsingHeader(const char* name)
@@ -187,6 +197,11 @@ void PenUIManager::pushStyle(PenStyleFlag flags, float value)
 	ImGuiWrapper::pushStyle(flags, value);
 }
 
+void PenUIManager::pushStyleColor(PenStyleColorType type, const PenColor& col)
+{
+	ImGuiWrapper::pushStyleColor(type, col);
+}
+
 void PenUIManager::popTree()
 {
 	ImGuiWrapper::popTree();
@@ -195,6 +210,11 @@ void PenUIManager::popTree()
 void PenUIManager::popStyle()
 {
 	ImGuiWrapper::popStyle();
+}
+
+void PenUIManager::popStyleColor()
+{
+	ImGuiWrapper::popStyleColor();
 }
 
 bool PenUIManager::renderColorPicker(const char* label, PenColor& col)
@@ -242,6 +262,11 @@ bool PenUIManager::beginDragAndDropTarget()
 	return ImGuiWrapper::beginDragAndDropTarget();
 }
 
+bool PenUIManager::beginChildWindow(const char* name, const PenMath::Vector2& size, PenVirtualWindowFlags flags)
+{
+	return ImGuiWrapper::beginChildWindow(name, size, flags);
+}
+
 bool PenUIManager::renderButton(const char* name, const PenMath::Vector2& size)
 {
 	return ImGuiWrapper::renderButton(name, size);
@@ -250,6 +275,11 @@ bool PenUIManager::renderButton(const char* name, const PenMath::Vector2& size)
 bool PenUIManager::renderFloat(const char* name, float* value)
 {
 	return ImGuiWrapper::renderFloat(name, value);
+}
+
+bool PenUIManager::renderSelectable(const char* label, bool selected)
+{
+	return ImGuiWrapper::renderSelectable(label, selected);
 }
 
 

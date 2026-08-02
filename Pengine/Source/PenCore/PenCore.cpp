@@ -9,6 +9,7 @@
 #include "PenWindow/PenWindowBase.h"                        //Penwindow
 #include "PenUIManager/PenUIManager.h"                      //PenUIManager
 #include "PenThreadPool/PenThreadPool.h"                    //PenThreadPool
+#include "PenLogManager/PenLogManager.h"                    //PenLogManager
 
 //Components
 #include "PenComponents/PenRenderer/PenRenderer.h"
@@ -39,6 +40,7 @@ std::unique_ptr<Resources::PenResourcesManager>     PenCore::m_resourcesManager 
 std::unique_ptr<Serialize::PenSerializer>           PenCore::m_PenSerializer        = std::make_unique<Serialize::PenSerializer>();
 std::unique_ptr<ui::PenUIManager>                   PenCore::m_PenUIManager         = std::make_unique<ui::PenUIManager>();
 std::unique_ptr<Pengine::PenThreadPool>             PenCore::m_PenThreadPool        = std::make_unique<Pengine::PenThreadPool>();
+std::unique_ptr<Pengine::Log::PenLogManager>        PenCore::m_PenLogManager        = std::make_unique<Pengine::Log::PenLogManager>();
 
 PenLibDefine PenCore::m_libs = PenLibDefine();
 
@@ -111,6 +113,11 @@ std::unique_ptr<Pengine::PenThreadPool>& PenCore::ThreadPool()
     return m_PenThreadPool;
 }
 
+std::unique_ptr<Pengine::Log::PenLogManager>& PenCore::LogManager()
+{
+    return m_PenLogManager;
+}
+
 PenLibDefine& PenCore::libDefine()
 {
     return m_libs;
@@ -178,6 +185,7 @@ void PenCore::destroy()
 
     if (m_PenOctopus)
     {
+		m_PenOctopus->destroy();
         m_PenOctopus.reset();
         m_PenOctopus = nullptr;
     }
@@ -211,6 +219,12 @@ void PenCore::destroy()
     {
         m_PenThreadPool.reset();
         m_PenThreadPool = nullptr;
+    }
+
+    if (m_PenLogManager)
+    {
+        m_PenLogManager.reset();
+        m_PenLogManager = nullptr;
     }
 }
 

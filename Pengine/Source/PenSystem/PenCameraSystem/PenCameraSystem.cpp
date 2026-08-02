@@ -3,6 +3,7 @@
 #include "PenCore/PenCore.h"			//PenCore
 #include "PenOctopus/PenOctopus.h"		//PenOctopus
 #include "PenInput/PenInput.h"			//PenInput
+#include "PenLogManager/PenLogManager.h"
 
 //Components
 #include "PenComponents/PenCamera/PenCamera.h"
@@ -36,5 +37,5 @@ void PenCameraSystem::setMainCamera(const PenObjectId cam)
 	if (this->m_PenObject.contains(cam))
 		this->m_mainCamera = cam;
 	else
-		std::cout << __FUNCTION__ "Object do not have camera component\n";
+		PenCore::LogManager()->LogWarning("Object do not have camera component", __FILE__, __LINE__);
 }

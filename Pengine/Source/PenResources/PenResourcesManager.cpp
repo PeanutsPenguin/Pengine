@@ -1,5 +1,7 @@
 #include "PenResources/PenResourcesManager.h"
 
+#include "PenCore/PenCore.h"
+#include "PenLogManager/PenLogManager.h"
 
 #include <iostream>
 
@@ -38,6 +40,18 @@ void PenResourcesManager::destroy()
             m_pathfileToId.erase(path);
         }
     }
+
+    for (auto it = m_persistentResourcestocker.begin(); it != m_persistentResourcestocker.end();)
+    {
+        it = m_persistentResourcestocker.erase(it);
+
+        if (it != m_persistentResourcestocker.end())
+        {
+            std::string path = m_idToPathfile[it->first];
+            m_idToPathfile.erase(it->first);
+            m_pathfileToId.erase(path);
+        }
+    }
 }
 
 void PenResourcesManager::makeDirty(PenResourcesId id)
@@ -65,20 +79,11 @@ void PenResourcesManager::saveAllDirty()
         {
             std::shared_ptr<PenResourceBase> resource = it->second;
             it = m_persistentResourcestocker.erase(it);
+
             if (!resource->save())
-                std::cout << "Failed to save a resource /n";
+                PenCore::LogManager()->LogWarning("Failed to save a resource.", __FILE__, __LINE__);
         }
         else
             ++it;
     }
-}
-
-const char* PenResourcesManager::getResourcePathById(const PenResourcesId id) const
-{
-    auto it = m_idToPathfile.find(id);
-    if (it != m_idToPathfile.end())
-        return it->second.c_str();
-
-	std::cerr << "__FUNCTION__ : Resource ID " << id << " not found." << std::endl;
-    return "";
 }

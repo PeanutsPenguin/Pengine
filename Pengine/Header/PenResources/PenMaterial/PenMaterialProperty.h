@@ -39,6 +39,6 @@ namespace Pengine::Resources
         }
 
         std::shared_ptr<PenTexture> texture = nullptr;      //Value of the texture
-        T defaultValue;                                         //Fallback value                
+        T defaultValue = NULL;                              //Fallback value                
     };
 }

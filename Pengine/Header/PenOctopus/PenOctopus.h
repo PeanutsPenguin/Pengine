@@ -17,7 +17,16 @@ namespace Pengine
 	class PenOctopus
 	{
 	public:
+		PenOctopus() = default;
+		PenOctopus(const PenOctopus& other) = delete;
+		PenOctopus(PenOctopus&& other) = delete;
+		~PenOctopus() = default;
+
+		PenOctopus& operator=(const PenOctopus& rhs) = delete;
+		PenOctopus& operator=(PenOctopus&& rhs) = delete;
+
 		void init();
+		void destroy();
 
 		PenObjectId		createPenObject();
 		void			destroyPenObject(PenObjectId obj);

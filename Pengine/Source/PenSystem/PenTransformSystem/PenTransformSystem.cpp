@@ -4,6 +4,7 @@
 #include "PenComponents/PenCamera/PenCamera.h"			//Camera Components
 #include "PenCore/PenCore.h"							//Core
 #include "PenOctopus/PenOctopus.h"						//Octopus
+#include "PenLogManager/PenLogManager.h"
 
 //Std
 #include <iostream>
@@ -88,7 +89,7 @@ void PenTransformSystem::reparentChild(const PenObjectId obj, const PenObjectId 
 {
 	if(oldParent == newParent)
 	{
-		std::cout << __FUNCTION__ "Same parent\n";
+		PenCore::LogManager()->LogWarning("Object already has the same parent", __FILE__, __LINE__);
 		return;
 	}
 
@@ -96,7 +97,7 @@ void PenTransformSystem::reparentChild(const PenObjectId obj, const PenObjectId 
 	if (this->m_children[oldParent].find(obj) == this->m_children[oldParent].end() || oldParent == g_PenObjectInvalidId)
 	{
 		this->removeRoot(obj);
-		std::cout << __FUNCTION__ "Invalid old parent, deleting objects\n";
+		PenCore::LogManager()->LogWarning("Invalid old parent, deleting objects", __FILE__, __LINE__);
 		return;
 	}
 	else

@@ -53,11 +53,11 @@ namespace Penditor::Window
 		this->m_renderSystem = Pengine::PenCore::PenOctopus()->getSystem<Pengine::System::PenRendererSystem>();
 
 		int windowFlags = 
-			Pengine::ui::PenVirtualWidnowFlags::NO_TITLE_BAR |
-			Pengine::ui::PenVirtualWidnowFlags::NO_SCROLL_BAR |
-			Pengine::ui::PenVirtualWidnowFlags::NO_COLLAPSE |
-			Pengine::ui::PenVirtualWidnowFlags::NO_META_DATA |
-			Pengine::ui::PenVirtualWidnowFlags::NO_FOCUS_ON_APPEARING; // Prevents it from stealing focus
+			Pengine::ui::PenVirtualWindowFlags::NO_TITLE_BAR |
+			Pengine::ui::PenVirtualWindowFlags::NO_SCROLL_BAR |
+			Pengine::ui::PenVirtualWindowFlags::NO_COLLAPSE |
+			Pengine::ui::PenVirtualWindowFlags::NO_META_DATA |
+			Pengine::ui::PenVirtualWindowFlags::NO_FOCUS_ON_APPEARING; // Prevents it from stealing focus
 
 		this->m_cameraPreview = std::make_unique<PenCameraPreviewWindow>("CameraPreview", windowFlags);
 		this->m_cameraPreview->init();

@@ -31,7 +31,7 @@ namespace Pengine::Buffer
 		_NODISCARD const int& count() const noexcept;
 
 	private:
-		unsigned int m_id;
+		unsigned int m_id = 0;
 		int m_count = 0;
 	};
 }

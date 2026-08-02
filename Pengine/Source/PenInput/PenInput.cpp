@@ -76,6 +76,11 @@ bool PenInputManager::isKeyReleased(const PenInput& input)
 
 	return false;
 }
+
+bool PenInputManager::isMouseDoubleClicked() const
+{
+	return this->m_doubleClickPressed;
+}
 #pragma endregion
 
 #pragma region Getter
@@ -113,6 +118,16 @@ PenMath::Vector2 Pengine::PenInputManager::getMousePosition() const
 
 void PenInputManager::update()
 {
+	if (this->m_doubleClick)
+		this->m_doubleClickChrono += PenCore::getDeltaTime();
+
+	if (this->m_doubleClickChrono > DOUBLE_CLICK_TIME || this->m_doubleClickPressed)
+	{
+		this->m_doubleClickPressed = false;
+		this->m_doubleClick = false;
+		this->m_doubleClickChrono = 0;
+	}
+
 	for (auto input = this->m_inputs.begin(); input != this->m_inputs.end();)
 	{
 		PenInputState type = this->updateInput(input->first, input->second);
@@ -132,6 +147,18 @@ void PenInputManager::update()
 PenInputState PenInputManager::updateInput(const PenInput& input, PenInputState prevState)
 {
 	PenInputState state = PenInputState::E_NONE;
+
+	if (input == PenInput::key_MOUSE_LEFT && prevState == PenInputState::E_PRESSED)
+	{
+		if(m_doubleClick)
+			m_doubleClickPressed = true;
+		else 
+		{
+			m_doubleClickPressed = false;
+			m_doubleClickChrono = 0;
+			m_doubleClick = true;
+		}
+	}
 
 	if (PenCore::inputLib() == InputLib::E_GLFW_INPUT)
 		state = GLFWWrapper::getKeyState(input);
@@ -159,9 +186,6 @@ void PenInputManager::updateMouse()
 	this->m_mousePos = pos;
 
 	if(this->m_offset.x > 100 || this->m_offset.y > 100)
-	{
 		//Clamp the value of the ofset because it has some huge values everytime i release my mouse
 		this->m_offset = 0;
-		std::cout << "Mouse offset : " << this->m_offset.x << ",  " << this->m_offset.y << "\n";
-	}
 }
