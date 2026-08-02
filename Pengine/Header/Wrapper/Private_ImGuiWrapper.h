@@ -70,7 +70,6 @@ namespace Pengine::ui::ImGuiWrapper
 	void	renderOnSameLine(float spacing = 0);
 	void	renderImage(int textureID, const PenMath::Vector2& size);
 	void	renderCenterImage(int textureID, const PenMath::Vector2& size);
-	void	renderBool(bool* value, const char* name);
 	void	renderText(const char* value);
 	void	renderCenterText(const char* value);
 	void	renderSeperator();
@@ -90,6 +89,7 @@ namespace Pengine::ui::ImGuiWrapper
 	bool	renderButton(const char* name, const PenMath::Vector2& size);
 	bool	renderFloat(const char* label, float* value);
 	bool	renderSelectable(const char* label, bool selected);
+	bool	renderBool(bool* value, const char* name);
 
 	const Pengine::DragAndDropData* getDroppedData(const char* type);
 }

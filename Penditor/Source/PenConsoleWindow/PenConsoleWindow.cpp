@@ -21,8 +21,27 @@ namespace Penditor::Window
 
 		for (;m_logIndex < logs.size(); ++m_logIndex)
 		{
-			m_displayedLogs.push_back(logs[m_logIndex]);
-			this->m_scrollToBottom = true;
+			bool skip = false;
+
+			if(m_collapse)
+			{
+				for (int i = 0; i < this->m_displayedLogs.size(); ++i)
+				{
+					if (logs[m_logIndex].message == this->m_displayedLogs[i].message
+						&& logs[m_logIndex].file == this->m_displayedLogs[i].file
+						&& logs[m_logIndex].line == this->m_displayedLogs[i].line)
+					{
+						this->m_displayedLogs[i].count++;
+						skip = true;
+					}
+				}
+			}
+
+			if(!skip)
+			{
+				m_displayedLogs.push_back(logs[m_logIndex]);
+				this->m_scrollToBottom = true;
+			}
 		}
 
 	}
@@ -30,6 +49,15 @@ namespace Penditor::Window
 	void PenConsoleWindow::renderCalls()
 	{
 		Pengine::ui::PenUIManager* manager = Pengine::PenCore::UIManager().get();
+
+		if(manager->renderBool(&m_collapse, "Collapse"))
+		{
+			if (m_collapse)
+			{
+				this->m_displayedLogs.clear();
+				this->m_logIndex = 0;
+			}
+		}
 
 		if (manager->beginChildWindow("ConsoleScrollRegion", {0, -CONSOLEWINDOW_FOOT_SPACE}, Pengine::ui::PenVirtualWindowFlags::HORIZONTAL_SCROLL_BAR))
 		{
@@ -39,7 +67,7 @@ namespace Penditor::Window
 			{
 				const Pengine::Log::PenLog& log = this->m_displayedLogs[i];
 
-				std::string displayStr = log.message + " (" + log.file + ":" + std::to_string(log.line) + ")##" + std::to_string(i);
+				std::string displayStr = std::to_string(log.count) + ": " + log.message + " (" + log.file + ":" + std::to_string(log.line) + ")##" + std::to_string(i);
 
 				switch (log.level)
 				{

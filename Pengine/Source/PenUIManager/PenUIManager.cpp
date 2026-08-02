@@ -117,9 +117,9 @@ void PenUIManager::renderCenterImage(int textureID, const PenMath::Vector2& size
 	ImGuiWrapper::renderCenterImage(textureID, size);
 }
 
-void PenUIManager::renderBool(bool* value, const char* name)
+bool PenUIManager::renderBool(bool* value, const char* name)
 {
-	ImGuiWrapper::renderBool(value, name);
+	return ImGuiWrapper::renderBool(value, name);
 }
 
 void PenUIManager::renderText(const char* value)

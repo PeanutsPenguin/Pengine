@@ -226,9 +226,9 @@ namespace Pengine::ui::ImGuiWrapper
 		ImGui::Image(textureID, { (float)size.x, (float)size.y }, { 0, 1 }, { 1, 0 });
 	}
 
-	void renderBool(bool* value, const char* name)
+	bool renderBool(bool* value, const char* name)
 	{
-		ImGui::Checkbox(name, value);
+		return ImGui::Checkbox(name, value);
 	}
 
 	void renderText(const char* value)

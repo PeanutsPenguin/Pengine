@@ -64,7 +64,7 @@ namespace Pengine::Resources
 							if (ptr->GPULoad())
 								ptr->setLoaded();
 							else
-								PenCore::LogManager()->LogWarning("GPU LOAD FAILED", __FILE__, __LINE__);
+								PenCore::LogManager()->LogWarning("GPU load file failed for : " + std::to_string(ptr->getId()), __FILE__, __LINE__);
 						});
 				}
 				else
@@ -118,7 +118,7 @@ namespace Pengine::Resources
 							if (ptr->GPULoad())
 								ptr->setLoaded();
 							else
-								PenCore::LogManager()->LogWarning("GPU LOAD FAILED", __FILE__, __LINE__);
+								PenCore::LogManager()->LogWarning("GPU load file failed for : " + std::to_string(ptr->getId()), __FILE__, __LINE__);
 						});
 				}
 				else
@@ -171,12 +171,12 @@ namespace Pengine::Resources
 
 				if (success)
 				{
-					pool->enqueueMainTask([ptr]()
+					pool->enqueueMainTask([ptr, safePath]()
 						{
 							if(ptr->GPULoad())
 								ptr->setLoaded();
 							else 
-								PenCore::LogManager()->LogWarning("GPU LOAD FAILED", __FILE__, __LINE__);
+								PenCore::LogManager()->LogWarning("GPU load file failed for : " + safePath, __FILE__, __LINE__);
 						});
 				}
 				else
@@ -234,7 +234,7 @@ namespace Pengine::Resources
 						if (ptr->GPULoad())
 							ptr->setLoaded();
 						else
-							PenCore::LogManager()->LogWarning("GPU LOAD FAILED", __FILE__, __LINE__);
+							PenCore::LogManager()->LogWarning("GPU load file failed for : " + std::to_string(ptr->getId()), __FILE__, __LINE__);
 					});
 			}
 			else

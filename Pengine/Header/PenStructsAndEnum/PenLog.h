@@ -12,5 +12,6 @@ namespace Pengine::Log
 		std::string file;
 		PenLogLevel level;
 		unsigned int line;
+		unsigned int count = 1;
 	};
 }

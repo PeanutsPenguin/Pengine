@@ -29,5 +29,6 @@ namespace Penditor::Window
 		std::vector<Pengine::Log::PenLog> m_displayedLogs;
 		unsigned int m_logIndex = 0;
 		bool m_scrollToBottom = false;
+		bool m_collapse = true;
 	};
 }
