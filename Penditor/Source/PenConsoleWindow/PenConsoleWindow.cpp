@@ -32,6 +32,14 @@ namespace Penditor::Window
 						&& logs[m_logIndex].line == this->m_displayedLogs[i].line)
 					{
 						this->m_displayedLogs[i].count++;
+
+						if (this->m_displayedLogs[i].count >= 10)
+							this->m_LogCountOffset = CONSOLE_LOG_10_OFFSET;
+						else if (this->m_displayedLogs[i].count >= 100)
+							this->m_LogCountOffset = CONSOLE_LOG_100_OFFSET;
+						else if (this->m_displayedLogs[i].count >= 1000)
+							this->m_LogCountOffset = CONSOLE_LOG_1000_OFFSET;
+
 						skip = true;
 					}
 				}
@@ -67,7 +75,15 @@ namespace Penditor::Window
 			{
 				const Pengine::Log::PenLog& log = this->m_displayedLogs[i];
 
-				std::string displayStr = std::to_string(log.count) + ": " + log.message + " (" + log.file + ":" + std::to_string(log.line) + ")##" + std::to_string(i);
+				if(log.count > 1)
+				{
+					manager->renderText((std::to_string(log.count) +":").c_str());
+					manager->renderOnSameLine(this->m_LogCountOffset);
+				}
+				else 
+					manager->setUICursorPosX(manager->getUICursorPos().x + this->m_LogCountOffset);
+
+				std::string displayStr = log.message + " (" + log.file + ":" + std::to_string(log.line) + ")##" + std::to_string(i);
 
 				switch (log.level)
 				{
