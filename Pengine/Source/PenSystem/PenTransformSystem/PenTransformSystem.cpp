@@ -13,17 +13,17 @@ using namespace Pengine::System;
 
 void PenTransformSystem::update(double dt)
 {
-	std::queue<PenObjectId> process;
+	std::queue<PengineIds> process;
 	for (const auto& root : this->m_PenObject)
 		process.push(root);
 
 	while (!process.empty()) 
 	{
-		PenObjectId current = process.front();
+		PengineIds current = process.front();
 		process.pop();
 
 		Components::PenTransform&	transform = PenCore::PenOctopus()->getComponent<Components::PenTransform>(current);
-		PenObjectId					parent = transform.getParent();
+		PengineIds					parent = transform.getParent();
 
 		if (parent == g_PenObjectInvalidId)
 			transform.setLocalTransform(transform.getGlobalTransform());	  // roots global and local should be equal
@@ -60,18 +60,18 @@ void PenTransformSystem::update(double dt)
 	}
 }
 
-void PenTransformSystem::addRoot(const PenObjectId obj)
+void PenTransformSystem::addRoot(const PengineIds obj)
 {
 	this->m_PenObject.insert(obj);
 }
 
-void PenTransformSystem::removeRoot(const PenObjectId obj)
+void PenTransformSystem::removeRoot(const PengineIds obj)
 {
 	if(this->m_children.find(obj) != this->m_children.end())
 	{
-		std::set<PenObjectId> children = this->m_children[obj];
+		std::set<PengineIds> children = this->m_children[obj];
 
-		for (PenObjectId child : children)
+		for (PengineIds child : children)
 			this->m_PenObject.insert(child);
 
 		this->m_children.erase(obj);
@@ -80,12 +80,12 @@ void PenTransformSystem::removeRoot(const PenObjectId obj)
 	this->m_PenObject.erase(obj);
 }
 
-void PenTransformSystem::addChild(const PenObjectId obj, const PenObjectId parent)
+void PenTransformSystem::addChild(const PengineIds obj, const PengineIds parent)
 {
 	this->m_children[parent].insert(obj);
 }
 
-void PenTransformSystem::reparentChild(const PenObjectId obj, const PenObjectId oldParent, const PenObjectId newParent, bool keepPosition)
+void PenTransformSystem::reparentChild(const PengineIds obj, const PengineIds oldParent, const PengineIds newParent, bool keepPosition)
 {
 	if(oldParent == newParent)
 	{
@@ -119,10 +119,10 @@ void PenTransformSystem::reparentChild(const PenObjectId obj, const PenObjectId 
 		m_PenObject.insert(obj);
 }
 
-void PenTransformSystem::onEntityInserted(const PenObjectId newObj)
+void PenTransformSystem::onEntityInserted(const PengineIds newObj)
 {
 	Components::PenTransform& transform = PenCore::PenOctopus()->getComponent<Components::PenTransform>(newObj);
-	PenObjectId	parent = transform.getParent();
+	PengineIds	parent = transform.getParent();
 
 	//If Parent is invalid attach to root
 	if (parent == g_PenObjectInvalidId) 
@@ -140,12 +140,12 @@ void PenTransformSystem::onEntityInserted(const PenObjectId newObj)
 	}
 }
 
-void PenTransformSystem::onEntityDestroyed(const PenObjectId obj)
+void PenTransformSystem::onEntityDestroyed(const PengineIds obj)
 {
 	m_PenObject.erase(obj);
 
 	Components::PenTransform& transform = PenCore::PenOctopus()->getComponent<Components::PenTransform>(obj);
-	PenObjectId	parent = transform.getParent();
+	PengineIds	parent = transform.getParent();
 
 	if (parent == g_PenObjectInvalidId)
 		this->removeRoot(obj);

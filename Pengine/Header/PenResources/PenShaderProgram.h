@@ -16,7 +16,7 @@ namespace Pengine::Resources
 	{
 	public:
 		PenShaderProgram() = default;
-		PenShaderProgram(const PenObjectId& id);
+		PenShaderProgram(const PengineIds& id);
 		PenShaderProgram(const PenShaderProgram& other) = default;
 		PenShaderProgram(PenShaderProgram&& other) = default;
 		~PenShaderProgram() override;

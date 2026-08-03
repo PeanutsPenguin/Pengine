@@ -12,12 +12,12 @@ void PenComponentBase::SetState(PenComponentState state, bool enable)
 	this->m_flags.set((size_t)state, enable);
 }
 
-void PenComponentBase::setPenObjectId(const PenObjectId id)
+void PenComponentBase::setPenObjectId(const PengineIds id)
 {
 	this->m_objId = id;
 }
 
-const Pengine::PenObjectId PenComponentBase::getPenObjectId() const
+const Pengine::PengineIds PenComponentBase::getPenObjectId() const
 {
 	return this->m_objId;
 }

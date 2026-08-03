@@ -12,7 +12,7 @@
 
 using namespace Pengine::Resources;
 
-PenShaderProgram::PenShaderProgram(const PenObjectId& id) : PenResourceBase(id) 
+PenShaderProgram::PenShaderProgram(const PengineIds& id) : PenResourceBase(id) 
 {
 	this->p_type = E_SHADER_PROGRAM;
 }

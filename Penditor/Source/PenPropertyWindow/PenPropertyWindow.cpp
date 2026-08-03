@@ -51,7 +51,7 @@ namespace Penditor::Window
 	void PenPropertyWindow::changeRenderTypeToObject()
 	{
 		this->m_renderingType = PropertiesRenderingType::E_PENOBJECT;
-		const Pengine::PenObjectId selectedObject = PenditorCore::PickingHandler()->getSelectedObject();
+		const Pengine::PengineIds selectedObject = PenditorCore::PickingHandler()->getSelectedObject();
 
 		if (selectedObject == Pengine::g_PenObjectInvalidId)
 			return;
@@ -379,7 +379,7 @@ namespace Penditor::Window
 #pragma region Render Object
 	void PenPropertyWindow::renderSelectedObject()
 	{
-		const Pengine::PenObjectId selectedObject = PenditorCore::PickingHandler()->getSelectedObject();
+		const Pengine::PengineIds selectedObject = PenditorCore::PickingHandler()->getSelectedObject();
 
 		if (selectedObject == Pengine::g_PenObjectInvalidId)
 			return;

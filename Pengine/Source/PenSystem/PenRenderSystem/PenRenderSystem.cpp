@@ -34,9 +34,9 @@ void PenRendererSystem::preRender(const PenColor& color)
 	GLFWWrapper::preRender(color);
 }
 
-void PenRendererSystem::render(const PenObjectId camera)
+void PenRendererSystem::render(const PengineIds camera)
 {
-	for (PenObjectId objId : m_PenObject)
+	for (PengineIds objId : m_PenObject)
 	{
 		Components::PenRenderer& renderComp = PenCore::PenOctopus()->getComponent<Components::PenRenderer>(objId);
 		Components::PenTransform& transComp = PenCore::PenOctopus()->getComponent<Components::PenTransform>(objId);
@@ -46,7 +46,7 @@ void PenRendererSystem::render(const PenObjectId camera)
 			std::shared_ptr<Pengine::Resources::PenMaterial>				mat = renderComp.getMaterial();
 			std::shared_ptr<Resources::PenShaderProgram>					prog = mat->getShaderProg();
 
-			if (!prog->use())
+			if (!prog->isLoaded() || !prog->use())
 			{
 				PenCore::LogManager()->LogWarning("Shader program failed to use", __FILE__, __LINE__);
 				continue;
@@ -62,7 +62,7 @@ void PenRendererSystem::render(const PenObjectId camera)
 
 			lightSystem->renderUpdate(prog);
 
-			PenObjectId renderCam = camera;
+			PengineIds renderCam = camera;
 
 			if (renderCam == g_PenObjectInvalidId)
 			{
@@ -86,7 +86,8 @@ void PenRendererSystem::render(const PenObjectId camera)
 			PenMath::Mat4 model = transComp.getGlobalTransform().toMatrix();
 			prog->setUniform("model", model);
 
-			mat->shaderActivation();
+			if(mat->isLoaded())
+				mat->shaderActivation();
 
 			renderComp.render();
 		}

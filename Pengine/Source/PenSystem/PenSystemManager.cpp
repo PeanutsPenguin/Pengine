@@ -2,14 +2,14 @@
 
 using namespace Pengine::System;
 
-void PenSystemManager::PenObjectDestroyed(PenComponentsId entity)
+void PenSystemManager::PenObjectDestroyed(PengineIds entity)
 {
 	// Erase a destroyed entity from all system lists
 	for (auto const& pair : m_PenSystems)
 		pair.second->m_PenObject.erase(entity);
 }
 
-void PenSystemManager::PenObjectSignatureChanged(PenObjectId entity, PenComponentSignature entitySignature)
+void PenSystemManager::PenObjectSignatureChanged(PengineIds entity, PenComponentSignature entitySignature)
 {
 	// Notify each system that an entity's signature changed
 	for (auto const& pair : m_PenSystems)
@@ -39,13 +39,13 @@ void PenSystemManager::updateAllSystem(double dt)
 		pair.second->update(dt);
 }
 
-void PenSystemManager::onEntityInserted(const PenObjectId newObj)
+void PenSystemManager::onEntityInserted(const PengineIds newObj)
 {
 	for(auto system : this->m_PenSystems)
 		system.second->onEntityInserted(newObj);
 }
 
-void PenSystemManager::onEntityDestroyed(const PenObjectId newObj)
+void PenSystemManager::onEntityDestroyed(const PengineIds newObj)
 {
 	for (auto system : this->m_PenSystems)
 		system.second->onEntityDestroyed(newObj);

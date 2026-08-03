@@ -10,7 +10,7 @@
 namespace Pengine::Components
 {
 	template<typename T>
-	inline T& ComponentArray<T>::insertData(PenObjectId entity, T component)
+	inline T& ComponentArray<T>::insertData(PengineIds entity, T component)
 	{
 		if(m_PenObjectToArrayIndex.find(entity) != m_PenObjectToArrayIndex.end())
 		{
@@ -29,7 +29,7 @@ namespace Pengine::Components
 	}
 
 	template<typename T>
-	inline void ComponentArray<T>::removeData(PenObjectId entity)
+	inline void ComponentArray<T>::removeData(PengineIds entity)
 	{
 		if (m_PenObjectToArrayIndex.find(entity) == m_PenObjectToArrayIndex.end() || entity == g_PenObjectInvalidId)
 		{
@@ -41,7 +41,7 @@ namespace Pengine::Components
 		size_t indexOfLastElement = m_count - 1;
 		m_PenComponentArray[indexOfRemovedEntity] = m_PenComponentArray[indexOfLastElement];
 
-		PenObjectId lastObject = m_arrayIndexToPenObject[indexOfLastElement];
+		PengineIds lastObject = m_arrayIndexToPenObject[indexOfLastElement];
 		m_PenObjectToArrayIndex[lastObject] = indexOfRemovedEntity;
 		m_arrayIndexToPenObject[indexOfRemovedEntity] = lastObject;
 
@@ -52,7 +52,7 @@ namespace Pengine::Components
 	}
 
 	template<typename T>
-	inline T& ComponentArray<T>::getData(PenObjectId entity)
+	inline T& ComponentArray<T>::getData(PengineIds entity)
 	{
 		if(m_PenObjectToArrayIndex.find(entity) == m_PenObjectToArrayIndex.end())
 			PenCore::LogManager()->LogError("No component found with the specified PenObject (returning last components array)", __FILE__, __LINE__);
@@ -61,13 +61,13 @@ namespace Pengine::Components
 	}
 
 	template<typename T>
-	inline bool ComponentArray<T>::contains(PenObjectId entity)
+	inline bool ComponentArray<T>::contains(PengineIds entity)
 	{
 		return (m_PenObjectToArrayIndex.find(entity) != m_PenObjectToArrayIndex.end());
 	}
 
 	template<typename T>
-	inline void ComponentArray<T>::entityDestroyed(PenObjectId entity)
+	inline void ComponentArray<T>::entityDestroyed(PengineIds entity)
 	{
 		if (m_PenObjectToArrayIndex.find(entity) != m_PenObjectToArrayIndex.end())
 			removeData(entity);

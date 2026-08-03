@@ -11,6 +11,9 @@ namespace Pengine::Components
 	class PenRenderer : public PenComponentBase
 	{
 	public:
+
+		constexpr static std::string_view ID = "PenRenderer";
+
 		PenRenderer();
 		PenRenderer(const PenRenderer& other) = default;
 		PenRenderer(PenRenderer&& other) = default;
