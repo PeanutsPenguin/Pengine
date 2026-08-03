@@ -10,7 +10,7 @@ namespace Pengine::Components
 		m_nextPenComponentType = 0;
 	}
 
-	void PenComponentsManager::entityDestroyed(PenObjectId entity)
+	void PenComponentsManager::entityDestroyed(PengineIds entity)
 	{
 		//Notify every component we destroyed an entity
 		for (auto const& pair : m_PenComponentsArrays)

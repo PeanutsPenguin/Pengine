@@ -26,6 +26,8 @@ namespace Pengine::Components
 	class PenCamera final: public PenComponentBase
 	{
 	public:
+		constexpr static std::string_view ID = "PenCamera";
+
 		PenCamera();
 		PenCamera(const PenCamera& other) = default;
 		PenCamera(PenCamera&& other) = default;

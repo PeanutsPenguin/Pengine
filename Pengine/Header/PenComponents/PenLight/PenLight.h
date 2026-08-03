@@ -8,6 +8,8 @@ namespace Pengine::Components
 	class PenLight final : public PenComponentBase
 	{
 	public:
+		constexpr static std::string_view ID = "PenLight";
+
 		PenLight() = default;
 		PenLight(const PenLightType type);
 		PenLight(const PenLight& other) = default;

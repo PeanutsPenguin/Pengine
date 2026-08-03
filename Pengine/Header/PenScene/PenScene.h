@@ -26,13 +26,13 @@ namespace Pengine
 		void							changeBackgroundColor(const PenColor& col);
 		_NODISCARD const PenColor&		getBackgroundColor() const;
 
-		void	removeObject(const PenObjectId obj);
-		void	addObject(const PenObjectId obj);
+		void	removeObject(const PengineIds obj);
+		void	addObject(const PengineIds obj);
 
-		_NODISCARD bool isObjectInScene(const PenObjectId obj);
+		_NODISCARD bool isObjectInScene(const PengineIds obj);
 
 	private :
-		std::set<PenObjectId> m_objects;
+		std::set<PengineIds> m_objects;
 		PenColor* m_backgroundColor;
 	};
 }

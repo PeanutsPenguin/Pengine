@@ -4,9 +4,10 @@
 
 
 //std
+#include <unordered_map>
 #include <queue>
 #include <array>
-
+#include <string>
 
 namespace Pengine
 {
@@ -21,19 +22,20 @@ namespace Pengine
 		PenObjectManager& operator=(const PenObjectManager& rhs) = default;
 		PenObjectManager& operator=(PenObjectManager&& rhs) = default;
 
-		/// <summary>
-		/// Create and Object an add it into the main scene
-		/// </summary>
-		/// <returns></returns>
-		PenObjectId		createPenObject();
-		void			destroyPenObject(PenObjectId id);
+		RawEntityId		createPenObject(const std::string& name);
+		void			destroyPenObject(RawEntityId id);
 
-		void					setSignature(PenObjectId id, PenComponentSignature sig);
-		PenComponentSignature	getSignature(PenObjectId id);
+		void					setSignature(RawEntityId id, PenComponentSignature sig);
+		PenComponentSignature	getSignature(RawEntityId id);
+
+		RawEntityId getEntityByName(PengineIds hashedName);
 
 	private:
-		std::queue<PenObjectId> m_validIds;								//Queue of valid ids
-		std::array<PenComponentSignature, g_maxEntity> m_compSig;		// Array of signatures where the index corresponds to the entity ID
-		uint32_t m_livingPenObject = 0;									// Total living entities - used to keep limits on how many exist
+		std::array<PenComponentSignature, g_maxEntity> m_signatures;
+		std::queue<RawEntityId> m_availableEntities;
+		std::unordered_map<PengineIds, RawEntityId> m_nameToEntityMap;
+		std::unordered_map<RawEntityId, std::string> m_debugNames;			//<- this should be for debug only
+
+		uint32_t m_livingPenObject = 0;
 	};
 }

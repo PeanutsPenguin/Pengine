@@ -13,7 +13,7 @@ using namespace Pengine::System;
 
 void PenCameraSystem::update(double dt)
 {
-	for (PenObjectId obj : this->m_PenObject)
+	for (PengineIds obj : this->m_PenObject)
 	{
 		Components::PenCamera& cam = PenCore::PenOctopus()->getComponent<Components::PenCamera>(obj);
 		Components::PenTransform& transform = PenCore::PenOctopus()->getComponent<Components::PenTransform>(obj);
@@ -27,12 +27,12 @@ void PenCameraSystem::update(double dt)
 	}
 }
 
-Pengine::PenObjectId PenCameraSystem::getMainCamera() const
+Pengine::PengineIds PenCameraSystem::getMainCamera() const
 {
 	return this->m_mainCamera;
 }
 
-void PenCameraSystem::setMainCamera(const PenObjectId cam)
+void PenCameraSystem::setMainCamera(const PengineIds cam)
 {
 	if (this->m_PenObject.contains(cam))
 		this->m_mainCamera = cam;

@@ -4,6 +4,7 @@
 #include "PenStructsAndEnum/PenComponentState.h"
 
 #include <iostream>
+#include <string_view>
 
 namespace Pengine
 {
@@ -30,14 +31,14 @@ namespace Pengine::Components
 
 		void SetState(PenComponentState state, bool enable = true);
 
-		const PenObjectId getPenObjectId() const;
+		const PengineIds getPenObjectId() const;
 
 		virtual void registerProperty(PenPropertyManager* manager) {};
 	
 	private:
-		void setPenObjectId(const PenObjectId id);
+		void setPenObjectId(const PengineIds id);
 
-		PenObjectId m_objId = g_PenObjectInvalidId;
+		PengineIds m_objId = g_PenObjectInvalidId;
 		std::bitset<8>	 m_flags = std::bitset<8>((size_t)PenComponentState::ENABLE);	//Bit operation to check component's specific state
 	};
 }	

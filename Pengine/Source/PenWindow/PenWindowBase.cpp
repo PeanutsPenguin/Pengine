@@ -57,7 +57,7 @@ void PenWindow::setWindowSize(const PenMath::Vector2& size, bool resizeWindow)
     if (!camPtr)
         return;
 
-    PenObjectId mainCam = camPtr->getMainCamera();
+    PengineIds mainCam = camPtr->getMainCamera();
 
     if (mainCam == g_PenObjectInvalidId)
         return;
@@ -82,7 +82,7 @@ void PenWindow::preRender(const PenColor& bgColor)
         this->m_renderSystem->preRender(bgColor);
 }
 
-void PenWindow::render(const PenObjectId camera)
+void PenWindow::render(const PengineIds camera)
 {
     if(this->m_renderSystem)
         this->m_renderSystem->render(camera);

@@ -22,7 +22,7 @@ namespace Pengine::Resources
 	{
 	public:
 		PenMaterial() = default;
-		PenMaterial(const PenObjectId id);
+		PenMaterial(const PengineIds id);
 		PenMaterial(const PenMaterial& other) = default;
 		PenMaterial(PenMaterial&& other) = default;
 		~PenMaterial() final;

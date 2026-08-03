@@ -8,6 +8,9 @@ namespace Pengine::Components
 	class PenTransform final : public PenComponentBase
 	{
 	public:
+
+		constexpr static std::string_view ID = "PenTransform";
+
 		PenTransform();
 		PenTransform(const PenTransform& other) = default;
 		PenTransform(PenTransform&& other) = default;
@@ -16,8 +19,8 @@ namespace Pengine::Components
 		PenTransform& operator=(const PenTransform& rhs) = default;
 		PenTransform& operator=(PenTransform&& rhs) = default;
 
-		const PenObjectId			getParent()				const;
-		void						setParent(const PenObjectId entity, bool keepPosition = true);
+		const PengineIds			getParent()				const;
+		void						setParent(const PengineIds entity, bool keepPosition = true);
 
 		PenMath::Transform			getGlobalTransform()	const;
 		void						setGlobalTransform(const PenMath::Transform& transform);
@@ -34,6 +37,6 @@ namespace Pengine::Components
 	private:
 		PenMath::Transform m_globalTransform;
 		PenMath::Transform m_localTransform;
-		PenObjectId m_parent;
+		PengineIds m_parent;
 	};
 }

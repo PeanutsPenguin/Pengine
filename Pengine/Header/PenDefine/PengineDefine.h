@@ -5,14 +5,14 @@
 
 namespace Pengine
 {
-#pragma region Ids
-	typedef unsigned __int32 PenObjectId;
+	#pragma region Ids
+	typedef unsigned __int32 PengineIds;
 
-	const PenObjectId g_maxEntity = 2048;
+	typedef unsigned __int32 RawEntityId;
 
-	const PenObjectId g_PenObjectInvalidId = 0;
+	const PengineIds g_maxEntity = 2048;
 
-	typedef unsigned __int32 PenComponentsId;
+	const PengineIds g_PenObjectInvalidId = 0;
 
 	using PenComponentType = std::uint8_t;
 
@@ -22,7 +22,8 @@ namespace Pengine
 	using PenComponentSignature = std::bitset<g_maxComponent>;
 
 	typedef unsigned __int32 PenResourcesId;
-#pragma endregion
+	#pragma endregion
 
-#define DRAW_LINE 0
+
+	#define DRAW_LINE 0
 }

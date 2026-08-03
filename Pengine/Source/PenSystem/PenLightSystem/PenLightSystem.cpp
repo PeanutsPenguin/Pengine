@@ -13,7 +13,7 @@ void PenLightSystem::renderUpdate(const std::shared_ptr<Resources::PenShaderProg
 {
 	uint16_t spotLightCount = 0, pointLightCount = 0;
 
-	for (PenObjectId obj : this->m_PenObject)
+	for (PengineIds obj : this->m_PenObject)
 	{
 		Components::PenLight& light = PenCore::PenOctopus()->getComponent<Components::PenLight>(obj);
 		Components::PenTransform& transComp = PenCore::PenOctopus()->getComponent<Components::PenTransform>(obj);

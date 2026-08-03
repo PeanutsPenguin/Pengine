@@ -36,7 +36,8 @@ namespace Pengine::ui::ImGuiWrapper
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
-		ImGui::DockSpaceOverViewport();
+		if(dockableWindow)
+			ImGui::DockSpaceOverViewport();
 	}
 
 	void endUIFrame()

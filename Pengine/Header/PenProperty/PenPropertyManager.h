@@ -21,14 +21,14 @@ namespace Pengine
 		PenPropertyManager& operator=(PenPropertyManager&& rhs) = default;
 
 		template<typename T>
-		void addProperty(PenObjectId id, const char* name, PenPropertyType type, T* data)
+		void addProperty(PengineIds id, const char* name, PenPropertyType type, T* data)
 		{
 			this->m_propertyArray[id].push_back(new PenProperty<T>(name, type, data));
 		}
 
-		std::vector<IPenProperty*>& getProperties(const PenObjectId id);
+		std::vector<IPenProperty*>& getProperties(const PengineIds id);
 
 	private:
-		std::unordered_map<PenObjectId, std::vector<IPenProperty*>> m_propertyArray;
+		std::unordered_map<PengineIds, std::vector<IPenProperty*>> m_propertyArray;
 	};
 }

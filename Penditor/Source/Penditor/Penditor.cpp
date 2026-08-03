@@ -30,7 +30,7 @@ std::unique_ptr<Window::PenConsoleWindow>		PenditorCore::m_PenConsoleWindow			= 
 
 void PenditorCore::init()
 {
-	Pengine::PenObjectId camObj = Pengine::PenCore::PenOctopus()->createPenObject();
+	Pengine::PengineIds camObj = Pengine::PenCore::PenOctopus()->createPenObject("PenditorCam");
 	Pengine::PenCore::PenOctopus()->addComponent(camObj, Pengine::Components::PenTransform());
 	Pengine::PenCore::PenOctopus()->addComponent(camObj, Pengine::Components::PenCamera());
 	m_PenGameWindow->setCamera(camObj);

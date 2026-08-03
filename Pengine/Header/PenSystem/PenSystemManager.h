@@ -28,11 +28,11 @@ namespace Pengine::System
 		template<typename T>
 		void setSignature(PenComponentSignature signature);
 
-		void PenObjectDestroyed(PenComponentsId entity);
-		void PenObjectSignatureChanged(PenObjectId entity, PenComponentSignature entitySignature);
+		void PenObjectDestroyed(PengineIds entity);
+		void PenObjectSignatureChanged(PengineIds entity, PenComponentSignature entitySignature);
 
-		void onEntityInserted(const PenObjectId newObj);
-		void onEntityDestroyed(const PenObjectId newObj);
+		void onEntityInserted(const PengineIds newObj);
+		void onEntityDestroyed(const PengineIds newObj);
 
 		void updateAllSystem(double dt);
 

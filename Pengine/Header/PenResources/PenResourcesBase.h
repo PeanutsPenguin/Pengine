@@ -13,7 +13,7 @@ namespace Pengine::Resources
 	{
 	public:
 		PenResourceBase() = default;
-		PenResourceBase(const PenObjectId& id) : m_id(id) {};
+		PenResourceBase(const PengineIds& id) : m_id(id) {};
 		PenResourceBase(const PenResourceBase& other) = default;
 		PenResourceBase(PenResourceBase&& other) = default;
 		virtual ~PenResourceBase() = default;
