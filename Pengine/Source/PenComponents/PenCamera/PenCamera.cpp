@@ -17,7 +17,7 @@ PenCamera::PenCamera()
 
 void PenCamera::registerProperty(PenPropertyManager* manager)
 {
-	PengineIds id = this->getPenObjectId();
+	PenObjectId id = this->getPenObjectId();
 	manager->addProperty(id, "Camera Component", E_COMPONENT, this);
 	manager->addProperty(id, "FOV", E_FLOAT, &this->m_values.fov);
 	manager->addProperty(id, "Near", E_FLOAT, &this->m_values.near);

@@ -45,7 +45,7 @@ std::shared_ptr<Pengine::PenLightBase> PenLight::getLight()
 
 void PenLight::registerProperty(PenPropertyManager* manager)
 {
-	PengineIds id = this->getPenObjectId();
+	PenObjectId id = this->getPenObjectId();
 	
 	switch (this->m_light->getType())
 	{

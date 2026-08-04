@@ -20,16 +20,24 @@ void PenVirtualWindow::render()
 /// <summary>
 /// Did this function for the picking not quite sure it'll work for every window
 /// </summary>
-/// <returns></returns>
+//Reworked this function like 14 times to get it working
 const PenMath::Vector2 PenVirtualWindow::getMousePosRelativeToWindow()
 {
-	PenMath::Vector2	contentSize = ImGuiWrapper::getContentSize(),
-						curorPos	= ImGuiWrapper::getCursorPos(),
-						mousePos	= PenCore::InputManager()->getMousePosition();	//glfw mouse pos
+	PenMath::Vector2	imMousePos = ImGuiWrapper::getMousePos(),
+						contentRegionMin = ImGuiWrapper::getContentRegionMin(),
+						windowpos = ImGuiWrapper::getWindowPos();
 
-	mousePos -= curorPos;
-	mousePos.y = contentSize.y - mousePos.y - 1;
-	return mousePos;
+	float viewportStartX = windowpos.x + contentRegionMin.x;
+	float viewportStartY = windowpos.y + contentRegionMin.y;
+
+	PenMath::Vector2 finalMousePos;
+	finalMousePos.x = imMousePos.x - viewportStartX;
+	finalMousePos.y = imMousePos.y - viewportStartY;
+
+	PenMath::Vector2 contentSize = ImGuiWrapper::getContentSize();
+	finalMousePos.y = contentSize.y - finalMousePos.y;
+
+	return finalMousePos;
 }
 
 void PenVirtualWindow::setViewportBackgroundColor(const Pengine::PenColor& col)

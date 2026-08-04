@@ -21,15 +21,15 @@ namespace Pengine::System
 		PenSystemBase& operator=(const PenSystemBase& rhs) = default;
 		PenSystemBase& operator=(PenSystemBase&& rhs) = default;
 
-		virtual void onEntityInserted(const PengineIds newObj) = 0;
-		virtual void onEntityDestroyed(const PengineIds obj) = 0;
+		virtual void onEntityInserted(const PenObjectId newObj) = 0;
+		virtual void onEntityDestroyed(const PenObjectId obj) = 0;
 
 		virtual void update(double dt) = 0;
 
-		const std::set<PengineIds>& getRegisteredObject() const { return this->m_PenObject; }
+		const std::set<PenObjectId>& getRegisteredObject() const { return this->m_PenObject; }
 
 	protected:
-		std::set<PengineIds> m_PenObject;
+		std::set<PenObjectId> m_PenObject;
 		PenComponentSignature m_signature;
 	};
 }

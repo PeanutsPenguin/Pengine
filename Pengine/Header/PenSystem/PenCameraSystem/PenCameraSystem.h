@@ -15,15 +15,15 @@ namespace Pengine::System
 		PenCameraSystem& operator=(const PenCameraSystem& rhs) = default;
 		PenCameraSystem& operator=(PenCameraSystem&& rhs) = default;
 
-		void onEntityInserted(const PengineIds newObj) final {};
-		void onEntityDestroyed(const PengineIds obj) final {};
+		void onEntityInserted(const PenObjectId newObj) final {};
+		void onEntityDestroyed(const PenObjectId obj) final {};
 
 		void update(double dt) final;
 
-		PengineIds getMainCamera() const;
-		void		setMainCamera(const PengineIds cam);
+		PenObjectId	getMainCamera() const;
+		void		setMainCamera(const PenObjectId cam);
 	
 	private:
-		PengineIds m_mainCamera;
+		PenObjectId m_mainCamera;
 	};
 }

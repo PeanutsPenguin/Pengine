@@ -51,9 +51,12 @@ namespace Penditor::Window
 	void PenPropertyWindow::changeRenderTypeToObject()
 	{
 		this->m_renderingType = PropertiesRenderingType::E_PENOBJECT;
-		const Pengine::PengineIds selectedObject = PenditorCore::PickingHandler()->getSelectedObject();
+		const Pengine::PenObjectId selectedObject = PenditorCore::PickingHandler()->getSelectedObject();
 
 		if (selectedObject == Pengine::g_PenObjectInvalidId)
+			return;
+
+		if (!Pengine::PenCore::PenOctopus()->containsComponent<Pengine::Components::PenTransform>(selectedObject))
 			return;
 
 		m_objectEuler = Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenTransform>(selectedObject).getGlobalTransform().rotation.getRotationEuler();
@@ -379,7 +382,7 @@ namespace Penditor::Window
 #pragma region Render Object
 	void PenPropertyWindow::renderSelectedObject()
 	{
-		const Pengine::PengineIds selectedObject = PenditorCore::PickingHandler()->getSelectedObject();
+		const Pengine::PenObjectId selectedObject = PenditorCore::PickingHandler()->getSelectedObject();
 
 		if (selectedObject == Pengine::g_PenObjectInvalidId)
 			return;

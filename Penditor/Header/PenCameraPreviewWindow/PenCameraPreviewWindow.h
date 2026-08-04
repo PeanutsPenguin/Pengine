@@ -58,8 +58,8 @@ namespace Penditor::Window
 		void preRender();
 		void renderCalls() final;
 
-		void												setCamera(const Pengine::PengineIds id);
-		const Pengine::PengineIds							getCamera();
+		void												setCamera(const Pengine::PenObjectId id);
+		const Pengine::PenObjectId							getCamera();
 		std::shared_ptr<Pengine::System::PenRendererSystem> getRenderSystem();
 
 	private:
@@ -71,7 +71,7 @@ namespace Penditor::Window
 		PenMath::Vector2 m_size = { 600, 400 };
 		PenMath::Vector2 m_prevSize;
 		Pengine::Buffer::PenFrameBuffer* m_frameBuffer;
-		Pengine::PengineIds m_camera;
+		Pengine::PenObjectId m_camera;
 		bool m_hasResized;
 	};
 }

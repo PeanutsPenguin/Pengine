@@ -22,12 +22,12 @@ namespace Penditor
 		PenFreeCam& operator=(const PenFreeCam& rhs) = default;
 		PenFreeCam& operator=(PenFreeCam&& rhs) = default;
 
-		void							setCamObject(const Pengine::PengineIds id);
+		void							setCamObject(const Pengine::PenObjectId id);
 		void							setAspect(float aspect);
 		
 		void							setSpeed(float speed);
 		float							getSpeed() const;
-		const Pengine::PengineIds		getCamera() const;
+		const Pengine::PenObjectId		getCamera() const;
 
 		void update(double dt);
 
@@ -36,7 +36,7 @@ namespace Penditor
 
 		void handleCameraRotation(PenMath::Transform& trans, Pengine::Components::PenCamera& cam);
 
-		Pengine::PengineIds m_camObject = Pengine::g_PenObjectInvalidId;
+		Pengine::PenObjectId m_camObject = Pengine::g_PenObjectInvalidId;
 		float m_speed = 100;
 		float m_sensitivity = .2f;
 	};

@@ -77,6 +77,12 @@ namespace Pengine::ui::ImGuiWrapper
 		return { (int)size.x, (int)size.y };
 	}
 
+	PenMath::Vector2 getCursorScreenPos()
+	{
+		ImVec2 pos = ImGui::GetCursorScreenPos();
+		return { (int)pos.x, (int)pos.y };
+	}
+
 	PenMath::Vector2 getPadding()
 	{
 		ImVec2 pad = ImGui::GetCurrentWindow()->WindowPadding;
@@ -92,6 +98,18 @@ namespace Pengine::ui::ImGuiWrapper
 	PenMath::Vector2 getWindowPos()
 	{
 		ImVec2 pos = ImGui::GetWindowPos();
+		return { (int)pos.x, (int)pos.y };
+	}
+
+	PenMath::Vector2 getContentRegionMin()
+	{
+		ImVec2 pos = ImGui::GetWindowContentRegionMin();
+		return { (int)pos.x, (int)pos.y };
+	}
+
+	PenMath::Vector2 getMousePos()
+	{
+		ImVec2 pos = ImGui::GetMousePos();
 		return { (int)pos.x, (int)pos.y };
 	}
 

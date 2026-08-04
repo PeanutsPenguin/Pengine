@@ -34,6 +34,9 @@ namespace Pengine::ui::ImGuiWrapper
 	PenMath::Vector2	getPadding();
 	PenMath::Vector2	getCursorPos();
 	PenMath::Vector2	getWindowPos();
+	PenMath::Vector2	getCursorScreenPos();
+	PenMath::Vector2	getMousePos();
+	PenMath::Vector2	getContentRegionMin();
 
 	float				getFrameHeight();
 	float				getTextWidth(const char* text);

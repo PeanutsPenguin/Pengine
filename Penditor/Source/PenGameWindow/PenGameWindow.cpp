@@ -63,7 +63,7 @@ namespace Penditor::Window
 		this->m_cameraPreview->init();
 	}
 
-	void PenGameWindow::setRenderingSceneCamera(Pengine::PengineIds camID)
+	void PenGameWindow::setRenderingSceneCamera(Pengine::PenObjectId camID)
 	{
 		if (camID == Pengine::g_PenObjectInvalidId)
 			return;
@@ -78,12 +78,12 @@ namespace Penditor::Window
 		this->m_cameraPreview->setCamera(Pengine::g_PenObjectInvalidId);
 	}
 
-	void PenGameWindow::setCamera(const Pengine::PengineIds id)
+	void PenGameWindow::setCamera(const Pengine::PenObjectId id)
 	{
 		this->m_camera->setCamObject(id);
 	}
 
-	const Pengine::PengineIds PenGameWindow::getCamera()
+	const Pengine::PenObjectId PenGameWindow::getCamera()
 	{
 		return this->m_camera->getCamera();
 	}
@@ -180,9 +180,9 @@ namespace Penditor::Window
 
 	void PenGameWindow::customRenderObject()
 	{
-		const std::set<Pengine::PengineIds>& renderObject = Pengine::PenCore::PenOctopus()->getSystem<Pengine::System::PenTransformSystem>()->getRegisteredObject();
+		const std::set<Pengine::PenObjectId>& renderObject = Pengine::PenCore::PenOctopus()->getSystem<Pengine::System::PenTransformSystem>()->getRegisteredObject();
 
-		for (Pengine::PengineIds objId : renderObject)
+		for (Pengine::PenObjectId objId : renderObject)
 		{
 			if (objId == this->m_camera->getCamera())
 				continue;
@@ -264,7 +264,7 @@ namespace Penditor::Window
 
 	bool PenGameWindow::activateCamera(std::shared_ptr<Pengine::Resources::PenShaderProgram> prog)
 	{
-		Pengine::PengineIds renderCam = m_camera->getCamera();
+		Pengine::PenObjectId renderCam = m_camera->getCamera();
 
 		if (renderCam == Pengine::g_PenObjectInvalidId)
 		{

@@ -15,7 +15,7 @@ PenTransform::PenTransform()
 
 void PenTransform::registerProperty(PenPropertyManager* manager)
 {
-	PengineIds id = this->getPenObjectId();
+	PenObjectId id = this->getPenObjectId();
 	manager->addProperty(id, "Transform Component", E_COMPONENT, this);
 	manager->addProperty(id, "Position", E_VEC3, &this->m_globalTransform.position);
 	manager->addProperty(id, "Rotation", E_QUATERNION, &this->m_globalTransform.rotation);
@@ -34,7 +34,7 @@ PenMath::Transform PenTransform::getLocalTransform() const
 	return this->m_localTransform;
 }
 
-const Pengine::PengineIds PenTransform::getParent() const
+const Pengine::PenObjectId PenTransform::getParent() const
 {
 	return m_parent;
 }
@@ -57,7 +57,7 @@ void PenTransform::setGlobalTransform(const PenMath::Transform& transform)
 	this->SetState(PenComponentState::DIRTY);
 }
 
-void PenTransform::setParent(const PengineIds entity, bool keepPosition)
+void PenTransform::setParent(const PenObjectId entity, bool keepPosition)
 {
 	std::shared_ptr<System::PenTransformSystem> transform_system = PenCore::PenOctopus()->getSystem<System::PenTransformSystem>();
 

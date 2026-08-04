@@ -17,11 +17,11 @@ namespace Pengine::System
 		PenRendererSystem& operator=(PenRendererSystem&& rhs) = default;
 
 		void preRender(const PenColor& col);
-		void render(const PengineIds camera);
+		void render(const PenObjectId camera);
 		void postRender();
 
-		void onEntityInserted(const PengineIds newObj) override {};
-		void onEntityDestroyed(const PengineIds obj) override {};
+		void onEntityInserted(const PenObjectId newObj) override {};
+		void onEntityDestroyed(const PenObjectId obj) override {};
 
 		void update(double dt) override {};
 	};

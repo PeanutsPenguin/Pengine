@@ -21,7 +21,7 @@
 
 using namespace Pengine::Resources;
 
-PenModel::PenModel(const PengineIds& id) : PenResourceBase(id)
+PenModel::PenModel(const PenObjectId& id) : PenResourceBase(id)
 {
 	this->p_type = E_MODEL;
 }

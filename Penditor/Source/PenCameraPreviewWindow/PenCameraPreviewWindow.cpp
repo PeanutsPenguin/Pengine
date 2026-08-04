@@ -48,12 +48,12 @@ namespace Penditor::Window
 		this->m_renderSystem = Pengine::PenCore::PenOctopus()->getSystem<Pengine::System::PenRendererSystem>();
 	}
 
-	void PenCameraPreviewWindow::setCamera(const Pengine::PengineIds id)
+	void PenCameraPreviewWindow::setCamera(const Pengine::PenObjectId id)
 	{
 		this->m_camera = id;
 	}
 
-	const Pengine::PengineIds PenCameraPreviewWindow::getCamera()
+	const Pengine::PenObjectId PenCameraPreviewWindow::getCamera()
 	{
 		return this->m_camera;
 	}

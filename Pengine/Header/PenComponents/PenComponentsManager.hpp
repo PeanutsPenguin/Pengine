@@ -14,7 +14,7 @@ namespace Pengine::Components
 	template<typename T>
 	inline void PenComponentsManager::registerComponent()
 	{
-		PengineIds typeId = HashString(T::ID);
+		PenHashedId typeId = HashString(T::ID);
 
 		if (m_PenComponentsType.find(typeId) != m_PenComponentsType.end())
 		{
@@ -31,7 +31,7 @@ namespace Pengine::Components
 	template<typename T>
 	inline PenComponentType PenComponentsManager::getComponentType()
 	{
-		PengineIds typeId = HashString(T::ID);
+		PenHashedId typeId = HashString(T::ID);
 
 		if (m_PenComponentsType.find(typeId) == m_PenComponentsType.end())
 		{
@@ -43,25 +43,25 @@ namespace Pengine::Components
 	}
 
 	template<typename T>
-	inline T& PenComponentsManager::addComponent(PengineIds entity, T component)
+	inline T& PenComponentsManager::addComponent(PenObjectId entity, T component)
 	{
 		return getComponentArray<T>()->insertData(entity, component);
 	}
 
 	template<typename T>
-	inline void PenComponentsManager::removeComponent(PengineIds entity)
+	inline void PenComponentsManager::removeComponent(PenObjectId entity)
 	{
 		getComponentArray<T>()->removeData(entity);
 	}
 
 	template<typename T>
-	inline T& PenComponentsManager::getComponent(PengineIds entity)
+	inline T& PenComponentsManager::getComponent(PenObjectId entity)
 	{
 		return getComponentArray<T>()->getData(entity);
 	}
 
 	template<typename T>
-	inline bool PenComponentsManager::containsComponent(PengineIds entity)
+	inline bool PenComponentsManager::containsComponent(PenObjectId entity)
 	{
 		return getComponentArray<T>()->contains(entity);
 	}
@@ -69,7 +69,7 @@ namespace Pengine::Components
 	template<typename T>
 	inline std::shared_ptr<ComponentArray<T>> PenComponentsManager::getComponentArray()
 	{
-		PengineIds typeId = HashString(T::ID);
+		PenHashedId typeId = HashString(T::ID);
 
 		if (m_PenComponentsType.find(typeId) == m_PenComponentsType.end())
 		{
