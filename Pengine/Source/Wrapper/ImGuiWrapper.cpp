@@ -8,6 +8,9 @@
 
 #include <iostream>
 
+#include "PenCore/PenCore.h"
+#include "PenLogManager/PenLogManager.h"
+
 namespace Pengine::ui::ImGuiWrapper
 {
 	bool initLib(Pengine::Window::WindowWrapper* window)
@@ -250,6 +253,11 @@ namespace Pengine::ui::ImGuiWrapper
 		return ImGui::Checkbox(name, value);
 	}
 
+	bool renderInvisibleButton(const char* label, const PenMath::Vector2& size)
+	{
+		return ImGui::InvisibleButton(label, { (float)size.x, (float)size.y });
+	}
+
 	void renderText(const char* value)
 	{
 		ImGui::Text(value);
@@ -276,23 +284,28 @@ namespace Pengine::ui::ImGuiWrapper
 		switch(data->type)
 		{
 		case Resources::PenResourceType::E_MATERIAL:
-			payload = MAT_ID;
+			payload = MAT_DROP_ID;
 			break;
 		case Resources::PenResourceType::E_MODEL:
-			payload = MODEL_ID;
+			payload = MODEL_DROP_ID;
 			break;
 		case Resources::PenResourceType::E_SHADER:
-			payload = SHADER_ID;
+			payload = SHADER_DROP_ID;
 			break;
 		case Resources::PenResourceType::E_SHADER_PROGRAM:
-			payload = SHADER_PROG_ID;
+			payload = SHADER_PROG_DROP_ID;
 			break;
 		case Resources::PenResourceType::E_TEXTURE:
-			payload = TEXTURE_ID;
+			payload = TEXTURE_DROP_ID;
 			break;
 		}
 
 		ImGui::SetDragDropPayload(payload, data, sizeof(DragAndDropData));
+	}
+
+	void fillDragAndDropData(Pengine::PenObjectId* data)
+	{
+		ImGui::SetDragDropPayload(PENOBJECT_DROP_ID, data, sizeof(PenObjectId));
 	}
 
 	void endDragAndDropSource()
@@ -398,6 +411,16 @@ namespace Pengine::ui::ImGuiWrapper
 			return nullptr;
 
 		return (const Pengine::DragAndDropData*)payload->Data;
+	}
+
+	const Pengine::PenObjectId* getDroppedData(const char* type, PenObjectId receptionnistID)
+	{
+		const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(type);
+
+		if (payload == nullptr)
+			return nullptr;
+
+		return (const Pengine::PenObjectId*)payload->Data;
 	}
 	#pragma endregion
 }

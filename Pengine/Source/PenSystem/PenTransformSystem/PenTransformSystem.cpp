@@ -92,7 +92,12 @@ void PenTransformSystem::reparent(const PenObjectId obj, const PenObjectId oldPa
 	if (this->m_children[oldParent].find(obj) == this->m_children[oldParent].end() || oldParent == g_PenObjectInvalidId)
 		PenCore::LogManager()->LogWarning("No old Parent detected", __FILE__, __LINE__);
 	else
+	{
 		m_children[oldParent].erase(obj);
+
+		if (m_children[oldParent].size() == 0)
+			m_children.erase(oldParent);
+	}
 
 	//If new parent exist
 	if (newParent != g_PenObjectInvalidId)

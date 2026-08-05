@@ -64,7 +64,8 @@ namespace Penditor::Window
 
 	private:
 		void renderScene();
-		void customRenderObject();
+		void customRenderScene();
+		void customRenderObject(Pengine::PenObjectId id);
 		bool activateShaderAndLight(std::shared_ptr<Pengine::Resources::PenShaderProgram> prog);
 		bool activateCamera(std::shared_ptr<Pengine::Resources::PenShaderProgram> prog);
 

@@ -142,6 +142,11 @@ void PenUIManager::fillDragAndDropData(DragAndDropData* data)
 	ImGuiWrapper::fillDragAndDropData(data);
 }
 
+void PenUIManager::fillDragAndDropData(PenObjectId* data)
+{
+	ImGuiWrapper::fillDragAndDropData(data);
+}
+
 void PenUIManager::endDragAndDropSource()
 {
 	ImGuiWrapper::endDragAndDropSource();
@@ -282,9 +287,18 @@ bool PenUIManager::renderSelectable(const char* label, bool selected)
 	return ImGuiWrapper::renderSelectable(label, selected);
 }
 
+bool PenUIManager::renderInvisibleButton(const char* name, const PenMath::Vector2& size)
+{
+	return ImGuiWrapper::renderInvisibleButton(name, size);
+}
 
 const Pengine::DragAndDropData* PenUIManager::getDroppedData(const char* type)
 {
 	return ImGuiWrapper::getDroppedData(type);
+}
+
+const Pengine::PenObjectId* PenUIManager::getDroppedData(const char* type, PenObjectId receiptionnistID)
+{
+	return ImGuiWrapper::getDroppedData(type, receiptionnistID);
 }
 

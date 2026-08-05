@@ -1,5 +1,7 @@
 #pragma once 
 
+#include "PenDefine/PengineDefine.h"
+
 #include "Vector/Vector2/Vector2.h"
 #include "Vector/Vector3/Vector3.h"
 #include "PenColor/PenColor.h"
@@ -79,6 +81,7 @@ namespace Pengine::ui
 		void				renderCenterText(const char* value);
 		void				renderSeperator();
 		void				fillDragAndDropData(Pengine::DragAndDropData* data);
+		void				fillDragAndDropData(Pengine::PenObjectId* data);
 		void				endDragAndDropSource();
 		void				endDragAndDropTarget();
 		void				endChildWindow();
@@ -95,7 +98,9 @@ namespace Pengine::ui
 		bool				renderFloat(const char* label, float* value);
 		bool				renderSelectable(const char* label, bool selected);
 		bool				renderBool(bool* value, const char* name);
+		bool				renderInvisibleButton(const char* label, const PenMath::Vector2& size);
 
 		const Pengine::DragAndDropData* getDroppedData(const char* type);
+		const Pengine::PenObjectId*		getDroppedData(const char* type, Pengine::PenObjectId receptionnistID);
 	};
 }

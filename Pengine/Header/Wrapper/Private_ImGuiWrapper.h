@@ -1,5 +1,7 @@
 #pragma once 
 
+#include "PenDefine/PengineDefine.h"
+
 #include "Vector/Vector2/Vector2.h"
 #include "Vector/Vector3/Vector3.h"
 
@@ -77,6 +79,7 @@ namespace Pengine::ui::ImGuiWrapper
 	void	renderCenterText(const char* value);
 	void	renderSeperator();
 	void	fillDragAndDropData(Pengine::DragAndDropData* data);
+	void	fillDragAndDropData(Pengine::PenObjectId* id);
 	void	endDragAndDropSource();
 	void	endDragAndDropTarget();
 	void	endChildWindow();
@@ -93,6 +96,8 @@ namespace Pengine::ui::ImGuiWrapper
 	bool	renderFloat(const char* label, float* value);
 	bool	renderSelectable(const char* label, bool selected);
 	bool	renderBool(bool* value, const char* name);
+	bool	renderInvisibleButton(const char* name, const PenMath::Vector2& size);
 
 	const Pengine::DragAndDropData* getDroppedData(const char* type);
+	const Pengine::PenObjectId* getDroppedData(const char* type, PenObjectId receptionnistID);
 }

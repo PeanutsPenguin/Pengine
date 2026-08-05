@@ -154,7 +154,7 @@ namespace Penditor::Window
 
 		if(manager->beginDragAndDropTarget())
 		{
-			const Pengine::DragAndDropData* droppedData = manager->getDroppedData(TEXTURE_ID);
+			const Pengine::DragAndDropData* droppedData = manager->getDroppedData(TEXTURE_DROP_ID);
 
 			if(droppedData != nullptr)
 			{
@@ -198,7 +198,7 @@ namespace Penditor::Window
 
 		if (manager->beginDragAndDropTarget())
 		{
-			const Pengine::DragAndDropData* droppedData = manager->getDroppedData(TEXTURE_ID);
+			const Pengine::DragAndDropData* droppedData = manager->getDroppedData(TEXTURE_DROP_ID);
 
 			if (droppedData != nullptr)
 			{
@@ -244,7 +244,7 @@ namespace Penditor::Window
 
 		if (manager->beginDragAndDropTarget())
 		{
-			const Pengine::DragAndDropData* droppedData = manager->getDroppedData(TEXTURE_ID);
+			const Pengine::DragAndDropData* droppedData = manager->getDroppedData(TEXTURE_DROP_ID);
 
 			if (droppedData != nullptr)
 			{
@@ -290,7 +290,7 @@ namespace Penditor::Window
 
 		if (manager->beginDragAndDropTarget())
 		{
-			const Pengine::DragAndDropData* droppedData = manager->getDroppedData(TEXTURE_ID);
+			const Pengine::DragAndDropData* droppedData = manager->getDroppedData(TEXTURE_DROP_ID);
 
 			if (droppedData != nullptr)
 			{
@@ -336,7 +336,7 @@ namespace Penditor::Window
 
 		if (manager->beginDragAndDropTarget())
 		{
-			const Pengine::DragAndDropData* droppedData = manager->getDroppedData(TEXTURE_ID);
+			const Pengine::DragAndDropData* droppedData = manager->getDroppedData(TEXTURE_DROP_ID);
 
 			if (droppedData != nullptr)
 			{
@@ -534,7 +534,7 @@ namespace Penditor::Window
 
 		if (manager->beginDragAndDropTarget())
 		{
-			const Pengine::DragAndDropData* droppedData = manager->getDroppedData(MAT_ID);
+			const Pengine::DragAndDropData* droppedData = manager->getDroppedData(MAT_DROP_ID);
 
 			if (droppedData != nullptr)
 			{
@@ -589,7 +589,7 @@ namespace Penditor::Window
 
 		if (manager->beginDragAndDropTarget())
 		{
-			const Pengine::DragAndDropData* droppedData = manager->getDroppedData(MODEL_ID);
+			const Pengine::DragAndDropData* droppedData = manager->getDroppedData(MODEL_DROP_ID);
 
 			if (droppedData != nullptr)
 			{

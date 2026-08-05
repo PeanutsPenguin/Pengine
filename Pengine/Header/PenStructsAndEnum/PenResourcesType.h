@@ -13,9 +13,9 @@ namespace Pengine::Resources
 		E_NONE
 	};
 
-#define MAT_ID "MATERIAL"
-#define MODEL_ID "MODEL"
-#define SHADER_ID "SHADER"
-#define SHADER_PROG_ID "SHADER_PROG"
-#define TEXTURE_ID "TEXTURE"
+#define MAT_DROP_ID "MATERIAL"
+#define MODEL_DROP_ID "MODEL"
+#define SHADER_DROP_ID "SHADER"
+#define SHADER_PROG_DROP_ID "SHADER_PROG"
+#define TEXTURE_DROP_ID "TEXTURE"
 }

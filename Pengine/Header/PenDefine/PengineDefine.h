@@ -24,6 +24,7 @@ namespace Pengine
 	typedef unsigned __int32 PenResourcesId;
 	#pragma endregion
 
-
 	#define DRAW_LINE 0
+
+	#define PENOBJECT_DROP_ID "PenObject"
 }

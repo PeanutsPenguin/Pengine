@@ -171,73 +171,78 @@ namespace Penditor::Window
 		if(this->m_renderSystem)
 		{
 			this->m_renderSystem->preRender(Pengine::PenCore::PenOctopus()->getMainScene()->getBackgroundColor());
-			this->customRenderObject();
+			this->customRenderScene();
 			this->m_renderSystem->postRender();
 		}
 
 		this->m_frameBuffer->unbind();
 	}
 
-	void PenGameWindow::customRenderObject()
+	void PenGameWindow::customRenderScene()
 	{
 		std::shared_ptr<Pengine::System::PenTransformSystem> transformSystem = Pengine::PenCore::PenOctopus()->getSystem<Pengine::System::PenTransformSystem>();
 		std::set<Pengine::PenObjectId> renderObject = transformSystem->getRegisteredObject();
 
 		for (Pengine::PenObjectId objId : renderObject)
 		{
-			if (objId == this->m_camera->getCamera())
-				continue;
+			this->customRenderObject(objId);
 
-			Pengine::Components::PenTransform& transComp = Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenTransform>(objId);
-			std::shared_ptr<Pengine::Resources::PenShaderProgram>	prog = nullptr;
-			std::shared_ptr<Pengine::Resources::PenMaterial>		mat = nullptr;
-			bool hasRenderComponent = Pengine::PenCore::PenOctopus()->containsComponent<Pengine::Components::PenRenderer>(objId);
-			
-			if (hasRenderComponent)
-			{
-				Pengine::Components::PenRenderer& renderComp = Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenRenderer>(objId);
-
-				if (!renderComp.IsState(Pengine::Components::PenComponentState::ENABLE))
-					continue;
-
-				mat  = renderComp.getMaterial();
-				prog = mat->getShaderProg();
-			}
-			else
-			{
-				mat  = Pengine::Resources::PenMaterial::defaultMaterial();
-				prog = Pengine::Resources::PenShaderProgram::defaultShaderProgram();
-			}
-				
-			if (!this->activateShaderAndLight(prog))
-				continue;
-
-			if (!this->activateCamera(prog))
-				continue;
-
-			PenMath::Mat4 model = transComp.getGlobalTransform().toMatrix();
-			prog->setUniform("model", model);
-
-			if (!mat || !mat->isLoaded())
-				return;
-
-			mat->shaderActivation();
-
-			if (hasRenderComponent)
-				Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenRenderer>(objId).render();
-			else
-			{
-				std::shared_ptr< Pengine::Resources::PenModel> ptr = Pengine::Resources::PenModel::defaultModel();
-
-				if(ptr && ptr->isLoaded())
-					ptr->render();
-			}
-
-			if(transformSystem->hasChild(objId))
+			if (transformSystem->hasChild(objId))
 			{
 				for (auto child : transformSystem->getChilds(objId))
-					renderObject.insert(child);
+					this->customRenderObject(child);
 			}
+		}
+	}
+
+	void PenGameWindow::customRenderObject(Pengine::PenObjectId id)
+	{
+		if (id == this->m_camera->getCamera())
+			return;
+
+		Pengine::Components::PenTransform& transComp = Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenTransform>(id);
+		std::shared_ptr<Pengine::Resources::PenShaderProgram>	prog = nullptr;
+		std::shared_ptr<Pengine::Resources::PenMaterial>		mat = nullptr;
+		bool hasRenderComponent = Pengine::PenCore::PenOctopus()->containsComponent<Pengine::Components::PenRenderer>(id);
+
+		if (hasRenderComponent)
+		{
+			Pengine::Components::PenRenderer& renderComp = Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenRenderer>(id);
+
+			if (!renderComp.IsState(Pengine::Components::PenComponentState::ENABLE))
+				return;
+
+			mat = renderComp.getMaterial();
+			prog = mat->getShaderProg();
+		}
+		else
+		{
+			mat = Pengine::Resources::PenMaterial::defaultMaterial();
+			prog = Pengine::Resources::PenShaderProgram::defaultShaderProgram();
+		}
+
+		if (!this->activateShaderAndLight(prog))
+			return;
+
+		if (!this->activateCamera(prog))
+			return;
+
+		PenMath::Mat4 model = transComp.getGlobalTransform().toMatrix();
+		prog->setUniform("model", model);
+
+		if (!mat || !mat->isLoaded())
+			return;
+
+		mat->shaderActivation();
+
+		if (hasRenderComponent)
+			Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenRenderer>(id).render();
+		else
+		{
+			std::shared_ptr< Pengine::Resources::PenModel> ptr = Pengine::Resources::PenModel::defaultModel();
+
+			if (ptr && ptr->isLoaded())
+				ptr->render();
 		}
 	}
 

@@ -8,6 +8,8 @@
 
 #include "PenSystem/PenTransformSystem/PenTransformSystem.h"
 
+#include "PenComponents/PenTransform/PenTransform.h"
+
 #include "Penditor/Penditor.h"
 #include "PickingHandler/PickingHandler.h"
 #include "PenGameWindow/PenGameWindow.h"
@@ -27,6 +29,7 @@ namespace Penditor::Window
 		this->renderSceneValue();
 		manager->renderSeperator();
 		this->buildSceneTree();
+		this->renderDropZone();
 	}
 
 	void PenHierarachyWindow::renderSceneValue()
@@ -77,18 +80,32 @@ namespace Penditor::Window
 		if(!hasChild)
 			flags |= Pengine::ui::PenTreeNodeFlags::E_LEAF | Pengine::ui::PenTreeNodeFlags::E_NO_TREE_PUSH;
 
-		std::string name = Pengine::PenCore::PenOctopus()->getNameById(obj);
+		std::string name = Pengine::PenCore::PenOctopus()->getNameById(obj) + "##" + std::to_string(obj);
 
 		bool opened = manager->renderTreeNode(name.c_str(), (Pengine::ui::PenTreeNodeFlags)flags);
 
 		if (manager->beginDragAndDropSource())
 		{
+			Pengine::PenObjectId objId = obj;
+			manager->fillDragAndDropData(&objId);
+			manager->renderText(name.c_str());
 			manager->endDragAndDropSource();
 		}
+		
 		else if (manager->isItemHovered() && Pengine::PenCore::InputManager()->isKeyReleased(Pengine::PenInput::key_MOUSE_LEFT))
 		{
 			if (!manager->isMouseDragPastTreshold())
 				PenditorCore::PickingHandler()->setSelectedObject(obj);
+		}
+
+		if (manager->beginDragAndDropTarget())
+		{
+			const Pengine::PenObjectId* droppedData = manager->getDroppedData(PENOBJECT_DROP_ID, obj);
+
+			if(droppedData)
+				transformSystem->reparent(*droppedData, Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenTransform>(*droppedData).getParent(), obj);
+			
+			manager->endDragAndDropTarget();
 		}
 
 		if (hasChild && opened)
@@ -97,6 +114,28 @@ namespace Penditor::Window
 				this->renderPenObjectNode(childs, obj);
 			
 			manager->popTree();
+		}
+	}
+
+	void PenHierarachyWindow::renderDropZone()
+	{
+		Pengine::ui::PenUIManager* manager = Pengine::PenCore::UIManager().get();
+
+		PenMath::Vector2 leftSize = manager->getContentSize();
+
+		if (leftSize.y <= 0)
+			return;
+
+		manager->renderInvisibleButton("##HierarchyInvisibleButton", leftSize);
+
+		if (manager->beginDragAndDropTarget())
+		{
+			const Pengine::PenObjectId* droppedData = manager->getDroppedData(PENOBJECT_DROP_ID, Pengine::g_PenObjectInvalidId);
+
+			if (droppedData)
+				Pengine::PenCore::PenOctopus()->getSystem<Pengine::System::PenTransformSystem>()->reparent(*droppedData, Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenTransform>(*droppedData).getParent(), Pengine::g_PenObjectInvalidId);
+
+			manager->endDragAndDropTarget();
 		}
 	}
 }

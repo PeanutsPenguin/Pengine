@@ -31,6 +31,8 @@ namespace Penditor::Window
 
 		void renderPenObjectNode(Pengine::PenObjectId obj, Pengine::PenObjectId parent);
 
+		void renderDropZone();
+
 		const char* m_sceneName = "Scene";
 	};
 }
