@@ -39,7 +39,7 @@ void PenTransformSystem::update(double dt)
 			if (parent != g_PenObjectInvalidId) 
 			{
 				Components::PenTransform& ptransform = PenCore::PenOctopus()->getComponent<Components::PenTransform>(parent);
-				result = ptransform.getGlobalTransform().combine(transform.getLocalTransform());
+				result = transform.getLocalTransform().combine(ptransform.getGlobalTransform());
 			}
 
 			transform.setGlobalTransform(result);
@@ -80,12 +80,7 @@ void PenTransformSystem::removeRoot(const PenObjectId obj)
 	this->m_PenObject.erase(obj);
 }
 
-void PenTransformSystem::addChild(const PenObjectId obj, const PenObjectId parent)
-{
-	this->m_children[parent].insert(obj);
-}
-
-void PenTransformSystem::reparentChild(const PenObjectId obj, const PenObjectId oldParent, const PenObjectId newParent, bool keepPosition)
+void PenTransformSystem::reparent(const PenObjectId obj, const PenObjectId oldParent, const PenObjectId newParent, bool keepPosition)
 {
 	if(oldParent == newParent)
 	{
@@ -95,11 +90,7 @@ void PenTransformSystem::reparentChild(const PenObjectId obj, const PenObjectId 
 
 	//If old parent doesn't exist
 	if (this->m_children[oldParent].find(obj) == this->m_children[oldParent].end() || oldParent == g_PenObjectInvalidId)
-	{
-		this->removeRoot(obj);
-		PenCore::LogManager()->LogWarning("Invalid old parent, deleting objects", __FILE__, __LINE__);
-		return;
-	}
+		PenCore::LogManager()->LogWarning("No old Parent detected", __FILE__, __LINE__);
 	else
 		m_children[oldParent].erase(obj);
 
@@ -108,12 +99,19 @@ void PenTransformSystem::reparentChild(const PenObjectId obj, const PenObjectId 
 	{
 		//If new Parent is in the root array
 		if(this->m_PenObject.count(newParent))
+		{
 			m_children[newParent].insert(obj);
+			m_PenObject.erase(obj);
+		}
 		else
 		{
 			m_PenObject.insert(newParent);
+			m_PenObject.erase(obj);
 			this->m_children[newParent].insert(obj);
 		}
+
+		Components::PenTransform& transform = PenCore::PenOctopus()->getComponent<Components::PenTransform>(obj);
+		transform.setParent(newParent);
 	}
 	else 
 		m_PenObject.insert(obj);
@@ -151,4 +149,20 @@ void PenTransformSystem::onEntityDestroyed(const PenObjectId obj)
 		this->removeRoot(obj);
 	else
 		this->m_children[parent].erase(obj);
+}
+
+bool PenTransformSystem::hasChild(Pengine::PenObjectId id)
+{
+	if (this->m_children.find(id) == this->m_children.end())
+		return false;
+
+	return true;
+}
+
+const std::set<Pengine::PenObjectId>& PenTransformSystem::getChilds(Pengine::PenObjectId id)
+{
+	if (this->m_children.find(id) == this->m_children.end())
+		PenCore::LogManager()->LogError("Entity : " + std::to_string(id) + "has no childrens", __FILE__, __LINE__);
+
+	return this->m_children[id];
 }

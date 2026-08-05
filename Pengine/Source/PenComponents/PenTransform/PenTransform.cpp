@@ -59,11 +59,6 @@ void PenTransform::setGlobalTransform(const PenMath::Transform& transform)
 
 void PenTransform::setParent(const PenObjectId entity, bool keepPosition)
 {
-	std::shared_ptr<System::PenTransformSystem> transform_system = PenCore::PenOctopus()->getSystem<System::PenTransformSystem>();
-
-	if (transform_system)
-		transform_system->reparentChild(this->m_parent, entity, this->getPenObjectId());
-
 	this->m_parent = entity;
 
 	if (keepPosition && entity != g_PenObjectInvalidId)

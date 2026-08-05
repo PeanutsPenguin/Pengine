@@ -47,6 +47,12 @@ PenObjectId PenOctopus::getPenObjectByName(PenHashedId hashedName)
 {
 	return this->m_PenObjectManager->getEntityByName(hashedName);
 }
+
+std::string PenOctopus::getNameById(PenObjectId id)
+{
+	return this->m_PenObjectManager->getNameById(id);
+}
+
 #pragma endregion
 
 #pragma region PenSystem
@@ -67,7 +73,7 @@ void PenOctopus::addToScene(const PenObjectId obj)
 void PenOctopus::removeFromScene(const PenObjectId obj)
 {
 	this->m_mainScene->removeObject(obj);
-	this->m_PenSystemManager->onEntityInserted(obj);
+	this->m_PenSystemManager->onEntityDestroyed(obj);
 	this->m_PenSystemManager->PenObjectDestroyed(obj);
 }
 

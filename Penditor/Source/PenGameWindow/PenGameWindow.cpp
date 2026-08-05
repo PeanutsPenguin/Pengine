@@ -180,13 +180,13 @@ namespace Penditor::Window
 
 	void PenGameWindow::customRenderObject()
 	{
-		const std::set<Pengine::PenObjectId>& renderObject = Pengine::PenCore::PenOctopus()->getSystem<Pengine::System::PenTransformSystem>()->getRegisteredObject();
+		std::shared_ptr<Pengine::System::PenTransformSystem> transformSystem = Pengine::PenCore::PenOctopus()->getSystem<Pengine::System::PenTransformSystem>();
+		std::set<Pengine::PenObjectId> renderObject = transformSystem->getRegisteredObject();
 
 		for (Pengine::PenObjectId objId : renderObject)
 		{
 			if (objId == this->m_camera->getCamera())
 				continue;
-
 
 			Pengine::Components::PenTransform& transComp = Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenTransform>(objId);
 			std::shared_ptr<Pengine::Resources::PenShaderProgram>	prog = nullptr;
@@ -231,6 +231,12 @@ namespace Penditor::Window
 
 				if(ptr && ptr->isLoaded())
 					ptr->render();
+			}
+
+			if(transformSystem->hasChild(objId))
+			{
+				for (auto child : transformSystem->getChilds(objId))
+					renderObject.insert(child);
 			}
 		}
 	}

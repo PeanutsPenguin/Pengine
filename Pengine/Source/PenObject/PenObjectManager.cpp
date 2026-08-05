@@ -87,3 +87,16 @@ PenObjectId PenObjectManager::getEntityByName(PenHashedId hashedName)
 		return g_PenObjectInvalidId;
 	}
 }
+
+std::string PenObjectManager::getNameById(PenObjectId id)
+{
+	auto it = m_debugNames.find(id);
+
+	if (it != m_debugNames.end())
+		return it->second;
+	else
+	{
+		PenCore::LogManager()->LogWarning("Entity with id " + std::to_string(id) + " does not exist.", __FILE__, __LINE__);
+		return "Invalid";
+	}
+}

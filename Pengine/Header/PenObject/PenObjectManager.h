@@ -29,6 +29,7 @@ namespace Pengine
 		PenComponentSignature	getSignature(PenObjectId id);
 
 		PenObjectId getEntityByName(PenHashedId hashedName);
+		std::string getNameById(PenObjectId id);
 
 	private:
 		std::array<PenComponentSignature, g_maxEntity> m_signatures;

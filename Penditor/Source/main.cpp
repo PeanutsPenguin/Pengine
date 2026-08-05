@@ -28,6 +28,7 @@
 
 //System
 #include "PenSystem/PenCameraSystem/PenCameraSystem.h"
+#include "PenSystem/PenTransformSystem/PenTransformSystem.h"
 
 #include "PenLight/PenPointLight.h"
 #include "PenLight/PenSpotLight.h"
@@ -75,6 +76,20 @@ int main()
 
 			Pengine::PenCore::PenOctopus()->addToScene(newObj);
 	#pragma endregion
+
+#pragma region Create second object
+			Pengine::PenObjectId childOfBackPack = Pengine::PenCore::PenOctopus()->createPenObject("ChildrenOfBackPack");
+
+			//Transform
+			Pengine::Components::PenTransform childTransComp = Pengine::Components::PenTransform();
+			PenMath::Transform childTrans;
+			childTrans.position = { 100, 0, 0 };
+			childTransComp.setGlobalTransform(childTrans);
+			Pengine::PenCore::PenOctopus()->addComponent(childOfBackPack, childTransComp);
+			Pengine::PenCore::PenOctopus()->addToScene(childOfBackPack);
+
+			Pengine::PenCore::PenOctopus()->getSystem<Pengine::System::PenTransformSystem>()->reparent(childOfBackPack, childTransComp.getParent(), newObj);
+#pragma endregion
 
 	#pragma region Create second object
 			Pengine::PenObjectId seconNewObj = Pengine::PenCore::PenOctopus()->createPenObject("MainLight");

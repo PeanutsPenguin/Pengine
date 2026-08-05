@@ -37,6 +37,6 @@ namespace Pengine::Components
 	private:
 		PenMath::Transform m_globalTransform;
 		PenMath::Transform m_localTransform;
-		PenObjectId m_parent;
+		PenObjectId m_parent = g_PenObjectInvalidId;
 	};
 }

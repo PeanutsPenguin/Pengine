@@ -20,13 +20,15 @@ namespace Pengine::System
 		void update(double dt) final;
 
 		void addRoot(const PenObjectId obj);
-		void addChild(const PenObjectId obj, const PenObjectId parent);
 		void removeRoot(const PenObjectId obj);
 
-		void reparentChild(const PenObjectId obj, const PenObjectId oldParent, const PenObjectId newParent, bool keepPosition = true);
+		void reparent(const PenObjectId obj, const PenObjectId oldParent, const PenObjectId newParent, bool keepPosition = true);
 
 		void onEntityInserted(const PenObjectId newObj) final;
 		void onEntityDestroyed(const PenObjectId obj) final;
+
+		bool hasChild(PenObjectId id);
+		const std::set<PenObjectId>& getChilds(PenObjectId id);
 
 	private:
 		std::unordered_map<PenObjectId, std::set<PenObjectId>> m_children;

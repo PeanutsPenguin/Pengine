@@ -28,6 +28,12 @@ namespace Penditor
 		return this->m_selectedObject;
 	}
 
+	void PickingHandler::setSelectedObject(Pengine::PenObjectId id)
+	{
+		this->m_selectedObject = id;
+		Penditor::PenditorCore::PropertyWindow()->changeRenderTypeToObject();
+	}
+
 	void PickingHandler::init()
 	{
 		this->m_pickingShader = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenShaderProgram>("Shaders/Picking/PickingProg.penfile");

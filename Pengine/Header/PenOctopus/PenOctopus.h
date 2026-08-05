@@ -32,6 +32,7 @@ namespace Pengine
 		void			destroyPenObject(PenObjectId obj);
 
 		PenObjectId 	getPenObjectByName(PenHashedId hashedName);
+		std::string		getNameById(PenObjectId id);
 
 		//Component related
 		template<typename T>

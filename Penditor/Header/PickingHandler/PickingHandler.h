@@ -38,6 +38,8 @@ namespace Penditor
 
 		Pengine::PenObjectId getSelectedObject();
 
+		void setSelectedObject(Pengine::PenObjectId id);
+
 		void update(std::shared_ptr<Pengine::System::PenRendererSystem> renderer);
 
 	private:
