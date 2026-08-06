@@ -28,22 +28,28 @@ namespace Pengine
 		void init();
 		void destroy();
 
-		PengineIds		createPenObject(const std::string& name);
-		void			destroyPenObject(PengineIds obj);
+		PenObjectId		createPenObject(const std::string& name);
+		PenObjectId		createPenObjectWithTransform(const std::string& name);
+		void			destroyPenObject(PenObjectId obj);
 
-		PengineIds 	getPenObjectByName(PengineIds hashedName);
+		PenObjectId 	getPenObjectByName(PenHashedId hashedName);
+		std::string		getNameById(PenObjectId id);
+
+		bool			isNameExisting(const std::string& name);
+
+		void			setEntityName(PenObjectId id, const std::string& name);
 
 		//Component related
 		template<typename T>
 		void				registerComponent();
 		template<typename T>
-		void				addComponent(PengineIds obj, T component);
+		void				addComponent(PenObjectId obj, T component);
 		template<typename T>
-		void				removeComponent(PengineIds obj);
+		void				removeComponent(PenObjectId obj);
 		template<typename T>
-		T&					getComponent(PengineIds obj);
+		T&					getComponent(PenObjectId obj);
 		template<typename T>
-		bool				containsComponent(PengineIds obj);
+		bool				containsComponent(PenObjectId obj);
 		template<typename T>
 		PenComponentType	getComponentType();
 
@@ -57,12 +63,12 @@ namespace Pengine
 		void									updateAllSystem(double dt);
 
 		//Scene related
-		void							addToScene(const PengineIds obj);
-		void							removeFromScene(const PengineIds obj);
+		void							addToScene(const PenObjectId obj);
+		void							removeFromScene(const PenObjectId obj);
 		std::unique_ptr<PenScene>&		getMainScene();
 
 		//Property related
-		std::vector<IPenProperty*>&				getProperty(const PengineIds id);
+		std::vector<IPenProperty*>&				getProperty(const PenObjectId id);
 		std::unique_ptr<PenPropertyManager>&	PropertyManager();
 
 	private:

@@ -20,23 +20,23 @@ namespace Pengine::Components
 		PenComponentType getComponentType();
 
 		template<typename T>
-		T& addComponent(PengineIds entity, T component);
+		T& addComponent(PenObjectId entity, T component);
 
 		template<typename T>
-		void removeComponent(PengineIds entity);
+		void removeComponent(PenObjectId entity);
 
 		template<typename T>
-		T& getComponent(PengineIds entity);
+		T& getComponent(PenObjectId entity);
 
 		template<typename T>
-		bool containsComponent(PengineIds entity);
+		bool containsComponent(PenObjectId entity);
 
-		void entityDestroyed(PengineIds entity);
+		void entityDestroyed(PenObjectId entity);
 
 #pragma region Private
 	private:
-		std::unordered_map<PengineIds, PenComponentType> m_PenComponentsType{};						//Map to handle const char* to specific component type 
-		std::unordered_map<PengineIds, std::shared_ptr<IPenComponentArray>> m_PenComponentsArrays{};	//Map from const char* to a component array
+		std::unordered_map<PenHashedId, PenComponentType> m_PenComponentsType{};							//Map to handle const char* to specific component type 
+		std::unordered_map<PenObjectId, std::shared_ptr<IPenComponentArray>> m_PenComponentsArrays{};	//Map from const char* to a component array
 		PenComponentType m_nextPenComponentType{};														//Keep track of wich components need to be registered or not - starting at 0
 
 		template<typename T>

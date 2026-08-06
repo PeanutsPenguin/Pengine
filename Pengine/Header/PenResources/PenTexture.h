@@ -14,7 +14,7 @@ namespace Pengine::Resources
 	{
 	public:
 		PenTexture();
-		PenTexture(const PengineIds& id);
+		PenTexture(const PenObjectId& id);
 		PenTexture(const PenTexture& other) = default;
 		PenTexture(PenTexture&& other) = default;
 		~PenTexture() final;

@@ -22,19 +22,24 @@ namespace Pengine
 		PenObjectManager& operator=(const PenObjectManager& rhs) = default;
 		PenObjectManager& operator=(PenObjectManager&& rhs) = default;
 
-		RawEntityId		createPenObject(const std::string& name);
-		void			destroyPenObject(RawEntityId id);
+		PenObjectId		createPenObject(const std::string& name);
+		void			destroyPenObject(PenObjectId id);
 
-		void					setSignature(RawEntityId id, PenComponentSignature sig);
-		PenComponentSignature	getSignature(RawEntityId id);
+		void					setSignature(PenObjectId id, PenComponentSignature sig);
+		PenComponentSignature	getSignature(PenObjectId id);
 
-		RawEntityId getEntityByName(PengineIds hashedName);
+		PenObjectId getEntityByName(PenHashedId hashedName);
+		std::string getNameById(PenObjectId id);
+
+		bool isNameExisting(const std::string& name);
+
+		void setEntityName(PenObjectId id, const std::string& name);
 
 	private:
 		std::array<PenComponentSignature, g_maxEntity> m_signatures;
-		std::queue<RawEntityId> m_availableEntities;
-		std::unordered_map<PengineIds, RawEntityId> m_nameToEntityMap;
-		std::unordered_map<RawEntityId, std::string> m_debugNames;			//<- this should be for debug only
+		std::queue<PenObjectId> m_availableEntities;
+		std::unordered_map<PenHashedId, PenObjectId> m_nameToEntityMap;
+		std::unordered_map<PenObjectId, std::string> m_debugNames;			//<- this should be for debug only
 
 		uint32_t m_livingPenObject = 0;
 	};

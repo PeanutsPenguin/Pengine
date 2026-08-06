@@ -1,5 +1,7 @@
 #pragma once 
 
+#include "PenDefine/PengineDefine.h"
+
 #include "Vector/Vector2/Vector2.h"
 #include "Vector/Vector3/Vector3.h"
 #include "PenColor/PenColor.h"
@@ -51,6 +53,7 @@ namespace Pengine::ui
 		void				setNextWindowPos(const PenMath::Vector2& pos);
 		void				setNextWindowSize(const PenMath::Vector2& size);
 		void				setScrollCursorY(float y);
+		void				setKeyboardFocus();
 
 		void				addImageToDrawList(unsigned int id, const PenMath::Vector2& topLeft, const PenMath::Vector2& bottomRight);
 
@@ -61,6 +64,8 @@ namespace Pengine::ui
 		bool				beginDragAndDropSource();
 		bool				beginDragAndDropTarget();
 		bool				beginChildWindow(const char* name, const PenMath::Vector2& size, PenVirtualWindowFlags flags);
+		bool				beginPopUpMenu();
+		bool				menuItem(const char* label);
 
 		void				removeInputFocus();
 
@@ -72,16 +77,18 @@ namespace Pengine::ui
 		void				popTree();
 		void				popStyleColor();
 
-		void				renderOnSameLine(float spacing = 0);
+		void				renderOnSameLine(float Xoffset = 0, float spacing = -1.f);
 		void				renderImage(int textureID, const PenMath::Vector2& size);
 		void				renderCenterImage(int textureID, const PenMath::Vector2& size);
 		void				renderText(const char* value);
 		void				renderCenterText(const char* value);
 		void				renderSeperator();
 		void				fillDragAndDropData(Pengine::DragAndDropData* data);
+		void				fillDragAndDropData(Pengine::PenObjectId* data);
 		void				endDragAndDropSource();
 		void				endDragAndDropTarget();
 		void				endChildWindow();
+		void				endPopUp();
 
 		bool				renderVector3(PenMath::Vector3& vec, const char* name);		//Vec3 int
 		bool				renderVector3(PenMath::Vector3f& vec, const char* name);	//Vec3 float
@@ -95,7 +102,10 @@ namespace Pengine::ui
 		bool				renderFloat(const char* label, float* value);
 		bool				renderSelectable(const char* label, bool selected);
 		bool				renderBool(bool* value, const char* name);
+		bool				renderInvisibleButton(const char* label, const PenMath::Vector2& size);
+		bool				renderInputBox(const char* id, const char* hint, std::string& outStr);
 
 		const Pengine::DragAndDropData* getDroppedData(const char* type);
+		const Pengine::PenObjectId*		getDroppedData(const char* type, Pengine::PenObjectId receptionnistID);
 	};
 }

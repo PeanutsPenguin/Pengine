@@ -63,7 +63,7 @@ namespace Penditor::Window
 		this->m_cameraPreview->init();
 	}
 
-	void PenGameWindow::setRenderingSceneCamera(Pengine::PengineIds camID)
+	void PenGameWindow::setRenderingSceneCamera(Pengine::PenObjectId camID)
 	{
 		if (camID == Pengine::g_PenObjectInvalidId)
 			return;
@@ -78,12 +78,12 @@ namespace Penditor::Window
 		this->m_cameraPreview->setCamera(Pengine::g_PenObjectInvalidId);
 	}
 
-	void PenGameWindow::setCamera(const Pengine::PengineIds id)
+	void PenGameWindow::setCamera(const Pengine::PenObjectId id)
 	{
 		this->m_camera->setCamObject(id);
 	}
 
-	const Pengine::PengineIds PenGameWindow::getCamera()
+	const Pengine::PenObjectId PenGameWindow::getCamera()
 	{
 		return this->m_camera->getCamera();
 	}
@@ -171,67 +171,78 @@ namespace Penditor::Window
 		if(this->m_renderSystem)
 		{
 			this->m_renderSystem->preRender(Pengine::PenCore::PenOctopus()->getMainScene()->getBackgroundColor());
-			this->customRenderObject();
+			this->customRenderScene();
 			this->m_renderSystem->postRender();
 		}
 
 		this->m_frameBuffer->unbind();
 	}
 
-	void PenGameWindow::customRenderObject()
+	void PenGameWindow::customRenderScene()
 	{
-		const std::set<Pengine::PengineIds>& renderObject = Pengine::PenCore::PenOctopus()->getSystem<Pengine::System::PenTransformSystem>()->getRegisteredObject();
+		std::shared_ptr<Pengine::System::PenTransformSystem> transformSystem = Pengine::PenCore::PenOctopus()->getSystem<Pengine::System::PenTransformSystem>();
+		std::set<Pengine::PenObjectId> renderObject = transformSystem->getRegisteredObject();
 
-		for (Pengine::PengineIds objId : renderObject)
+		for (Pengine::PenObjectId objId : renderObject)
 		{
-			if (objId == this->m_camera->getCamera())
-				continue;
+			this->customRenderObject(objId);
 
-
-			Pengine::Components::PenTransform& transComp = Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenTransform>(objId);
-			std::shared_ptr<Pengine::Resources::PenShaderProgram>	prog = nullptr;
-			std::shared_ptr<Pengine::Resources::PenMaterial>		mat = nullptr;
-			bool hasRenderComponent = Pengine::PenCore::PenOctopus()->containsComponent<Pengine::Components::PenRenderer>(objId);
-			
-			if (hasRenderComponent)
+			if (transformSystem->hasChild(objId))
 			{
-				Pengine::Components::PenRenderer& renderComp = Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenRenderer>(objId);
-
-				if (!renderComp.IsState(Pengine::Components::PenComponentState::ENABLE))
-					continue;
-
-				mat  = renderComp.getMaterial();
-				prog = mat->getShaderProg();
+				for (auto child : transformSystem->getChilds(objId))
+					this->customRenderObject(child);
 			}
-			else
-			{
-				mat  = Pengine::Resources::PenMaterial::defaultMaterial();
-				prog = Pengine::Resources::PenShaderProgram::defaultShaderProgram();
-			}
-				
-			if (!this->activateShaderAndLight(prog))
-				continue;
+		}
+	}
 
-			if (!this->activateCamera(prog))
-				continue;
+	void PenGameWindow::customRenderObject(Pengine::PenObjectId id)
+	{
+		if (id == this->m_camera->getCamera())
+			return;
 
-			PenMath::Mat4 model = transComp.getGlobalTransform().toMatrix();
-			prog->setUniform("model", model);
+		Pengine::Components::PenTransform& transComp = Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenTransform>(id);
+		std::shared_ptr<Pengine::Resources::PenShaderProgram>	prog = nullptr;
+		std::shared_ptr<Pengine::Resources::PenMaterial>		mat = nullptr;
+		bool hasRenderComponent = Pengine::PenCore::PenOctopus()->containsComponent<Pengine::Components::PenRenderer>(id);
 
-			if (!mat || !mat->isLoaded())
+		if (hasRenderComponent)
+		{
+			Pengine::Components::PenRenderer& renderComp = Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenRenderer>(id);
+
+			if (!renderComp.IsState(Pengine::Components::PenComponentState::ENABLE))
 				return;
 
-			mat->shaderActivation();
+			mat = renderComp.getMaterial();
+			prog = mat->getShaderProg();
+		}
+		else
+		{
+			mat = Pengine::Resources::PenMaterial::defaultMaterial();
+			prog = Pengine::Resources::PenShaderProgram::defaultShaderProgram();
+		}
 
-			if (hasRenderComponent)
-				Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenRenderer>(objId).render();
-			else
-			{
-				std::shared_ptr< Pengine::Resources::PenModel> ptr = Pengine::Resources::PenModel::defaultModel();
+		if (!this->activateShaderAndLight(prog))
+			return;
 
-				if(ptr && ptr->isLoaded())
-					ptr->render();
-			}
+		if (!this->activateCamera(prog))
+			return;
+
+		PenMath::Mat4 model = transComp.getGlobalTransform().toMatrix();
+		prog->setUniform("model", model);
+
+		if (!mat || !mat->isLoaded())
+			return;
+
+		mat->shaderActivation();
+
+		if (hasRenderComponent)
+			Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenRenderer>(id).render();
+		else
+		{
+			std::shared_ptr< Pengine::Resources::PenModel> ptr = Pengine::Resources::PenModel::defaultModel();
+
+			if (ptr && ptr->isLoaded())
+				ptr->render();
 		}
 	}
 
@@ -264,7 +275,7 @@ namespace Penditor::Window
 
 	bool PenGameWindow::activateCamera(std::shared_ptr<Pengine::Resources::PenShaderProgram> prog)
 	{
-		Pengine::PengineIds renderCam = m_camera->getCamera();
+		Pengine::PenObjectId renderCam = m_camera->getCamera();
 
 		if (renderCam == Pengine::g_PenObjectInvalidId)
 		{

@@ -12,7 +12,7 @@ namespace Pengine
     constexpr uint32_t FNV_PRIME = 0x01000193;
     constexpr uint32_t FNV_OFFSET_BASIS = 0x811C9DC5;
 
-    constexpr PengineIds HashString(std::string_view str)
+    constexpr PenHashedId HashString(std::string_view str)
     {
 		uint32_t hash = FNV_OFFSET_BASIS;
 		for (char c : str)

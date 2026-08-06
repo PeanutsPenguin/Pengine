@@ -31,17 +31,17 @@ const PenColor& Pengine::PenScene::getBackgroundColor() const
 	return *this->m_backgroundColor;
 }
 
-void PenScene::removeObject(const PengineIds obj)
+void PenScene::removeObject(const PenObjectId obj)
 {
 	this->m_objects.erase(obj);
 }
 
-void PenScene::addObject(const PengineIds obj)
+void PenScene::addObject(const PenObjectId obj)
 {
 	this->m_objects.insert(obj);
 }
 
-bool PenScene::isObjectInScene(const PengineIds obj)
+bool PenScene::isObjectInScene(const PenObjectId obj)
 {
 	return this->m_objects.count(obj);
 }

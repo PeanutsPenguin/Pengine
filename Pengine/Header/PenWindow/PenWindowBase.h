@@ -41,7 +41,7 @@ namespace Pengine::Window
 		bool init(const char* name, const PenMath::Vector2& size);
 
 		void preRender(const PenColor& bgColor);
-		void render(const PengineIds cam = g_PenObjectInvalidId);
+		void render(const PenObjectId cam = g_PenObjectInvalidId);
 		void postRender();
 		void switchFrame();
 

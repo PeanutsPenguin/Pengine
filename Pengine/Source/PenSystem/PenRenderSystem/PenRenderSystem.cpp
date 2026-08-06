@@ -34,9 +34,9 @@ void PenRendererSystem::preRender(const PenColor& color)
 	GLFWWrapper::preRender(color);
 }
 
-void PenRendererSystem::render(const PengineIds camera)
+void PenRendererSystem::render(const PenObjectId camera)
 {
-	for (PengineIds objId : m_PenObject)
+	for (PenObjectId objId : m_PenObject)
 	{
 		Components::PenRenderer& renderComp = PenCore::PenOctopus()->getComponent<Components::PenRenderer>(objId);
 		Components::PenTransform& transComp = PenCore::PenOctopus()->getComponent<Components::PenTransform>(objId);
@@ -62,7 +62,7 @@ void PenRendererSystem::render(const PengineIds camera)
 
 			lightSystem->renderUpdate(prog);
 
-			PengineIds renderCam = camera;
+			PenObjectId renderCam = camera;
 
 			if (renderCam == g_PenObjectInvalidId)
 			{

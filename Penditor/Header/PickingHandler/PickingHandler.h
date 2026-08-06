@@ -36,7 +36,9 @@ namespace Penditor
 
 		void init();
 
-		Pengine::PengineIds getSelectedObject();
+		Pengine::PenObjectId getSelectedObject();
+
+		void setSelectedObject(Pengine::PenObjectId id);
 
 		void update(std::shared_ptr<Pengine::System::PenRendererSystem> renderer);
 
@@ -45,13 +47,13 @@ namespace Penditor
 
 		void renderPicking(std::shared_ptr<Pengine::System::PenRendererSystem> renderer);
 
-		void renderObject(const Pengine::PengineIds obj, std::shared_ptr<Pengine::System::PenRendererSystem> renderer, const PenMath::Mat4& viewProj);
+		void renderObject(const Pengine::PenObjectId obj, std::shared_ptr<Pengine::System::PenRendererSystem> renderer, const PenMath::Mat4& viewProj);
 
-		const Pengine::PenColor idToColor(const Pengine::PengineIds obj);
+		const Pengine::PenColor idToColor(const Pengine::PenObjectId obj);	
 
-		Pengine::PengineIds colorToId(std::array<unsigned char, 4> col);
+		Pengine::PenObjectId colorToId(std::array<unsigned char, 4> col);
 
 		std::shared_ptr<Pengine::Resources::PenShaderProgram> m_pickingShader;
-		Pengine::PengineIds m_selectedObject = Pengine::g_PenObjectInvalidId;
+		Pengine::PenObjectId m_selectedObject = Pengine::g_PenObjectInvalidId;
 	};
 }

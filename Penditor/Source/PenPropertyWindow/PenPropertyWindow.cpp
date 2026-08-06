@@ -51,9 +51,12 @@ namespace Penditor::Window
 	void PenPropertyWindow::changeRenderTypeToObject()
 	{
 		this->m_renderingType = PropertiesRenderingType::E_PENOBJECT;
-		const Pengine::PengineIds selectedObject = PenditorCore::PickingHandler()->getSelectedObject();
+		const Pengine::PenObjectId selectedObject = PenditorCore::PickingHandler()->getSelectedObject();
 
 		if (selectedObject == Pengine::g_PenObjectInvalidId)
+			return;
+
+		if (!Pengine::PenCore::PenOctopus()->containsComponent<Pengine::Components::PenTransform>(selectedObject))
 			return;
 
 		m_objectEuler = Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenTransform>(selectedObject).getGlobalTransform().rotation.getRotationEuler();
@@ -151,7 +154,7 @@ namespace Penditor::Window
 
 		if(manager->beginDragAndDropTarget())
 		{
-			const Pengine::DragAndDropData* droppedData = manager->getDroppedData(TEXTURE_ID);
+			const Pengine::DragAndDropData* droppedData = manager->getDroppedData(TEXTURE_DROP_ID);
 
 			if(droppedData != nullptr)
 			{
@@ -195,7 +198,7 @@ namespace Penditor::Window
 
 		if (manager->beginDragAndDropTarget())
 		{
-			const Pengine::DragAndDropData* droppedData = manager->getDroppedData(TEXTURE_ID);
+			const Pengine::DragAndDropData* droppedData = manager->getDroppedData(TEXTURE_DROP_ID);
 
 			if (droppedData != nullptr)
 			{
@@ -241,7 +244,7 @@ namespace Penditor::Window
 
 		if (manager->beginDragAndDropTarget())
 		{
-			const Pengine::DragAndDropData* droppedData = manager->getDroppedData(TEXTURE_ID);
+			const Pengine::DragAndDropData* droppedData = manager->getDroppedData(TEXTURE_DROP_ID);
 
 			if (droppedData != nullptr)
 			{
@@ -287,7 +290,7 @@ namespace Penditor::Window
 
 		if (manager->beginDragAndDropTarget())
 		{
-			const Pengine::DragAndDropData* droppedData = manager->getDroppedData(TEXTURE_ID);
+			const Pengine::DragAndDropData* droppedData = manager->getDroppedData(TEXTURE_DROP_ID);
 
 			if (droppedData != nullptr)
 			{
@@ -333,7 +336,7 @@ namespace Penditor::Window
 
 		if (manager->beginDragAndDropTarget())
 		{
-			const Pengine::DragAndDropData* droppedData = manager->getDroppedData(TEXTURE_ID);
+			const Pengine::DragAndDropData* droppedData = manager->getDroppedData(TEXTURE_DROP_ID);
 
 			if (droppedData != nullptr)
 			{
@@ -379,7 +382,7 @@ namespace Penditor::Window
 #pragma region Render Object
 	void PenPropertyWindow::renderSelectedObject()
 	{
-		const Pengine::PengineIds selectedObject = PenditorCore::PickingHandler()->getSelectedObject();
+		const Pengine::PenObjectId selectedObject = PenditorCore::PickingHandler()->getSelectedObject();
 
 		if (selectedObject == Pengine::g_PenObjectInvalidId)
 			return;
@@ -531,7 +534,7 @@ namespace Penditor::Window
 
 		if (manager->beginDragAndDropTarget())
 		{
-			const Pengine::DragAndDropData* droppedData = manager->getDroppedData(MAT_ID);
+			const Pengine::DragAndDropData* droppedData = manager->getDroppedData(MAT_DROP_ID);
 
 			if (droppedData != nullptr)
 			{
@@ -586,7 +589,7 @@ namespace Penditor::Window
 
 		if (manager->beginDragAndDropTarget())
 		{
-			const Pengine::DragAndDropData* droppedData = manager->getDroppedData(MODEL_ID);
+			const Pengine::DragAndDropData* droppedData = manager->getDroppedData(MODEL_DROP_ID);
 
 			if (droppedData != nullptr)
 			{

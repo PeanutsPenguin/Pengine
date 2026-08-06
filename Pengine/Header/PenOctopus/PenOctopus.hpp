@@ -12,7 +12,7 @@ namespace Pengine
 	}
 
 	template<typename T>
-	inline void PenOctopus::addComponent(PengineIds obj, T component)
+	inline void PenOctopus::addComponent(PenObjectId obj, T component)
 	{
 		T& newComp = this->m_PenComponentManager->addComponent<T>(obj, component);
 
@@ -27,7 +27,7 @@ namespace Pengine
 	}
 
 	template<typename T>
-	inline void PenOctopus::removeComponent(PengineIds obj)
+	inline void PenOctopus::removeComponent(PenObjectId obj)
 	{
 		PenComponentSignature signature = m_PenObjectManager->getSignature(obj);
 		signature.set(m_PenComponentManager->getComponentType<T>(), false);
@@ -40,13 +40,13 @@ namespace Pengine
 	}
 
 	template<typename T>
-	inline T& PenOctopus::getComponent(PengineIds obj)
+	inline T& PenOctopus::getComponent(PenObjectId obj)
 	{
 		return m_PenComponentManager->getComponent<T>(obj);
 	}
 
 	template<typename T>
-	inline bool PenOctopus::containsComponent(PengineIds obj)
+	inline bool PenOctopus::containsComponent(PenObjectId obj)
 	{
 		return m_PenComponentManager->containsComponent<T>(obj);
 	}

@@ -14,6 +14,7 @@ namespace Penditor
 		class PenPropertyWindow;
 		class PenFileExplorerWindow;
 		class PenConsoleWindow;
+		class PenHierarachyWindow;
 	}
 }
 
@@ -40,6 +41,7 @@ namespace Penditor
 		static std::unique_ptr<PickingHandler>&					PickingHandler();
 		static std::unique_ptr<Window::PenConsoleWindow>&		ConsoleWindow();
 		static std::unique_ptr<Penditor::PenSavior>&			SaveSystem();
+		static std::unique_ptr<Window::PenHierarachyWindow>&	HierarchyWindow();
 
 	private:
 		static void update();
@@ -54,6 +56,7 @@ namespace Penditor
 		static std::unique_ptr<Penditor::PickingHandler>		m_pickingHandler;
 		static std::unique_ptr<Penditor::PenSavior>				m_PenSavior;
 		static std::unique_ptr<Window::PenConsoleWindow>		m_PenConsoleWindow;
+		static std::unique_ptr<Window::PenHierarachyWindow>		m_PenHierarchyWindow;
 		static bool m_shouldStop;
 	};
 }

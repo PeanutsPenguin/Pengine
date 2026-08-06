@@ -17,6 +17,7 @@
 #include "PickingHandler/PickingHandler.h"
 #include "PenSaveSystem/PenSaveSystem.h"
 #include "PenConsoleWindow/PenConsoleWindow.h"
+#include "PenHierarchyWindow/PenHierarchyWindow.h"
 
 using namespace Penditor;
 
@@ -27,10 +28,11 @@ std::unique_ptr<Window::PenFileExplorerWindow>	PenditorCore::m_PenFileExplorerWi
 std::unique_ptr<Penditor::PickingHandler>		PenditorCore::m_pickingHandler				= std::make_unique<Penditor::PickingHandler>();
 std::unique_ptr<Penditor::PenSavior>			PenditorCore::m_PenSavior					= std::make_unique<Penditor::PenSavior>();
 std::unique_ptr<Window::PenConsoleWindow>		PenditorCore::m_PenConsoleWindow			= std::make_unique<Window::PenConsoleWindow>("PenConsole", Pengine::ui::PenVirtualWindowFlags::NO_COLLAPSE);
+std::unique_ptr<Window::PenHierarachyWindow>	PenditorCore::m_PenHierarchyWindow			= std::make_unique<Window::PenHierarachyWindow>("PenHierarchy");
 
 void PenditorCore::init()
 {
-	Pengine::PengineIds camObj = Pengine::PenCore::PenOctopus()->createPenObject("PenditorCam");
+	Pengine::PenObjectId camObj = Pengine::PenCore::PenOctopus()->createPenObject("PenditorCam");
 	Pengine::PenCore::PenOctopus()->addComponent(camObj, Pengine::Components::PenTransform());
 	Pengine::PenCore::PenOctopus()->addComponent(camObj, Pengine::Components::PenCamera());
 	m_PenGameWindow->setCamera(camObj);
@@ -79,6 +81,7 @@ void PenditorCore::render()
 	m_PenGameWindow->render();
 	m_PenPropertyWindow->render();
 	m_PenConsoleWindow->render();
+	m_PenHierarchyWindow->render();
 
 	Pengine::PenCore::UIManager()->endFrame();
 }
@@ -134,6 +137,11 @@ void PenditorCore::destroy()
 		m_PenConsoleWindow = nullptr;
 	}
 
+	if (m_PenHierarchyWindow)
+	{
+		m_PenHierarchyWindow.reset();
+		m_PenHierarchyWindow = nullptr;
+	}
 
 	Pengine::PenCore::destroy();
 }
@@ -166,4 +174,9 @@ std::unique_ptr<Window::PenConsoleWindow>& PenditorCore::ConsoleWindow()
 std::unique_ptr<Window::PenFileExplorerWindow>& PenditorCore::FileExplorerWindow()
 {
 	return m_PenFileExplorerWindow;
+}
+
+std::unique_ptr<Window::PenHierarachyWindow>& PenditorCore::HierarchyWindow()
+{
+	return m_PenHierarchyWindow;
 }

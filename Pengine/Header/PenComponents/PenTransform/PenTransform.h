@@ -19,8 +19,8 @@ namespace Pengine::Components
 		PenTransform& operator=(const PenTransform& rhs) = default;
 		PenTransform& operator=(PenTransform&& rhs) = default;
 
-		const PengineIds			getParent()				const;
-		void						setParent(const PengineIds entity, bool keepPosition = true);
+		const PenObjectId			getParent()				const;
+		void						setParent(const PenObjectId entity, bool keepPosition = true);
 
 		PenMath::Transform			getGlobalTransform()	const;
 		void						setGlobalTransform(const PenMath::Transform& transform);
@@ -37,6 +37,6 @@ namespace Pengine::Components
 	private:
 		PenMath::Transform m_globalTransform;
 		PenMath::Transform m_localTransform;
-		PengineIds m_parent;
+		PenObjectId m_parent = g_PenObjectInvalidId;
 	};
 }

@@ -55,16 +55,17 @@ namespace Penditor::Window
 		void renderCalls() final;
 		void init();
 
-		void setRenderingSceneCamera(Pengine::PengineIds camId);
+		void setRenderingSceneCamera(Pengine::PenObjectId camId);
 		void stopRenderingSceneCamera();
 
-		void												setCamera(const Pengine::PengineIds id);
-		const Pengine::PengineIds							getCamera();
+		void												setCamera(const Pengine::PenObjectId id);
+		const Pengine::PenObjectId							getCamera();
 		std::shared_ptr<Pengine::System::PenRendererSystem> getRenderSystem();
 
 	private:
 		void renderScene();
-		void customRenderObject();
+		void customRenderScene();
+		void customRenderObject(Pengine::PenObjectId id);
 		bool activateShaderAndLight(std::shared_ptr<Pengine::Resources::PenShaderProgram> prog);
 		bool activateCamera(std::shared_ptr<Pengine::Resources::PenShaderProgram> prog);
 

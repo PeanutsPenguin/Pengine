@@ -20,7 +20,7 @@ namespace Pengine::Resources
 	{
 	public:
 		PenModel() = default;
-		PenModel(const PengineIds& id);
+		PenModel(const PenObjectId& id);
 		PenModel(const PenModel& other) = default;
 		PenModel(PenModel&& other) = default;
 		~PenModel() final;

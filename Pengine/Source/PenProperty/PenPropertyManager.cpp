@@ -17,7 +17,7 @@ namespace Pengine
 		}
 	}
 
-	std::vector<IPenProperty*>& PenPropertyManager::getProperties(const PengineIds id)
+	std::vector<IPenProperty*>& PenPropertyManager::getProperties(const PenObjectId id)
 	{
 		return this->m_propertyArray[id];
 	}

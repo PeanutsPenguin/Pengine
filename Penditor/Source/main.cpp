@@ -28,6 +28,7 @@
 
 //System
 #include "PenSystem/PenCameraSystem/PenCameraSystem.h"
+#include "PenSystem/PenTransformSystem/PenTransformSystem.h"
 
 #include "PenLight/PenPointLight.h"
 #include "PenLight/PenSpotLight.h"
@@ -59,7 +60,7 @@ int main()
 	#pragma region Create First Object
 			std::shared_ptr<Pengine::Resources::PenMaterial> basketMat = resourceManager->loadResourceFromFile<Pengine::Resources::PenMaterial>("Material/BackpackMat.penfile");
 
-			Pengine::PengineIds newObj = Pengine::PenCore::PenOctopus()->createPenObject("BackPack");
+			Pengine::PenObjectId newObj = Pengine::PenCore::PenOctopus()->createPenObject("BackPack");
 			Pengine::Components::PenRenderer renderComp;
 
 			std::shared_ptr<Pengine::Resources::PenModel> modelPtr = resourceManager->loadResourceFromFile<Pengine::Resources::PenModel>("Mesh/backpack.penfile");
@@ -76,8 +77,22 @@ int main()
 			Pengine::PenCore::PenOctopus()->addToScene(newObj);
 	#pragma endregion
 
+#pragma region Create second object
+			Pengine::PenObjectId childOfBackPack = Pengine::PenCore::PenOctopus()->createPenObject("ChildrenOfBackPack");
+
+			//Transform
+			Pengine::Components::PenTransform childTransComp = Pengine::Components::PenTransform();
+			PenMath::Transform childTrans;
+			childTrans.position = { 100, 0, 0 };
+			childTransComp.setGlobalTransform(childTrans);
+			Pengine::PenCore::PenOctopus()->addComponent(childOfBackPack, childTransComp);
+			Pengine::PenCore::PenOctopus()->addToScene(childOfBackPack);
+
+			Pengine::PenCore::PenOctopus()->getSystem<Pengine::System::PenTransformSystem>()->reparent(childOfBackPack, childTransComp.getParent(), newObj);
+#pragma endregion
+
 	#pragma region Create second object
-			Pengine::PengineIds seconNewObj = Pengine::PenCore::PenOctopus()->createPenObject("MainLight");
+			Pengine::PenObjectId seconNewObj = Pengine::PenCore::PenOctopus()->createPenObject("MainLight");
 
 			//Transform
 			Pengine::Components::PenTransform trans = Pengine::Components::PenTransform();
@@ -98,7 +113,7 @@ int main()
 	#pragma endregion
 
 	#pragma region Create Third Object
-			Pengine::PengineIds thirdObj = Pengine::PenCore::PenOctopus()->createPenObject("MainCamera");
+			Pengine::PenObjectId thirdObj = Pengine::PenCore::PenOctopus()->createPenObject("MainCamera");
 
 			Pengine::Components::PenTransform thirdTransComp = Pengine::Components::PenTransform();
 			PenMath::Transform thirdTrans;

@@ -31,14 +31,14 @@ namespace Pengine::Components
 
 		void SetState(PenComponentState state, bool enable = true);
 
-		const PengineIds getPenObjectId() const;
+		const PenObjectId getPenObjectId() const;
 
 		virtual void registerProperty(PenPropertyManager* manager) {};
 	
 	private:
-		void setPenObjectId(const PengineIds id);
+		void setPenObjectId(const PenObjectId id);
 
-		PengineIds m_objId = g_PenObjectInvalidId;
+		PenObjectId m_objId = g_PenObjectInvalidId;
 		std::bitset<8>	 m_flags = std::bitset<8>((size_t)PenComponentState::ENABLE);	//Bit operation to check component's specific state
 	};
 }	

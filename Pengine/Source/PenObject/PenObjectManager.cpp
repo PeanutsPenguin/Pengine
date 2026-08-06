@@ -14,11 +14,11 @@ using namespace Pengine;
 
 PenObjectManager::PenObjectManager() 
 {
-	for (RawEntityId i = 1; i < g_maxEntity; ++i)
+	for (PenObjectId i = 1; i < g_maxEntity; ++i)
 		m_availableEntities.push(i);
 }
 
-RawEntityId PenObjectManager::createPenObject(const std::string& name)
+PenObjectId PenObjectManager::createPenObject(const std::string& name)
 {
 	if (m_livingPenObject >= g_maxEntity) 
 	{
@@ -26,7 +26,7 @@ RawEntityId PenObjectManager::createPenObject(const std::string& name)
 		return g_PenObjectInvalidId;
 	}
 
-	PengineIds hashedId = HashString(name);
+	PenHashedId hashedId = HashString(name);
 
 	if (m_nameToEntityMap.find(hashedId) != m_nameToEntityMap.end()) 
 	{
@@ -34,7 +34,7 @@ RawEntityId PenObjectManager::createPenObject(const std::string& name)
 		return m_nameToEntityMap[hashedId];
 	}
 
-	RawEntityId newEntity = m_availableEntities.front();
+	PenObjectId newEntity = m_availableEntities.front();
 	m_availableEntities.pop();
 
 	m_nameToEntityMap[hashedId] = newEntity;
@@ -44,7 +44,7 @@ RawEntityId PenObjectManager::createPenObject(const std::string& name)
 	return newEntity;
 }
 
-void PenObjectManager::destroyPenObject(RawEntityId id)
+void PenObjectManager::destroyPenObject(PenObjectId id)
 {
 	if (id == g_PenObjectInvalidId || m_nameToEntityMap.find(id) == m_nameToEntityMap.end()) 
 	{
@@ -58,7 +58,7 @@ void PenObjectManager::destroyPenObject(RawEntityId id)
 	--m_livingPenObject;
 }	
 
-void PenObjectManager::setSignature(RawEntityId id, PenComponentSignature sig)
+void PenObjectManager::setSignature(PenObjectId id, PenComponentSignature sig)
 {
 	if (id == g_PenObjectInvalidId)
 		PenCore::LogManager()->LogError("Invalid entity id.", __FILE__, __LINE__);
@@ -66,7 +66,7 @@ void PenObjectManager::setSignature(RawEntityId id, PenComponentSignature sig)
 	m_signatures[id] = sig;
 }
 
-PenComponentSignature PenObjectManager::getSignature(RawEntityId id)
+PenComponentSignature PenObjectManager::getSignature(PenObjectId id)
 {
 	if (id == g_PenObjectInvalidId)
 		PenCore::LogManager()->LogError("Invalid entity id.", __FILE__, __LINE__);
@@ -74,7 +74,7 @@ PenComponentSignature PenObjectManager::getSignature(RawEntityId id)
 	return m_signatures[id];
 }
 
-RawEntityId PenObjectManager::getEntityByName(PengineIds hashedName)
+PenObjectId PenObjectManager::getEntityByName(PenHashedId hashedName)
 {
 	auto it = m_nameToEntityMap.find(hashedName);
 
@@ -86,4 +86,34 @@ RawEntityId PenObjectManager::getEntityByName(PengineIds hashedName)
 		PenCore::LogManager()->LogWarning("Entity with hashed name " + std::to_string(hashedName) + " does not exist.", __FILE__, __LINE__);
 		return g_PenObjectInvalidId;
 	}
+}
+
+std::string PenObjectManager::getNameById(PenObjectId id)
+{
+	auto it = m_debugNames.find(id);
+
+	if (it != m_debugNames.end())
+		return it->second;
+	else
+	{
+		PenCore::LogManager()->LogWarning("Entity with id " + std::to_string(id) + " does not exist.", __FILE__, __LINE__);
+		return "Invalid";
+	}
+}
+
+bool PenObjectManager::isNameExisting(const std::string& name)
+{
+	PenHashedId hashedId = HashString(name);
+
+	if (m_nameToEntityMap.find(hashedId) != m_nameToEntityMap.end())
+		return true;
+
+	return false;
+}
+
+void PenObjectManager::setEntityName(PenObjectId id, const std::string& name)
+{
+	PenHashedId hashedId = HashString(name);
+	m_nameToEntityMap[hashedId] = id;
+	m_debugNames[id] = name;
 }

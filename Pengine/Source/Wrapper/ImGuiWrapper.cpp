@@ -8,6 +8,9 @@
 
 #include <iostream>
 
+#include "PenCore/PenCore.h"
+#include "PenLogManager/PenLogManager.h"
+
 namespace Pengine::ui::ImGuiWrapper
 {
 	bool initLib(Pengine::Window::WindowWrapper* window)
@@ -77,6 +80,12 @@ namespace Pengine::ui::ImGuiWrapper
 		return { (int)size.x, (int)size.y };
 	}
 
+	PenMath::Vector2 getCursorScreenPos()
+	{
+		ImVec2 pos = ImGui::GetCursorScreenPos();
+		return { (int)pos.x, (int)pos.y };
+	}
+
 	PenMath::Vector2 getPadding()
 	{
 		ImVec2 pad = ImGui::GetCurrentWindow()->WindowPadding;
@@ -92,6 +101,18 @@ namespace Pengine::ui::ImGuiWrapper
 	PenMath::Vector2 getWindowPos()
 	{
 		ImVec2 pos = ImGui::GetWindowPos();
+		return { (int)pos.x, (int)pos.y };
+	}
+
+	PenMath::Vector2 getContentRegionMin()
+	{
+		ImVec2 pos = ImGui::GetWindowContentRegionMin();
+		return { (int)pos.x, (int)pos.y };
+	}
+
+	PenMath::Vector2 getMousePos()
+	{
+		ImVec2 pos = ImGui::GetMousePos();
 		return { (int)pos.x, (int)pos.y };
 	}
 
@@ -143,6 +164,11 @@ namespace Pengine::ui::ImGuiWrapper
 	void setScrollCursorY(float value)
 	{
 		ImGui::SetScrollHereY(value);
+	}
+
+	void setKeyboardFocus()
+	{
+		ImGui::SetKeyboardFocusHere();
 	}
 
 	bool isMouseOverWindow()
@@ -206,9 +232,9 @@ namespace Pengine::ui::ImGuiWrapper
 	}
 
 	#pragma region Render Calls
-	void renderOnSameLine(float spacing)
+	void renderOnSameLine(float Xoffset, float spacing)
 	{
-		ImGui::SameLine(spacing);
+		ImGui::SameLine(Xoffset, spacing);
 	}
 
 	void renderImage(int textureID, const PenMath::Vector2& size)
@@ -230,6 +256,25 @@ namespace Pengine::ui::ImGuiWrapper
 	bool renderBool(bool* value, const char* name)
 	{
 		return ImGui::Checkbox(name, value);
+	}
+
+	bool renderInvisibleButton(const char* label, const PenMath::Vector2& size)
+	{
+		return ImGui::InvisibleButton(label, { (float)size.x, (float)size.y });
+	}
+
+	bool renderInputBox(const char* id, const char* hint, std::string& outStr)
+	{
+		constexpr size_t size = 128;
+		char buffer[size] = "";
+
+		if (ImGui::InputTextWithHint(id, hint, buffer, size, ImGuiInputTextFlags_EnterReturnsTrue))
+		{
+			outStr = buffer;
+			return true;
+		}
+
+		return false;
 	}
 
 	void renderText(const char* value)
@@ -258,23 +303,28 @@ namespace Pengine::ui::ImGuiWrapper
 		switch(data->type)
 		{
 		case Resources::PenResourceType::E_MATERIAL:
-			payload = MAT_ID;
+			payload = MAT_DROP_ID;
 			break;
 		case Resources::PenResourceType::E_MODEL:
-			payload = MODEL_ID;
+			payload = MODEL_DROP_ID;
 			break;
 		case Resources::PenResourceType::E_SHADER:
-			payload = SHADER_ID;
+			payload = SHADER_DROP_ID;
 			break;
 		case Resources::PenResourceType::E_SHADER_PROGRAM:
-			payload = SHADER_PROG_ID;
+			payload = SHADER_PROG_DROP_ID;
 			break;
 		case Resources::PenResourceType::E_TEXTURE:
-			payload = TEXTURE_ID;
+			payload = TEXTURE_DROP_ID;
 			break;
 		}
 
 		ImGui::SetDragDropPayload(payload, data, sizeof(DragAndDropData));
+	}
+
+	void fillDragAndDropData(Pengine::PenObjectId* data)
+	{
+		ImGui::SetDragDropPayload(PENOBJECT_DROP_ID, data, sizeof(PenObjectId));
 	}
 
 	void endDragAndDropSource()
@@ -290,6 +340,11 @@ namespace Pengine::ui::ImGuiWrapper
 	void endChildWindow()
 	{
 		ImGui::EndChild();
+	}
+
+	void endPopUp()
+	{
+		ImGui::EndPopup();
 	}
 
 	bool renderColorPicker(const char* label, PenColor& col)
@@ -372,6 +427,16 @@ namespace Pengine::ui::ImGuiWrapper
 		return ImGui::BeginChild(name, { (float)size.x, (float)size.y }, 0, flags);
 	}
 
+	bool beginPopUpMenu()
+	{
+		return ImGui::BeginPopupContextItem();
+	}
+
+	bool menuItem(const char* label)
+	{
+		return ImGui::MenuItem(label);
+	}
+
 	const Pengine::DragAndDropData* getDroppedData(const char* type)
 	{
 		const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(type);
@@ -380,6 +445,16 @@ namespace Pengine::ui::ImGuiWrapper
 			return nullptr;
 
 		return (const Pengine::DragAndDropData*)payload->Data;
+	}
+
+	const Pengine::PenObjectId* getDroppedData(const char* type, PenObjectId receptionnistID)
+	{
+		const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(type);
+
+		if (payload == nullptr)
+			return nullptr;
+
+		return (const Pengine::PenObjectId*)payload->Data;
 	}
 	#pragma endregion
 }

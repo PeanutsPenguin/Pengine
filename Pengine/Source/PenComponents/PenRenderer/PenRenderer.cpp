@@ -33,7 +33,7 @@ void PenRenderer::render()
 
 void PenRenderer::registerProperty(PenPropertyManager* manager)
 {
-	PengineIds id = this->getPenObjectId();
+	PenObjectId id = this->getPenObjectId();
 	manager->addProperty(id, "Renderer Component", E_COMPONENT, this);
 	manager->addProperty(id, "Model", E_MODEL, &this->m_model);
 	manager->addProperty(id, "Material", E_MATERIAL, &this->m_material);

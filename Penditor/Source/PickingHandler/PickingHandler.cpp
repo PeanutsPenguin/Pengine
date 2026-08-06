@@ -23,9 +23,15 @@
 
 namespace Penditor
 {
-	Pengine::PengineIds PickingHandler::getSelectedObject()
+	Pengine::PenObjectId PickingHandler::getSelectedObject()
 	{
 		return this->m_selectedObject;
+	}
+
+	void PickingHandler::setSelectedObject(Pengine::PenObjectId id)
+	{
+		this->m_selectedObject = id;
+		Penditor::PenditorCore::PropertyWindow()->changeRenderTypeToObject();
 	}
 
 	void PickingHandler::init()
@@ -44,16 +50,17 @@ namespace Penditor
 
 	void PickingHandler::updateSelectedObject(const PenMath::Vector2& mousPos, std::shared_ptr<Pengine::System::PenRendererSystem> renderer)
 	{
+		PenMath::Vector2 relativeMousePos = PenditorCore::GameWindow()->getMousePosRelativeToWindow();
+
 		this->renderPicking(renderer);
 
 		Pengine::Buffer::PenColorBuffer col;
 
 		col.activateColorBuffer();
 
-		PenMath::Vector2 relativeMousePos = PenditorCore::GameWindow()->getMousePosRelativeToWindow();
 		col.readPixelColor(relativeMousePos);
 
-		Pengine::PengineIds newObj = this->colorToId(col.getColor());
+		Pengine::PenObjectId newObj = this->colorToId(col.getColor());
 
 	
 		this->m_selectedObject = newObj;
@@ -67,7 +74,7 @@ namespace Penditor
 		if (!this->m_pickingShader->isLoaded() || !this->m_pickingShader->use())
 			return;
 
-		const Pengine::PengineIds camId = Penditor::PenditorCore::GameWindow()->getCamera();
+		const Pengine::PenObjectId camId = Penditor::PenditorCore::GameWindow()->getCamera();
 
 		if (camId == Pengine::g_PenObjectInvalidId || !Pengine::PenCore::PenOctopus()->containsComponent<Pengine::Components::PenCamera>(camId))
 			return;
@@ -76,7 +83,7 @@ namespace Penditor
 
 		const PenMath::Mat4& projview = mainCam.getViewProjMatrix();
 
-		for (Pengine::PengineIds objId : Pengine::PenCore::PenOctopus()->getSystem<Pengine::System::PenTransformSystem>()->getRegisteredObject())
+		for (Pengine::PenObjectId objId : Pengine::PenCore::PenOctopus()->getSystem<Pengine::System::PenTransformSystem>()->getRegisteredObject())
 		{
 			if (objId == PenditorCore::GameWindow()->getCamera())
 				continue;
@@ -85,7 +92,7 @@ namespace Penditor
 		}
 	}
 
-	void PickingHandler::renderObject(const Pengine::PengineIds obj, std::shared_ptr<Pengine::System::PenRendererSystem> renderer, const PenMath::Mat4& viewProj)
+	void PickingHandler::renderObject(const Pengine::PenObjectId obj, std::shared_ptr<Pengine::System::PenRendererSystem> renderer, const PenMath::Mat4& viewProj)
 	{
 		const Pengine::PenColor col = this->idToColor(obj);
 
@@ -107,7 +114,7 @@ namespace Penditor
 			Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenRenderer>(obj).render();
 	}
 
-	const Pengine::PenColor PickingHandler::idToColor(const Pengine::PengineIds obj)
+	const Pengine::PenColor PickingHandler::idToColor(const Pengine::PenObjectId obj)
 	{
 		Pengine::PenColor picking = Pengine::PenColor::Black;
 
@@ -122,7 +129,7 @@ namespace Penditor
 		return picking;
 	}
 
-	Pengine::PengineIds PickingHandler::colorToId(std::array<unsigned char, 4> col)
+	Pengine::PenObjectId PickingHandler::colorToId(std::array<unsigned char, 4> col)
 	{
 		return col[0] + col[1] * 256 + col[2] * 256 * 256;
 	}

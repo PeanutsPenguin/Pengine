@@ -17,7 +17,7 @@
 using namespace Penditor;
 
 #pragma region Getter and Setter
-void PenFreeCam::setCamObject(const Pengine::PengineIds id)
+void PenFreeCam::setCamObject(const Pengine::PenObjectId id)
 {
 	this->m_camObject = id;
 }
@@ -32,7 +32,7 @@ float Penditor::PenFreeCam::getSpeed() const
     return this->m_speed;
 }
 
-const Pengine::PengineIds  PenFreeCam::getCamera() const
+const Pengine::PenObjectId  PenFreeCam::getCamera() const
 {
     return this->m_camObject;
 }
