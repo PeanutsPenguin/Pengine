@@ -12,7 +12,7 @@ namespace Pengine
 	}
 
 	template<typename T>
-	inline void PenOctopus::addComponent(PenObjectId obj, T component)
+	inline T& PenOctopus::addComponent(PenObjectId obj, T component)
 	{
 		T& newComp = this->m_PenComponentManager->addComponent<T>(obj, component);
 
@@ -24,6 +24,8 @@ namespace Pengine
 
 		if (this->m_mainScene->isObjectInScene(obj))
 			m_PenSystemManager->PenObjectSignatureChanged(obj, signature);
+
+		return newComp;
 	}
 
 	template<typename T>

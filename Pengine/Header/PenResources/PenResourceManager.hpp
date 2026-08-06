@@ -136,6 +136,11 @@ namespace Pengine::Resources
 	{
 		std::string safePath = path;
 
+		if(safePath == "path")
+		{
+			int test = 0;
+		}
+
 		std::unique_lock<std::mutex> lock(m_resourceMutex);
 
 		//Check if it doesn't already exist
@@ -176,7 +181,7 @@ namespace Pengine::Resources
 							if(ptr->GPULoad())
 								ptr->setLoaded();
 							else 
-								PenCore::LogManager()->LogWarning("GPU load file failed for : " + safePath, __FILE__, __LINE__);
+								PenCore::LogManager()->LogWarning("GPU load failed for : " + safePath, __FILE__, __LINE__);
 						});
 				}
 				else

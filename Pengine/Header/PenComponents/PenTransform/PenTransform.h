@@ -33,6 +33,8 @@ namespace Pengine::Components
 		PenMath::Vector3f 			getRight()				const;
 
 		void registerProperty(PenPropertyManager* manager) override;
+		bool serialize(std::ostream& out) override;
+		void load(std::ifstream& infile) override;
 
 	private:
 		PenMath::Transform m_globalTransform;

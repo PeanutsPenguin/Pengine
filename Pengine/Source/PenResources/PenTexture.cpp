@@ -76,6 +76,8 @@ bool PenTexture::createResource(const std::string PenfilePath, const std::string
 {
 	PenCore::LogManager()->Log("Creating texture : " + sourcePath, __FILE__, __LINE__);
 
+	this->m_penfilePath = PenfilePath;
+
 	if (!this->initializeTextureBuffer(sourcePath.c_str()))
 		return false;
 
@@ -84,8 +86,6 @@ bool PenTexture::createResource(const std::string PenfilePath, const std::string
 	PenCore::Serializer()->write(outfile, (int)this->p_type);
 	PenCore::Serializer()->write(outfile, sourcePath);
 	outfile.close();
-
-	this->m_penfilePath = PenfilePath;
 
 	return true;
 }

@@ -1,6 +1,7 @@
 #pragma once 
 
 #include <Vector/Vector3/Vector3.h>
+#include "Quaternion.h"
 
 //std
 #include <fstream>
@@ -35,35 +36,18 @@ namespace Pengine::Serialize
 		typename std::enable_if<std::is_arithmetic<T>::value>::type
 		read(std::istream& in, T& v);
 
-		/// <summary>
-		/// Serialize Strings
-		/// </summary>
 		void write(std::ostream& out, const std::string& s);
-
-		/// <summary>
-		/// Deserialize Strings
-		/// </summary>
 		void read(std::istream& in, std::string& s);
 
-		/// <summary>
-		/// Serialize Strings
-		/// </summary>
 		void write(std::ostream& out, const PenMath::Vector3f& s);
-
-		/// <summary>
-		/// Deserialize Strings
-		/// </summary>
 		void read(std::istream& in, PenMath::Vector3f& s);
 
-		/// <summary>
-		/// Serialize Vectors
-		/// </summary>
+		void write(std::ostream& out, const PenMath::Quaternion& q);
+		void read(std::istream& in, PenMath::Quaternion& q);
+
+
 		template <typename T>
 		void write(std::ostream& out, const std::vector<T>& vec);
-
-		/// <summary>
-		/// Deserialize Vectors
-		/// </summary>
 		template <typename T>
 		void read(std::istream& in, std::vector<T>& vec);
 	};

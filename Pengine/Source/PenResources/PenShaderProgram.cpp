@@ -114,7 +114,7 @@ bool PenShaderProgram::createShaderProgram()
 	size_t size = this->m_shaders.size();
 	for (int i = 0; i < size; ++i)
 	{
-		if (!this->m_shaders[i]->isLoaded())
+		if (!this->m_shaders[i] || !this->m_shaders[i]->isLoaded())
 		{
 			destroy();
 			return false;

@@ -22,6 +22,8 @@ namespace Pengine::Components
 		std::shared_ptr<PenLightBase> getLight();
 
 		void registerProperty(PenPropertyManager* manager) final;
+		bool serialize(std::ostream& out) final;
+		void load(std::ifstream& infile) final;
 
 	private:
 		std::shared_ptr<PenLightBase> m_light = nullptr;

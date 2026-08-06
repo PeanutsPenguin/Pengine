@@ -2,9 +2,11 @@
 
 #include "PenDefine/PengineDefine.h"		//PengineDefine
 #include "PenStructsAndEnum/PenComponentState.h"
+#include "PenStructsAndEnum/PenComponentType.h"
 
 #include <iostream>
 #include <string_view>
+#include <fstream>
 
 namespace Pengine
 {
@@ -34,11 +36,15 @@ namespace Pengine::Components
 		const PenObjectId getPenObjectId() const;
 
 		virtual void registerProperty(PenPropertyManager* manager) {};
-	
+		virtual bool serialize(std::ostream& out) = 0;
+		virtual void load(std::ifstream& infile) = 0;
+
+	protected:
+		PenObjectId m_objId = g_PenObjectInvalidId;
+
 	private:
 		void setPenObjectId(const PenObjectId id);
 
-		PenObjectId m_objId = g_PenObjectInvalidId;
 		std::bitset<8>	 m_flags = std::bitset<8>((size_t)PenComponentState::ENABLE);	//Bit operation to check component's specific state
 	};
 }	

@@ -43,7 +43,7 @@ namespace Pengine
 		template<typename T>
 		void				registerComponent();
 		template<typename T>
-		void				addComponent(PenObjectId obj, T component);
+		T&					addComponent(PenObjectId obj, T component);
 		template<typename T>
 		void				removeComponent(PenObjectId obj);
 		template<typename T>
@@ -66,6 +66,8 @@ namespace Pengine
 		void							addToScene(const PenObjectId obj);
 		void							removeFromScene(const PenObjectId obj);
 		std::unique_ptr<PenScene>&		getMainScene();
+		bool							saveScene(const char* path);
+		void							loadScene(const char* path);
 
 		//Property related
 		std::vector<IPenProperty*>&				getProperty(const PenObjectId id);

@@ -37,6 +37,8 @@ namespace Pengine::Components
 		PenCamera& operator=(PenCamera&& rhs) = default;
 
 		void registerProperty(PenPropertyManager* manager) final;
+		bool serialize(std::ostream& out) final;
+		void load(std::ifstream& infile) final;
 
 #pragma region Getter and Setter
 		PenMath::Mat4		getProjectionMatrix()	const;

@@ -3,6 +3,8 @@
 
 #include "PenDefine/PengineDefine.h"		//PengineDefine
 
+#include <fstream>
+
 #pragma region Forward declarations
 namespace Pengine
 {
@@ -22,6 +24,9 @@ namespace Pengine
 
 		PenScene& operator=(const PenScene& rhs) = default;
 		PenScene& operator=(PenScene&& rhs) = default;
+
+		bool serializeScene(const char* filePath);
+		void loadScene(const char* filePath);
 		
 		void							changeBackgroundColor(const PenColor& col);
 		_NODISCARD const PenColor&		getBackgroundColor() const;
@@ -32,6 +37,11 @@ namespace Pengine
 		_NODISCARD bool isObjectInScene(const PenObjectId obj);
 
 	private :
+		bool serializeObject(std::ostream& out, PenObjectId id);
+		void loadObject(std::ifstream& infile);
+		void loadComponent(std::ifstream& infile, PenObjectId id);
+
+
 		std::set<PenObjectId> m_objects;
 		PenColor* m_backgroundColor;
 	};

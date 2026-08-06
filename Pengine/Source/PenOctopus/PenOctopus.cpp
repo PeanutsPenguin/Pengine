@@ -104,6 +104,16 @@ std::unique_ptr<PenScene>& PenOctopus::getMainScene()
 {
 	return this->m_mainScene;
 }
+
+bool PenOctopus::saveScene(const char* filePath)
+{
+	return this->m_mainScene->serializeScene(filePath);
+}
+
+void PenOctopus::loadScene(const char* filePath)
+{
+	this->m_mainScene->loadScene(filePath);
+}
 #pragma endregion
 
 #pragma region PenPropery

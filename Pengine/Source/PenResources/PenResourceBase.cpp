@@ -53,6 +53,12 @@ namespace Pengine::Resources
 
 	bool PenResourceBase::isLoaded() 
 	{
+		if (this->m_penfilePath.empty())
+		{
+			PenCore::LogManager()->LogWarning("", __FILE__, __LINE__);
+		}
+
+
 		if (this->p_loadingStatus == E_LOADED)
 			return true;
 		else if (this->p_loadingStatus == E_NOT_LOADED)
@@ -66,7 +72,7 @@ namespace Pengine::Resources
 					else
 					{
 						this->p_loadingStatus = E_NOT_LOADED;
-						PenCore::LogManager()->LogWarning("GPU LOAD FAILED", __FILE__, __LINE__);
+						PenCore::LogManager()->LogWarning("GPU Load failed for : " + this->m_penfilePath, __FILE__, __LINE__);
 					}
 				});
 
