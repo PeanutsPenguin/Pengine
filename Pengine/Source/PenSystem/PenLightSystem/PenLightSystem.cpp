@@ -35,9 +35,11 @@ void PenLightSystem::renderUpdate(const std::shared_ptr<Resources::PenShaderProg
 			}
 
 			if(light.IsState(Components::PenComponentState::ENABLE))
+			{
 				this->m_hasDirectionnal = true;
+				lightData->useValues(shader, transComp.getGlobalTransform(), -1, light.IsState(Components::PenComponentState::ENABLE));
+			}
 			
-			lightData->useValues(shader, transComp.getGlobalTransform(), -1, light.IsState(Components::PenComponentState::ENABLE));
 			break;
 		case PenLightType::E_POINT:
 			lightData->useValues(shader, transComp.getGlobalTransform(), pointLightCount, light.IsState(Components::PenComponentState::ENABLE));
@@ -54,6 +56,27 @@ void PenLightSystem::renderUpdate(const std::shared_ptr<Resources::PenShaderProg
 	 
 	shader->setUniform("numPointLight", pointLightCount);
 	shader->setUniform("numSpotLight", spotLightCount);
+	this->clearDeletedLights(pointLightCount, spotLightCount, shader);
 
 	this->m_hasDirectionnal = false;
+}
+
+void PenLightSystem::clearDeletedLights(uint16_t pointCount, uint16_t spotCount, const std::shared_ptr<Resources::PenShaderProgram> shader)
+{
+	for(int i = pointCount + 1; i < MAX_POINT_LIGHT; ++i)
+	{
+		std::string indexString = std::to_string(i);
+
+		shader->setUniform(("pointLights[" + indexString + "].enabled").c_str(), false);
+	}
+
+	for (int i = spotCount + 1; i < MAX_SPOT_LIGHT; ++i)
+	{
+		std::string indexString = std::to_string(i);
+
+		shader->setUniform(("spotLights[" + indexString + "].enabled").c_str(), false);
+	}
+
+	if(!this->m_hasDirectionnal)
+		shader->setUniform("dirLight.enabled", false);
 }

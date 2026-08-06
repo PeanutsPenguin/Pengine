@@ -31,6 +31,10 @@ namespace Pengine
 		PenObjectId getEntityByName(PenHashedId hashedName);
 		std::string getNameById(PenObjectId id);
 
+		bool isNameExisting(const std::string& name);
+
+		void setEntityName(PenObjectId id, const std::string& name);
+
 	private:
 		std::array<PenComponentSignature, g_maxEntity> m_signatures;
 		std::queue<PenObjectId> m_availableEntities;

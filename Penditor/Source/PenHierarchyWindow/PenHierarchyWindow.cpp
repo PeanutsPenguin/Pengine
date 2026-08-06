@@ -58,11 +58,17 @@ namespace Penditor::Window
 		for (const auto& obj : objects)
 		{
 			if(scene->isObjectInScene(obj))
-				this->renderPenObjectNode(obj, Pengine::g_PenObjectInvalidId);
+				this->renderPenObjectNode(obj);
+		}
+
+		if (this->m_deletedObject != Pengine::g_PenObjectInvalidId)
+		{
+			Pengine::PenCore::PenOctopus()->removeFromScene(this->m_deletedObject);
+			this->m_deletedObject = Pengine::g_PenObjectInvalidId;
 		}
 	}
 
-	void PenHierarachyWindow::renderPenObjectNode(Pengine::PenObjectId obj, Pengine::PenObjectId parent)
+	void PenHierarachyWindow::renderPenObjectNode(Pengine::PenObjectId obj)
 	{
 		if (obj == Penditor::PenditorCore::GameWindow()->getCamera())
 			return;
@@ -71,6 +77,7 @@ namespace Penditor::Window
 		std::shared_ptr<Pengine::System::PenTransformSystem> transformSystem = Pengine::PenCore::PenOctopus()->getSystem<Pengine::System::PenTransformSystem>();
 
 		bool hasChild = transformSystem->hasChild(obj);
+		bool isRenamed = (this->m_renamedObject == obj);
 
 		int flags = Pengine::ui::PenTreeNodeFlags::E_OPEN_ON_ARROW | Pengine::ui::PenTreeNodeFlags::E_SPAN_RIGHT_WIDTH;
 
@@ -82,7 +89,17 @@ namespace Penditor::Window
 
 		std::string name = Pengine::PenCore::PenOctopus()->getNameById(obj) + "##" + std::to_string(obj);
 
+		if(isRenamed)
+			name = "##" + Pengine::PenCore::PenOctopus()->getNameById(obj) + std::to_string(obj);
+
+		PenMath::Vector2 Xpos = manager->getUICursorPos();
+
 		bool opened = manager->renderTreeNode(name.c_str(), (Pengine::ui::PenTreeNodeFlags)flags);
+
+		this->renderRightClickObject(obj);
+
+		if (obj == this->m_renamedObject)
+			this->renderRenamedObject(Xpos);
 
 		if (manager->beginDragAndDropSource())
 		{
@@ -111,10 +128,36 @@ namespace Penditor::Window
 		if (hasChild && opened)
 		{
 			for (const auto& childs : transformSystem->getChilds(obj))
-				this->renderPenObjectNode(childs, obj);
+				this->renderPenObjectNode(childs);
 			
 			manager->popTree();
 		}
+	}
+
+	void PenHierarachyWindow::renderRenamedObject(PenMath::Vector2& vecPos)
+	{
+		Pengine::ui::PenUIManager* manager = Pengine::PenCore::UIManager().get();
+		Pengine::PenInputManager* inputManager = Pengine::PenCore::InputManager().get();
+
+		std::string resultStr;
+		std::string baseName =  Pengine::PenCore::PenOctopus()->getNameById(this->m_renamedObject);
+		
+		manager->renderOnSameLine(0, 0);
+		manager->setKeyboardFocus();
+
+		manager->pushStyle(Pengine::ui::PenStyleFlag::E_FRAME_PADDING, { 0, 0 });
+		manager->pushStyleColor(Pengine::ui::PenStyleColorType::E_FRAME_BG, { 0, 0, 0, 0 });
+
+		if (manager->renderInputBox("##rename", baseName.c_str(), resultStr)/* || inputManager->isKeyReleased(Pengine::key_MOUSE_LEFT) || inputManager->isKeyReleased(Pengine::key_MOUSE_LEFT)*/)
+		{
+			if (resultStr[0] != '\0' && !Pengine::PenCore::PenOctopus()->isNameExisting(resultStr))
+				Pengine::PenCore::PenOctopus()->setEntityName(this->m_renamedObject, resultStr);
+
+			this->m_renamedObject = Pengine::g_PenObjectInvalidId;
+		}
+
+		manager->popStyle();
+		manager->popStyleColor();
 	}
 
 	void PenHierarachyWindow::renderDropZone()
@@ -136,6 +179,22 @@ namespace Penditor::Window
 				Pengine::PenCore::PenOctopus()->getSystem<Pengine::System::PenTransformSystem>()->reparent(*droppedData, Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenTransform>(*droppedData).getParent(), Pengine::g_PenObjectInvalidId);
 
 			manager->endDragAndDropTarget();
+		}
+	}
+
+	void PenHierarachyWindow::renderRightClickObject(Pengine::PenObjectId id)
+	{
+		Pengine::ui::PenUIManager* manager = Pengine::PenCore::UIManager().get();
+
+		if(manager->beginPopUpMenu())
+		{
+			if(manager->menuItem("Rename"))
+				this->m_renamedObject = id;
+
+			if (manager->menuItem("Delete"))
+				this->m_deletedObject = id;
+
+			manager->endPopUp();
 		}
 	}
 }

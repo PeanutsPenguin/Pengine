@@ -97,14 +97,19 @@ void PenUIManager::setScrollCursorY(float y)
 	ImGuiWrapper::setScrollCursorY(y);
 }
 
+void PenUIManager::setKeyboardFocus()
+{
+	ImGuiWrapper::setKeyboardFocus();
+}
+
 void PenUIManager::addImageToDrawList(unsigned int id, const PenMath::Vector2& topLeft, const PenMath::Vector2& bottomRight)
 {
 	ImGuiWrapper::addImageToDrawList(id, topLeft, bottomRight);
 }
 
-void PenUIManager::renderOnSameLine(float spacing)
+void PenUIManager::renderOnSameLine(float Xoffset, float spacing)
 {
-	ImGuiWrapper::renderOnSameLine(spacing);
+	ImGuiWrapper::renderOnSameLine(Xoffset, spacing);
 }
 
 void PenUIManager::renderImage(int textureID, const PenMath::Vector2& size)
@@ -160,6 +165,11 @@ void PenUIManager::endDragAndDropTarget()
 void PenUIManager::endChildWindow()
 {
 	ImGuiWrapper::endChildWindow();
+}
+
+void PenUIManager::endPopUp()
+{
+	ImGuiWrapper::endPopUp();
 }
 
 bool PenUIManager::renderCollapsingHeader(const char* name)
@@ -272,6 +282,16 @@ bool PenUIManager::beginChildWindow(const char* name, const PenMath::Vector2& si
 	return ImGuiWrapper::beginChildWindow(name, size, flags);
 }
 
+bool PenUIManager::beginPopUpMenu()
+{
+	return ImGuiWrapper::beginPopUpMenu();
+}
+
+bool PenUIManager::menuItem(const char* label)
+{
+	return ImGuiWrapper::menuItem(label);
+}
+
 bool PenUIManager::renderButton(const char* name, const PenMath::Vector2& size)
 {
 	return ImGuiWrapper::renderButton(name, size);
@@ -290,6 +310,11 @@ bool PenUIManager::renderSelectable(const char* label, bool selected)
 bool PenUIManager::renderInvisibleButton(const char* name, const PenMath::Vector2& size)
 {
 	return ImGuiWrapper::renderInvisibleButton(name, size);
+}
+
+bool PenUIManager::renderInputBox(const char* id, const char* hint, std::string& outStr)
+{
+	return ImGuiWrapper::renderInputBox(id, hint, outStr);
 }
 
 const Pengine::DragAndDropData* PenUIManager::getDroppedData(const char* type)

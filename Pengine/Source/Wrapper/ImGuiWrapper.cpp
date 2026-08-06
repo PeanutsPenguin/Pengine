@@ -166,6 +166,11 @@ namespace Pengine::ui::ImGuiWrapper
 		ImGui::SetScrollHereY(value);
 	}
 
+	void setKeyboardFocus()
+	{
+		ImGui::SetKeyboardFocusHere();
+	}
+
 	bool isMouseOverWindow()
 	{
 		return ImGui::IsWindowHovered();
@@ -227,9 +232,9 @@ namespace Pengine::ui::ImGuiWrapper
 	}
 
 	#pragma region Render Calls
-	void renderOnSameLine(float spacing)
+	void renderOnSameLine(float Xoffset, float spacing)
 	{
-		ImGui::SameLine(spacing);
+		ImGui::SameLine(Xoffset, spacing);
 	}
 
 	void renderImage(int textureID, const PenMath::Vector2& size)
@@ -256,6 +261,20 @@ namespace Pengine::ui::ImGuiWrapper
 	bool renderInvisibleButton(const char* label, const PenMath::Vector2& size)
 	{
 		return ImGui::InvisibleButton(label, { (float)size.x, (float)size.y });
+	}
+
+	bool renderInputBox(const char* id, const char* hint, std::string& outStr)
+	{
+		constexpr size_t size = 128;
+		char buffer[size] = "";
+
+		if (ImGui::InputTextWithHint(id, hint, buffer, size, ImGuiInputTextFlags_EnterReturnsTrue))
+		{
+			outStr = buffer;
+			return true;
+		}
+
+		return false;
 	}
 
 	void renderText(const char* value)
@@ -321,6 +340,11 @@ namespace Pengine::ui::ImGuiWrapper
 	void endChildWindow()
 	{
 		ImGui::EndChild();
+	}
+
+	void endPopUp()
+	{
+		ImGui::EndPopup();
 	}
 
 	bool renderColorPicker(const char* label, PenColor& col)
@@ -401,6 +425,16 @@ namespace Pengine::ui::ImGuiWrapper
 	bool beginChildWindow(const char* name, const PenMath::Vector2& size, Pengine::ui::PenVirtualWindowFlags flags)
 	{
 		return ImGui::BeginChild(name, { (float)size.x, (float)size.y }, 0, flags);
+	}
+
+	bool beginPopUpMenu()
+	{
+		return ImGui::BeginPopupContextItem();
+	}
+
+	bool menuItem(const char* label)
+	{
+		return ImGui::MenuItem(label);
 	}
 
 	const Pengine::DragAndDropData* getDroppedData(const char* type)

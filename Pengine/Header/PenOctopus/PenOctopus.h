@@ -34,6 +34,10 @@ namespace Pengine
 		PenObjectId 	getPenObjectByName(PenHashedId hashedName);
 		std::string		getNameById(PenObjectId id);
 
+		bool			isNameExisting(const std::string& name);
+
+		void			setEntityName(PenObjectId id, const std::string& name);
+
 		//Component related
 		template<typename T>
 		void				registerComponent();

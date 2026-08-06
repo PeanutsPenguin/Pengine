@@ -53,6 +53,16 @@ std::string PenOctopus::getNameById(PenObjectId id)
 	return this->m_PenObjectManager->getNameById(id);
 }
 
+bool PenOctopus::isNameExisting(const std::string& name)
+{
+	return this->m_PenObjectManager->isNameExisting(name);
+}
+
+void PenOctopus::setEntityName(PenObjectId id, const std::string& name)
+{
+	this->m_PenObjectManager->setEntityName(id, name);
+}
+
 #pragma endregion
 
 #pragma region PenSystem

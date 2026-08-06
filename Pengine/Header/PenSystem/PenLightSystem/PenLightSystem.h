@@ -4,14 +4,14 @@
 
 #include <memory>
 
-#pragma region Forwrd declaration
-
 namespace Pengine::Resources
 {
 	class PenShaderProgram;
 }
 
-#pragma endregion
+
+#define MAX_POINT_LIGHT 10
+#define MAX_SPOT_LIGHT 10
 
 namespace Pengine::System
 {
@@ -27,7 +27,7 @@ namespace Pengine::System
 		PenLightSystem& operator=(PenLightSystem&& rhs) = default;
 
 		void onEntityInserted(const PenObjectId newObj) final {};
-		void onEntityDestroyed(const PenObjectId obj) final {};
+		void onEntityDestroyed(const PenObjectId obj) final { m_PenObject.erase(obj); };
 
 		void update(double dt) final {};
 
@@ -37,6 +37,8 @@ namespace Pengine::System
 		/// <param name="shader"></param>
 		void renderUpdate(const std::shared_ptr<Resources::PenShaderProgram> shader);
 	private:
+
+		void clearDeletedLights(uint16_t pointCount, uint16_t spotCount, const std::shared_ptr<Resources::PenShaderProgram> shader);
 
 		bool m_hasDirectionnal = false;
 	};

@@ -21,7 +21,7 @@ namespace Pengine::System
 		void postRender();
 
 		void onEntityInserted(const PenObjectId newObj) override {};
-		void onEntityDestroyed(const PenObjectId obj) override {};
+		void onEntityDestroyed(const PenObjectId obj) override { m_PenObject.erase(obj); };
 
 		void update(double dt) override {};
 	};

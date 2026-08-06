@@ -16,7 +16,7 @@ namespace Pengine::System
 		PenCameraSystem& operator=(PenCameraSystem&& rhs) = default;
 
 		void onEntityInserted(const PenObjectId newObj) final {};
-		void onEntityDestroyed(const PenObjectId obj) final {};
+		void onEntityDestroyed(const PenObjectId obj) final { m_PenObject.erase(obj); };
 
 		void update(double dt) final;
 

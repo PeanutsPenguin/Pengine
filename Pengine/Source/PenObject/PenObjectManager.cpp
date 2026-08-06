@@ -100,3 +100,20 @@ std::string PenObjectManager::getNameById(PenObjectId id)
 		return "Invalid";
 	}
 }
+
+bool PenObjectManager::isNameExisting(const std::string& name)
+{
+	PenHashedId hashedId = HashString(name);
+
+	if (m_nameToEntityMap.find(hashedId) != m_nameToEntityMap.end())
+		return true;
+
+	return false;
+}
+
+void PenObjectManager::setEntityName(PenObjectId id, const std::string& name)
+{
+	PenHashedId hashedId = HashString(name);
+	m_nameToEntityMap[hashedId] = id;
+	m_debugNames[id] = name;
+}
