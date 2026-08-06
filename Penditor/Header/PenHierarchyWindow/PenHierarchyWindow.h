@@ -25,13 +25,21 @@ namespace Penditor::Window
 		void renderCalls() final;
 
 	private:
-		void buildSceneTree();
-
 		void renderSceneValue();
 		void renderPenObjectNode(Pengine::PenObjectId obj);
-		void renderRenamedObject(PenMath::Vector2& cursorPos);
+		bool renderTreeNode(Pengine::PenObjectId id, bool hasChild);
+		void renderRenamedObject();
 		void renderDropZone();
 		void renderRightClickObject(Pengine::PenObjectId id);
+		void renderRightClickDropZone();
+
+		int getNodeFlags(Pengine::PenObjectId id, bool hasChild);
+
+		void objectDragAndDropSource(Pengine::PenObjectId id);
+		void objectDragAndDropTarget(Pengine::PenObjectId id);
+
+		void buildSceneTree();
+		void createPenObject();
 
 		const char* m_sceneName = "Scene";
 		Pengine::PenObjectId m_renamedObject = Pengine::g_PenObjectInvalidId;

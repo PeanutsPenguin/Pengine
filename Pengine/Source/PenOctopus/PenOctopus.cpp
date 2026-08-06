@@ -1,5 +1,7 @@
 #include "PenOctopus/PenOctopus.h"
 
+#include "PenComponents/PenTransform/PenTransform.h"
+
 using namespace Pengine;
 
 void PenOctopus::init()
@@ -28,6 +30,17 @@ PenObjectId PenOctopus::createPenObject(const std::string& name)
 	PenObjectId obj = this->m_PenObjectManager->createPenObject(name);
 
 	this->m_mainScene->addObject(obj);
+
+	return obj;
+}
+
+PenObjectId PenOctopus::createPenObjectWithTransform(const std::string& name)
+{
+	PenObjectId obj = this->m_PenObjectManager->createPenObject(name);
+
+	this->m_mainScene->addObject(obj);
+
+	this->addComponent(obj, Components::PenTransform());
 
 	return obj;
 }

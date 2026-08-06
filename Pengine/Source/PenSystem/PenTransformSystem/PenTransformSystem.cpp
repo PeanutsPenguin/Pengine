@@ -114,12 +114,12 @@ void PenTransformSystem::reparent(const PenObjectId obj, const PenObjectId oldPa
 			m_PenObject.erase(obj);
 			this->m_children[newParent].insert(obj);
 		}
-
-		Components::PenTransform& transform = PenCore::PenOctopus()->getComponent<Components::PenTransform>(obj);
-		transform.setParent(newParent);
 	}
 	else 
 		m_PenObject.insert(obj);
+
+	Components::PenTransform& transform = PenCore::PenOctopus()->getComponent<Components::PenTransform>(obj);
+	transform.setParent(newParent);
 }
 
 void PenTransformSystem::onEntityInserted(const PenObjectId newObj)

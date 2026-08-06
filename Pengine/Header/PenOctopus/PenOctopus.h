@@ -29,6 +29,7 @@ namespace Pengine
 		void destroy();
 
 		PenObjectId		createPenObject(const std::string& name);
+		PenObjectId		createPenObjectWithTransform(const std::string& name);
 		void			destroyPenObject(PenObjectId obj);
 
 		PenObjectId 	getPenObjectByName(PenHashedId hashedName);
