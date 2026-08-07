@@ -94,6 +94,9 @@ namespace Penditor
 			if (objId == PenditorCore::GameWindow()->getCamera())
 				continue;
 
+			if (!Pengine::PenCore::PenOctopus()->getMainScene()->isObjectInScene(objId))
+				continue;
+
 			renderObject(objId, renderer, projview);
 		}
 	}

@@ -14,6 +14,7 @@
 
 #include "Penditor/Penditor.h"
 #include "PenPropertyWindow/PenPropertyWindow.h"
+#include "PenGameWindow/PenGameWindow.h"
 
 #include "PenStructsAndEnum/PenDragAndDropData.h"
 
@@ -47,12 +48,15 @@ namespace Penditor::Window
 			manager->setNextItemOpen(true);
 
 		opened = manager->renderTreeNode(this->m_cachedFiles.fileName.c_str(), flags);
+		this->renderRightClickFile(this->m_cachedFiles);
 
 		if (opened)
 		{
 			this->renderChildsNode(this->m_cachedFiles);
 			manager->popTree();
 		}
+
+		this->renderDropZone();
 	}
 
 	void PenFileExplorerWindow::selectPath(const char* path)
@@ -202,7 +206,8 @@ namespace Penditor::Window
 			manager->renderText(node.fileName.c_str());
 			manager->endDragAndDropSource();
 		}
-		else if (manager->isItemHovered() && Pengine::PenCore::InputManager()->isKeyReleased(Pengine::PenInput::key_MOUSE_LEFT))
+		
+		if (manager->isItemHovered() && Pengine::PenCore::InputManager()->isKeyReleased(Pengine::PenInput::key_MOUSE_LEFT))
 		{
 			if(!manager->isMouseDragPastTreshold())
 			{
@@ -210,6 +215,9 @@ namespace Penditor::Window
 				PenditorCore::PropertyWindow()->changeRenderTypeToResource(node);
 			}
 		}
+
+		if (manager->isItemHovered() && Pengine::PenCore::InputManager()->isMouseDoubleClicked())
+			this->openFile(node);
 
 		manager->renderOnSameLine();
 
@@ -282,6 +290,33 @@ namespace Penditor::Window
 		}
 	}
 
+	void PenFileExplorerWindow::renderDropZone()
+	{
+		Pengine::ui::PenUIManager* manager = Pengine::PenCore::UIManager().get();
+
+		PenMath::Vector2 leftSize = manager->getContentSize();
+
+		if (leftSize.y <= 0)
+			return;
+
+		manager->renderInvisibleButton("##HierarchyInvisibleButton", leftSize);
+
+		this->renderRightClickDropZone();
+	}
+
+	void PenFileExplorerWindow::renderRightClickDropZone()
+	{
+		Pengine::ui::PenUIManager* manager = Pengine::PenCore::UIManager().get();
+
+		if (manager->beginPopUpMenu())
+		{
+			if (manager->menuItem("Create PenScene"))
+				this->createScene(this->m_cachedFiles);
+
+			manager->endPopUp();
+		}
+	}
+
 	void PenFileExplorerWindow::createScene(PenFileData& node)
 	{
 		std::string baseFoler = node.pathFile;
@@ -322,6 +357,26 @@ namespace Penditor::Window
 
 		this->setRightLogo(newData, Pengine::Resources::PenResourceType::E_SCENE);
 		node.children.push_back(newData);
+	}
+
+	void PenFileExplorerWindow::openFile(PenFileData& node)
+	{
+		switch (node.type)
+		{
+		case Pengine::Resources::PenResourceType::E_SCENE:
+			Pengine::PenCore::PenOctopus()->loadScene(node.pathFile.c_str());
+			Pengine::PenCore::PenOctopus()->setActiveScene(node.pathFile.c_str());
+			Pengine::PenCore::PenOctopus()->addToScene(PenditorCore::GameWindow()->getCamera());
+			break;
+
+		case Pengine::Resources::PenResourceType::E_MATERIAL:
+		case Pengine::Resources::PenResourceType::E_MODEL:
+		case Pengine::Resources::PenResourceType::E_SHADER:
+		case Pengine::Resources::PenResourceType::E_SHADER_PROGRAM:
+		case Pengine::Resources::PenResourceType::E_TEXTURE:
+		default:
+			break;
+		}
 	}
 
 	bool PenFileExplorerWindow::isFileExisting(const std::string& path)

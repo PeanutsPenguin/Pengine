@@ -60,6 +60,8 @@ void PenScene::loadScene(const std::string& filePath)
 {
 	this->m_scenePath = filePath;
 
+	PenCore::LogManager()->Log("Loading scene : " + filePath, __FILE__, __LINE__);
+
 	std::ifstream infile(filePath, std::ios::binary);
 	std::unique_ptr<Serialize::PenSerializer>& serializer = Pengine::PenCore::Serializer();
 

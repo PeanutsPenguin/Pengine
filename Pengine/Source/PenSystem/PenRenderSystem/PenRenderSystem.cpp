@@ -38,6 +38,9 @@ void PenRendererSystem::render(const PenObjectId camera)
 {
 	for (PenObjectId objId : m_PenObject)
 	{
+		if (!Pengine::PenCore::PenOctopus()->getMainScene()->isObjectInScene(objId))
+			continue;
+
 		Components::PenRenderer& renderComp = PenCore::PenOctopus()->getComponent<Components::PenRenderer>(objId);
 		Components::PenTransform& transComp = PenCore::PenOctopus()->getComponent<Components::PenTransform>(objId);
 

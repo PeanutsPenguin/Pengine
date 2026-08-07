@@ -15,7 +15,12 @@ void PenTransformSystem::update(double dt)
 {
 	std::queue<PenObjectId> process;
 	for (const auto& root : this->m_PenObject)
+	{
+		if (!Pengine::PenCore::PenOctopus()->getMainScene()->isObjectInScene(root))
+			continue;
+
 		process.push(root);
+	}
 
 	while (!process.empty()) 
 	{

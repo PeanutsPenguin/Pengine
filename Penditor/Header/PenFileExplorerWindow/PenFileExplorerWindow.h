@@ -37,11 +37,14 @@ namespace Penditor::Window
 		void setRightLogo(PenFileData& node, const std::filesystem::path& currenPath);
 		void setRightLogo(PenFileData& node, Pengine::Resources::PenResourceType type);
 		void createScene(PenFileData& node);
+		void openFile(PenFileData& node);
 
 		void renderChildsNode(PenFileData& node);
 		void renderDirectory(PenFileData& node);
 		void renderFile(PenFileData& node);
 		void renderRightClickFile(PenFileData& node);
+		void renderDropZone();
+		void renderRightClickDropZone();
 
 		bool isParentFolder(const char* folderPath);
 		bool isFileExisting(const std::string& path);

@@ -15,6 +15,9 @@ void PenCameraSystem::update(double dt)
 {
 	for (PenObjectId obj : this->m_PenObject)
 	{
+		if (!Pengine::PenCore::PenOctopus()->getMainScene()->isObjectInScene(obj))
+			continue;
+
 		Components::PenCamera& cam = PenCore::PenOctopus()->getComponent<Components::PenCamera>(obj);
 		Components::PenTransform& transform = PenCore::PenOctopus()->getComponent<Components::PenTransform>(obj);
 

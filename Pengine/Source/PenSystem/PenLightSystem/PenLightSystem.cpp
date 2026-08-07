@@ -15,6 +15,9 @@ void PenLightSystem::renderUpdate(const std::shared_ptr<Resources::PenShaderProg
 
 	for (PenObjectId obj : this->m_PenObject)
 	{
+		if (!Pengine::PenCore::PenOctopus()->getMainScene()->isObjectInScene(obj))
+			continue;
+
 		Components::PenLight& light = PenCore::PenOctopus()->getComponent<Components::PenLight>(obj);
 		Components::PenTransform& transComp = PenCore::PenOctopus()->getComponent<Components::PenTransform>(obj);
 
