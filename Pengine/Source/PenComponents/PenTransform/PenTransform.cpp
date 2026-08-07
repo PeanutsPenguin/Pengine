@@ -4,6 +4,7 @@
 #include "PenOctopus/PenOctopus.h"								//PenOctopus
 #include "PenSystem/PenTransformSystem/PenTransformSystem.h"	//PenTransformSystem
 #include "PenProperty/PenPropertyManager.h"
+#include "PenSerializer/PenSerializer.h"
 
 using namespace Pengine::Components;
 
@@ -22,6 +23,40 @@ void PenTransform::registerProperty(PenPropertyManager* manager)
 	manager->addProperty(id, "Scale", E_VEC3, &this->m_globalTransform.scale);
 }
 
+bool PenTransform::serialize(std::ostream& out)
+{
+	std::unique_ptr<Serialize::PenSerializer>& serializer = Pengine::PenCore::Serializer();
+
+	serializer->write(out, (int)PenComponentTypeEnum::E_TRANSFORM);
+	serializer->write<bool>(out, this->IsState(PenComponentState::ENABLE));
+	serializer->write(out, this->m_globalTransform.position);
+	serializer->write(out, this->m_globalTransform.rotation);
+	serializer->write(out, this->m_globalTransform.scale);
+	serializer->write(out, m_parent);
+
+	return true;
+}
+
+void PenTransform::load(std::ifstream& infile)
+{
+	std::unique_ptr<Serialize::PenSerializer>& serializer = Pengine::PenCore::Serializer();
+
+	bool enabled = false;
+	PenObjectId id = g_PenObjectInvalidId;
+
+	serializer->read<bool>(infile, enabled);
+	serializer->read(infile, this->m_globalTransform.position);
+	serializer->read(infile, this->m_globalTransform.rotation);
+	serializer->read(infile, this->m_globalTransform.scale);
+	serializer->read(infile, id);
+
+	Pengine::PenCore::PenOctopus()->getSystem<Pengine::System::PenTransformSystem>()->reparent(m_objId, g_PenObjectInvalidId, id);
+
+	if (!enabled)
+		this->SetState(PenComponentState::ENABLE, false);
+
+	this->SetState(PenComponentState::DIRTY);
+}
 
 #pragma region Getter and Setter
 PenMath::Transform PenTransform::getGlobalTransform() const

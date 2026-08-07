@@ -41,7 +41,6 @@ namespace Penditor::Window
 		void buildSceneTree();
 		void createPenObject();
 
-		const char* m_sceneName = "Scene";
 		Pengine::PenObjectId m_renamedObject = Pengine::g_PenObjectInvalidId;
 		Pengine::PenObjectId m_deletedObject = Pengine::g_PenObjectInvalidId;
 	};

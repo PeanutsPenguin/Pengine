@@ -5,6 +5,7 @@
 #include "PenSystem/PenCameraSystem/PenCameraSystem.h"
 
 #include "Wrapper/Private_GLFWWrapper.h"
+#include "Wrapper/Private_ImGuiWrapper.h"
 
 #include "PenCore/PenCore.h "
 #include "PenOctopus/PenOctopus.hpp"
@@ -69,6 +70,11 @@ void PenWindow::setCursorState(CursorState state)
 {
 	this->m_state = state;
 	GLFWWrapper::setCursorState(this->m_windowWrapper, state);
+
+    if (state == CursorState::E_DISABLED)
+        ui::ImGuiWrapper::setCursorStatus(true);
+    else 
+        ui::ImGuiWrapper::setCursorStatus(false);
 }
 
 Pengine::CursorState PenWindow::getCursorState() const

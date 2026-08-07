@@ -60,17 +60,34 @@ namespace Penditor::Window
 			return;
 
 		m_objectEuler = Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenTransform>(selectedObject).getGlobalTransform().rotation.getRotationEuler();
-
-		if (Pengine::PenCore::PenOctopus()->containsComponent<Pengine::Components::PenCamera>(selectedObject))
-			PenditorCore::GameWindow()->setRenderingSceneCamera(selectedObject);
-		else 
-			PenditorCore::GameWindow()->stopRenderingSceneCamera();
 	}
 
 	void PenPropertyWindow::changeRenderTypeToResource(const PenFileData& data)
 	{
 		this->m_renderingType = E_PENRESOURCES;
 		this->m_currentData = data;
+
+		switch (this->m_currentData.type)
+		{
+		case Pengine::Resources::PenResourceType::E_MATERIAL:
+			this->m_resourceHolder = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenMaterial>(this->m_currentData.pathFile.c_str());
+			break;
+		case Pengine::Resources::PenResourceType::E_MODEL:
+			this->m_resourceHolder = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenModel>(this->m_currentData.pathFile.c_str());
+			break;
+		case Pengine::Resources::PenResourceType::E_SHADER:
+			this->m_resourceHolder = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenShader>(this->m_currentData.pathFile.c_str());
+			break;
+		case Pengine::Resources::PenResourceType::E_SHADER_PROGRAM:
+			this->m_resourceHolder = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenShaderProgram>(this->m_currentData.pathFile.c_str());
+			break;
+		case Pengine::Resources::PenResourceType::E_TEXTURE:
+			this->m_resourceHolder = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenTexture>(this->m_currentData.pathFile.c_str());
+			break;
+		case Pengine::Resources::PenResourceType::E_NONE:
+		default:
+			break;
+		}
 	}
 
 	void PenPropertyWindow::changeRenderTypeToNone()
@@ -89,29 +106,34 @@ namespace Penditor::Window
 		manager->renderImage(this->m_currentData.icon->dataPtr()->getTextID(), { PROP_ICON_SIZE, PROP_ICON_SIZE });
 		manager->renderCenterText(this->m_currentData.fileName.c_str());
 
-		switch(this->m_currentData.type)
+		switch (this->m_currentData.type)
 		{
-			case Pengine::Resources::PenResourceType::E_MATERIAL:
-				this->renderMaterialResource();
+		case Pengine::Resources::PenResourceType::E_MATERIAL:
+			this->renderMaterialResource();
 			break;
-			case Pengine::Resources::PenResourceType::E_MODEL:
-				this->renderModelResource();
+		case Pengine::Resources::PenResourceType::E_MODEL:
+			this->renderModelResource();
 			break;
-			case Pengine::Resources::PenResourceType::E_SHADER:
-				this->renderShaderResource();
+		case Pengine::Resources::PenResourceType::E_SHADER:
+			this->renderShaderResource();
 			break;
-			case Pengine::Resources::PenResourceType::E_SHADER_PROGRAM:
-				this->renderShaderProgramResource();
+		case Pengine::Resources::PenResourceType::E_SHADER_PROGRAM:
+			this->renderShaderProgramResource();
 			break;
-			case Pengine::Resources::PenResourceType::E_TEXTURE:
-				this->renderTextureResource();
+		case Pengine::Resources::PenResourceType::E_TEXTURE:
+			this->renderTextureResource();
 			break;
-			case Pengine::Resources::PenResourceType::E_NONE:
-			default:
-				manager->renderCenterText("Folder");
-				manager->renderSeperator();
-				break;
+		case Pengine::Resources::PenResourceType::E_SCENE:
+			manager->renderCenterText("Scene");
+			manager->renderSeperator();
+			break;
+		case Pengine::Resources::PenResourceType::E_NONE:
+		default:
+			manager->renderCenterText("Folder");
+			manager->renderSeperator();
+			break;
 		}
+
 
 		//Render preview window
 	}	
@@ -119,10 +141,13 @@ namespace Penditor::Window
 	void PenPropertyWindow::renderMaterialResource()
 	{
 		Pengine::ui::PenUIManager* manager = Pengine::PenCore::UIManager().get();
-		std::shared_ptr<Pengine::Resources::PenMaterial> mat = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenMaterial>(this->m_currentData.pathFile.c_str());
+		std::shared_ptr<Pengine::Resources::PenMaterial> mat = std::dynamic_pointer_cast<Pengine::Resources::PenMaterial>(this->m_resourceHolder);
 
 		if (!mat || !mat->isLoaded())
+		{
+			Pengine::PenCore::LogManager()->LogWarning("Material resource is not loaded. Unable to display it in the property window", __FILE__, __LINE__);
 			return;
+		}
 
 		manager->renderCenterText("PenMaterial");
 		manager->renderSeperator();

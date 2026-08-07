@@ -3,7 +3,9 @@
 
 #include "PenResources/PenShaderProgram.h"
 
+#include "PenCore/PenCore.h"
 #include "PenProperty/PenPropertyManager.h"
+#include "PenSerializer/PenSerializer.h"
 
 #include "Matrix/Mat4.h"
 
@@ -22,6 +24,36 @@ void PenCamera::registerProperty(PenPropertyManager* manager)
 	manager->addProperty(id, "FOV", E_FLOAT, &this->m_values.fov);
 	manager->addProperty(id, "Near", E_FLOAT, &this->m_values.near);
 	manager->addProperty(id, "Far", E_FLOAT, &this->m_values.far);
+}
+
+bool PenCamera::serialize(std::ostream& out)
+{
+	std::unique_ptr<Serialize::PenSerializer>& serializer = Pengine::PenCore::Serializer();
+
+	serializer->write(out, (int)PenComponentTypeEnum::E_CAMERA);
+	serializer->write<bool>(out, this->IsState(PenComponentState::ENABLE));
+	serializer->write(out, this->m_values.fov);
+	serializer->write(out, this->m_values.near);
+	serializer->write(out, this->m_values.far);
+
+	return true;
+}
+
+void PenCamera::load(std::ifstream& infile)
+{
+	std::unique_ptr<Serialize::PenSerializer>& serializer = Pengine::PenCore::Serializer();
+
+	bool enabled = false;
+
+	serializer->read<bool>(infile, enabled);
+	serializer->read(infile, this->m_values.fov);
+	serializer->read(infile, this->m_values.near);
+	serializer->read(infile, this->m_values.far);
+
+	if (!enabled)
+		this->SetState(PenComponentState::ENABLE, false);
+
+	this->SetState(PenComponentState::DIRTY);
 }
 
 #pragma region Getter and Setter

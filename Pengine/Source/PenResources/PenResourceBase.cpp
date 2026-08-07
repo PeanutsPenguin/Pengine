@@ -22,6 +22,8 @@ namespace Pengine::Resources
 	{
 		p_isDirty = false;
 		PenCore::ResourcesManager()->removeDirty(this->m_id);
+
+		PenCore::LogManager()->Log("Succesfully save resource : " + this->m_penfilePath, __FILE__, __LINE__);
 		return true;
 	}
 
@@ -66,7 +68,7 @@ namespace Pengine::Resources
 					else
 					{
 						this->p_loadingStatus = E_NOT_LOADED;
-						PenCore::LogManager()->LogWarning("GPU LOAD FAILED", __FILE__, __LINE__);
+						PenCore::LogManager()->LogWarning("GPU Load failed for : " + this->m_penfilePath, __FILE__, __LINE__);
 					}
 				});
 

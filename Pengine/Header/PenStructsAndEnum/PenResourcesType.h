@@ -10,6 +10,7 @@ namespace Pengine::Resources
 		E_SHADER, 
 		E_SHADER_PROGRAM, 
 		E_TEXTURE, 
+		E_SCENE,
 		E_NONE
 	};
 

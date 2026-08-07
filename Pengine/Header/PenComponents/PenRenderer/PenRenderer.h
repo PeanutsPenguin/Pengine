@@ -30,6 +30,8 @@ namespace Pengine::Components
 		void render();
 
 		void registerProperty(PenPropertyManager* manager) override;
+		bool serialize(std::ostream& out) final;
+		void load(std::ifstream& infile) final;
 
 	private:
 		std::shared_ptr<Pengine::Resources::PenModel> m_model;

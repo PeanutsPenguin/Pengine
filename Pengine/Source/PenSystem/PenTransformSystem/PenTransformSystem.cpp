@@ -15,7 +15,9 @@ void PenTransformSystem::update(double dt)
 {
 	std::queue<PenObjectId> process;
 	for (const auto& root : this->m_PenObject)
+	{
 		process.push(root);
+	}
 
 	while (!process.empty()) 
 	{

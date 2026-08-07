@@ -185,6 +185,9 @@ namespace Penditor::Window
 
 		for (Pengine::PenObjectId objId : renderObject)
 		{
+			if (!Pengine::PenCore::PenOctopus()->getMainScene()->isObjectInScene(objId))
+				continue;
+
 			this->customRenderObject(objId);
 
 			if (transformSystem->hasChild(objId))

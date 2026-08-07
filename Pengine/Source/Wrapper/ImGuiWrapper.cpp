@@ -55,6 +55,7 @@ namespace Pengine::ui::ImGuiWrapper
 			ImGui::RenderPlatformWindowsDefault();
 			glfwMakeContextCurrent(backupContext);
 		}
+
 	}
 
 	void shutDownLib()
@@ -169,6 +170,16 @@ namespace Pengine::ui::ImGuiWrapper
 	void setKeyboardFocus()
 	{
 		ImGui::SetKeyboardFocusHere();
+	}
+
+	void setCursorStatus(bool disabled)
+	{
+		ImGuiIO& io = ImGui::GetIO();
+
+		if (disabled)
+			io.ConfigFlags |= ImGuiConfigFlags_NoMouse;
+		else
+			io.ConfigFlags &= ~ImGuiConfigFlags_NoMouse;
 	}
 
 	bool isMouseOverWindow()

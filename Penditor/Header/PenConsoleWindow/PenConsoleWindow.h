@@ -6,7 +6,7 @@
 #include <vector>
 #include <string>
 
-#define CONSOLEWINDOW_FOOT_SPACE 10
+#define CONSOLEWINDOW_FOOT_SPACE 5
 
 #define CONSOLE_LOG_1_OFFSET 17.f
 #define CONSOLE_LOG_10_OFFSET 22.f

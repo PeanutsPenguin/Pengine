@@ -32,6 +32,12 @@ namespace Penditor
 	{
 		this->m_selectedObject = id;
 		Penditor::PenditorCore::PropertyWindow()->changeRenderTypeToObject();
+
+		if (Pengine::PenCore::PenOctopus()->containsComponent<Pengine::Components::PenCamera>(id) && id != Pengine::g_PenObjectInvalidId)
+			PenditorCore::GameWindow()->setRenderingSceneCamera(id);
+		else
+			PenditorCore::GameWindow()->stopRenderingSceneCamera();
+
 	}
 
 	void PickingHandler::init()
@@ -61,10 +67,7 @@ namespace Penditor
 		col.readPixelColor(relativeMousePos);
 
 		Pengine::PenObjectId newObj = this->colorToId(col.getColor());
-
-	
-		this->m_selectedObject = newObj;
-		Penditor::PenditorCore::PropertyWindow()->changeRenderTypeToObject();
+		this->setSelectedObject(newObj);
 	}
 
 	void PickingHandler::renderPicking(std::shared_ptr<Pengine::System::PenRendererSystem> renderer)
@@ -86,6 +89,9 @@ namespace Penditor
 		for (Pengine::PenObjectId objId : Pengine::PenCore::PenOctopus()->getSystem<Pengine::System::PenTransformSystem>()->getRegisteredObject())
 		{
 			if (objId == PenditorCore::GameWindow()->getCamera())
+				continue;
+
+			if (!Pengine::PenCore::PenOctopus()->getMainScene()->isObjectInScene(objId))
 				continue;
 
 			renderObject(objId, renderer, projview);
