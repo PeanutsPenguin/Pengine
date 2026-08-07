@@ -13,8 +13,9 @@ namespace Penditor
 	{
 		if(Pengine::PenCore::InputManager()->isKeyDown(Pengine::PenInput::key_LEFT_CONTROL) && Pengine::PenCore::InputManager()->isKeyPressed(Pengine::PenInput::key_S))
 		{
-			this->saveAll();
 			Pengine::PenCore::LogManager()->Log("Saving...", __FILE__, __LINE__);
+			this->saveAll();
+			Pengine::PenCore::LogManager()->Log("Save complete !", __FILE__, __LINE__);
 		}
 	}
 

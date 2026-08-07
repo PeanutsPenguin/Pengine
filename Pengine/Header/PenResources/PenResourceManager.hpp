@@ -134,11 +134,6 @@ namespace Pengine::Resources
 	{
 		std::string safePath = path;
 
-		if(safePath == "path")
-		{
-			int test = 0;
-		}
-
 		std::unique_lock<std::mutex> lock(m_resourceMutex);
 
 		//Check if it doesn't already exist

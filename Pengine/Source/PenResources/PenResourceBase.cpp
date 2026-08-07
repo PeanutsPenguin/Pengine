@@ -55,12 +55,6 @@ namespace Pengine::Resources
 
 	bool PenResourceBase::isLoaded() 
 	{
-		if (this->m_penfilePath.empty())
-		{
-			PenCore::LogManager()->LogWarning("", __FILE__, __LINE__);
-		}
-
-
 		if (this->p_loadingStatus == E_LOADED)
 			return true;
 		else if (this->p_loadingStatus == E_NOT_LOADED)

@@ -20,24 +20,6 @@ using namespace Penditor;
 void PenFreeCam::setCamObject(const Pengine::PenObjectId id)
 {
 	this->m_camObject = id;
-
-    if(Pengine::PenCore::PenOctopus()->containsComponent<Pengine::Components::PenTransform>(m_camObject))
-    {
-        Pengine::Components::PenTransform& transComp =
-            Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenTransform>(m_camObject);
-
-        Pengine::Components::PenCamera& cam =
-            Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenCamera>(m_camObject);
-
-        PenMath::Vector3f forward = transComp.getForward();
-        forward.normalize();
-
-        float pitchRad = std::asin(forward.y);
-        cam.setPitch(PenMath::Radian(pitchRad).degree());
-
-        float yawRad = std::atan2(forward.z, forward.x);
-        cam.setYaw(PenMath::Radian(yawRad).degree());
-    }
 }
 
 void PenFreeCam::setSpeed(float speed)

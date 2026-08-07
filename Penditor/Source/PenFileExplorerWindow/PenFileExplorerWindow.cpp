@@ -363,7 +363,6 @@ namespace Penditor::Window
 		case Pengine::Resources::PenResourceType::E_SCENE:
 			Pengine::PenCore::PenOctopus()->loadScene(node.pathFile.c_str());
 			Pengine::PenCore::PenOctopus()->setActiveScene(node.pathFile.c_str());
-			Pengine::PenCore::PenOctopus()->addToScene(PenditorCore::GameWindow()->getCamera());
 			break;
 
 		case Pengine::Resources::PenResourceType::E_MATERIAL:
