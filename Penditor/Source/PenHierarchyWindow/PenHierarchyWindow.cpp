@@ -5,6 +5,7 @@
 #include "PenUIManager/PenUIManager.h"
 #include "PenInput/PenInput.h"
 #include "PenScene/PenScene.h"
+#include "PenWindow/PenWindowBase.h"
 
 #include "PenSystem/PenTransformSystem/PenTransformSystem.h"
 
@@ -34,10 +35,10 @@ namespace Penditor::Window
 
 	void PenHierarachyWindow::renderSceneValue()
 	{
-		std::unique_ptr<Pengine::PenScene>& scene = Pengine::PenCore::PenOctopus()->getMainScene();
+		Pengine::PenScene* scene = Pengine::PenCore::PenOctopus()->getMainScene();
 		Pengine::ui::PenUIManager* manager = Pengine::PenCore::UIManager().get();
 
-		manager->renderCenterText(m_sceneName);
+		manager->renderCenterText(scene->getSceneName().c_str());
 
 		manager->renderText("Background Color : ");
 		manager->renderOnSameLine();
@@ -50,7 +51,7 @@ namespace Penditor::Window
 
 	void PenHierarachyWindow::buildSceneTree()
 	{
-		std::unique_ptr<Pengine::PenScene>& scene = Pengine::PenCore::PenOctopus()->getMainScene();
+		Pengine::PenScene* scene = Pengine::PenCore::PenOctopus()->getMainScene();
 		Pengine::ui::PenUIManager* manager = Pengine::PenCore::UIManager().get();
 
 		const std::set<Pengine::PenObjectId>& objects = Pengine::PenCore::PenOctopus()->getSystem<Pengine::System::PenTransformSystem>()->getRegisteredObject();
@@ -179,7 +180,12 @@ namespace Penditor::Window
 				this->m_renamedObject = id;
 
 			if (manager->menuItem("Delete"))
+			{
+				if(PenditorCore::PickingHandler()->getSelectedObject() == id)
+					PenditorCore::PickingHandler()->setSelectedObject(Pengine::g_PenObjectInvalidId);
+
 				this->m_deletedObject = id;
+			}
 
 			manager->endPopUp();
 		}
@@ -187,6 +193,9 @@ namespace Penditor::Window
 
 	void PenHierarachyWindow::renderRightClickDropZone()
 	{
+		if (Pengine::PenCore::MainPenWindow()->getCursorState() == Pengine::CursorState::E_DISABLED)
+			return;
+
 		Pengine::ui::PenUIManager* manager = Pengine::PenCore::UIManager().get();
 
 		if (manager->beginPopUpMenu())

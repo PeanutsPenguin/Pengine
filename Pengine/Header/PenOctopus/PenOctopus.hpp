@@ -21,9 +21,7 @@ namespace Pengine
 		PenComponentSignature signature = m_PenObjectManager->getSignature(obj);
 		signature.set(m_PenComponentManager->getComponentType<T>(), true);
 		m_PenObjectManager->setSignature(obj, signature);
-
-		if (this->m_mainScene->isObjectInScene(obj))
-			m_PenSystemManager->PenObjectSignatureChanged(obj, signature);
+		m_PenSystemManager->PenObjectSignatureChanged(obj, signature);
 
 		return newComp;
 	}
@@ -34,10 +32,7 @@ namespace Pengine
 		PenComponentSignature signature = m_PenObjectManager->getSignature(obj);
 		signature.set(m_PenComponentManager->getComponentType<T>(), false);
 		m_PenObjectManager->setSignature(obj, signature);
-
-		if (this->m_mainScene->isObjectInScene(obj))
-			m_PenSystemManager->PenObjectSignatureChanged(obj, signature);
-
+		m_PenSystemManager->PenObjectSignatureChanged(obj, signature);
 		m_PenComponentManager->removeComponent<T>(obj);
 	}
 

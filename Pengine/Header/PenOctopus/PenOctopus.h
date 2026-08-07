@@ -6,11 +6,12 @@
 #include "PenComponents/PenComponentBase.h"			//PenComponentBase
 #include "PenObject/PenObjectManager.h"				//PenObjectManager
 #include "PenSystem/PenSystemManager.h"				//PenSystemManager
-#include "PenScene/PenScene.h"						//PenScene
-#include "PenProperty/PenPropertyManager.h"						//PenPropertyManager
+#include "PenScene/PenSceneManager.h"						//PenScene
+#include "PenProperty/PenPropertyManager.h"			//PenPropertyManager
 
 //std
 #include <memory>
+#include <string>
 
 namespace Pengine
 {
@@ -65,16 +66,20 @@ namespace Pengine
 		//Scene related
 		void							addToScene(const PenObjectId obj);
 		void							removeFromScene(const PenObjectId obj);
-		std::unique_ptr<PenScene>&		getMainScene();
-		bool							saveScene(const char* path);
+		PenScene*						getMainScene();
+		void							saveScene();
+		void							loadSceneAsync(const char* path);
 		void							loadScene(const char* path);
+		void							setActiveScene(const char* path);
+		void							createScene(const std::string& path);
+		bool							isSceneExisting(const std::string& path);
 
 		//Property related
 		std::vector<IPenProperty*>&				getProperty(const PenObjectId id);
 		std::unique_ptr<PenPropertyManager>&	PropertyManager();
 
 	private:
-		std::unique_ptr<PenScene>							m_mainScene;			//PenScene
+		std::unique_ptr<PenSceneManager>					m_PenSceneManager;		//PenSceneManager
 		std::unique_ptr<Components::PenComponentsManager>	m_PenComponentManager;	//PenComponentManager
 		std::unique_ptr<PenObjectManager>					m_PenObjectManager;		//PenObjectManager
 		std::unique_ptr<System::PenSystemManager>			m_PenSystemManager;		//PenSystemManager

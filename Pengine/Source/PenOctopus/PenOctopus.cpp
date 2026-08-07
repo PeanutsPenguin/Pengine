@@ -6,7 +6,7 @@ using namespace Pengine;
 
 void PenOctopus::init()
 {
-	this->m_mainScene = std::make_unique<PenScene>();
+	this->m_PenSceneManager = std::make_unique<PenSceneManager>();
 	this->m_PenComponentManager = std::make_unique<Components::PenComponentsManager>();
 	this->m_PenObjectManager = std::make_unique<PenObjectManager>();
 	this->m_PenSystemManager = std::make_unique<System::PenSystemManager>();
@@ -17,7 +17,7 @@ void PenOctopus::destroy()
 {
 	this->m_PenComponentManager->destroy();
 
-	this->m_mainScene.reset();
+	this->m_PenSceneManager.reset();
 	this->m_PenComponentManager.reset();
 	this->m_PenObjectManager.reset();
 	this->m_PenSystemManager.reset();
@@ -28,9 +28,6 @@ void PenOctopus::destroy()
 PenObjectId PenOctopus::createPenObject(const std::string& name)
 {
 	PenObjectId obj = this->m_PenObjectManager->createPenObject(name);
-
-	this->m_mainScene->addObject(obj);
-
 	return obj;
 }
 
@@ -38,7 +35,7 @@ PenObjectId PenOctopus::createPenObjectWithTransform(const std::string& name)
 {
 	PenObjectId obj = this->m_PenObjectManager->createPenObject(name);
 
-	this->m_mainScene->addObject(obj);
+	this->m_PenSceneManager->getCurrentScene()->addObject(obj);
 
 	this->addComponent(obj, Components::PenTransform());
 
@@ -53,7 +50,7 @@ void PenOctopus::destroyPenObject(PenObjectId obj)
 
 	this->m_PenSystemManager->PenObjectDestroyed(obj);
 
-	this->m_mainScene->removeObject(obj);
+	this->m_PenSceneManager->getCurrentScene()->removeObject(obj);
 }
 
 PenObjectId PenOctopus::getPenObjectByName(PenHashedId hashedName)
@@ -88,31 +85,52 @@ void PenOctopus::updateAllSystem(double dt)
 #pragma region PenScene
 void PenOctopus::addToScene(const PenObjectId obj)
 {
-	this->m_mainScene->addObject(obj);
+	this->m_PenSceneManager->getCurrentScene()->addObject(obj);
 	m_PenSystemManager->PenObjectSignatureChanged(obj, m_PenObjectManager->getSignature(obj));
 	this->m_PenSystemManager->onEntityInserted(obj);
 }
 
 void PenOctopus::removeFromScene(const PenObjectId obj)
 {
-	this->m_mainScene->removeObject(obj);
+	this->m_PenSceneManager->getCurrentScene()->removeObject(obj);
 	this->m_PenSystemManager->onEntityDestroyed(obj);
 	this->m_PenSystemManager->PenObjectDestroyed(obj);
 }
 
-std::unique_ptr<PenScene>& PenOctopus::getMainScene()
+PenScene* PenOctopus::getMainScene()
 {
-	return this->m_mainScene;
+	return this->m_PenSceneManager->getCurrentScene();
 }
 
-bool PenOctopus::saveScene(const char* filePath)
+void PenOctopus::saveScene()
 {
-	return this->m_mainScene->serializeScene(filePath);
+	this->m_PenSceneManager->saveCurrentSceneAsync();
+}
+
+void PenOctopus::loadSceneAsync(const char* filePath)
+{
+	this->m_PenSceneManager->loadSceneAsync(filePath);
 }
 
 void PenOctopus::loadScene(const char* filePath)
 {
-	this->m_mainScene->loadScene(filePath);
+	this->m_PenSceneManager->loadScene(filePath);
+}
+
+void PenOctopus::setActiveScene(const char* filePath)
+{
+	PenHashedId id = HashString(filePath);
+	this->m_PenSceneManager->changeScene(id);
+}
+
+void PenOctopus::createScene(const std::string& path)
+{
+	this->m_PenSceneManager->createScene(path);
+}
+
+bool PenOctopus::isSceneExisting(const std::string& path)
+{
+	return this->m_PenSceneManager->isSceneExisting(path);
 }
 #pragma endregion
 

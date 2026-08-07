@@ -1,5 +1,7 @@
 #include "PenScene/PenScene.h"
 
+#include "PenStructsAndEnum/PenResourcesType.h"
+
 #include "PenCore/PenCore.h"				//PenCore
 #include "PenOctopus/PenOctopus.h"
 #include "PenColor/PenColor.h"				//PenColor
@@ -18,48 +20,56 @@ using namespace Pengine;
 
 PenScene::PenScene()
 {
-	this->m_backgroundColor = new PenColor();
-	*this->m_backgroundColor = PenColor{.1f, .1f, .1f, 1.f};
+	this->m_backgroundColor = PenColor::Green;
+	this->m_scenePath = "Dummy Scene";
 }
 
-Pengine::PenScene::~PenScene()
+PenScene::PenScene(const std::string& path)
 {
-	if(this->m_backgroundColor)
-	{
-		delete this->m_backgroundColor;
-		this->m_backgroundColor = nullptr;
-	}
+	this->m_backgroundColor = PenColor::Green;
+	this->m_scenePath = path;
 }
 
-bool PenScene::serializeScene(const char* filePath)
+bool PenScene::serializeScene()
 {
-	std::ofstream outfile(filePath, std::ios::binary);
+	std::ofstream outfile(this->m_scenePath, std::ios::binary);
 	std::unique_ptr<Serialize::PenSerializer>& serializer = Pengine::PenCore::Serializer();
 
+	serializer->write(outfile, (int)Resources::PenResourceType::E_SCENE);
+
 	uint32_t objCount = static_cast<uint32_t>(this->m_objects.size());
-	serializer->write(outfile, PenMath::Vector3f{this->m_backgroundColor->r,  this->m_backgroundColor->g, this->m_backgroundColor->b});
+	serializer->write(outfile, PenMath::Vector3f{this->m_backgroundColor.r,  this->m_backgroundColor.g, this->m_backgroundColor.b});
 	serializer->write(outfile, objCount);
 
 	for (Pengine::PenObjectId objId : this->m_objects)
 	{
 		if(!this->serializeObject(outfile, objId))
 		{
-			std::string path = filePath;
+			std::string path = this->m_scenePath;
 			PenCore::LogManager()->LogWarning("Failed to save scene : " + path, __FILE__, __LINE__);
 			return false;
 		}
 	}
 
+	PenCore::LogManager()->Log("Succesfully saved scene : " + this->m_scenePath, __FILE__, __LINE__);
+
 	return true;
 }
 
-void PenScene::loadScene(const char* filePath)
+void PenScene::loadScene(const std::string& filePath)
 {
+	this->m_scenePath = filePath;
+
 	std::ifstream infile(filePath, std::ios::binary);
 	std::unique_ptr<Serialize::PenSerializer>& serializer = Pengine::PenCore::Serializer();
 
+	int type = 0;
+	serializer->read(infile, type);
+
 	PenMath::Vector3f color = PenMath::Vector3f::Zero();
 	serializer->read(infile, color);
+
+	this->m_backgroundColor = PenColor(color.x, color.y, color.z, 1.f);
 
 	uint32_t objectSize = 0;
 	serializer->read(infile, objectSize);
@@ -111,6 +121,8 @@ void PenScene::loadObject(std::ifstream& infile)
 	serializer->read(infile, name);
 
 	PenObjectId id = PenCore::PenOctopus()->createPenObject(name);
+
+	this->addObject(id);
 
 	int nbComponent = 0;
 	serializer->read(infile, nbComponent);
@@ -167,12 +179,12 @@ void PenScene::loadComponent(std::ifstream& infile, PenObjectId id)
 
 void PenScene::changeBackgroundColor(const PenColor& col)
 {
-	*this->m_backgroundColor = col;
+	this->m_backgroundColor = col;
 }
 
 const PenColor& Pengine::PenScene::getBackgroundColor() const
 {
-	return *this->m_backgroundColor;
+	return this->m_backgroundColor;
 }
 
 void PenScene::removeObject(const PenObjectId obj)
@@ -188,6 +200,11 @@ void PenScene::addObject(const PenObjectId obj)
 bool PenScene::isObjectInScene(const PenObjectId obj)
 {
 	return this->m_objects.count(obj);
+}
+
+const std::string& PenScene::getSceneName()
+{
+	return this->m_scenePath;
 }
 
 

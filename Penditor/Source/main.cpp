@@ -134,11 +134,9 @@ int main()
 //				bool saved = false;
 //				while(!saved)
 //				{
-//					saved = Pengine::PenCore::PenOctopus()->saveScene("Scene/MainScene.penfile");
+//					Pengine::PenCore::PenOctopus()->saveScene();
 //				}
 //			});
-
-		Pengine::PenCore::PenOctopus()->loadScene("Scene/MainScene.penfile");
 
 		Penditor::PenditorCore::init();
 		Penditor::PenditorCore::runEditor();

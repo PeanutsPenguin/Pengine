@@ -84,8 +84,6 @@ namespace Pengine::Resources
 		std::string fullname = (std::string)fileName + ".penfile";						//xxx.penfile
 		std::string destination = (std::string)destinationPath + fullname;				//*/xxx.penfile
 
-		//Check if ressources doesn't exist
-
 		std::unique_lock<std::mutex> lock(m_resourceMutex);
 
 		//Check if ressources doesn't exist

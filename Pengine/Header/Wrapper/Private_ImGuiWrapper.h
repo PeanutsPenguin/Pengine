@@ -52,6 +52,7 @@ namespace Pengine::ui::ImGuiWrapper
 	void				setNextWindowSize(const PenMath::Vector2& size);
 	void				setScrollCursorY(float y);
 	void				setKeyboardFocus();
+	void				setCursorStatus(bool disable);
 
 	bool isMouseOverWindow();
 	bool isMousePastDragTreshold();

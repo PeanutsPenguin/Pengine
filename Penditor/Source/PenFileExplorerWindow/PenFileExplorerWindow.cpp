@@ -1,6 +1,7 @@
 #include "PenFileExplorerWindow/PenFileExplorerWindow.h"
 
 #include "PenCore/PenCore.h"
+#include "PenOctopus/PenOctopus.h"
 #include "PenUIManager/PenUIManager.h"
 #include "PenSerializer/PenSerializer.hpp"
 #include "PenResources/PenResourceManager.hpp"
@@ -97,7 +98,6 @@ namespace Penditor::Window
 	{
 		std::filesystem::path curPath = std::filesystem::current_path();
 
-		m_selectedPath = curPath;
 
 		PenFileData root;
 		root.pathFile = curPath.string();
@@ -108,12 +108,12 @@ namespace Penditor::Window
 		this->m_cachedFiles = root;
 	}
 
-	void PenFileExplorerWindow::renderChildsNode(const PenFileData& node)
+	void PenFileExplorerWindow::renderChildsNode(PenFileData& node)
 	{
 		std::unique_ptr<Pengine::ui::PenUIManager>& manager = Pengine::PenCore::UIManager();
 		bool opened = false;
 
-		for (const PenFileData& child : node.children)
+		for (PenFileData& child : node.children)
 		{
 			int flags = Pengine::ui::PenTreeNodeFlags::E_OPEN_ON_ARROW | Pengine::ui::PenTreeNodeFlags::E_SPAN_RIGHT_WIDTH;
 			
@@ -127,7 +127,7 @@ namespace Penditor::Window
 		}
 	}
 
-	void PenFileExplorerWindow::renderDirectory(const PenFileData& node)
+	void PenFileExplorerWindow::renderDirectory(PenFileData& node)
 	{
 		std::unique_ptr<Pengine::ui::PenUIManager>& manager = Pengine::PenCore::UIManager();
 
@@ -136,11 +136,13 @@ namespace Penditor::Window
 		if (m_selectedPath == node.pathFile)
 			flags |= Pengine::ui::PenTreeNodeFlags::E_SELECTED;
 
-		if(this->isParentFolder(node.pathFile.c_str()) && m_focusPath)
+		if ((this->isParentFolder(node.pathFile.c_str()) && m_focusPath))
 			manager->setNextItemOpen(true);
 
 		std::string name = "##" + node.pathFile;
 		bool opened = manager->renderTreeNode(name.c_str(), (Pengine::ui::PenTreeNodeFlags)flags);
+
+		this->renderRightClickFile(node);
 
 		if (manager->isItemClicked())
 		{
@@ -170,7 +172,7 @@ namespace Penditor::Window
 		}
 	}
 
-	void PenFileExplorerWindow::renderFile(const PenFileData& node)
+	void PenFileExplorerWindow::renderFile(PenFileData& node)
 	{
 		std::unique_ptr<Pengine::ui::PenUIManager>& manager = Pengine::PenCore::UIManager();
 
@@ -187,6 +189,8 @@ namespace Penditor::Window
 
 		std::string name = "##" + node.pathFile;
 		manager->renderTreeNode(name.c_str(), (Pengine::ui::PenTreeNodeFlags)flags);
+
+		this->renderRightClickFile(node);
 
 		if (manager->beginDragAndDropSource()) 
 		{
@@ -231,6 +235,11 @@ namespace Penditor::Window
 		Pengine::PenCore::Serializer()->read(infile, value);
 
 		Pengine::Resources::PenResourceType type = (Pengine::Resources::PenResourceType)value;
+		this->setRightLogo(node, type);
+	}
+
+	void PenFileExplorerWindow::setRightLogo(PenFileData& node, Pengine::Resources::PenResourceType type)
+	{
 		node.type = type;
 
 		switch (type)
@@ -250,10 +259,73 @@ namespace Penditor::Window
 		case Pengine::Resources::PenResourceType::E_TEXTURE:
 			node.icon = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenTexture>("Textures/Icons/TextureIcon.penfile");
 			break;
+		case Pengine::Resources::PenResourceType::E_SCENE:
+			node.icon = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenTexture>("Textures/Icons/TextureIcon.penfile");
+			break;
 		default:
 			node.type = Pengine::Resources::PenResourceType::E_NONE;
 			node.icon = Pengine::PenCore::ResourcesManager()->loadResourceFromFile<Pengine::Resources::PenTexture>("Textures/FolderIcon.penfile");
 			break;
 		}
+	}
+
+	void PenFileExplorerWindow::renderRightClickFile(PenFileData& node)
+	{
+		Pengine::ui::PenUIManager* manager = Pengine::PenCore::UIManager().get();
+
+		if (manager->beginPopUpMenu())
+		{
+			if (manager->menuItem("Create PenScene"))
+				this->createScene(node);
+
+			manager->endPopUp();
+		}
+	}
+
+	void PenFileExplorerWindow::createScene(PenFileData& node)
+	{
+		std::string baseFoler = node.pathFile;
+
+		if(!node.isDirectory)
+		{
+			std::filesystem::path parentDir = node.pathFile;
+			baseFoler = parentDir.parent_path().generic_string();
+		}
+		
+		std::string name = baseFoler + R"(\PenScene)";
+		std::string penfile = ".penfile";
+
+		if (Pengine::PenCore::PenOctopus()->isSceneExisting(name + penfile) || this->isFileExisting(name + penfile))
+		{
+			std::string numberName = name;
+			for (int i = 1; i < Pengine::g_maxEntity; ++i)							//<- using g_maxEntity here because this is only a temporary solution
+			{
+				numberName = name + "(" + std::to_string(i) + ")";
+
+				if (!Pengine::PenCore::PenOctopus()->isNameExisting(numberName + penfile) && !this->isFileExisting(numberName + penfile))
+				{
+					name = numberName;
+					break;
+				}
+			}
+		}
+
+		Pengine::PenCore::PenOctopus()->createScene(name);
+
+		std::filesystem::path newPath = name + penfile;
+
+		PenFileData newData;
+		std::filesystem::path rel = std::filesystem::relative(newPath, std::filesystem::current_path());
+		newData.pathFile = rel.generic_string();
+		newData.fileName = newPath.filename().generic_string();
+		newData.isDirectory = false;
+
+		this->setRightLogo(newData, Pengine::Resources::PenResourceType::E_SCENE);
+		node.children.push_back(newData);
+	}
+
+	bool PenFileExplorerWindow::isFileExisting(const std::string& path)
+	{
+		return std::filesystem::exists(path);
 	}
 }

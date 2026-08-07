@@ -32,6 +32,9 @@ std::unique_ptr<Window::PenHierarachyWindow>	PenditorCore::m_PenHierarchyWindow	
 
 void PenditorCore::init()
 {
+	Pengine::PenCore::PenOctopus()->loadScene("Scene/MainScene.penfile");
+	Pengine::PenCore::PenOctopus()->setActiveScene("Scene/MainScene.penfile");
+
 	Pengine::PenObjectId camObj = Pengine::PenCore::PenOctopus()->createPenObject("PenditorCam");
 	Pengine::PenCore::PenOctopus()->addComponent(camObj, Pengine::Components::PenTransform());
 	Pengine::PenCore::PenOctopus()->addComponent(camObj, Pengine::Components::PenCamera());

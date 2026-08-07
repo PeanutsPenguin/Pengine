@@ -32,22 +32,23 @@ namespace Penditor::Window
 		void selectPath(const char* path);
 
 	private:
-		void loadDirectory(PenFileData& node, const std::filesystem::path currenPath);
-
 		void initCachedFile();
-
-		void renderChildsNode(const PenFileData& node);
-
+		void loadDirectory(PenFileData& node, const std::filesystem::path currenPath);
 		void setRightLogo(PenFileData& node, const std::filesystem::path& currenPath);
+		void setRightLogo(PenFileData& node, Pengine::Resources::PenResourceType type);
+		void createScene(PenFileData& node);
 
-		void renderDirectory(const PenFileData& node);
-
-		void renderFile(const PenFileData& node);
+		void renderChildsNode(PenFileData& node);
+		void renderDirectory(PenFileData& node);
+		void renderFile(PenFileData& node);
+		void renderRightClickFile(PenFileData& node);
 
 		bool isParentFolder(const char* folderPath);
+		bool isFileExisting(const std::string& path);
 
 		PenFileData m_cachedFiles;
 		std::filesystem::path m_selectedPath;
+		std::string m_creationPath = "";
 		bool m_focusPath = false;
 	};
 }

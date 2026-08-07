@@ -60,11 +60,6 @@ namespace Penditor::Window
 			return;
 
 		m_objectEuler = Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenTransform>(selectedObject).getGlobalTransform().rotation.getRotationEuler();
-
-		if (Pengine::PenCore::PenOctopus()->containsComponent<Pengine::Components::PenCamera>(selectedObject))
-			PenditorCore::GameWindow()->setRenderingSceneCamera(selectedObject);
-		else 
-			PenditorCore::GameWindow()->stopRenderingSceneCamera();
 	}
 
 	void PenPropertyWindow::changeRenderTypeToResource(const PenFileData& data)

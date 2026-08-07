@@ -45,7 +45,10 @@ bool PenRenderer::serialize(std::ostream& out)
 	std::unique_ptr<Serialize::PenSerializer>& serializer = Pengine::PenCore::Serializer();
 
 	if (!this->m_model->isLoaded() || !this->m_material->isLoaded())
+	{
+		PenCore::LogManager()->LogWarning("Failed to serialize renderer component due to resources not loaded", __FILE__, __LINE__);
 		return false;
+	}
 
 	serializer->write(out, (int)PenComponentTypeEnum::E_RENDERER);
 	serializer->write<bool>(out, this->IsState(PenComponentState::ENABLE));

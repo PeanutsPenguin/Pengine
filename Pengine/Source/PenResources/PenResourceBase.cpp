@@ -22,6 +22,8 @@ namespace Pengine::Resources
 	{
 		p_isDirty = false;
 		PenCore::ResourcesManager()->removeDirty(this->m_id);
+
+		PenCore::LogManager()->Log("Succesfully save resource : " + this->m_penfilePath, __FILE__, __LINE__);
 		return true;
 	}
 
