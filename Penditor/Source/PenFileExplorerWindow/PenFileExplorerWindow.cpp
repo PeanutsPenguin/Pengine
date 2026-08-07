@@ -112,6 +112,22 @@ namespace Penditor::Window
 		this->m_cachedFiles = root;
 	}
 
+	void PenFileExplorerWindow::fileDragandDropSource(PenFileData& node)
+	{
+		std::unique_ptr<Pengine::ui::PenUIManager>& manager = Pengine::PenCore::UIManager();
+
+		if (manager->beginDragAndDropSource())
+		{
+			Pengine::DragAndDropData dragData;
+			dragData.type = node.type;
+			strncpy(dragData.filePath, node.pathFile.c_str(), strlen(node.pathFile.c_str()) + 1);
+
+			manager->fillDragAndDropData(&dragData);
+			manager->renderText(node.fileName.c_str());
+			manager->endDragAndDropSource();
+		}
+	}
+
 	void PenFileExplorerWindow::renderChildsNode(PenFileData& node)
 	{
 		std::unique_ptr<Pengine::ui::PenUIManager>& manager = Pengine::PenCore::UIManager();
@@ -155,6 +171,18 @@ namespace Penditor::Window
 		}
 
 		manager->renderOnSameLine();
+		this->renderIconAndName(node);
+
+		if (opened)
+		{
+			renderChildsNode(node);
+			manager->popTree();
+		}
+	}
+
+	void PenFileExplorerWindow::renderIconAndName(PenFileData& node)
+	{
+		std::unique_ptr<Pengine::ui::PenUIManager>& manager = Pengine::PenCore::UIManager();
 
 		if (node.icon != nullptr)
 		{
@@ -168,12 +196,6 @@ namespace Penditor::Window
 		PenMath::Vector2 curCursorPos = manager->getUICursorPos();
 		manager->setUICursorPosX(curCursorPos.x - FILENAME_X_OFFSET);
 		manager->renderText(node.fileName.c_str());
-
-		if (opened)
-		{
-			renderChildsNode(node);
-			manager->popTree();
-		}
 	}
 
 	void PenFileExplorerWindow::renderFile(PenFileData& node)
@@ -195,44 +217,19 @@ namespace Penditor::Window
 		manager->renderTreeNode(name.c_str(), (Pengine::ui::PenTreeNodeFlags)flags);
 
 		this->renderRightClickFile(node);
+		this->fileDragandDropSource(node);
 
-		if (manager->beginDragAndDropSource()) 
+		if (manager->isItemHovered() && Pengine::PenCore::InputManager()->isKeyReleased(Pengine::PenInput::key_MOUSE_LEFT) && !manager->isMouseDragPastTreshold())
 		{
-			Pengine::DragAndDropData dragData;
-			dragData.type = node.type;
-			strncpy(dragData.filePath, node.pathFile.c_str(), strlen(node.pathFile.c_str()) + 1);
-
-			manager->fillDragAndDropData(&dragData);
-			manager->renderText(node.fileName.c_str());
-			manager->endDragAndDropSource();
-		}
-		
-		if (manager->isItemHovered() && Pengine::PenCore::InputManager()->isKeyReleased(Pengine::PenInput::key_MOUSE_LEFT))
-		{
-			if(!manager->isMouseDragPastTreshold())
-			{
 				this->m_selectedPath = node.pathFile;
 				PenditorCore::PropertyWindow()->changeRenderTypeToResource(node);
-			}
 		}
 
 		if (manager->isItemHovered() && Pengine::PenCore::InputManager()->isMouseDoubleClicked())
 			this->openFile(node);
 
 		manager->renderOnSameLine();
-
-		if (node.icon != nullptr)
-		{
-			PenMath::Vector2 curCursorPos = manager->getUICursorPos();
-			manager->setUICursorPosY(curCursorPos.y - ICON_Y_OFFSET);
-			manager->setUICursorPosX(curCursorPos.x - ICON_X_OFFSET);
-			manager->renderImage(node.icon->dataPtr()->getTextID(), { ICON_SIZE, ICON_SIZE });
-			manager->renderOnSameLine();
-		}
-
-		PenMath::Vector2 curCursorPos = manager->getUICursorPos();
-		manager->setUICursorPosX(curCursorPos.x - FILENAME_X_OFFSET);
-		manager->renderText(node.fileName.c_str());
+		this->renderIconAndName(node);
 	}
 
 	void PenFileExplorerWindow::setRightLogo(PenFileData& node, const std::filesystem::path& currentPath)

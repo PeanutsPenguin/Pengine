@@ -80,10 +80,11 @@ namespace Penditor::Window
 		void	renderFloatProp			(Pengine::IPenProperty* prop, Pengine::ui::PenUIManager* manager);
 		void	renderColorProp			(Pengine::IPenProperty* prop, Pengine::ui::PenUIManager* manager);
 
+		Pengine::Components::PenComponentBase*					m_currentComponent	= nullptr;
 		PenMath::Vector3f										m_objectEuler		= PenMath::Vector3f::Zero();
 		PropertiesRenderingType									m_renderingType		= PropertiesRenderingType::E_NONE;
-		Pengine::Components::PenComponentBase*					m_currentComponent	= nullptr;
 		PenFileData												m_currentData;
+		std::shared_ptr<Pengine::Resources::PenResourceBase>	m_resourceHolder	= nullptr;
 		bool													m_headerOpen		= true;
 	};
 }

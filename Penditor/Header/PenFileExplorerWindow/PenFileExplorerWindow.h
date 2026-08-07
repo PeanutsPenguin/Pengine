@@ -38,10 +38,12 @@ namespace Penditor::Window
 		void setRightLogo(PenFileData& node, Pengine::Resources::PenResourceType type);
 		void createScene(PenFileData& node);
 		void openFile(PenFileData& node);
+		void fileDragandDropSource(PenFileData& node);
 
 		void renderChildsNode(PenFileData& node);
 		void renderDirectory(PenFileData& node);
 		void renderFile(PenFileData& node);
+		void renderIconAndName(PenFileData& node);
 		void renderRightClickFile(PenFileData& node);
 		void renderDropZone();
 		void renderRightClickDropZone();
