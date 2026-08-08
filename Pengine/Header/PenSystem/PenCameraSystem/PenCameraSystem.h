@@ -7,6 +7,8 @@ namespace Pengine::System
 	class PenCameraSystem : public PenSystemBase
 	{
 	public:
+		constexpr static std::string_view ID = "PenCameraSystem";
+
 		PenCameraSystem() = default;
 		PenCameraSystem(const PenCameraSystem& other) = default;
 		PenCameraSystem(PenCameraSystem&& other) = default;

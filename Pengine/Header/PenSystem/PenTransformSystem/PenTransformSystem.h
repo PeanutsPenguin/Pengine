@@ -9,6 +9,8 @@ namespace Pengine::System
 	class PenTransformSystem final : public PenSystemBase
 	{
 	public:
+		constexpr static std::string_view ID = "PenTransformSystem";
+
 		PenTransformSystem() = default;
 		PenTransformSystem(const PenTransformSystem& other) = default;
 		PenTransformSystem(PenTransformSystem&& other) = default;
