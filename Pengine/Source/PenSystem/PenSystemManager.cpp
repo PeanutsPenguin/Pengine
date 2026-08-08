@@ -14,7 +14,7 @@ void PenSystemManager::PenObjectSignatureChanged(PenObjectId entity, PenComponen
 	// Notify each system that an entity's signature changed
 	for (auto const& pair : m_PenSystems)
 	{
-		const char* type = pair.first;
+		PenHashedId type = pair.first;
 		const std::shared_ptr<PenSystemBase> system = pair.second;
 		const PenComponentSignature systemSignature = m_PenComponentSignature[type];
 

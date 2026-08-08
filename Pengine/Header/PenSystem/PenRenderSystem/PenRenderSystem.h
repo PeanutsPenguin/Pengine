@@ -8,6 +8,8 @@ namespace Pengine::System
 	class PenRendererSystem final : public PenSystemBase
 	{
 	public:
+		constexpr static std::string_view ID = "PenRendererSystem";
+
 		PenRendererSystem() = default;
 		PenRendererSystem(const PenRendererSystem& other) = default;
 		PenRendererSystem(PenRendererSystem&& other) = default;

@@ -18,6 +18,8 @@ namespace Pengine::System
 	class PenLightSystem final : public PenSystemBase
 	{
 	public:
+		constexpr static std::string_view ID = "PenLightSystem";
+
 		PenLightSystem() = default;
 		PenLightSystem(const PenLightSystem& other) = default;
 		PenLightSystem(PenLightSystem&& other) = default;

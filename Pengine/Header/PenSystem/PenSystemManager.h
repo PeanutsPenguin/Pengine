@@ -37,8 +37,8 @@ namespace Pengine::System
 		void updateAllSystem(double dt);
 
 	private:
-		std::unordered_map<const char*, PenComponentSignature>			m_PenComponentSignature;	//Map to handle const char* to Signature
-		std::unordered_map<const char*, std::shared_ptr<PenSystemBase>> m_PenSystems;				//Map to handle const char* to System
+		std::unordered_map<PenHashedId, PenComponentSignature>			m_PenComponentSignature;	//Map to handle const char* to Signature
+		std::unordered_map<PenHashedId, std::shared_ptr<PenSystemBase>> m_PenSystems;				//Map to handle const char* to System
 	};
 }	
 

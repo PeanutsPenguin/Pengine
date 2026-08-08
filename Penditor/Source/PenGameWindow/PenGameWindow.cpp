@@ -17,6 +17,7 @@
 
 #include "PenSystem/PenTransformSystem/PenTransformSystem.h"
 #include "PenSystem/PenRenderSystem/PenRenderSystem.h"
+#include "PenSystem/PenLightSystem/PenLightSystem.h"
 
 //Penditor include
 #include "PenFreeCam/PenFreeCam.h"		
