@@ -31,7 +31,7 @@ PenModel::~PenModel()
 	if (this->m_importer)
 		delete this->m_importer;
 
-	PenCore::LogManager()->Log("Destroying Model with id : " + this->getId(), __FILE__, __LINE__);
+	PenCore::LogManager()->Log("Destroying Model : " + this->getResourcePath(), __FILE__, __LINE__);
 }
 
 #pragma region Resource

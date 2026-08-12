@@ -12,16 +12,7 @@ void PenResourcesManager::clearUnused()
     for (auto it = m_resourceStocker.begin(); it != m_resourceStocker.end();)
     {
         if (!it->second.lock())
-        {
             it = m_resourceStocker.erase(it);
-
-            if(it != m_resourceStocker.end())
-            {
-                std::string path = m_idToPathfile[it->first];
-                m_idToPathfile.erase(it->first);
-                m_pathfileToId.erase(path);
-            }
-        }
         else
             ++it;
     }
@@ -32,25 +23,11 @@ void PenResourcesManager::destroy()
     for (auto it = m_resourceStocker.begin(); it != m_resourceStocker.end();)
     {
         it = m_resourceStocker.erase(it);
-
-        if (it != m_resourceStocker.end())
-        {
-            std::string path = m_idToPathfile[it->first];
-            m_idToPathfile.erase(it->first);
-            m_pathfileToId.erase(path);
-        }
     }
 
     for (auto it = m_persistentResourcestocker.begin(); it != m_persistentResourcestocker.end();)
     {
         it = m_persistentResourcestocker.erase(it);
-
-        if (it != m_persistentResourcestocker.end())
-        {
-            std::string path = m_idToPathfile[it->first];
-            m_idToPathfile.erase(it->first);
-            m_pathfileToId.erase(path);
-        }
     }
 }
 

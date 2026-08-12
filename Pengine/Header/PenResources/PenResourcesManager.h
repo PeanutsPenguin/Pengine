@@ -55,13 +55,10 @@ namespace Pengine::Resources
 		void saveAllDirty();
 	
 	private:
-		std::unordered_map<PenResourcesId, std::string>							m_idToPathfile;
-		std::unordered_map<std::string, PenResourcesId>							m_pathfileToId;
-		std::unordered_map<PenResourcesId, std::weak_ptr<PenResourceBase>>		m_resourceStocker;
-		std::unordered_map<PenResourcesId, std::shared_ptr<PenResourceBase>>	m_persistentResourcestocker;
+		std::unordered_map<PenHashedId, std::weak_ptr<PenResourceBase>>		m_resourceStocker;
+		std::unordered_map<PenHashedId, std::shared_ptr<PenResourceBase>>	m_persistentResourcestocker;
 
 		std::mutex m_resourceMutex;
-		std::atomic<PenResourcesId> m_currentId = 0;
 	};
 }
 #include "PenResources/PenResourceManager.hpp"

@@ -287,7 +287,7 @@ bool PenUIManager::beginPopUpMenu()
 	return ImGuiWrapper::beginPopUpMenu();
 }
 
-bool PenUIManager::menuItem(const char* label)
+bool PenUIManager::renderMenuItem(const char* label)
 {
 	return ImGuiWrapper::menuItem(label);
 }

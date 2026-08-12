@@ -176,10 +176,10 @@ namespace Penditor::Window
 
 		if(manager->beginPopUpMenu())
 		{
-			if(manager->menuItem("Rename"))
+			if(manager->renderMenuItem("Rename"))
 				this->m_renamedObject = id;
 
-			if (manager->menuItem("Delete"))
+			if (manager->renderMenuItem("Delete"))
 			{
 				if(PenditorCore::PickingHandler()->getSelectedObject() == id)
 					PenditorCore::PickingHandler()->setSelectedObject(Pengine::g_PenObjectInvalidId);
@@ -200,7 +200,7 @@ namespace Penditor::Window
 
 		if (manager->beginPopUpMenu())
 		{
-			if (manager->menuItem("Create PenObject"))
+			if (manager->renderMenuItem("Create PenObject"))
 				this->createPenObject();
 
 			manager->endPopUp();

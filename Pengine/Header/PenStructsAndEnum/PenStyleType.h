@@ -40,27 +40,6 @@ namespace Pengine::ui
         E_TAB_HOVERED,                      // Tab background, when hovered
         E_TAB,                              // Tab background, when tab-bar is focused & tab is unselected
         E_TAB_SELECTED,                     // Tab background, when tab-bar is focused & tab is selected
-        E_TAB_SELECTED_OVERLINE,            // Tab horizontal overline, when tab-bar is focused & tab is selected
-        E_TabDimmed,                        // Tab background, when tab-bar is unfocused & tab is unselected
-        E_TabDimmedSelected,                // Tab background, when tab-bar is unfocused & tab is selected
-        E_TabDimmedSelectedOverline,        //..horizontal overline, when tab-bar is unfocused & tab is selected
-        E_DockingPreview,                   // Preview overlay color when about to docking something
-        E_DockingEmptyBg,                   // Background color for empty node (e.g. CentralNode with no window docked into it)
-        E_PlotLines,
-        E_PlotLinesHovered,
-        E_PlotHistogram,
-        E_PlotHistogramHovered,
-        E_TableHeaderBg ,                   // Table header background
-        E_TableBorderStrong,                // Table outer and header borders (prefer using Alpha=1.0 here)
-        E_TableBorderLight,                 // Table inner borders (prefer using Alpha=1.0 here)
-        E_TableRowBg,                       // Table row background (even rows)
-        E_TableRowBgAlt,                    // Table row background (odd rows)
-        E_TextLink,                         // Hyperlink color
-        E_TextSelectedBg,
-        E_DragDropTarget,                   // Rectangle highlighting a drop target
-        E_NavCursor,                        // Color of keyboard/gamepad navigation cursor/rectangle, when visible
-        E_NavWindowingHighlight,            // Highlight window when using CTRL+TAB
-        E_NavWindowingDimBg,                // Darken/colorize entire screen behind the CTRL+TAB window list, when active
-        E_ModalWindowDimBg,                 // Darken/colorize entire screen behind a modal window, when one is active
+        E_TAB_SELECTED_OVERLINE            // Tab horizontal overline, when tab-bar is focused & tab is selected
     };
 }

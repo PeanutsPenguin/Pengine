@@ -36,7 +36,7 @@ namespace Pengine
 
 		const std::string& getSceneName();
 
-	private :
+	private:
 		bool serializeObject(std::ostream& out, PenObjectId id);
 		void loadObject(std::ifstream& infile);
 		void loadComponent(std::ifstream& infile, PenObjectId id);

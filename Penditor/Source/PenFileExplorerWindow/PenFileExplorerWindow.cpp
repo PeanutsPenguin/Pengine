@@ -280,7 +280,7 @@ namespace Penditor::Window
 
 		if (manager->beginPopUpMenu())
 		{
-			if (manager->menuItem("Create PenScene"))
+			if (manager->renderMenuItem("Create PenScene"))
 				this->createScene(node);
 
 			manager->endPopUp();
@@ -307,7 +307,7 @@ namespace Penditor::Window
 
 		if (manager->beginPopUpMenu())
 		{
-			if (manager->menuItem("Create PenScene"))
+			if (manager->renderMenuItem("Create PenScene"))
 				this->createScene(this->m_cachedFiles);
 
 			manager->endPopUp();

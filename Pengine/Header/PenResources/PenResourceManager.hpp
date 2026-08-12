@@ -9,6 +9,7 @@
 #include "PenThreadPool/PenThreadPool.h"
 #include "PenCore/PenCore.h"
 #include "PenLogManager/PenLogManager.h"
+#include "PenIdUtilities/Private_PenIdUtilities.h"
 
 #define RESOURCE_TEMPLATE template<typename _ResourceType, typename ...Args>
 
@@ -23,6 +24,7 @@ namespace Pengine::Resources
 		std::string name = source.stem().string();										//xxx
 		std::string fullname = name + ".penfile";										//xxx.penfile
 		std::string destination = (std::string)destinationPath + fullname;				//*/xxx.penfile
+		PenHashedId hashedDestination = HashString(destination);
 
 		//Copy the source file
 		std::filesystem::path copyEmplacement = destinationPath / source.filename();
@@ -35,19 +37,17 @@ namespace Pengine::Resources
 		std::unique_lock<std::mutex> lock(m_resourceMutex);
 
 		//Check if ressources doesn't exist
-		auto it = m_pathfileToId.find(destination);
-		if (it != m_pathfileToId.end())
-			return std::dynamic_pointer_cast<_ResourceType>(m_resourceStocker[it->second].lock());
+		if (m_resourceStocker.contains(hashedDestination))
+			return std::dynamic_pointer_cast<_ResourceType>(m_resourceStocker[hashedDestination].lock());
+
+		if (m_persistentResourcestocker.contains(hashedDestination))
+			return std::dynamic_pointer_cast<_ResourceType>(m_persistentResourcestocker[hashedDestination]);
 
 		PenCore::LogManager()->Log("Resources : " + destination + " doesn't exist, creating it", __FILE__, __LINE__);
 
-		PenResourcesId curId = m_currentId++;
+		std::shared_ptr<_ResourceType> ptr = std::make_shared<_ResourceType>(hashedDestination);
 
-		std::shared_ptr<_ResourceType> ptr = std::make_shared<_ResourceType>(curId);
-
-		m_idToPathfile[curId] = destination;
-		m_resourceStocker[curId] = ptr;
-		m_pathfileToId[destination] = curId;
+		m_resourceStocker[hashedDestination] = ptr;
 
 		lock.unlock();
 
@@ -83,23 +83,23 @@ namespace Pengine::Resources
 		///Create the name and Emplacement of the .penfile
 		std::string fullname = (std::string)fileName + ".penfile";						//xxx.penfile
 		std::string destination = (std::string)destinationPath + fullname;				//*/xxx.penfile
+		PenHashedId hashedDestination = HashString(destination);
 
 		std::unique_lock<std::mutex> lock(m_resourceMutex);
 
 		//Check if ressources doesn't exist
-		auto it = m_pathfileToId.find(destination);
-		if (it != m_pathfileToId.end())
-			return std::dynamic_pointer_cast<_ResourceType>(m_resourceStocker[it->second].lock());
+		if (m_resourceStocker.contains(hashedDestination))
+			return std::dynamic_pointer_cast<_ResourceType>(m_resourceStocker[hashedDestination].lock());
+
+		if (m_persistentResourcestocker.contains(hashedDestination))
+			return std::dynamic_pointer_cast<_ResourceType>(m_persistentResourcestocker[hashedDestination]);
+
 
 		PenCore::LogManager()->Log("Resources : " + destination + " doesn't exist, creating it", __FILE__, __LINE__);
 
-		PenResourcesId curId = m_currentId++;
+		std::shared_ptr<_ResourceType> ptr = std::make_shared<_ResourceType>(hashedDestination);
 
-		std::shared_ptr<_ResourceType> ptr = std::make_shared<_ResourceType>(curId);
-
-		m_idToPathfile[curId] = destination;
-		m_resourceStocker[curId] = ptr;
-		m_pathfileToId[destination] = curId;
+		m_resourceStocker[hashedDestination] = ptr;
 
 		lock.unlock();
 
@@ -133,31 +133,22 @@ namespace Pengine::Resources
 	inline std::shared_ptr<_ResourceType> PenResourcesManager::loadResourceFromFile(const char* path, Args... data)
 	{
 		std::string safePath = path;
+		PenHashedId hashedId = HashString(safePath);
 
 		std::unique_lock<std::mutex> lock(m_resourceMutex);
 
 		//Check if it doesn't already exist
-		auto it = m_pathfileToId.find(safePath);
-		if (it != m_pathfileToId.end())
-		{
-			std::shared_ptr<_ResourceType> ptr = std::dynamic_pointer_cast<_ResourceType>(m_resourceStocker[it->second].lock());
-			
-			if (!ptr)
-				ptr = std::dynamic_pointer_cast<_ResourceType>(m_persistentResourcestocker[it->second]);
+		if (m_resourceStocker.contains(hashedId))
+			return std::dynamic_pointer_cast<_ResourceType>(m_resourceStocker[hashedId].lock());
 
-			return ptr;
-		}
+		if (m_persistentResourcestocker.contains(hashedId))
+			return std::dynamic_pointer_cast<_ResourceType>(m_persistentResourcestocker[hashedId]);
 
 		PenCore::LogManager()->Log("Resources : " + safePath + " doesn't exist, loading it", __FILE__, __LINE__);
 
-		PenResourcesId curId = ++m_currentId;
+		std::shared_ptr<_ResourceType> ptr = std::make_shared<_ResourceType>(hashedId);
 
-		std::shared_ptr<_ResourceType> ptr = std::make_shared<_ResourceType>(curId);
-
-
-		m_idToPathfile[curId] = safePath;
-		m_resourceStocker[curId] = ptr;
-		m_pathfileToId[safePath] = curId;
+		m_resourceStocker[hashedId] = ptr;
 
 		lock.unlock();
 
@@ -190,32 +181,25 @@ namespace Pengine::Resources
 	inline std::shared_ptr<_ResourceType> PenResourcesManager::loadResourceFromFile(const char* path, bool persistent, Args... data)
 	{
 		std::string safePath = path;
+		PenHashedId hashedId = HashString(safePath);
 
 		std::unique_lock<std::mutex> lock(m_resourceMutex);
 
 		//Check if it doesn't already exist
-		auto it = m_pathfileToId.find(safePath);
-		if (it != m_pathfileToId.end())
-		{
-			if(persistent)
-				return std::dynamic_pointer_cast<_ResourceType>(m_persistentResourcestocker[it->second]);
-			else
-				return std::dynamic_pointer_cast<_ResourceType>(m_resourceStocker[it->second].lock());
-		}
+		if (m_resourceStocker.contains(hashedId))
+			return std::dynamic_pointer_cast<_ResourceType>(m_resourceStocker[hashedId].lock());
+
+		if (m_persistentResourcestocker.contains(hashedId))
+			return std::dynamic_pointer_cast<_ResourceType>(m_persistentResourcestocker[hashedId]);
 
 		PenCore::LogManager()->Log("Resources : " + safePath + " doesn't exist, loading it", __FILE__, __LINE__);
 
-		PenResourcesId curId = ++m_currentId;
-
-		std::shared_ptr<_ResourceType> ptr = std::make_shared<_ResourceType>(curId);
-
-		m_idToPathfile[curId] = safePath;
-		m_pathfileToId[safePath] = curId;
+		std::shared_ptr<_ResourceType> ptr = std::make_shared<_ResourceType>(hashedId);
 
 		if (persistent)
-			m_persistentResourcestocker[curId] = ptr;
+			m_persistentResourcestocker[hashedId] = ptr;
 		else
-			m_resourceStocker[curId] = ptr;
+			m_resourceStocker[hashedId] = ptr;
 
 		lock.unlock();
 
