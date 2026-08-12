@@ -33,16 +33,13 @@ namespace Pengine::Components
 
 		void entityDestroyed(PenObjectId entity);
 
-#pragma region Private
 	private:
-		std::unordered_map<PenHashedId, PenComponentType> m_PenComponentsType{};							//Map to handle const char* to specific component type 
-		std::unordered_map<PenObjectId, std::shared_ptr<IPenComponentArray>> m_PenComponentsArrays{};	//Map from const char* to a component array
-		PenComponentType m_nextPenComponentType{};														//Keep track of wich components need to be registered or not - starting at 0
+		std::unordered_map<PenHashedId, PenComponentType> m_PenComponentsType;
+		std::unordered_map<PenObjectId, std::shared_ptr<IPenComponentArray>> m_PenComponentsArrays;
+		PenComponentType m_nextPenComponentType;
 
 		template<typename T>
 		std::shared_ptr<ComponentArray<T>> getComponentArray();
-
-#pragma endregion
 	};
 }
 

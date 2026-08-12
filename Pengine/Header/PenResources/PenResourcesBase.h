@@ -13,7 +13,7 @@ namespace Pengine::Resources
 	{
 	public:
 		PenResourceBase() = default;
-		PenResourceBase(const PenObjectId& id) : m_id(id) {};
+		PenResourceBase(const PenHashedId& id) : m_id(id) {};
 		PenResourceBase(const PenResourceBase& other) = default;
 		PenResourceBase(PenResourceBase&& other) = default;
 		virtual ~PenResourceBase() = default;
@@ -41,6 +41,6 @@ namespace Pengine::Resources
 		bool p_isDirty = false;
 
 	private:
-		PenResourcesId m_id = 0;
+		PenHashedId m_id = 0;
 	};
 }	

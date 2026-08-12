@@ -33,8 +33,6 @@ namespace Pengine
 		bool isSceneExisting(const std::string& path);
 
 	private:
-		void removeDummyScene();
-
 		mutable std::shared_mutex m_sceneMutex;
 		std::unordered_map<PenHashedId, std::unique_ptr<PenScene>> m_scenes;
 		PenScene* m_activeScene = nullptr;

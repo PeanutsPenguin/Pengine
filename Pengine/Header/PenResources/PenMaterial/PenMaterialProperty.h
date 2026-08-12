@@ -12,7 +12,7 @@ namespace Pengine::Resources
         PenMaterialProperty() = default;
         PenMaterialProperty(const PenMaterialProperty& other) = default;
         PenMaterialProperty(PenMaterialProperty&& other) = default;
-        virtual ~PenMaterialProperty() = default;
+        ~PenMaterialProperty() = default;
 
         PenMaterialProperty& operator=(const PenMaterialProperty& rhs) = default;
         PenMaterialProperty& operator=(PenMaterialProperty&& rhs) = default;
