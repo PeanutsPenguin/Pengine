@@ -4,7 +4,7 @@
 
 #include "Vector/Vector2/Vector2.hpp"
 
-#include "PenStructsAndEnum/PenVirtualWindowFlag.h"
+#include "PenStructsAndEnum/PenStructAndEnum.h"
 
 namespace Pengine::ui
 {

@@ -77,10 +77,10 @@ bool PenShader::GPULoad()
 {
 	switch (this->m_type)
 	{
-	case PenShaderType::VERTEX_SHADER:
+	case PenShaderType::E_VERTEX_SHADER:
 		GladWrapper::createVertexShader(&this->m_shaderId);
 		break;
-	case PenShaderType::FRAGMENT_SHADER:
+	case PenShaderType::E_FRAGMENT_SHADER:
 		GladWrapper::createFragmentShader(&this->m_shaderId);
 		break;
 	default:
@@ -115,7 +115,7 @@ bool PenShader::changeShaderType(const PenShaderType type, const char* PenfilePa
 	PenCore::Serializer()->write(outfile, (std::string)sourcePath);
 
 	//Rewrite shader type
-	if (type == PenShaderType::INVALID_SHADER)
+	if (type == PenShaderType::E_INVALID_SHADER)
 	{
 		PenCore::LogManager()->LogWarning("Shader type set to INVALID (no valid given type)", __FILE__, __LINE__);
 		return false;
@@ -137,12 +137,12 @@ bool PenShader::setType(const char* sourcePath)
 
 	if (fileExtension == ".vert" || fileExtension == ".vertexshader")
 	{
-		this->m_type = PenShaderType::VERTEX_SHADER;
+		this->m_type = PenShaderType::E_VERTEX_SHADER;
 		return true;
 	}
 	else if (fileExtension == ".frag" || fileExtension == ".fragmentshader")
 	{
-		this->m_type = PenShaderType::FRAGMENT_SHADER;
+		this->m_type = PenShaderType::E_FRAGMENT_SHADER;
 		return true;
 	}
 	else
@@ -154,14 +154,14 @@ bool PenShader::setType(const char* sourcePath)
 
 bool PenShader::setType(Pengine::PenShaderType type)
 {
-	if (type == PenShaderType::VERTEX_SHADER)
+	if (type == PenShaderType::E_VERTEX_SHADER)
 	{
-		this->m_type = PenShaderType::VERTEX_SHADER;
+		this->m_type = PenShaderType::E_VERTEX_SHADER;
 		return true;
 	}
-	else if (type == PenShaderType::FRAGMENT_SHADER)
+	else if (type == PenShaderType::E_FRAGMENT_SHADER)
 	{
-		this->m_type = PenShaderType::FRAGMENT_SHADER;
+		this->m_type = PenShaderType::E_FRAGMENT_SHADER;
 		return true;
 	}
 	else
@@ -218,6 +218,6 @@ void PenShader::destroy()
 {
 	GladWrapper::deleteShader(&this->m_shaderId);
 	m_shaderId = 0;
-	m_type = Pengine::PenShaderType::INVALID_SHADER;
+	m_type = Pengine::PenShaderType::E_INVALID_SHADER;
 }
 

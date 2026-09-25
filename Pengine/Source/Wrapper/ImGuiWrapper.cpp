@@ -81,6 +81,12 @@ namespace Pengine::ui::ImGuiWrapper
 		return { (int)size.x, (int)size.y };
 	}
 
+	PenMath::Vector2 getWindowSize()
+	{
+		ImVec2 size = ImGui::GetWindowSize();
+		return { (int)size.x, (int)size.y };
+	}
+
 	PenMath::Vector2 getCursorScreenPos()
 	{
 		ImVec2 pos = ImGui::GetCursorScreenPos();
@@ -305,6 +311,11 @@ namespace Pengine::ui::ImGuiWrapper
 	void renderSeperator()
 	{
 		ImGui::Separator();
+	}
+
+	void renderLine(const PenMath::Vector2& start, const PenMath::Vector2& end, const PenColor& col, float thickness)
+	{
+		ImGui::GetWindowDrawList()->AddLine({ (float)start.x, (float)start.y }, { (float)end.x, (float)end.y }, ImGui::ColorConvertFloat4ToU32({ col.x, col.y, col.z, col.a }), thickness);
 	}
 	
 	void fillDragAndDropData(Pengine::DragAndDropData* data)

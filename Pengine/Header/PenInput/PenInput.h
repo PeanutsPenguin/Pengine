@@ -1,8 +1,7 @@
 #pragma once 
 
-#include "PenStructsAndEnum/PenInput.h"
+#include "PenStructsAndEnum/PenStructAndEnum.h"
 
-#include "Vector/Vector2/Vector2.h"
 
 #include <unordered_map>
 

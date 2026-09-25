@@ -1,6 +1,6 @@
 #pragma once 
 
-#include "PenStructsAndEnum/PenPropertyType.h"
+#include "PenStructsAndEnum/PenStructAndEnum.h"
 
 namespace Pengine
 {

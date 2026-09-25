@@ -1,7 +1,7 @@
 #pragma once 
 
 #include "PenColor/PenColor.h"
-#include "PenStructsAndEnum/PenLightType.h"		//PenLightType
+#include "PenStructsAndEnum/PenStructAndEnum.h"		//PenLightType
 #include "PenResources/PenShaderProgram.h"
 
 #include <Transform.h>

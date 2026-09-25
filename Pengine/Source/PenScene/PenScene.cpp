@@ -1,6 +1,6 @@
 #include "PenScene/PenScene.h"
 
-#include "PenStructsAndEnum/PenResourcesType.h"
+#include "PenStructsAndEnum/PenStructAndEnum.h"
 
 #include "PenCore/PenCore.h"				//PenCore
 #include "PenOctopus/PenOctopus.h"

@@ -2,7 +2,7 @@
 
 #include "PenCore/PenCore.h"
 #include "PenWindow/PenWindowBase.h"
-#include "PenStructsAndEnum/PenCursorState.h"
+#include "PenStructsAndEnum/PenStructAndEnum.h"
 #include "PenLogManager/PenLogManager.h"
 
 #include <glad/glad.h>

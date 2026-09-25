@@ -9,15 +9,11 @@
 #include "PenBuffer/PenTextureBuffer.h"
 #include "PenInput/PenInput.h"
 
-#include "PenStructsAndEnum/PenTreeNodeFlags.h"
-#include "PenStructsAndEnum/PenResourcesType.h"
+#include "PenStructsAndEnum/PenStructAndEnum.h"
 
 #include "Penditor/Penditor.h"
 #include "PenPropertyWindow/PenPropertyWindow.h"
 #include "PenGameWindow/PenGameWindow.h"
-
-#include "PenStructsAndEnum/PenDragAndDropData.h"
-
 
 #include <fstream>
 

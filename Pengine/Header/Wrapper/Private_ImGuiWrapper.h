@@ -7,11 +7,7 @@
 
 #include "PenColor/PenColor.h"
 
-#include "PenStructsAndEnum/PenTreeNodeFlags.h"
-#include "PenStructsAndEnum/PenDragAndDropData.h"
-#include "PenStructsAndEnum/PenStyleFlag.h"
-#include "PenStructsAndEnum/PenVirtualWindowFlag.h"
-#include "PenStructsAndEnum/PenStyleType.h"
+#include "PenStructsAndEnum/PenStructAndEnum.h"
 
 namespace Pengine::Window
 {
@@ -33,6 +29,7 @@ namespace Pengine::ui::ImGuiWrapper
 	void endRendering();
 
 	PenMath::Vector2	getContentSize();
+	PenMath::Vector2	getWindowSize();
 	PenMath::Vector2	getPadding();
 	PenMath::Vector2	getCursorPos();
 	PenMath::Vector2	getWindowPos();
@@ -82,6 +79,8 @@ namespace Pengine::ui::ImGuiWrapper
 	void	renderText(const char* value);
 	void	renderCenterText(const char* value);
 	void	renderSeperator();
+	void	renderLine(const PenMath::Vector2& start, const PenMath::Vector2& end, const PenColor& col, float thickness = 1.f);
+
 	void	fillDragAndDropData(Pengine::DragAndDropData* data);
 	void	fillDragAndDropData(Pengine::PenObjectId* id);
 	void	endDragAndDropSource();

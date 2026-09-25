@@ -30,6 +30,7 @@ namespace Penditor
 {
 	class PenFreeCam;
 	class PickingHandler;
+	class PenGizmosHandler;
 
 	namespace Window
 	{
@@ -64,6 +65,7 @@ namespace Penditor::Window
 
 	private:
 		void renderScene();
+		void renderGizmos();
 		void customRenderScene();
 		void customRenderObject(Pengine::PenObjectId id);
 		bool activateShaderAndLight(std::shared_ptr<Pengine::Resources::PenShaderProgram> prog);
@@ -80,6 +82,7 @@ namespace Penditor::Window
 		std::shared_ptr<Pengine::System::PenRendererSystem> m_renderSystem;
 		std::unique_ptr<PenCameraPreviewWindow> m_cameraPreview;
 		PenFreeCam* m_camera;
+		PenGizmosHandler* m_gizmosHandler;
 		PenMath::Vector2 m_size;
 		PenMath::Vector2 m_prevSize;
 		Pengine::Buffer::PenFrameBuffer* m_frameBuffer;

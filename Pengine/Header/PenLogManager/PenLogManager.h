@@ -1,6 +1,6 @@
 #pragma once 
 
-#include "PenStructsAndEnum/PenLog.h"
+#include "PenStructsAndEnum/PenStructAndEnum.h"
 
 #include <vector>
 #include <mutex>

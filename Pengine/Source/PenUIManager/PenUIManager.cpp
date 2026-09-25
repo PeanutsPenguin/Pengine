@@ -47,6 +47,11 @@ PenMath::Vector2 PenUIManager::getWindowPos()
 	return ImGuiWrapper::getWindowPos();
 }
 
+PenMath::Vector2 PenUIManager::getWindowSize()
+{
+	return ImGuiWrapper::getWindowSize();
+}
+
 float PenUIManager::getFrameHeight()
 {
 	return ImGuiWrapper::getFrameHeight();
@@ -140,6 +145,11 @@ void PenUIManager::renderCenterText(const char* value)
 void PenUIManager::renderSeperator()
 {
 	ImGuiWrapper::renderSeperator();
+}
+
+void PenUIManager::renderLine(const PenMath::Vector2& start, const PenMath::Vector2& end, const PenColor& col, float thickness)
+{
+	ImGuiWrapper::renderLine(start, end, col, thickness);
 }
 
 void PenUIManager::fillDragAndDropData(DragAndDropData* data)

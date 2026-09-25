@@ -2,8 +2,7 @@
 
 #include "PenDefine/PengineDefine.h"		//PengineDefine
 
-#include "PenStructsAndEnum/PenResourcesType.h"
-#include "PenStructsAndEnum/PenLoadingStatuc.h"
+#include "PenStructsAndEnum/PenStructAndEnum.h"
 
 #include <filesystem>
 

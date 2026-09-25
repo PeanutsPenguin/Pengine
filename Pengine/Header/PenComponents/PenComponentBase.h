@@ -1,8 +1,7 @@
 #pragma once 
 
 #include "PenDefine/PengineDefine.h"		//PengineDefine
-#include "PenStructsAndEnum/PenComponentState.h"
-#include "PenStructsAndEnum/PenComponentType.h"
+#include "PenStructsAndEnum/PenStructAndEnum.h"
 
 #include <iostream>
 #include <string_view>

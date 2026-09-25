@@ -6,11 +6,7 @@
 #include "Vector/Vector3/Vector3.h"
 #include "PenColor/PenColor.h"
 
-#include "PenStructsAndEnum/PenTreeNodeFlags.h"
-#include "PenStructsAndEnum/PenDragAndDropData.h"
-#include "PenStructsAndEnum/PenStyleFlag.h"
-#include "PenStructsAndEnum/PenVirtualWindowFlag.h"
-#include "PenStructsAndEnum/PenStyleType.h"
+#include "PenStructsAndEnum/PenStructAndEnum.h"
 
 namespace Pengine::Window
 {
@@ -41,6 +37,8 @@ namespace Pengine::ui
 		PenMath::Vector2	getContentSize();
 		PenMath::Vector2	getUICursorPos();
 		PenMath::Vector2	getWindowPos();
+		PenMath::Vector2	getWindowSize();
+
 		float				getFrameHeight();
 		float				getTextWidth(const char* text);
 
@@ -83,6 +81,8 @@ namespace Pengine::ui
 		void				renderText(const char* value);
 		void				renderCenterText(const char* value);
 		void				renderSeperator();
+		void				renderLine(const PenMath::Vector2& start, const PenMath::Vector2& end, const PenColor& col, float thickness = 1.f);
+
 		bool				renderVector3(PenMath::Vector3& vec, const char* name);		//Vec3 int
 		bool				renderVector3(PenMath::Vector3f& vec, const char* name);	//Vec3 float
 		bool				renderTreeNode(const char* name, PenTreeNodeFlags flags);

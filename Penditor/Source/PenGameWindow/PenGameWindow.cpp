@@ -24,6 +24,7 @@
 #include "PickingHandler/PickingHandler.h"
 #include "Penditor/Penditor.h"
 #include "PenCameraPreviewWindow/PenCameraPreviewWindow.h"
+#include "PenGizmosHandler/PenGizmosHandler.h"
 
 #include <string>
 
@@ -36,6 +37,7 @@ namespace Penditor::Window
 		m_hasResized = false;
 		this->m_frameBuffer = new Pengine::Buffer::PenFrameBuffer();
 		this->m_camera = new PenFreeCam();
+		this->m_gizmosHandler = new PenGizmosHandler();
 		this->m_size = { 800, 600 };
 	}
 
@@ -103,6 +105,7 @@ namespace Penditor::Window
 
 		Pengine::PenCore::UIManager()->renderImage(this->m_frameBuffer->getFrameTexture(), this->m_size);
 		this->renderFPS();
+		this->renderGizmos();
 
 		this->m_prevSize = this->m_size;
 
@@ -177,6 +180,25 @@ namespace Penditor::Window
 		}
 
 		this->m_frameBuffer->unbind();
+	}
+
+	void PenGameWindow::renderGizmos()
+	{
+		if (!this->m_gizmosHandler)
+			return;
+
+		Pengine::PenObjectId renderCam = m_camera->getCamera();
+
+		if (renderCam == Pengine::g_PenObjectInvalidId)
+		{
+			std::cout << __FUNCTION__ " : Editor's camera is invalid problem somwhere\n";
+			return;
+		}
+
+
+		Pengine::Components::PenCamera& camComp = Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenCamera>(renderCam);
+
+		this->m_gizmosHandler->drawGizmos(eGizmosType::E_TRANSLATE, camComp.getViewProjMatrix());
 	}
 
 	void PenGameWindow::customRenderScene()

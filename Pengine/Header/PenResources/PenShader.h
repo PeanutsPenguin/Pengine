@@ -1,7 +1,7 @@
 #pragma once 
 #include "PenResources/PenResourcesBase.h"
 
-#include "PenStructsAndEnum/PenShaderType.h"
+#include "PenStructsAndEnum/PenStructAndEnum.h"
 
 namespace Pengine::Resources
 {
@@ -30,7 +30,7 @@ namespace Pengine::Resources
 
 	private:
 		std::string m_shaderData;
-		Pengine::PenShaderType m_type = Pengine::PenShaderType::INVALID_SHADER;
+		Pengine::PenShaderType m_type = Pengine::PenShaderType::E_INVALID_SHADER;
 
 		unsigned int m_shaderId = 0;
 

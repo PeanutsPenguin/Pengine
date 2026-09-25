@@ -1,6 +1,6 @@
 #include "PenResources/PenMesh.h"
 
-#include "PenStructsAndEnum/PenVertex.h"	//PenVertex
+#include "PenStructsAndEnum/PenStructAndEnum.h"	//PenVertex
 #include "PenDefine/PengineDefine.h"		//PengineDefine
 #include "Wrapper/Private_GladWrapper.h"
 #include "PenCore/PenCore.h"

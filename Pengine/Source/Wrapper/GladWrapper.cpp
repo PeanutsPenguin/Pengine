@@ -1,6 +1,6 @@
 #include "Wrapper/Private_GladWrapper.h"
 
-#include "PenStructsAndEnum/PenVertex.h"
+#include "PenStructsAndEnum/PenStructAndEnum.h"
 
 #include "PenCore/PenCore.h"
 #include "PenLogManager/PenLogManager.h"

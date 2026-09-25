@@ -1,6 +1,6 @@
 #pragma once 
 
-#include "PenStructsAndEnum/PenCursorState.h"
+#include "PenStructsAndEnum/PenStructAndEnum.h"
 #include "PenDefine/PengineDefine.h"
 
 #include "PenColor/PenColor.h"

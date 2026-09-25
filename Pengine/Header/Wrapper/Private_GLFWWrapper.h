@@ -1,9 +1,7 @@
 #pragma once 
 
-#include "Vector/Vector2/Vector2.hpp"
+#include "PenStructsAndEnum/PenStructAndEnum.h"
 #include "PenColor/PenColor.h"
-#include "PenStructsAndEnum/PenCursorState.h"
-#include "PenStructsAndEnum/PenInput.h"
 
 //Lib
 #include "glad/glad.h"
