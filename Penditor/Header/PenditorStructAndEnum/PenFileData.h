@@ -23,10 +23,21 @@ namespace Penditor
 		bool isDirectory = false;
 	};
 
-	enum eGizmosType : int
+	namespace PenGizmos 
 	{
-		E_TRANSLATE, 
-		E_ROTATE, 
-		E_SCALE
-	};
+		enum eGizmosType : int
+		{
+			E_TRANSLATE,
+			E_ROTATE,
+			E_SCALE
+		};
+
+		enum eGizmosAxis : int
+		{
+			E_X_AXIS,
+			E_Y_AXIS,
+			E_Z_AXIS,
+			E_NONE
+		};
+	}
 }

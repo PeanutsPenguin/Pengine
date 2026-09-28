@@ -32,12 +32,7 @@ namespace Penditor
 	{
 		this->m_selectedObject = id;
 		Penditor::PenditorCore::PropertyWindow()->changeRenderTypeToObject();
-
-		if (Pengine::PenCore::PenOctopus()->containsComponent<Pengine::Components::PenCamera>(id) && id != Pengine::g_PenObjectInvalidId)
-			PenditorCore::GameWindow()->setRenderingSceneCamera(id);
-		else
-			PenditorCore::GameWindow()->stopRenderingSceneCamera();
-
+		Penditor::PenditorCore::GameWindow()->updateSelectedObject(id);
 	}
 
 	void PickingHandler::init()

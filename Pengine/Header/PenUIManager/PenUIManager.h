@@ -35,7 +35,9 @@ namespace Pengine::ui
 		void	shutDown();
 
 		PenMath::Vector2	getContentSize();
+		PenMath::Vector2	getMousePos();
 		PenMath::Vector2	getUICursorPos();
+		PenMath::Vector2	getUICursorScreenPos();
 		PenMath::Vector2	getWindowPos();
 		PenMath::Vector2	getWindowSize();
 
@@ -56,6 +58,7 @@ namespace Pengine::ui
 		bool				isWindowHovered();
 		bool				isItemClicked();
 		bool				isItemHovered();
+		bool				isMouseDragging();
 
 		void				pushStyle(PenStyleFlag flags, const PenMath::Vector2& vec);
 		void				pushStyle(PenStyleFlag flags, float value);
@@ -82,6 +85,9 @@ namespace Pengine::ui
 		void				renderCenterText(const char* value);
 		void				renderSeperator();
 		void				renderLine(const PenMath::Vector2& start, const PenMath::Vector2& end, const PenColor& col, float thickness = 1.f);
+		void				renderConvexPolygonFilled(const PenMath::Vector2* points, int numPoints, const PenColor& col);
+		void				renderRectangleFilled(const PenMath::Vector2& pMin, const PenMath::Vector2& pMax, const PenColor& col);
+
 
 		bool				renderVector3(PenMath::Vector3& vec, const char* name);		//Vec3 int
 		bool				renderVector3(PenMath::Vector3f& vec, const char* name);	//Vec3 float
@@ -104,6 +110,9 @@ namespace Pengine::ui
 		void							removeInputFocus();
 		void							fillDragAndDropData(Pengine::DragAndDropData* data);
 		void							fillDragAndDropData(Pengine::PenObjectId* data);
+		void							disableMouse();
+		void							enableMouse();
+
 		const Pengine::DragAndDropData* getDroppedData(const char* type);
 		const Pengine::PenObjectId*		getDroppedData(const char* type, Pengine::PenObjectId receptionnistID);
 	};

@@ -208,6 +208,11 @@ namespace Pengine::ui::ImGuiWrapper
 		return ImGui::IsItemHovered();
 	}
 
+	bool isMouseDragging()
+	{
+		return ImGui::IsMouseDragging(0);
+	}
+
 	void removeInputFocus()
 	{
 		ImGui::SetActiveID(0, ImGui::GetCurrentWindow());
@@ -317,6 +322,40 @@ namespace Pengine::ui::ImGuiWrapper
 	{
 		ImGui::GetWindowDrawList()->AddLine({ (float)start.x, (float)start.y }, { (float)end.x, (float)end.y }, ImGui::ColorConvertFloat4ToU32({ col.x, col.y, col.z, col.a }), thickness);
 	}
+
+	void renderRectangleFilled(const PenMath::Vector2& pMin, const PenMath::Vector2& pMax, const PenColor& col)
+	{
+		ImDrawList* drawList = ImGui::GetWindowDrawList();
+
+		if (!drawList)
+		{
+			Pengine::PenCore::LogManager()->LogWarning("Failed to get ImDrawList for rendering convex polygon filled.", __FILE__, __LINE__);
+			return;
+		}
+
+		drawList->AddRectFilled({ (float)pMin.x, (float)pMin.y }, { (float)pMax.x, (float)pMax.y }, ImGui::ColorConvertFloat4ToU32({ col.x, col.y, col.z, col.a }));
+	}
+
+	void renderConvexPolygonFilled(const PenMath::Vector2* points, int numPoints, const PenColor& col)
+	{
+		ImDrawList* drawList = ImGui::GetWindowDrawList();
+
+		if (!drawList)
+		{
+			Pengine::PenCore::LogManager()->LogWarning("Failed to get ImDrawList for rendering convex polygon filled.", __FILE__, __LINE__);
+			return;
+		}
+
+		std::vector<ImVec2> imPoints;
+		imPoints.reserve(numPoints);
+
+		for (int i = 0; i < numPoints; ++i)
+		{
+			imPoints.emplace_back(points[i].x, points[i].y);
+		}
+
+		drawList->AddConvexPolyFilled(imPoints.data(), numPoints, ImGui::ColorConvertFloat4ToU32({ col.x, col.y, col.z, col.a }));
+	}
 	
 	void fillDragAndDropData(Pengine::DragAndDropData* data)
 	{
@@ -348,6 +387,17 @@ namespace Pengine::ui::ImGuiWrapper
 	{
 		ImGui::SetDragDropPayload(PENOBJECT_DROP_ID, data, sizeof(PenObjectId));
 	}
+
+	void disableMouse()
+	{
+		ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_NoMouse;
+	}
+
+	void enableMouse()
+	{
+		ImGui::GetIO().ConfigFlags &= ~ImGuiConfigFlags_NoMouse;
+	}
+
 
 	void endDragAndDropSource()
 	{

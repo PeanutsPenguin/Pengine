@@ -63,8 +63,11 @@ namespace Penditor::Window
 		const Pengine::PenObjectId							getCamera();
 		std::shared_ptr<Pengine::System::PenRendererSystem> getRenderSystem();
 
+		void updateSelectedObject(const Pengine::PenObjectId id);
+
 	private:
 		void renderScene();
+		void updateGizmos();
 		void renderGizmos();
 		void customRenderScene();
 		void customRenderObject(Pengine::PenObjectId id);

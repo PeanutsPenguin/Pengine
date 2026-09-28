@@ -91,6 +91,15 @@ namespace Penditor::Window
 		return this->m_camera->getCamera();
 	}
 
+	void PenGameWindow::updateSelectedObject(const Pengine::PenObjectId id)
+	{
+		if (Pengine::PenCore::PenOctopus()->containsComponent<Pengine::Components::PenCamera>(id) && id != Pengine::g_PenObjectInvalidId)
+			this->setRenderingSceneCamera(id);
+		else
+			this->stopRenderingSceneCamera();
+
+	}
+
 	std::shared_ptr<Pengine::System::PenRendererSystem> PenGameWindow::getRenderSystem()
 	{
 		return this->m_renderSystem;
@@ -98,6 +107,7 @@ namespace Penditor::Window
 
 	void PenGameWindow::renderCalls()
 	{
+		this->updateGizmos();
 		this->updateCursorStatus();
 		this->updateCamera();
 		this->checkWindowSize();
@@ -170,7 +180,8 @@ namespace Penditor::Window
 		this->m_frameBuffer->bind();
 		Pengine::Window::resizeViewport({ 0, 0 }, this->m_size);
 
-		PenditorCore::PickingHandler()->update(this->m_renderSystem);
+		if(!this->m_gizmosHandler->isAxisSelected())
+			PenditorCore::PickingHandler()->update(this->m_renderSystem);
 
 		if(this->m_renderSystem)
 		{
@@ -180,6 +191,24 @@ namespace Penditor::Window
 		}
 
 		this->m_frameBuffer->unbind();
+	}
+
+	void PenGameWindow::updateGizmos()
+	{
+		if (!this->m_gizmosHandler)
+			return;
+
+		Pengine::PenObjectId renderCam = m_camera->getCamera();
+
+		if (renderCam == Pengine::g_PenObjectInvalidId)
+		{
+			std::cout << __FUNCTION__ " : Editor's camera is invalid problem somwhere\n";
+			return;
+		}
+
+		Pengine::Components::PenCamera& camComp = Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenCamera>(renderCam);
+
+		this->m_gizmosHandler->updateGizmos(camComp.getViewProjMatrix().getInverse(), Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenTransform>(renderCam).getGlobalTransform().position, camComp.getViewMatrix(), camComp.getFOV());
 	}
 
 	void PenGameWindow::renderGizmos()
@@ -198,7 +227,7 @@ namespace Penditor::Window
 
 		Pengine::Components::PenCamera& camComp = Pengine::PenCore::PenOctopus()->getComponent<Pengine::Components::PenCamera>(renderCam);
 
-		this->m_gizmosHandler->drawGizmos(eGizmosType::E_TRANSLATE, camComp.getViewProjMatrix());
+		this->m_gizmosHandler->drawGizmos(PenGizmos::eGizmosType::E_TRANSLATE, camComp);
 	}
 
 	void PenGameWindow::customRenderScene()

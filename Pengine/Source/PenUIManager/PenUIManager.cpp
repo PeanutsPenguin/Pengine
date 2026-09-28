@@ -37,9 +37,19 @@ PenMath::Vector2 PenUIManager::getContentSize()
 	return ImGuiWrapper::getContentSize();
 }
 
+PenMath::Vector2 PenUIManager::getMousePos()
+{
+	return ImGuiWrapper::getMousePos();
+}
+
 PenMath::Vector2 PenUIManager::getUICursorPos()
 {
 	return ImGuiWrapper::getCursorPos();
+}
+
+PenMath::Vector2 PenUIManager::getUICursorScreenPos()
+{
+	return ImGuiWrapper::getCursorScreenPos();
 }
 
 PenMath::Vector2 PenUIManager::getWindowPos()
@@ -152,6 +162,16 @@ void PenUIManager::renderLine(const PenMath::Vector2& start, const PenMath::Vect
 	ImGuiWrapper::renderLine(start, end, col, thickness);
 }
 
+void PenUIManager::renderConvexPolygonFilled(const PenMath::Vector2* points, int numPoints, const PenColor& col)
+{
+	ImGuiWrapper::renderConvexPolygonFilled(points, numPoints, col);
+}
+
+void PenUIManager::renderRectangleFilled(const PenMath::Vector2& pMin, const PenMath::Vector2& pMax, const PenColor& col)
+{
+	ImGuiWrapper::renderRectangleFilled(pMin, pMax, col);
+}
+
 void PenUIManager::fillDragAndDropData(DragAndDropData* data)
 {
 	ImGuiWrapper::fillDragAndDropData(data);
@@ -161,6 +181,17 @@ void PenUIManager::fillDragAndDropData(PenObjectId* data)
 {
 	ImGuiWrapper::fillDragAndDropData(data);
 }
+
+void PenUIManager::disableMouse()
+{
+	ImGuiWrapper::disableMouse();
+}
+
+void PenUIManager::enableMouse()
+{
+	ImGuiWrapper::enableMouse();
+}
+
 
 void PenUIManager::endDragAndDropSource()
 {
@@ -205,6 +236,11 @@ bool PenUIManager::isItemClicked()
 bool PenUIManager::isItemHovered()
 {
 	return ImGuiWrapper::isItemHovered();
+}
+
+bool PenUIManager::isMouseDragging()
+{
+	return ImGuiWrapper::isMouseDragging();
 }
 
 void PenUIManager::removeInputFocus()

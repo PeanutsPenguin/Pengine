@@ -55,6 +55,8 @@ namespace Pengine::ui::ImGuiWrapper
 	bool isMousePastDragTreshold();
 	bool isItemClicked();
 	bool isItemHovered();
+	bool isMouseDragging();
+
 	bool beginDragAndDropSource();
 	bool beginDragAndDropTarget();
 	bool beginChildWindow(const char* name, const PenMath::Vector2& size, Pengine::ui::PenVirtualWindowFlags flags);
@@ -80,9 +82,15 @@ namespace Pengine::ui::ImGuiWrapper
 	void	renderCenterText(const char* value);
 	void	renderSeperator();
 	void	renderLine(const PenMath::Vector2& start, const PenMath::Vector2& end, const PenColor& col, float thickness = 1.f);
+	void	renderConvexPolygonFilled(const PenMath::Vector2* points, int numPoints, const PenColor& col);
+	void	renderRectangleFilled(const PenMath::Vector2& pMin, const PenMath::Vector2& pMax, const PenColor& col);
 
 	void	fillDragAndDropData(Pengine::DragAndDropData* data);
 	void	fillDragAndDropData(Pengine::PenObjectId* id);
+
+	void	disableMouse();
+	void	enableMouse();
+
 	void	endDragAndDropSource();
 	void	endDragAndDropTarget();
 	void	endChildWindow();
