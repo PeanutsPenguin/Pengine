@@ -19,6 +19,8 @@
 #define GIZMO_PIXEL_LENGTH 120.f
 #define GIZMO_HIT_RANGE 12.f
 
+#define GIZMO_SCALE_SENSITIVITY .1f
+
 namespace Penditor 
 {
 	class PenGizmosHandler
@@ -54,10 +56,15 @@ namespace Penditor
 		void handleMouseDragging(Pengine::Components::PenTransform& transComp, const PenMath::Vector3f closestPoints[3], 
 								 const PenMath::Vector3f& cameraPos, const PenMath::Vector3f rayDirection);
 
+		void translateObject(Pengine::Components::PenTransform& transComp, const PenMath::Vector3f& delta);
+
+		void scaleObject(Pengine::Components::PenTransform& transComp, const PenMath::Vector3f& delta, const PenMath::Vector3f& axisDir);
+
 		void drawLineGizmos(Pengine::PenObjectId selectedObject, const Pengine::Components::PenCamera& camera);
 
-		PenGizmos::eGizmosAxis m_selectedAxis = PenGizmos::eGizmosAxis::E_NONE;
 		PenMath::Vector3f m_previousClosestPoint = PenMath::Vector3f::Zero();
 		float m_hitboxSize = BASE_HITBOX_SIZE;
+		PenGizmos::eGizmosAxis m_selectedAxis = PenGizmos::eGizmosAxis::E_NONE;
+		PenGizmos::eGizmosType m_gizmoType = PenGizmos::eGizmosType::E_SCALE;
 	};
 }

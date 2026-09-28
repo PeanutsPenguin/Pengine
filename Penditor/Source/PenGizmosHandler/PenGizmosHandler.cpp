@@ -199,9 +199,10 @@ namespace Penditor
 
 				PenMath::Vector3f delta = currentClosest - this->m_previousClosestPoint;
 
-				PenMath::Transform newTransform = transComp.getGlobalTransform();
-				newTransform.position += delta;
-				transComp.setGlobalTransform(newTransform);
+				if (this->m_gizmoType == PenGizmos::eGizmosType::E_TRANSLATE)
+					this->translateObject(transComp, delta);
+				else if (this->m_gizmoType == PenGizmos::eGizmosType::E_SCALE)
+					this->scaleObject(transComp, delta, axisDir);
 
 				this->m_previousClosestPoint = getClosestPointOnAxis(cameraPos, rayDirection, transComp.getGlobalTransform().position, axisDir);
 
@@ -214,6 +215,39 @@ namespace Penditor
 				manager->enableMouse();
 			}
 		}
+	}
+
+	void PenGizmosHandler::translateObject(Pengine::Components::PenTransform& transComp, const PenMath::Vector3f& delta)
+	{
+		PenMath::Transform newTransform = transComp.getGlobalTransform();
+		newTransform.position += delta;
+		transComp.setGlobalTransform(newTransform);
+	}
+
+	void PenGizmosHandler::scaleObject(Pengine::Components::PenTransform& transComp, const PenMath::Vector3f& delta, const PenMath::Vector3f& axisDir)
+	{
+		float scaleDelta = PenMath::Vector3f::dot(delta, axisDir);
+
+		PenMath::Transform newTransform = transComp.getGlobalTransform();
+
+		switch (this->m_selectedAxis)
+		{
+		case PenGizmos::eGizmosAxis::E_X_AXIS:
+			newTransform.scale.x += scaleDelta * GIZMO_SCALE_SENSITIVITY;
+			break;
+		case PenGizmos::eGizmosAxis::E_Y_AXIS:
+			newTransform.scale.y += scaleDelta * GIZMO_SCALE_SENSITIVITY;
+			break;
+		case PenGizmos::eGizmosAxis::E_Z_AXIS:
+			newTransform.scale.z += scaleDelta * GIZMO_SCALE_SENSITIVITY;
+			break;
+		}
+
+		if (newTransform.scale.x < 0.01f) newTransform.scale.x = 0.01f;
+		if (newTransform.scale.y < 0.01f) newTransform.scale.y = 0.01f;
+		if (newTransform.scale.z < 0.01f) newTransform.scale.z = 0.01f;
+
+		transComp.setGlobalTransform(newTransform);
 	}
 
 	void PenGizmosHandler::drawGizmos(PenGizmos::eGizmosType type, const Pengine::Components::PenCamera& camera)
